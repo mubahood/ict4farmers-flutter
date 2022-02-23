@@ -158,3 +158,5 @@ flutter:
     #Other
     - assets/other/
     - assets/project/
+
+    #main-branch
