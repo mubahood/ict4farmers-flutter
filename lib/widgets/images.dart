@@ -33,7 +33,12 @@ class Images {
   static String otherDesignIcon = 'assets/icons/other_design.svg';
   static String appIcon = 'assets/icons/apps.svg';
   static String homeIcon = 'assets/icons/home.svg';
+  static String svg_home = 'assets/icons/svg_home.svg';
+  static String svg_chats = 'assets/icons/svg_chats.svg';
+  static String svg_user = 'assets/icons/svg_user.svg';
   static String app2Icon = 'assets/icons/apps_2.svg';
+  static String svg_category = 'assets/icons/svg_category.svg';
+  static String svg_add = 'assets/icons/svg_add.svg';
 
   static String changeLogIcon = 'assets/icons/document_1.png';
   static String documentationIcon = 'assets/icons/document_2.png';
@@ -76,6 +81,7 @@ class Images {
   static String rangeSelectorIcon = 'assets/icons/range_selector_outline.png';
   static String settingIcon = 'assets/icons/setting_outline.png';
   static String logo_1 = 'assets/project/logo_1.png';
+  static String logo_2 = 'assets/project/logo_2.png';
 
   static final String darkModeOutline = "assets/icons/moon_outline.png";
   static final String lightModeOutline = "assets/icons/sun_outline.png";

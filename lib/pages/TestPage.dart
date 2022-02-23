@@ -1,21 +1,117 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class TestPage extends StatelessWidget {
+import '../widget/empty_list.dart';
+
+class TestPage extends StatefulWidget {
   const TestPage({Key? key}) : super(key: key);
+
+  @override
+  State<TestPage> createState() => _TestPageState();
+}
+
+class _TestPageState extends State<TestPage> {
+  @override
+  void initState() {
+    print("====> INITNG... <[====");
+  }
+
+  List<String> _items = [];
+  int i = 0;
+
+  Future<Null> _onRefresh() async {
+
+    i++;
+    _items.add("${i}. Romina");
+    setState(() {});
+    return null;
+  }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: ListView(
+      child: RefreshIndicator(
+        onRefresh: _onRefresh,
+        child: _items.isEmpty
+            ? EmptyList(
+                context: context,
+                body:
+                    "No Farm.\n\nYou have no farms registered in our system. Please contact us to add your farm into the system.")
+            :
+
+            Text("Romina"),
+
+       /* ListView(
+          children: [
+            Container(
+              color: Colors.blue,
+              alignment: Alignment.center,
+              child: Text('Header 1'),
+            ),
+            ListView.builder( // inner ListView
+              shrinkWrap: true, // 1st add
+              physics: ClampingScrollPhysics(), // 2nd add
+              itemCount: 2,
+              itemBuilder: (_, index) => ListTile(title: Text('Item $index')),
+            ), Container(
+              color: Colors.blue,
+              alignment: Alignment.center,
+              child: Text('Header 1'),
+            ),
+
+            ListView.builder(
+              shrinkWrap: true,
+
+              itemBuilder: (context, position) {
+                return Padding(
+                    padding: const EdgeInsets.only(
+                        left: 16.0, top: 0.0, right: 16.0, bottom: 0.0),
+                    child: Container(
+                      margin: EdgeInsets.only(top: 16),
+                      child: Text(_items[position]),
+                    ));
+              },
+              itemCount: _items.length,
+            ),
+
+            ListView.builder( // inner ListView
+              shrinkWrap: true, // 1st add
+              physics: ClampingScrollPhysics(), // 2nd add
+              itemCount: 2,
+              itemBuilder: (_, index) => ListTile(title: Text('Item $index')),
+            ),
+          ],
+        ),
+*/
+
+        /*ListView(
+              children: [
+                ListView.builder(
+                    itemBuilder: (context, position) {
+                      return Padding(
+                          padding: const EdgeInsets.only(
+                              left: 16.0, top: 0.0, right: 16.0, bottom: 0.0),
+                          child: Container(
+                            margin: EdgeInsets.only(top: 16),
+                            child: Text(_items[position]),
+                          ));
+                    },
+                    itemCount: _items.length,
+                  ),
+              ],
+            ),*/
+      ),
+
+      /* ListView(
         children: [
           Image.asset(
             "assets/project/slide_1.jpeg",
             height: 180,
             fit: BoxFit.cover,
           ),
-          SizedBox(height: 10,),
-
+          SizedBox(
+            height: 10,
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
@@ -25,7 +121,6 @@ class TestPage extends StatelessWidget {
               singleGridItem(image: "circle_4.webp", title: "Outwear"),
             ],
           ),
-
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
@@ -35,9 +130,80 @@ class TestPage extends StatelessWidget {
               singleGridItem(image: "circle_8.webp", title: "Home"),
             ],
           ),
-
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              singleGridItem(image: "circle_5.webp", title: "Shoes"),
+              singleGridItem(image: "circle_6.webp", title: "Bags"),
+              singleGridItem(image: "circle_7.webp", title: "Beauty"),
+              singleGridItem(image: "circle_8.webp", title: "Home"),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              singleGridItem(image: "circle_5.webp", title: "Shoes"),
+              singleGridItem(image: "circle_6.webp", title: "Bags"),
+              singleGridItem(image: "circle_7.webp", title: "Beauty"),
+              singleGridItem(image: "circle_8.webp", title: "Home"),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              singleGridItem(image: "circle_5.webp", title: "Shoes"),
+              singleGridItem(image: "circle_6.webp", title: "Bags"),
+              singleGridItem(image: "circle_7.webp", title: "Beauty"),
+              singleGridItem(image: "circle_8.webp", title: "Home"),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              singleGridItem(image: "circle_5.webp", title: "Shoes"),
+              singleGridItem(image: "circle_6.webp", title: "Bags"),
+              singleGridItem(image: "circle_7.webp", title: "Beauty"),
+              singleGridItem(image: "circle_8.webp", title: "Home"),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              singleGridItem(image: "circle_5.webp", title: "Shoes"),
+              singleGridItem(image: "circle_6.webp", title: "Bags"),
+              singleGridItem(image: "circle_7.webp", title: "Beauty"),
+              singleGridItem(image: "circle_8.webp", title: "Home"),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              singleGridItem(image: "circle_5.webp", title: "Shoes"),
+              singleGridItem(image: "circle_6.webp", title: "Bags"),
+              singleGridItem(image: "circle_7.webp", title: "Beauty"),
+              singleGridItem(image: "circle_8.webp", title: "Home"),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              singleGridItem(image: "circle_5.webp", title: "Shoes"),
+              singleGridItem(image: "circle_6.webp", title: "Bags"),
+              singleGridItem(image: "circle_7.webp", title: "Beauty"),
+              singleGridItem(image: "circle_8.webp", title: "Home"),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              singleGridItem(image: "circle_5.webp", title: "Shoes"),
+              singleGridItem(image: "circle_6.webp", title: "Bags"),
+              singleGridItem(image: "circle_7.webp", title: "Beauty"),
+              singleGridItem(image: "circle_8.webp", title: "Home"),
+            ],
+          ),
         ],
-      ),
+      ),*/
     );
   }
 
@@ -46,7 +212,7 @@ class TestPage extends StatelessWidget {
     String title: "Tops",
   }) {
     return Container(
-      padding: EdgeInsets.only(top: 8,bottom: 8),
+      padding: EdgeInsets.only(top: 8, bottom: 8),
       alignment: Alignment.center,
       child: Column(
         children: [
@@ -55,9 +221,10 @@ class TestPage extends StatelessWidget {
             height: 70,
             fit: BoxFit.cover,
           ),
-          Text(title,style: TextStyle(
-            fontSize: 14
-          ),),
+          Text(
+            title,
+            style: TextStyle(fontSize: 14),
+          ),
         ],
       ),
     );

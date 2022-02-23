@@ -118,14 +118,12 @@ flutter:
     - assets/images/apps/homemade/products/
     - assets/images/apps/homemade/category/
     - assets/images/apps/homemade/shop/
-    - lib/apps/homemade/data/
 
     ##dating
     - assets/images/apps/dating/
 
     ##Muvi
     - assets/images/apps/muvi/
-    - lib/apps/muvi/data/
 
     ##CustomApps
     - assets/images/apps/cookify/
@@ -135,16 +133,12 @@ flutter:
     ##Learning  (Material Design 3)
     - assets/images/apps/learning/images/
     - assets/images/apps/learning/icons/
-    - lib/m3/learning/data/
 
     ##Cookify (Material Design 3)
-    - lib/m3/cookify/data/
 
     ##Estate (Material Design 3)
-    - lib/m3/estate/data/
 
     ##Dating (Material Design 3)
-    - lib/apps/dating/data/
 
     #Illustration
     - assets/illustration/food/
