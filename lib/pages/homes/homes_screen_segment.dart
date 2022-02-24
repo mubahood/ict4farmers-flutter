@@ -119,7 +119,7 @@ class _HomesScreenSegmentState extends State<HomesScreenSegment>
           body: Column(
             children: [
               FxContainer.none(
-                padding: EdgeInsets.only(top: 10, bottom: 15),
+                padding: EdgeInsets.only(top: 10, bottom: 11),
                 color: theme.scaffoldBackgroundColor,
                 enableBorderRadius: false,
                 borderRadiusAll: 0,
@@ -127,11 +127,11 @@ class _HomesScreenSegmentState extends State<HomesScreenSegment>
                   labelPadding: EdgeInsets.all(0),
                   controller: tabController,
                   indicator: FxTabIndicator(
-                      indicatorColor: theme.colorScheme.primary,
+                      indicatorColor: CustomTheme.primary,
                       indicatorStyle: FxTabIndicatorStyle.rectangle,
                       indicatorHeight: 3,
                       radius: 0,
-                      yOffset: 30,
+                      yOffset: 28,
                       width: 60),
                   indicatorSize: TabBarIndicatorSize.tab,
                   indicatorColor: theme.colorScheme.primary,
@@ -406,7 +406,14 @@ class _HomesScreenSegmentState extends State<HomesScreenSegment>
     List<Widget> tabs = [];
 
     for (int i = 0; i < navItems.length; i++) {
-      tabs.add(Container(child: Text(navItems[i].title)));
+      tabs.add(Container(child: Text(navItems[i].title,
+        style: TextStyle(
+          fontSize: 15,
+          color: (currentIndex == i)
+              ? CustomTheme.primary
+              : theme.colorScheme.onBackground.withAlpha(220),
+        ),
+      )));
     }
     return tabs;
   }
