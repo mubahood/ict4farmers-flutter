@@ -74,7 +74,7 @@ class AppTheme {
     brightness: Brightness.light,
 
     /// Primary Color
-    primaryColor: Color(0xff3C4EC5),
+    primaryColor: CustomTheme.primary,
 
     /// Scaffold and Background color
     backgroundColor: Color(0xffffffff),
