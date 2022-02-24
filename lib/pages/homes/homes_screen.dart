@@ -44,7 +44,7 @@ class _HomesScreenState extends State<HomesScreen>
     super.initState();
 
     tabController = TabController(
-        animationDuration: Duration.zero,
+ //       animationDuration: Duration.zero,
         length: 5,
         vsync: this,
         initialIndex: 0);
