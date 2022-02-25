@@ -38,25 +38,19 @@ class _TestPage1State extends State<TestPage1> {
     _gridItems.clear();
     _gridBannersItems.clear();
     _gridBannersItems2.clear();
-    _gridItems.add(new ProductModel("Tops", "circle_1.webp"));
-    _gridItems.add(new ProductModel("Bottoms", "circle_2.webp"));
-    _gridItems.add(new ProductModel("Dresses", "circle_3.webp"));
-    _gridItems.add(new ProductModel("Outerwear", "circle_4.webp"));
-    _gridItems.add(new ProductModel("Shoes", "circle_5.webp"));
-    _gridItems.add(new ProductModel("Bags", "circle_6.webp"));
-    _gridItems.add(new ProductModel("Beauty", "circle_7.webp"));
-    _gridItems.add(new ProductModel("Home", "circle_8.webp"));
 
-    _gridBannersItems.add(new ProductModel("Home", "banner_1_1.webp"));
-    _gridBannersItems.add(new ProductModel("Home", "banner_1_2.webp"));
+    _gridItems.add(new ProductModel());
+    _gridItems.add(new ProductModel());
 
-    _gridBannersItems2.add(new ProductModel("Home", "banner_1_3.webp"));
-    _gridBannersItems2.add(new ProductModel("Home", "banner_1_4.webp"));
-    _gridBannersItems2.add(new ProductModel("Home", "banner_1_5.webp"));
-    _gridBannersItems2.add(new ProductModel("Home", "banner_1_3.webp"));
+    _gridBannersItems.add(new ProductModel( ));
+    _gridBannersItems.add(new ProductModel( ));
+
+    _gridBannersItems2.add(new ProductModel());
+    _gridBannersItems2.add(new ProductModel());
+
     _products.clear();
     for(int x=1;x<21;x++){
-      _products.add(new ProductModel("UGX${x},000", "proo${x}.webp"));
+      _products.add(new ProductModel());
     }
 
     return RefreshIndicator(
