@@ -9,7 +9,7 @@ import 'package:ict4farmers/theme/app_theme.dart';
 import 'package:provider/provider.dart';
 
 //I love romina
-//Dimple commple
+//FROM DISK D
 void main() {
   //You will need to initialize AppThemeNotifier class for theme changes.
   WidgetsFlutterBinding.ensureInitialized();
