@@ -1,4 +1,4 @@
 class AppConfig {
-  static String BASE_URL = "https://u-lits.com";
+  static String BASE_URL = "https://goprint.ug";
   static const String HomePage = "HomePage";
 }
