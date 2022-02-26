@@ -14,7 +14,8 @@ dependencies:
     path: ../flutx
   objectbox: ^1.4.0
   objectbox_flutter_libs: any
-
+  connectivity_plus: ^2.2.0
+  dio: ^4.0.4
 
   # Base Dependencies
   cupertino_icons: ^1.0.3
@@ -22,6 +23,7 @@ dependencies:
   shared_preferences: ^2.0.5
   google_fonts: 2.2.0
   path_provider: ^2.0.9
+  cached_network_image: ^3.2.0
 
 
 

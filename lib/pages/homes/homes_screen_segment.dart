@@ -4,6 +4,7 @@ import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutx/flutx.dart';
 import 'package:ict4farmers/extensions/string.dart';
 import 'package:ict4farmers/extensions/widgets_extension.dart';
+import 'package:ict4farmers/models/BannerModel.dart';
 import 'package:ict4farmers/models/ProductModel.dart';
 import 'package:ict4farmers/models/TestModel.dart';
 import 'package:ict4farmers/objectbox.g.dart';
@@ -54,7 +55,7 @@ class _HomesScreenSegmentState extends State<HomesScreenSegment>
   @override
   void initState() {
     super.initState();
-    _init_databse();
+    //_init_databse();
     tabController = TabController(length: 4, vsync: this, initialIndex: 0);
 
     navItems = [
@@ -121,18 +122,23 @@ class _HomesScreenSegmentState extends State<HomesScreenSegment>
   }
 
   void _init_databse() async {
+    return;
     _store = await Utils.init_databse();
     store_is_ready = true;
-    setState(() {
-
-    });
+    setState(() {});
     return null;
   }
 
   List<ProductModel> items = [];
+
   void _get_data() async {
-    if(!store_is_ready) return;
-    items =await ProductModel.get(_store);
+    if (!store_is_ready) return;
+
+    _store.close();
+
+    return;
+
+    items = await ProductModel.get(_store);
 
     print("FOUND ====> ${items.length}");
 
@@ -168,7 +174,7 @@ class _HomesScreenSegmentState extends State<HomesScreenSegment>
           key: _drawerKey,
           body: Column(
             children: [
-              Row(
+              /*Row(
                 children: [
                   InkWell(
                     onTap: () => {_init_databse()},
@@ -195,7 +201,7 @@ class _HomesScreenSegmentState extends State<HomesScreenSegment>
                         child: Text("Read Data")),
                   ),
                 ],
-              ),
+              ),*/
               FxContainer.none(
                 padding: EdgeInsets.only(top: 10, bottom: 11),
                 color: theme.scaffoldBackgroundColor,
