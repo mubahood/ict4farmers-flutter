@@ -1,9 +1,14 @@
 import 'dart:math';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:ict4farmers/utils/AppConfig.dart';
 
+import '../models/BannerModel.dart';
 import '../models/ProductModel.dart';
+import '../objectbox.g.dart';
+import '../utils/Utils.dart';
 import '../widget/empty_list.dart';
 
 class TestPage1 extends StatefulWidget {
@@ -13,50 +18,95 @@ class TestPage1 extends StatefulWidget {
   State<TestPage1> createState() => _TestPage1State();
 }
 
+late Store _store;
+
+List<BannerModel> banners = [];
+bool initilized = false;
+bool store_initilized = false;
+BannerModel horizontal_banner_1 = BannerModel();
+BannerModel horizontal_banner_2 = BannerModel();
+
 class _TestPage1State extends State<TestPage1> {
-  @override
-  void initState() {
-    print("====> INITNG... <[====");
-  }
+  Future<void> _init_databse() async {
+    if (initilized) {
+      return;
+    }
+    print("refreshing...");
 
-  List<String> _items = [];
-  List<ProductModel> _gridItems = [];
-  List<ProductModel> _gridBannersItems = [];
-  List<ProductModel> _gridBannersItems2 = [];
-  List<ProductModel> _products = [];
-  int i = 0;
+    if(!store_initilized){
+      _store = await Utils.init_databse();
+      store_initilized= true;
+    }
+    store_initilized = true;
+    banners = await BannerModel.get(_store);
 
-  Future<Null> _onRefresh() async {
-    i++;
-    _items.add("${i}. Romina");
+
+    int i = 0;
+    _gridItems.clear();
+    banners.forEach((element) {
+      i++;
+
+      if (i == 1) {
+        horizontal_banner_1 = element;
+      }
+      if ((i > 1) && (i < 10)) {
+        _gridItems.add(element);
+      }
+
+
+      if (i == 10) {
+        horizontal_banner_2 = element;
+      }
+
+      if ((i > 10) && (i < 12)) {
+        _gridBannersItems.add(element);
+      }
+
+    });
+
+    initilized = true;
     setState(() {});
     return null;
   }
 
   @override
+  void initState() {
+    initilized = false;
+      _init_databse();
+  }
+
+  @override
+  void dipose() {
+    _store.close();
+    store_initilized = false;
+  }
+
+  List<String> _items = [];
+  List<BannerModel> _gridItems = [];
+  List<BannerModel> _gridBannersItems = [];
+  List<ProductModel> _gridBannersItems2 = [];
+  List<ProductModel> _products = [];
+  int i = 0;
+
+  Future<Null> _onRefresh() async {
+    initilized = false;
+    await _init_databse();
+    return null;
+  }
+
+  @override
   Widget build(BuildContext context) {
-    _gridItems.clear();
-    _gridBannersItems.clear();
+
+    /*_gridBannersItems.clear();
     _gridBannersItems2.clear();
-    _gridItems.add(new ProductModel("Tops", "circle_1.webp"));
-    _gridItems.add(new ProductModel("Bottoms", "circle_2.webp"));
-    _gridItems.add(new ProductModel("Dresses", "circle_3.webp"));
-    _gridItems.add(new ProductModel("Outerwear", "circle_4.webp"));
-    _gridItems.add(new ProductModel("Shoes", "circle_5.webp"));
-    _gridItems.add(new ProductModel("Bags", "circle_6.webp"));
-    _gridItems.add(new ProductModel("Beauty", "circle_7.webp"));
-    _gridItems.add(new ProductModel("Home", "circle_8.webp"));
 
-    _gridBannersItems.add(new ProductModel("Home", "banner_1_1.webp"));
-    _gridBannersItems.add(new ProductModel("Home", "banner_1_2.webp"));
 
-    _gridBannersItems2.add(new ProductModel("Home", "banner_1_3.webp"));
-    _gridBannersItems2.add(new ProductModel("Home", "banner_1_4.webp"));
-    _gridBannersItems2.add(new ProductModel("Home", "banner_1_5.webp"));
-    _gridBannersItems2.add(new ProductModel("Home", "banner_1_3.webp"));
+    _gridBannersItems2.add(new ProductModel());
+    _gridBannersItems2.add(new ProductModel());*/
+
     _products.clear();
-    for(int x=1;x<21;x++){
-      _products.add(new ProductModel("UGX${x},000", "proo${x}.webp"));
+    for (int x = 1; x < 21; x++) {
+      _products.add(new ProductModel());
     }
 
     return RefreshIndicator(
@@ -68,11 +118,16 @@ class _TestPage1State extends State<TestPage1> {
                 (BuildContext context, int index) {
                   return Container(
                     alignment: Alignment.center,
-                    child: Image.asset(
-                      "assets/project/slide_1.jpeg",
-                      height: 180,
-                      fit: BoxFit.cover,
-                    ),
+                    child: CachedNetworkImage(
+                            height: 200,
+                            fit: BoxFit.fill,
+                            imageUrl:
+                                "${AppConfig.BASE_URL}/${horizontal_banner_1.image}",
+                            placeholder: (context, url) =>
+                                CircularProgressIndicator(),
+                            errorWidget: (context, url, error) =>
+                                Icon(Icons.error),
+                          ),
                   );
                 },
                 childCount: 1, // 1000 list items
@@ -87,9 +142,7 @@ class _TestPage1State extends State<TestPage1> {
                   mainAxisExtent: 100),
               delegate: SliverChildBuilderDelegate(
                 (context, index) {
-                  return singleGridItem(
-                      image: _gridItems[index].thumbnail,
-                      title: _gridItems[index].name);
+                  return singleGridItem(_gridItems[index]);
                 },
                 childCount: _gridItems.length,
               ),
@@ -100,10 +153,15 @@ class _TestPage1State extends State<TestPage1> {
                   return Container(
                     padding: EdgeInsets.all(10),
                     alignment: Alignment.center,
-                    child: Image.asset(
-                      "assets/project/gif_banner_1.webp",
+                    child: CachedNetworkImage(
                       height: 90,
                       fit: BoxFit.fill,
+                      imageUrl:
+                      "${AppConfig.BASE_URL}/${horizontal_banner_2.image}",
+                      placeholder: (context, url) =>
+                          CircularProgressIndicator(),
+                      errorWidget: (context, url, error) =>
+                          Icon(Icons.error),
                     ),
                   );
                 },
@@ -162,16 +220,15 @@ class _TestPage1State extends State<TestPage1> {
                     child: Text(
                       "You may also like",
                       style: const TextStyle(
-                          fontSize: 22,
-                          fontWeight: FontWeight.bold, ),
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   );
                 },
                 childCount: 1, // 1000 list items
               ),
             ),
-
-
             SliverGrid(
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
@@ -180,19 +237,15 @@ class _TestPage1State extends State<TestPage1> {
                   childAspectRatio: 1,
                   mainAxisExtent: 250),
               delegate: SliverChildBuilderDelegate(
-                    (context, index) {
+                (context, index) {
                   return singleGridImageIte3(_products[index], index);
                 },
                 childCount: _products.length,
               ),
             ),
-
-
           ],
         ));
   }
-
-
 
   Widget singleGridImageIte3(ProductModel productModel, int index) {
     return Container(
@@ -203,36 +256,39 @@ class _TestPage1State extends State<TestPage1> {
         right: (index.isOdd) ? 15 : 0,
       ),
       child: Column(
-
         children: [
           Image.asset(
             "assets/project/${productModel.thumbnail}",
             height: 210,
             fit: BoxFit.cover,
           ),
-
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Container(
-                padding: EdgeInsets.only(top: 5,bottom: 5,left: 5),
+                padding: EdgeInsets.only(top: 5, bottom: 5, left: 5),
                 child: Text(
                   productModel.name,
-                  style: TextStyle(fontWeight: FontWeight.bold,color: Colors.grey.shade800,fontSize: 16),
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.grey.shade800,
+                      fontSize: 16),
                 ),
               ),
               Container(
-                padding: EdgeInsets.only(top: 5,bottom: 5,right: 5),
-                child: Icon(Icons.verified_rounded,color: Colors.grey.shade800,size: 18,),
+                padding: EdgeInsets.only(top: 5, bottom: 5, right: 5),
+                child: Icon(
+                  Icons.verified_rounded,
+                  color: Colors.grey.shade800,
+                  size: 18,
+                ),
               ),
             ],
           ),
-
         ],
       ),
     );
   }
-
 
   Widget singleGridImageIte2(ProductModel productModel, int index) {
     return Container(
@@ -268,7 +324,7 @@ class _TestPage1State extends State<TestPage1> {
     );
   }
 
-  Widget singleGridImageItem(ProductModel productModel, int index) {
+  Widget singleGridImageItem(BannerModel bannerModel, int index) {
     return Container(
       padding: EdgeInsets.only(
         top: 5,
@@ -278,32 +334,40 @@ class _TestPage1State extends State<TestPage1> {
       alignment: Alignment.center,
       child: Column(
         children: [
-          Image.asset(
-            "assets/project/${productModel.thumbnail}",
+
+          CachedNetworkImage(
             height: 210,
             fit: BoxFit.cover,
+            imageUrl:
+            "${AppConfig.BASE_URL}/${bannerModel.image}",
+            placeholder: (context, url) =>
+                CircularProgressIndicator(),
+            errorWidget: (context, url, error) =>
+                Icon(Icons.error),
           ),
+
         ],
       ),
     );
   }
 
-  Widget singleGridItem({
-    String image: "circle_2.webp",
-    String title: "Tops",
-  }) {
+  Widget singleGridItem(BannerModel data) {
+    /*return
+   */
+
     return Container(
       padding: EdgeInsets.only(top: 10),
       alignment: Alignment.center,
       child: Column(
         children: [
-          Image.asset(
-            "assets/project/${image}",
+          CachedNetworkImage(
             height: 70,
-            fit: BoxFit.cover,
+            imageUrl: "${AppConfig.BASE_URL}/${data.image}",
+            placeholder: (context, url) => CircularProgressIndicator(),
+            errorWidget: (context, url, error) => Icon(Icons.error),
           ),
           Text(
-            title,
+            data.name,
             style: TextStyle(fontSize: 14),
           ),
         ],

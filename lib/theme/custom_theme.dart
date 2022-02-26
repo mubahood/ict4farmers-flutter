@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 class CustomTheme {
+  static final Color primary = Color(0xff319777);
   static final Color occur = Color(0xffb38220);
   static final Color peach = Color(0xffe09c5f);
   static final Color skyBlue = Color(0xff639fdc);

@@ -44,13 +44,13 @@ class _HomesScreenState extends State<HomesScreen>
     super.initState();
 
     tabController = TabController(
-        animationDuration: Duration.zero,
+ //       animationDuration: Duration.zero,
         length: 5,
         vsync: this,
         initialIndex: 0);
 
     navItems = [
-      NavItem('Home', Images.svg_home, HomesScreenSegment() ),
+      NavItem('Home', Images.svg_home, HomesScreenSegment()),
       NavItem('Categories', Images.svg_category, Text("PAGE 2")),
       NavItem('Sell', Images.svg_add, Text("PAGE 3"), 32),
       NavItem('Chats', Images.svg_chats, Text("PAGE 4")),
@@ -204,14 +204,14 @@ class _HomesScreenState extends State<HomesScreen>
                   labelPadding: EdgeInsets.all(0),
                   controller: tabController,
                   indicator: FxTabIndicator(
-                      indicatorColor: theme.colorScheme.primary,
+                      indicatorColor: CustomTheme.primary,
                       indicatorStyle: FxTabIndicatorStyle.rectangle,
                       indicatorHeight: 2,
                       radius: 4,
                       yOffset: -4,
-                      width: 30),
+                      width: 35),
                   indicatorSize: TabBarIndicatorSize.tab,
-                  indicatorColor: theme.colorScheme.primary,
+                  indicatorColor: CustomTheme.primary,
                   tabs: buildTab(),
                 ),
               ),
@@ -234,11 +234,18 @@ class _HomesScreenState extends State<HomesScreen>
             padding: EdgeInsets.only(bottom: 2, top: 2),
             child: SVG(navItems[i].icon,
                 color: (currentIndex == i)
-                    ? theme.colorScheme.primary
+                    ? CustomTheme.primary
                     : theme.colorScheme.onBackground.withAlpha(220),
                 size: 23),
           ),
-          Text(navItems[i].title)
+          Text(
+            navItems[i].title,
+            style: TextStyle(
+              color: (currentIndex == i)
+                  ? CustomTheme.primary
+                  : theme.colorScheme.onBackground.withAlpha(220),
+            ),
+          )
         ],
       )));
     }

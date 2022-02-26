@@ -4,13 +4,19 @@ import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutx/flutx.dart';
 import 'package:ict4farmers/extensions/string.dart';
 import 'package:ict4farmers/extensions/widgets_extension.dart';
+import 'package:ict4farmers/models/BannerModel.dart';
+import 'package:ict4farmers/models/ProductModel.dart';
+import 'package:ict4farmers/models/TestModel.dart';
+import 'package:ict4farmers/objectbox.g.dart';
 import 'package:ict4farmers/pages/TestPage1.dart';
 import 'package:ict4farmers/pages/homes/select_language_dialog.dart';
 import 'package:ict4farmers/theme/app_notifier.dart';
 import 'package:ict4farmers/theme/app_theme.dart';
 import 'package:ict4farmers/theme/custom_theme.dart';
 import 'package:ict4farmers/theme/theme_type.dart';
+import 'package:ict4farmers/utils/Utils.dart';
 import 'package:ict4farmers/widgets/images.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../TestPage.dart';
@@ -37,10 +43,19 @@ class _HomesScreenSegmentState extends State<HomesScreenSegment>
   bool isDark = false;
   TextDirection textDirection = TextDirection.ltr;
 
+  late Store _store;
+  bool store_is_ready = false;
+
+  @override
+  void dispose() {
+    if (store_is_ready) _store.close();
+    super.dispose();
+  }
+
   @override
   void initState() {
     super.initState();
-
+    //_init_databse();
     tabController = TabController(length: 4, vsync: this, initialIndex: 0);
 
     navItems = [
@@ -106,6 +121,47 @@ class _HomesScreenSegmentState extends State<HomesScreenSegment>
     //await launch(url);
   }
 
+  void _init_databse() async {
+    return;
+    _store = await Utils.init_databse();
+    store_is_ready = true;
+    setState(() {});
+    return null;
+  }
+
+  List<ProductModel> items = [];
+
+  void _get_data() async {
+    if (!store_is_ready) return;
+
+    _store.close();
+
+    return;
+
+    items = await ProductModel.get(_store);
+
+    print("FOUND ====> ${items.length}");
+
+    return;
+
+    ProductModel test = new ProductModel();
+    test.name = "romina sumayya";
+    _store.box<ProductModel>().put(test);
+
+    Stream<List<ProductModel>> data = _store
+        .box<ProductModel>()
+        .query()
+        .watch(triggerImmediately: true)
+        .map((event) => event.find());
+
+    data.forEach((element) {
+      element.forEach((k) {
+        print("\n=============${k.id}. ${k.name}=============\n\n\n");
+      });
+    });
+    print("DONE ==>");
+  }
+
   @override
   Widget build(BuildContext context) {
     return Consumer<AppNotifier>(
@@ -118,8 +174,36 @@ class _HomesScreenSegmentState extends State<HomesScreenSegment>
           key: _drawerKey,
           body: Column(
             children: [
+              /*Row(
+                children: [
+                  InkWell(
+                    onTap: () => {_init_databse()},
+                    child: Container(
+                        color: Colors.green.shade200,
+                        width: 100,
+                        height: 100,
+                        child: Text("Init Data")),
+                  ),
+                  InkWell(
+                    onTap: () => {print("adding")},
+                    child: Container(
+                        color: Colors.blue.shade200,
+                        width: 100,
+                        height: 100,
+                        child: Text("Add Data")),
+                  ),
+                  InkWell(
+                    onTap: () => {_get_data()},
+                    child: Container(
+                        color: Colors.red.shade200,
+                        width: 100,
+                        height: 100,
+                        child: Text("Read Data")),
+                  ),
+                ],
+              ),*/
               FxContainer.none(
-                padding: EdgeInsets.only(top: 10, bottom: 15),
+                padding: EdgeInsets.only(top: 10, bottom: 11),
                 color: theme.scaffoldBackgroundColor,
                 enableBorderRadius: false,
                 borderRadiusAll: 0,
@@ -127,11 +211,11 @@ class _HomesScreenSegmentState extends State<HomesScreenSegment>
                   labelPadding: EdgeInsets.all(0),
                   controller: tabController,
                   indicator: FxTabIndicator(
-                      indicatorColor: theme.colorScheme.primary,
+                      indicatorColor: CustomTheme.primary,
                       indicatorStyle: FxTabIndicatorStyle.rectangle,
                       indicatorHeight: 3,
                       radius: 0,
-                      yOffset: 30,
+                      yOffset: 28,
                       width: 60),
                   indicatorSize: TabBarIndicatorSize.tab,
                   indicatorColor: theme.colorScheme.primary,
@@ -406,7 +490,16 @@ class _HomesScreenSegmentState extends State<HomesScreenSegment>
     List<Widget> tabs = [];
 
     for (int i = 0; i < navItems.length; i++) {
-      tabs.add(Container(child: Text(navItems[i].title)));
+      tabs.add(Container(
+          child: Text(
+        navItems[i].title,
+        style: TextStyle(
+          fontSize: 15,
+          color: (currentIndex == i)
+              ? CustomTheme.primary
+              : theme.colorScheme.onBackground.withAlpha(220),
+        ),
+      )));
     }
     return tabs;
   }
