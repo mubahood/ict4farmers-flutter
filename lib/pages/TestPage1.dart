@@ -31,7 +31,7 @@ class _TestPage1State extends State<TestPage1> {
     if (initilized) {
       return;
     }
-    print("refreshing...");
+
 
     if(!store_initilized){
       _store = await Utils.init_databse();
@@ -43,6 +43,8 @@ class _TestPage1State extends State<TestPage1> {
 
     int i = 0;
     _gridItems.clear();
+    _gridBannersItems.clear();
+    print("refreshing... ${banners.length} ..... ");
     banners.forEach((element) {
       i++;
 
@@ -58,8 +60,12 @@ class _TestPage1State extends State<TestPage1> {
         horizontal_banner_2 = element;
       }
 
-      if ((i > 10) && (i < 12)) {
+      if ((i > 10) && (i < 13)) {
         _gridBannersItems.add(element);
+      }
+
+      if ((i > 13) && (i < 19)) {
+        _gridBannersItems2.add(element);
       }
 
     });
@@ -84,7 +90,7 @@ class _TestPage1State extends State<TestPage1> {
   List<String> _items = [];
   List<BannerModel> _gridItems = [];
   List<BannerModel> _gridBannersItems = [];
-  List<ProductModel> _gridBannersItems2 = [];
+  List<BannerModel> _gridBannersItems2 = [];
   List<ProductModel> _products = [];
   int i = 0;
 
@@ -290,9 +296,9 @@ class _TestPage1State extends State<TestPage1> {
     );
   }
 
-  Widget singleGridImageIte2(ProductModel productModel, int index) {
+  Widget singleGridImageIte2(BannerModel productModel, int index) {
     return Container(
-      color: Color.fromARGB(255, 247, 216, 179),
+      color: Color.fromARGB(255, 244, 204, 205),
       alignment: Alignment.center,
       padding: EdgeInsets.all(5),
       margin: EdgeInsets.only(
@@ -308,17 +314,24 @@ class _TestPage1State extends State<TestPage1> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                "New Arrival",
+                productModel.name,
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
-              Text("20% Off"),
+              Text(productModel.sub_title),
             ],
           ),
-          Image.asset(
-            "assets/project/${productModel.thumbnail}",
+
+          CachedNetworkImage(
             height: 100,
             fit: BoxFit.cover,
-          ),
+            imageUrl:
+            "${AppConfig.BASE_URL}/${productModel.image}",
+            placeholder: (context, url) =>
+                CircularProgressIndicator(),
+            errorWidget: (context, url, error) =>
+                Icon(Icons.error),
+          )
+
         ],
       ),
     );
