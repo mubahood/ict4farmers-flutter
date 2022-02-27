@@ -46,6 +46,7 @@ class MyApp extends StatelessWidget {
             AppLocalizationsDelegate(context), // Add this line
           ],
           supportedLocales: Language.getLocales(),
+
           home: HomesScreen(),
         );
       },

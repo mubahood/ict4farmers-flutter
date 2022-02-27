@@ -537,14 +537,14 @@
         <entry key="path_provider_android">
           <value>
             <list>
-              <option value="$USER_HOME$/src/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_android-2.0.12/lib" />
+              <option value="$USER_HOME$/src/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_android-2.0.11/lib" />
             </list>
           </value>
         </entry>
         <entry key="path_provider_ios">
           <value>
             <list>
-              <option value="$USER_HOME$/src/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_ios-2.0.8/lib" />
+              <option value="$USER_HOME$/src/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_ios-2.0.7/lib" />
             </list>
           </value>
         </entry>
@@ -873,6 +873,7 @@
       </option>
     </properties>
     <CLASSES>
+      <root url="file://$PROJECT_DIR$/../flutx/lib" />
       <root url="file://$USER_HOME$/src/flutter/.pub-cache/hosted/pub.dartlang.org/_fe_analyzer_shared-36.0.0/lib" />
       <root url="file://$USER_HOME$/src/flutter/.pub-cache/hosted/pub.dartlang.org/analyzer-3.3.1/lib" />
       <root url="file://$USER_HOME$/src/flutter/.pub-cache/hosted/pub.dartlang.org/args-2.3.0/lib" />
@@ -945,8 +946,8 @@
       <root url="file://$USER_HOME$/src/flutter/.pub-cache/hosted/pub.dartlang.org/path_drawing-1.0.0/lib" />
       <root url="file://$USER_HOME$/src/flutter/.pub-cache/hosted/pub.dartlang.org/path_parsing-1.0.0/lib" />
       <root url="file://$USER_HOME$/src/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider-2.0.9/lib" />
-      <root url="file://$USER_HOME$/src/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_android-2.0.12/lib" />
-      <root url="file://$USER_HOME$/src/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_ios-2.0.8/lib" />
+      <root url="file://$USER_HOME$/src/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_android-2.0.11/lib" />
+      <root url="file://$USER_HOME$/src/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_ios-2.0.7/lib" />
       <root url="file://$USER_HOME$/src/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_linux-2.1.5/lib" />
       <root url="file://$USER_HOME$/src/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_macos-2.0.5/lib" />
       <root url="file://$USER_HOME$/src/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_platform_interface-2.0.3/lib" />
@@ -996,7 +997,6 @@
       <root url="file://$USER_HOME$/src/flutter/packages/flutter/lib" />
       <root url="file://$USER_HOME$/src/flutter/packages/flutter_test/lib" />
       <root url="file://$USER_HOME$/src/flutter/packages/flutter_web_plugins/lib" />
-      <root url="file://$PROJECT_DIR$/../flutx/lib" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

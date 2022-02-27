@@ -7,6 +7,8 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:ict4farmers/objectbox.g.dart';
 import 'package:ict4farmers/pages/HomPage.dart';
+import 'package:ict4farmers/pages/account/account_register.dart';
+import 'package:ict4farmers/pages/account/account_splash.dart';
 import 'package:objectbox/objectbox.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
@@ -14,8 +16,6 @@ import 'package:provider/provider.dart';
 import 'AppConfig.dart';
 
 class Utils {
-
-
   static Future<bool> is_connected() async {
     bool is_connected = false;
     var connectivityResult = await (Connectivity().checkConnectivity());
@@ -30,7 +30,6 @@ class Utils {
 
     return is_connected;
   }
-
 
   static Future<String> http_get(String path, Map<String, dynamic> body) async {
     bool is_connected = await Utils.is_connected();
@@ -80,6 +79,24 @@ class Utils {
           context,
           PageRouteBuilder(
             pageBuilder: (context, animation1, animation2) => HomePage(),
+            transitionDuration: Duration.zero,
+          ),
+        );
+        break;
+        case AppConfig.AccountRegister:
+        Navigator.push(
+          context,
+          PageRouteBuilder(
+            pageBuilder: (context, animation1, animation2) => AccountRegister(),
+            transitionDuration: Duration.zero,
+          ),
+        );
+        break;
+      case AppConfig.AccountSplash:
+        Navigator.push(
+          context,
+          PageRouteBuilder(
+            pageBuilder: (context, animation1, animation2) => AccountSplash(),
             transitionDuration: Duration.zero,
           ),
         );

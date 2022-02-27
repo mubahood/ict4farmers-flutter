@@ -59,10 +59,10 @@ class _HomesScreenSegmentState extends State<HomesScreenSegment>
     tabController = TabController(length: 4, vsync: this, initialIndex: 0);
 
     navItems = [
-      NavItem('Branding', Images.homeIcon, TestPage1()),
-      NavItem('Printing', Images.app2Icon, TestPage1()),
-      NavItem('Graphics', Images.materialDesignIcon, TestPage1(), 32),
-      NavItem('Stationary', Images.otherDesignIcon, TestPage1()),
+      NavItem('Branding', Images.homeIcon, TestPage1(1)),
+      NavItem('Printing', Images.app2Icon, TestPage1(2)),
+      NavItem('Graphics', Images.materialDesignIcon, TestPage1(3)),
+      NavItem('Stationary', Images.otherDesignIcon, TestPage1(4)),
     ];
 
     tabController.addListener(() {
@@ -172,6 +172,66 @@ class _HomesScreenSegmentState extends State<HomesScreenSegment>
         customTheme = AppTheme.customTheme;
         return Scaffold(
           key: _drawerKey,
+          appBar: AppBar(
+            elevation: 0,
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Container(
+                  child: Image(
+                    image: AssetImage(Images.logo_2),
+                    width: 120,
+                    color: null,
+                    fit: BoxFit.scaleDown,
+                    alignment: Alignment.center,
+                  ),
+                ),
+                Container(
+                  padding: EdgeInsets.only(left: 10, top: 7, bottom: 7),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(20)),
+                    color: theme.colorScheme.onBackground.withAlpha(20),
+                  ),
+                  width: 175,
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.search,
+                        color: theme.colorScheme.onBackground.withAlpha(200),
+                      ),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Text(
+                        "Search...",
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: theme.colorScheme.onBackground.withAlpha(200),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                InkWell(
+                  onTap: () {
+                    Navigator.push(context, SlideLeftRoute(AppSettingScreen()));
+                  },
+                  child: Container(
+                    padding: FxSpacing.x(0),
+                    child: Image(
+                      image: AssetImage(Images.settingIcon),
+                      color: theme.colorScheme.onBackground,
+                      width: 26,
+                      height: 26,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+
           body: Column(
             children: [
               /*Row(

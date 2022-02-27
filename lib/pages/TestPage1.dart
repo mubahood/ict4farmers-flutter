@@ -12,10 +12,13 @@ import '../utils/Utils.dart';
 import '../widget/empty_list.dart';
 
 class TestPage1 extends StatefulWidget {
-  const TestPage1({Key? key}) : super(key: key);
+  int page_num;
+
+  //const TestPage1({Key? key}) : super(key: key, this.page);
+  TestPage1(this.page_num);
 
   @override
-  State<TestPage1> createState() => _TestPage1State();
+  State<TestPage1> createState() => _TestPage1State(this.page_num);
 }
 
 late Store _store;
@@ -25,50 +28,75 @@ bool initilized = false;
 bool store_initilized = false;
 BannerModel horizontal_banner_1 = BannerModel();
 BannerModel horizontal_banner_2 = BannerModel();
+BannerModel horizontal_banner_3 = BannerModel();
 
 class _TestPage1State extends State<TestPage1> {
+  int page_num;
+
+  _TestPage1State(this.page_num);
+
   Future<void> _init_databse() async {
     if (initilized) {
       return;
     }
 
-
-    if(!store_initilized){
+    if (!store_initilized) {
       _store = await Utils.init_databse();
-      store_initilized= true;
+      store_initilized = true;
     }
     store_initilized = true;
     banners = await BannerModel.get(_store);
 
-
     int i = 0;
     _gridItems.clear();
+    _products.clear();
     _gridBannersItems.clear();
+    _gridBannersItems2.clear();
     print("refreshing... ${banners.length} ..... ");
     banners.forEach((element) {
       i++;
 
-      if (i == 1) {
+      if (page_num == 1 && i == 1) {
+        horizontal_banner_1 = element;
+      } else if (page_num == 2 && (i == 18)) {
         horizontal_banner_1 = element;
       }
-      if ((i > 1) && (i < 10)) {
+
+/*      if ( (banners.length % (i*page_num)) == 1) {
+
+      }*/
+
+      if (((i > 1) && (i < 10)) && page_num == 1) {
+        _gridItems.add(element);
+      } else if (((i > 18) && (i < 27)) && page_num == 2) {
         _gridItems.add(element);
       }
 
-
-      if (i == 10) {
+      if (i == 10 && page_num == 1) {
+        horizontal_banner_2 = element;
+      } else if ((i) == 27 && page_num == 2) {
         horizontal_banner_2 = element;
       }
 
-      if ((i > 10) && (i < 13)) {
+      if (((i > 10) && (i < 13)) && page_num == 1) {
+        _gridBannersItems.add(element);
+      } else if ((((i) > 27) && ((i) < 30)) && page_num == 2) {
         _gridBannersItems.add(element);
       }
 
-      if ((i > 13) && (i < 19)) {
+      if (((i > 12) && (i < 17)) && page_num == 1) {
+        _gridBannersItems2.add(element);
+      } else if (((i > 29) && (i < 34)) && page_num == 2) {
         _gridBannersItems2.add(element);
       }
 
-    });
+      if (i == 17  && page_num == 1) {
+        horizontal_banner_3 = element;
+      }else if (i == 34  && page_num == 2) {
+        horizontal_banner_3 = element;
+      }
+
+      });
 
     initilized = true;
     setState(() {});
@@ -78,7 +106,7 @@ class _TestPage1State extends State<TestPage1> {
   @override
   void initState() {
     initilized = false;
-      _init_databse();
+    _init_databse();
   }
 
   @override
@@ -102,18 +130,12 @@ class _TestPage1State extends State<TestPage1> {
 
   @override
   Widget build(BuildContext context) {
-
     /*_gridBannersItems.clear();
     _gridBannersItems2.clear();
 
 
     _gridBannersItems2.add(new ProductModel());
     _gridBannersItems2.add(new ProductModel());*/
-
-    _products.clear();
-    for (int x = 1; x < 21; x++) {
-      _products.add(new ProductModel());
-    }
 
     return RefreshIndicator(
         onRefresh: _onRefresh,
@@ -125,15 +147,14 @@ class _TestPage1State extends State<TestPage1> {
                   return Container(
                     alignment: Alignment.center,
                     child: CachedNetworkImage(
-                            height: 200,
-                            fit: BoxFit.fill,
-                            imageUrl:
-                                "${AppConfig.BASE_URL}/${horizontal_banner_1.image}",
-                            placeholder: (context, url) =>
-                                CircularProgressIndicator(),
-                            errorWidget: (context, url, error) =>
-                                Icon(Icons.error),
-                          ),
+                      height: 200,
+                      fit: BoxFit.fill,
+                      imageUrl:
+                          "${AppConfig.BASE_URL}/${horizontal_banner_1.image}",
+                      placeholder: (context, url) =>
+                          CircularProgressIndicator(),
+                      errorWidget: (context, url, error) => Icon(Icons.error),
+                    ),
                   );
                 },
                 childCount: 1, // 1000 list items
@@ -163,11 +184,10 @@ class _TestPage1State extends State<TestPage1> {
                       height: 90,
                       fit: BoxFit.fill,
                       imageUrl:
-                      "${AppConfig.BASE_URL}/${horizontal_banner_2.image}",
+                          "${AppConfig.BASE_URL}/${horizontal_banner_2.image}",
                       placeholder: (context, url) =>
                           CircularProgressIndicator(),
-                      errorWidget: (context, url, error) =>
-                          Icon(Icons.error),
+                      errorWidget: (context, url, error) => Icon(Icons.error),
                     ),
                   );
                 },
@@ -208,10 +228,14 @@ class _TestPage1State extends State<TestPage1> {
                   return Container(
                     padding: EdgeInsets.all(15),
                     alignment: Alignment.center,
-                    child: Image.asset(
-                      "assets/project/gif_banner_2.webp",
-                      height: 110,
+                    child: CachedNetworkImage(
+                      height: 190,
                       fit: BoxFit.fill,
+                      imageUrl:
+                          "${AppConfig.BASE_URL}/${horizontal_banner_3.image}",
+                      placeholder: (context, url) =>
+                          CircularProgressIndicator(),
+                      errorWidget: (context, url, error) => Icon(Icons.error),
                     ),
                   );
                 },
@@ -298,7 +322,11 @@ class _TestPage1State extends State<TestPage1> {
 
   Widget singleGridImageIte2(BannerModel productModel, int index) {
     return Container(
-      color: Color.fromARGB(255, 244, 204, 205),
+      color: (page_num == 1)
+          ? Color.fromARGB(255, 244, 204, 205)
+          : (page_num == 2)
+              ? Color.fromARGB(255, 211, 239, 223)
+              : Color.fromARGB(255, 244, 204, 205),
       alignment: Alignment.center,
       padding: EdgeInsets.all(5),
       margin: EdgeInsets.only(
@@ -320,18 +348,13 @@ class _TestPage1State extends State<TestPage1> {
               Text(productModel.sub_title),
             ],
           ),
-
           CachedNetworkImage(
             height: 100,
             fit: BoxFit.cover,
-            imageUrl:
-            "${AppConfig.BASE_URL}/${productModel.image}",
-            placeholder: (context, url) =>
-                CircularProgressIndicator(),
-            errorWidget: (context, url, error) =>
-                Icon(Icons.error),
+            imageUrl: "${AppConfig.BASE_URL}/${productModel.image}",
+            placeholder: (context, url) => CircularProgressIndicator(),
+            errorWidget: (context, url, error) => Icon(Icons.error),
           )
-
         ],
       ),
     );
@@ -347,18 +370,13 @@ class _TestPage1State extends State<TestPage1> {
       alignment: Alignment.center,
       child: Column(
         children: [
-
           CachedNetworkImage(
             height: 210,
             fit: BoxFit.cover,
-            imageUrl:
-            "${AppConfig.BASE_URL}/${bannerModel.image}",
-            placeholder: (context, url) =>
-                CircularProgressIndicator(),
-            errorWidget: (context, url, error) =>
-                Icon(Icons.error),
+            imageUrl: "${AppConfig.BASE_URL}/${bannerModel.image}",
+            placeholder: (context, url) => CircularProgressIndicator(),
+            errorWidget: (context, url, error) => Icon(Icons.error),
           ),
-
         ],
       ),
     );
