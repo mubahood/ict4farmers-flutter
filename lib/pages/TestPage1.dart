@@ -7,9 +7,9 @@ import 'package:ict4farmers/utils/AppConfig.dart';
 
 import '../models/BannerModel.dart';
 import '../models/ProductModel.dart';
-import '../objectbox.g.dart';
 import '../utils/Utils.dart';
 import '../widget/empty_list.dart';
+import '../widget/shimmer_loading_widget.dart';
 
 class TestPage1 extends StatefulWidget {
   int page_num;
@@ -20,8 +20,6 @@ class TestPage1 extends StatefulWidget {
   @override
   State<TestPage1> createState() => _TestPage1State(this.page_num);
 }
-
-late Store _store;
 
 List<BannerModel> banners = [];
 bool initilized = false;
@@ -36,17 +34,7 @@ class _TestPage1State extends State<TestPage1> {
   _TestPage1State(this.page_num);
 
   Future<void> _init_databse() async {
-    if (initilized) {
-      return;
-    }
-
-    if (!store_initilized) {
-      _store = await Utils.init_databse();
-      store_initilized = true;
-    }
-    store_initilized = true;
-    banners = await BannerModel.get(_store);
-
+    banners = await BannerModel.get();
     int i = 0;
     _gridItems.clear();
     _products.clear();
@@ -60,6 +48,8 @@ class _TestPage1State extends State<TestPage1> {
         horizontal_banner_1 = element;
       } else if (page_num == 2 && (i == 18)) {
         horizontal_banner_1 = element;
+      } else if (page_num == 3 && (i == 35)) {
+        horizontal_banner_1 = element;
       }
 
 /*      if ( (banners.length % (i*page_num)) == 1) {
@@ -70,11 +60,15 @@ class _TestPage1State extends State<TestPage1> {
         _gridItems.add(element);
       } else if (((i > 18) && (i < 27)) && page_num == 2) {
         _gridItems.add(element);
+      } else if (((i > (18 + 17)) && (i < (27 + 17))) && page_num == 3) {
+        _gridItems.add(element);
       }
 
       if (i == 10 && page_num == 1) {
         horizontal_banner_2 = element;
       } else if ((i) == 27 && page_num == 2) {
+        horizontal_banner_2 = element;
+      } else if ((i) == (27 + 17) && page_num == 3) {
         horizontal_banner_2 = element;
       }
 
@@ -82,21 +76,28 @@ class _TestPage1State extends State<TestPage1> {
         _gridBannersItems.add(element);
       } else if ((((i) > 27) && ((i) < 30)) && page_num == 2) {
         _gridBannersItems.add(element);
+      } else if ((((i) > (27 + 17)) && ((i) < (30 + 17))) && page_num == 3) {
+        _gridBannersItems.add(element);
       }
 
       if (((i > 12) && (i < 17)) && page_num == 1) {
         _gridBannersItems2.add(element);
       } else if (((i > 29) && (i < 34)) && page_num == 2) {
         _gridBannersItems2.add(element);
+      } else if (((i > (29 + 17)) && (i < (34 + 17))) && page_num == 3) {
+        _gridBannersItems2.add(element);
       }
 
-      if (i == 17  && page_num == 1) {
-        horizontal_banner_3 = element;
-      }else if (i == 34  && page_num == 2) {
+      if (i == 17 && page_num == 1) {
         horizontal_banner_3 = element;
       }
-
-      });
+      else if (i == 34 && page_num == 2) {
+        horizontal_banner_3 = element;
+      }
+      else if (i == (34+17) && page_num == 3) {
+        horizontal_banner_3 = element;
+      }
+    });
 
     initilized = true;
     setState(() {});
@@ -111,7 +112,6 @@ class _TestPage1State extends State<TestPage1> {
 
   @override
   void dipose() {
-    _store.close();
     store_initilized = false;
   }
 
@@ -151,8 +151,7 @@ class _TestPage1State extends State<TestPage1> {
                       fit: BoxFit.fill,
                       imageUrl:
                           "${AppConfig.BASE_URL}/${horizontal_banner_1.image}",
-                      placeholder: (context, url) =>
-                          CircularProgressIndicator(),
+                      placeholder: (context, url) => ShimmerLoadingWidget(height: 200,),
                       errorWidget: (context, url, error) => Icon(Icons.error),
                     ),
                   );
@@ -185,8 +184,7 @@ class _TestPage1State extends State<TestPage1> {
                       fit: BoxFit.fill,
                       imageUrl:
                           "${AppConfig.BASE_URL}/${horizontal_banner_2.image}",
-                      placeholder: (context, url) =>
-                          CircularProgressIndicator(),
+                      placeholder: (context, url) => ShimmerLoadingWidget(height: 90,width: 90,is_circle: true),
                       errorWidget: (context, url, error) => Icon(Icons.error),
                     ),
                   );
@@ -229,12 +227,11 @@ class _TestPage1State extends State<TestPage1> {
                     padding: EdgeInsets.all(15),
                     alignment: Alignment.center,
                     child: CachedNetworkImage(
-                      height: 190,
+                      height: 220,
                       fit: BoxFit.fill,
                       imageUrl:
                           "${AppConfig.BASE_URL}/${horizontal_banner_3.image}",
-                      placeholder: (context, url) =>
-                          CircularProgressIndicator(),
+                      placeholder: (context, url) => ShimmerLoadingWidget(height: 220,),
                       errorWidget: (context, url, error) => Icon(Icons.error),
                     ),
                   );
@@ -323,10 +320,12 @@ class _TestPage1State extends State<TestPage1> {
   Widget singleGridImageIte2(BannerModel productModel, int index) {
     return Container(
       color: (page_num == 1)
-          ? Color.fromARGB(255, 244, 204, 205)
+          ? Color.fromARGB(255, 188, 223, 204)
           : (page_num == 2)
-              ? Color.fromARGB(255, 211, 239, 223)
-              : Color.fromARGB(255, 244, 204, 205),
+              ? Color.fromARGB(255, 219, 184, 158)
+          : (page_num == 3)
+              ? Color.fromARGB(255, 150, 204, 239)
+              : Color.fromARGB(255, 188, 223, 204),
       alignment: Alignment.center,
       padding: EdgeInsets.all(5),
       margin: EdgeInsets.only(
@@ -352,7 +351,7 @@ class _TestPage1State extends State<TestPage1> {
             height: 100,
             fit: BoxFit.cover,
             imageUrl: "${AppConfig.BASE_URL}/${productModel.image}",
-            placeholder: (context, url) => CircularProgressIndicator(),
+            placeholder: (context, url) => ShimmerLoadingWidget(height: 100,width: 100,is_circle: true),
             errorWidget: (context, url, error) => Icon(Icons.error),
           )
         ],
@@ -374,7 +373,7 @@ class _TestPage1State extends State<TestPage1> {
             height: 210,
             fit: BoxFit.cover,
             imageUrl: "${AppConfig.BASE_URL}/${bannerModel.image}",
-            placeholder: (context, url) => CircularProgressIndicator(),
+            placeholder: (context, url) => ShimmerLoadingWidget(height: 210,),
             errorWidget: (context, url, error) => Icon(Icons.error),
           ),
         ],
@@ -383,8 +382,7 @@ class _TestPage1State extends State<TestPage1> {
   }
 
   Widget singleGridItem(BannerModel data) {
-    /*return
-   */
+
 
     return Container(
       padding: EdgeInsets.only(top: 10),
@@ -394,7 +392,7 @@ class _TestPage1State extends State<TestPage1> {
           CachedNetworkImage(
             height: 70,
             imageUrl: "${AppConfig.BASE_URL}/${data.image}",
-            placeholder: (context, url) => CircularProgressIndicator(),
+            placeholder: (context, url) => ShimmerLoadingWidget(height: 100,width: 100,is_circle: true, padding: 0),
             errorWidget: (context, url, error) => Icon(Icons.error),
           ),
           Text(

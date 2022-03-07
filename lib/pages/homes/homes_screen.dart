@@ -8,6 +8,7 @@ import 'package:ict4farmers/pages/TestPage1.dart';
 import 'package:ict4farmers/pages/account/account_home.dart';
 import 'package:ict4farmers/pages/account/account_splash.dart';
 import 'package:ict4farmers/pages/homes/homes_screen_segment.dart';
+import 'package:ict4farmers/pages/homes/pricing/pricing_chart_screen.dart';
 import 'package:ict4farmers/pages/homes/select_language_dialog.dart';
 import 'package:ict4farmers/theme/app_notifier.dart';
 import 'package:ict4farmers/theme/app_theme.dart';
@@ -19,6 +20,7 @@ import 'package:provider/provider.dart';
 
 import '../TestPage.dart';
 import 'app_setting_screen.dart';
+import 'on_map/on_map_screen.dart';
 
 class HomesScreen extends StatefulWidget {
   HomesScreen({Key? key}) : super(key: key);
@@ -53,8 +55,8 @@ class _HomesScreenState extends State<HomesScreen>
 
     navItems = [
       NavItem('Home', Images.svg_home, HomesScreenSegment()),
-      NavItem('Categories', Images.svg_category, Text("PAGE 2")),
-      NavItem('Sell', Images.svg_add, Text("PAGE 3"), 32),
+      NavItem('On Map', Images.svg_category, OnMapScreen()),
+      NavItem('Pricing', Images.svg_add, PricingChartScreen()),
       NavItem('Chats', Images.svg_chats, Text("PAGE 4")),
       NavItem('Account', Images.svg_user, AccountSplash()),
     ];

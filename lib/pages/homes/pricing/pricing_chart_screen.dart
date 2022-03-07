@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutx/flutx.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
-import '../../widgets/images.dart';
+import '../../../widgets/images.dart';
 
 
 class PricingChartScreen extends StatefulWidget {

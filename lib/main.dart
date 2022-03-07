@@ -6,6 +6,7 @@ import 'package:ict4farmers/localizations/language.dart';
 import 'package:ict4farmers/pages/homes/homes_screen.dart';
 import 'package:ict4farmers/theme/app_notifier.dart';
 import 'package:ict4farmers/theme/app_theme.dart';
+import 'package:ict4farmers/utils/Utils.dart';
 import 'package:provider/provider.dart';
 
 //I love romina
@@ -15,6 +16,7 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
   AppTheme.init();
+  Utils.init_databse();
 
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((_) {

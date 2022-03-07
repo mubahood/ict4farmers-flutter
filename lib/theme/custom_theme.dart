@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutx/flutx.dart';
 
 class CustomTheme {
   static final Color primary = Color(0xff319777);
@@ -15,6 +16,28 @@ class CustomTheme {
   static final Color green = Color(0xff068425);
   static final Color yellow = Color(0xfffff44f);
   static final Color orange = Color(0xffFFA500);
+
+   InputDecoration input_decoration({
+     String labelText: "",
+     IconData icon: Icons.edit
+   }) {
+    return InputDecoration(
+      prefixIcon: Icon(icon, color: CustomTheme.primary),
+      focusedBorder: OutlineInputBorder(
+        borderSide: BorderSide(color: CustomTheme.primary),
+        borderRadius: BorderRadius.all(Radius.circular(5.0)),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderSide: BorderSide(color: CustomTheme.primary),
+        borderRadius: BorderRadius.all(Radius.circular(5.0)),
+      ),
+      filled: true,
+      border: InputBorder.none,
+      labelStyle: FxTextStyle.b1(color: CustomTheme.accent),
+      labelText: labelText,
+      fillColor: CustomTheme.primary.withAlpha(40),
+    );
+  }
 
   final Color card,
       cardDark,

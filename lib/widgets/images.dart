@@ -1,4 +1,70 @@
+import 'dart:ui';
+
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+
+
+class ChartSampleData {
+  ChartSampleData(
+      {this.x,
+        this.y,
+        this.xValue,
+        this.yValue,
+        this.secondSeriesYValue,
+        this.thirdSeriesYValue,
+        this.pointColor,
+        this.size,
+        this.text,
+        this.open,
+        this.close,
+        this.low,
+        this.high,
+        this.volume});
+
+  final dynamic x;
+  final num? y;
+  final dynamic xValue;
+  final num? yValue;
+  final num? secondSeriesYValue;
+  final num? thirdSeriesYValue;
+  final Color? pointColor;
+  final num? size;
+  final String? text;
+  final num? open;
+  final num? close;
+  final num? low;
+  final num? high;
+  final num? volume;
+}
+
 class Images {
+
+    static List<LatLng> locations = [
+        new LatLng(45.121563, -122.97743),
+        new LatLng(45.121563, -122.777433),
+        new LatLng(45.521563, -122.377433),
+        new LatLng(45.721563, -122.377433),
+        new LatLng(45.621563, -122.577433),
+        new LatLng(45.621563, -122.817433),
+        new LatLng(45.521500, -123.117433),
+        new LatLng(45.421563, -124.817433),
+        new LatLng(45.321500, -125.117433),
+        new LatLng(45.221563, -126.817433),
+        new LatLng(45.121500, -127.117433),
+      ];
+    static List<String> network_links = [
+    'https://images.unsplash.com/photo-1645987646706-d9e75faf952f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80',
+    'https://images.unsplash.com/photo-1645797139008-fb3f46fad109?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=764&q=80',
+    'https://images.unsplash.com/photo-1646127513960-5bbfe67cb394?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80',
+    'https://images.unsplash.com/photo-1643713303437-7e040b8d6cd0?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=686&q=80',
+    'https://images.unsplash.com/photo-1639502165457-b82e71265119?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=686&q=80',
+    'https://images.unsplash.com/photo-1639499988424-bdff2b3e70d1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=764&q=80',
+    'https://images.unsplash.com/photo-1639494344274-3a9a9f525c10?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=686&q=80',
+    'https://images.unsplash.com/photo-1589881787083-0fcfec1db918?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=532&q=80',
+    'https://images.unsplash.com/photo-1515161318750-781d6122e367?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=676&q=80',
+    'https://images.unsplash.com/photo-1531498681050-acee0b4825a3?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=694&q=80',
+    'https://images.unsplash.com/photo-1531498681050-acee0b4825a3?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=694&q=81',
+  ];
+
   ///----------------- Brand -----------------------------------//
   static String brandLogo = 'assets/brand/flutkit.png';
 

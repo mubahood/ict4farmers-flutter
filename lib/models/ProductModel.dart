@@ -1,6 +1,3 @@
-import 'package:objectbox/objectbox.dart';
-
-@Entity()
 class ProductModel {
   int id = 0;
   String created_at = "";
@@ -20,26 +17,19 @@ class ProductModel {
   String sub_category_id = "";
   String fixed_price = "";
 
-  static Future<List<ProductModel>> get(Store store) async {
+  static Future<List<ProductModel>> get() async {
     List<ProductModel> items = [];
-    final query = await store.box<ProductModel>().query();
-    final results = await query.build().find();
-    return results;
 
-    Stream<List<ProductModel>> data = await store
-        .box<ProductModel>()
-        .query()
-        .watch(triggerImmediately: true)
-        .map((event) => event.find());
+    return [];
+  }
 
-    data.forEach((element) {
-      element.forEach((k) {
-        items.add(k);
-        print("\n=============${k.id}. ${k.name}=============\n\n\n");
-      });
-    });
-
-    print("FOUND ====>${items.length}<====");
-    return items;
+  static ProductModel fromJson(Map<String, dynamic> jsonObject) {
+    String name = jsonObject['name'].toString();
+    String image = jsonObject['image'].toString();
+    String address = jsonObject['address'].toString();
+    String number = jsonObject['number'].toString();
+    String properties = jsonObject['properties'].toString();
+    String description = jsonObject['description'].toString();
+    return ProductModel();
   }
 }
