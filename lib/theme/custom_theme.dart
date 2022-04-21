@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutx/flutx.dart';
 
 class CustomTheme {
   static final Color primary = Color(0xff319777);
+  static final Color onPrimary = Colors.white;
+  static final Color accent = Color(0xffdf7463);
   static final Color occur = Color(0xffb38220);
   static final Color peach = Color(0xffe09c5f);
   static final Color skyBlue = Color(0xff639fdc);
@@ -14,6 +17,48 @@ class CustomTheme {
   static final Color green = Color(0xff068425);
   static final Color yellow = Color(0xfffff44f);
   static final Color orange = Color(0xffFFA500);
+
+
+  InputDecoration input_decoration_2({
+    String labelText: "",
+    String hintText: "",
+  }) {
+    return InputDecoration(
+      focusedBorder: InputBorder.none,
+      enabledBorder: InputBorder.none,
+      filled: true,
+      border: InputBorder.none,
+      labelStyle: FxTextStyle.b1(color: Colors.grey.shade700),
+      labelText: labelText,
+      hintText: hintText,
+      hintStyle: TextStyle(
+        fontWeight: FontWeight.w300,
+      ),
+      fillColor: Colors.white,
+    );
+  }
+
+  InputDecoration input_decoration({
+    String labelText: "",
+    IconData icon: Icons.edit
+  }) {
+    return InputDecoration(
+      prefixIcon: Icon(icon, color: CustomTheme.primary),
+      focusedBorder: OutlineInputBorder(
+        borderSide: BorderSide(color: CustomTheme.primary),
+        borderRadius: BorderRadius.all(Radius.circular(5.0)),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderSide: BorderSide(color: CustomTheme.primary),
+        borderRadius: BorderRadius.all(Radius.circular(5.0)),
+      ),
+      filled: true,
+      border: InputBorder.none,
+      labelStyle: FxTextStyle.b1(color: CustomTheme.accent),
+      labelText: labelText,
+      fillColor: CustomTheme.primary.withAlpha(40),
+    );
+  }
 
   final Color card,
       cardDark,

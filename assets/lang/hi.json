@@ -1,11 +1,11 @@
 {
-  "dark_mode" : "डार्क मोड",
-  "language" : "भाषा",
-  "light_mode": "लाइट मोड",
-  "settings": "हालत",
+  "dark_mode" : "Ekitangala kitono",
+  "language" : "Olulimi",
+  "light_mode": "Ekitangala ekyinji",
+  "settings": "Okutereza",
   "left_to_right": "बाएं से दाएं",
   "right_to_left": "दाएं से बाएं",
-  "changelog" : "चैंज",
-  "documentation": "दस्तावेज़ीकरण",
-  "buy_now": "अभी खरीदें"
+  "help" : "Obuyambi",
+  "toll_free": "Tutukiriire ku bwerere",
+  "join_now": "Twegatteko"
 }

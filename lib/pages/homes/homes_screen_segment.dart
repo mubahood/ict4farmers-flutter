@@ -6,8 +6,6 @@ import 'package:ict4farmers/extensions/string.dart';
 import 'package:ict4farmers/extensions/widgets_extension.dart';
 import 'package:ict4farmers/models/BannerModel.dart';
 import 'package:ict4farmers/models/ProductModel.dart';
-import 'package:ict4farmers/models/TestModel.dart';
-import 'package:ict4farmers/objectbox.g.dart';
 import 'package:ict4farmers/pages/TestPage1.dart';
 import 'package:ict4farmers/pages/homes/select_language_dialog.dart';
 import 'package:ict4farmers/theme/app_notifier.dart';
@@ -19,6 +17,7 @@ import 'package:ict4farmers/widgets/images.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 
+import '../../utils/AppConfig.dart';
 import '../TestPage.dart';
 import 'app_setting_screen.dart';
 
@@ -43,12 +42,10 @@ class _HomesScreenSegmentState extends State<HomesScreenSegment>
   bool isDark = false;
   TextDirection textDirection = TextDirection.ltr;
 
-  late Store _store;
   bool store_is_ready = false;
 
   @override
   void dispose() {
-    if (store_is_ready) _store.close();
     super.dispose();
   }
 
@@ -56,13 +53,12 @@ class _HomesScreenSegmentState extends State<HomesScreenSegment>
   void initState() {
     super.initState();
     //_init_databse();
-    tabController = TabController(length: 4, vsync: this, initialIndex: 0);
+    tabController = TabController(length: 3, vsync: this, initialIndex: 0);
 
     navItems = [
-      NavItem('Branding', Images.homeIcon, TestPage1()),
-      NavItem('Printing', Images.app2Icon, TestPage1()),
-      NavItem('Graphics', Images.materialDesignIcon, TestPage1(), 32),
-      NavItem('Stationary', Images.otherDesignIcon, TestPage1()),
+      NavItem('Crops', Images.homeIcon, TestPage1(1)),
+      NavItem('Livestock', Images.app2Icon, TestPage1(2)),
+      NavItem('Services', Images.materialDesignIcon, TestPage1(3)),
     ];
 
     tabController.addListener(() {
@@ -121,46 +117,8 @@ class _HomesScreenSegmentState extends State<HomesScreenSegment>
     //await launch(url);
   }
 
-  void _init_databse() async {
-    return;
-    _store = await Utils.init_databse();
-    store_is_ready = true;
-    setState(() {});
-    return null;
-  }
-
   List<ProductModel> items = [];
 
-  void _get_data() async {
-    if (!store_is_ready) return;
-
-    _store.close();
-
-    return;
-
-    items = await ProductModel.get(_store);
-
-    print("FOUND ====> ${items.length}");
-
-    return;
-
-    ProductModel test = new ProductModel();
-    test.name = "romina sumayya";
-    _store.box<ProductModel>().put(test);
-
-    Stream<List<ProductModel>> data = _store
-        .box<ProductModel>()
-        .query()
-        .watch(triggerImmediately: true)
-        .map((event) => event.find());
-
-    data.forEach((element) {
-      element.forEach((k) {
-        print("\n=============${k.id}. ${k.name}=============\n\n\n");
-      });
-    });
-    print("DONE ==>");
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -172,8 +130,80 @@ class _HomesScreenSegmentState extends State<HomesScreenSegment>
         customTheme = AppTheme.customTheme;
         return Scaffold(
           key: _drawerKey,
+          appBar: AppBar(
+            elevation: 0,
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Container(
+                  child: Image(
+                    image: AssetImage(Images.logo_1),
+                    width: 120,
+                    color: null,
+                    fit: BoxFit.scaleDown,
+                    alignment: Alignment.center,
+                  ),
+                ),
+                InkWell(
+                  onTap: () => {Utils.navigate_to(AppConfig.SearchScreen, context)},
+                  child: Container(
+                    margin: EdgeInsets.only( top: 10),
+                    padding: EdgeInsets.only(left: 10, top: 7, bottom: 7),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(20)),
+                      color: theme.colorScheme.onBackground.withAlpha(20),
+                    ),
+                    width: 240,
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.search,
+                          color: theme.colorScheme.onBackground.withAlpha(200),
+                        ),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        Text(
+                          "Search...",
+                          style: TextStyle(
+                            fontSize: 15,
+                            color: theme.colorScheme.onBackground.withAlpha(200),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                /*InkWell(
+                  onTap: () {
+                    Navigator.push(context, SlideLeftRoute(AppSettingScreen()));
+                  },
+                  child: Container(
+                    padding: FxSpacing.x(0),
+                    child: Image(
+                      image: AssetImage(Images.settingIcon),
+                      color: theme.colorScheme.onBackground,
+                      width: 26,
+                      height: 26,
+                    ),
+                  ),
+                ),*/
+              ],
+            ),
+          ),
           body: Column(
             children: [
+             /* FxButton.text(
+                  padding: FxSpacing.zero,
+                  onPressed: () {
+                    //print("one love");
+                    //Utils.http_get('api/proudcts', {});
+                  },
+                  splashColor: CustomTheme.primary.withAlpha(40),
+                  child:
+                      FxText.b3("Forgot Password?", color: CustomTheme.accent)),*/
+
               /*Row(
                 children: [
                   InkWell(
@@ -418,7 +448,7 @@ class _HomesScreenSegmentState extends State<HomesScreenSegment>
                           child: Image(
                             height: 20,
                             width: 20,
-                            image: AssetImage(Images.documentationIcon),
+                            image: AssetImage(Images.languageOutline),
                             color: CustomTheme.skyBlue,
                           ),
                           color: CustomTheme.skyBlue.withAlpha(20),

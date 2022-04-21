@@ -12,8 +12,6 @@ dependencies:
     sdk: flutter
   flutx:
     path: ../flutx
-  objectbox: ^1.4.0
-  objectbox_flutter_libs: any
   connectivity_plus: ^2.2.0
   dio: ^4.0.4
 
@@ -24,16 +22,30 @@ dependencies:
   google_fonts: 2.2.0
   path_provider: ^2.0.9
   cached_network_image: ^3.2.0
+  flutter_form_builder: ^7.0.0
+  form_builder_validators: ^7.2.0
+  hive: ^2.0.6
+  hive_flutter: ^1.1.0
+  shimmer: ^2.0.0
+  google_maps_flutter: ^2.0.3
+  image_picker: ^0.8.4+11
+  geolocator: ^8.0.3
 
+  #(Syncfusion Flutter packages - Charts, Calendar, ETC.)
+  syncfusion_flutter_charts: ^19.4.38
+  #flutter_sound: ^8.3.9
+  #assets_audio_player: ^3.0.3+3
 
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  build_runner: ^2.0.0
-  objectbox_generator: any
+  hive_generator: ^1.1.2
+  build_runner: ^2.1.7
 
-  
+
+
+
   # Icons
   material_design_icons_flutter: 5.0.5955-rc.1
   flutter_feather_icons: ^2.0.0+1

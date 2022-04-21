@@ -1,7 +1,9 @@
-import 'package:objectbox/objectbox.dart';
+import 'package:hive/hive.dart';
 
-@Entity()
-class TestModels {
+part 'TestModel.g.dart';
+
+@HiveType(typeId: 30)
+class TestModels extends HiveObject {
   int id = 0;
   String name = "";
 }

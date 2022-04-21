@@ -34,7 +34,6 @@ class _TestPageState extends State<TestPage> {
         onRefresh: _onRefresh,
         child: _items.isEmpty
             ? EmptyList(
-                context: context,
                 body:
                     "No Farm.\n\nYou have no farms registered in our system. Please contact us to add your farm into the system.")
             :

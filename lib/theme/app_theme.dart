@@ -30,7 +30,7 @@ class AppTheme {
   }
 
   static resetFont() {
-    FxTextStyle.changeFontFamily(GoogleFonts.ibmPlexSans);
+    FxTextStyle.changeFontFamily(GoogleFonts.openSans);
     FxTextStyle.changeDefaultFontWeight({
       100: FontWeight.w100,
       200: FontWeight.w200,

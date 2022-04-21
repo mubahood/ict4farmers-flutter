@@ -1,22 +1,18 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutx/flutx.dart';
-import 'package:ict4farmers/extensions/string.dart';
-import 'package:ict4farmers/extensions/widgets_extension.dart';
-import 'package:ict4farmers/pages/TestPage1.dart';
+import 'package:ict4farmers/pages/account/account_splash.dart';
 import 'package:ict4farmers/pages/homes/homes_screen_segment.dart';
-import 'package:ict4farmers/pages/homes/select_language_dialog.dart';
 import 'package:ict4farmers/theme/app_notifier.dart';
 import 'package:ict4farmers/theme/app_theme.dart';
 import 'package:ict4farmers/theme/custom_theme.dart';
 import 'package:ict4farmers/theme/theme_type.dart';
-import 'package:ict4farmers/widgets/images.dart';
-import 'package:ict4farmers/widgets/svg.dart';
 import 'package:provider/provider.dart';
 
-import '../TestPage.dart';
-import 'app_setting_screen.dart';
+import '../account/my_products_screen.dart';
+import '../chat/chat_home_screen.dart';
+import '../search/categories_main_screen.dart';
+import 'on_map/on_map_screen.dart';
 
 class HomesScreen extends StatefulWidget {
   HomesScreen({Key? key}) : super(key: key);
@@ -42,19 +38,20 @@ class _HomesScreenState extends State<HomesScreen>
   @override
   void initState() {
     super.initState();
+    AppTheme.init();
 
     tabController = TabController(
- //       animationDuration: Duration.zero,
+        //       animationDuration: Duration.zero,
         length: 5,
         vsync: this,
         initialIndex: 0);
 
     navItems = [
-      NavItem('Home', Images.svg_home, HomesScreenSegment()),
-      NavItem('Categories', Images.svg_category, Text("PAGE 2")),
-      NavItem('Sell', Images.svg_add, Text("PAGE 3"), 32),
-      NavItem('Chats', Images.svg_chats, Text("PAGE 4")),
-      NavItem('Account', Images.svg_user, Text("PAGE 4")),
+      NavItem('Home', CupertinoIcons.home, HomesScreenSegment()),
+      NavItem('Categories', CupertinoIcons.search, CategoriesMainScreen()),
+      NavItem('Sell Now', CupertinoIcons.plus_circle, MyProductsScreen()),
+      NavItem('Chats', CupertinoIcons.envelope_badge, ChatHomeScreen()),
+      NavItem('Account', CupertinoIcons.person, AccountSplash()),
     ];
 
     tabController.addListener(() {
@@ -124,64 +121,6 @@ class _HomesScreenState extends State<HomesScreen>
         customTheme = AppTheme.customTheme;
         return Scaffold(
           key: _drawerKey,
-          appBar: AppBar(
-            elevation: 0,
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Container(
-                  child: Image(
-                    image: AssetImage(Images.logo_2),
-                    width: 120,
-                    color: null,
-                    fit: BoxFit.scaleDown,
-                    alignment: Alignment.center,
-                  ),
-                ),
-                Container(
-                  padding: EdgeInsets.only(left: 10, top: 7, bottom: 7),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(20)),
-                    color: theme.colorScheme.onBackground.withAlpha(20),
-                  ),
-                  width: 175,
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.search,
-                        color: theme.colorScheme.onBackground.withAlpha(200),
-                      ),
-                      SizedBox(
-                        width: 5,
-                      ),
-                      Text(
-                        "Search...",
-                        style: TextStyle(
-                          fontSize: 15,
-                          color: theme.colorScheme.onBackground.withAlpha(200),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                InkWell(
-                  onTap: () {
-                    Navigator.push(context, SlideLeftRoute(AppSettingScreen()));
-                  },
-                  child: Container(
-                    padding: FxSpacing.x(0),
-                    child: Image(
-                      image: AssetImage(Images.settingIcon),
-                      color: theme.colorScheme.onBackground,
-                      width: 26,
-                      height: 26,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
           body: Column(
             children: [
               Expanded(
@@ -231,16 +170,21 @@ class _HomesScreenState extends State<HomesScreen>
           child: Column(
         children: [
           Container(
-            padding: EdgeInsets.only(bottom: 2, top: 2),
-            child: SVG(navItems[i].icon,
+            padding: EdgeInsets.only(
+              bottom: 4,
+              top: 4,
+            ),
+            child: Icon(navItems[i].icon,
+                size: 18,
                 color: (currentIndex == i)
                     ? CustomTheme.primary
-                    : theme.colorScheme.onBackground.withAlpha(220),
-                size: 23),
+                    : theme.colorScheme.onBackground.withAlpha(220)),
           ),
-          Text(
+          FxText.b1(
             navItems[i].title,
             style: TextStyle(
+              fontWeight: FontWeight.w400,
+              fontSize: 12,
               color: (currentIndex == i)
                   ? CustomTheme.primary
                   : theme.colorScheme.onBackground.withAlpha(220),
@@ -255,7 +199,7 @@ class _HomesScreenState extends State<HomesScreen>
 
 class NavItem {
   final String title;
-  final String icon;
+  final IconData icon;
   final Widget screen;
   final double size;
 

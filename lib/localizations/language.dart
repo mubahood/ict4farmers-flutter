@@ -11,14 +11,8 @@ class Language {
 
   static List<Language> languages = [
     Language(Locale('en'), "English"),
-    Language(Locale('hi'), "Hindi"),
-    Language(
-      Locale('ar'),
-      "Arabic",
-      true,
-    ),
-    Language(Locale('fr'), "French"),
-    Language(Locale('zh'), "Chinese"),
+    Language(Locale('fr'), "Swahili"),
+    Language(Locale('hi'), "Luganda"),
   ];
 
   static Language currentLanguage = languages.first;
