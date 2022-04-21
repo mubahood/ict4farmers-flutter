@@ -3,9 +3,9 @@
   "language": "Language",
   "light_mode": "Light Mode",
   "settings": "Settings",
-  "left_to_right": "Left to Right",
-  "right_to_left": "Right to Left",
-  "changelog" : "Change Log",
-  "documentation": "Documentation",
-  "buy_now": "BUY NOW"
+  "left_to_right": "बाएं से दाएं",
+  "right_to_left": "दाएं से बाएं",
+  "help" : "Help",
+  "toll_free": "Toll free",
+  "join_now": "Register"
 }

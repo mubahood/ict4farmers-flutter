@@ -17,6 +17,7 @@ import 'package:ict4farmers/widgets/images.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 
+import '../../utils/AppConfig.dart';
 import '../TestPage.dart';
 import 'app_setting_screen.dart';
 
@@ -144,33 +145,37 @@ class _HomesScreenSegmentState extends State<HomesScreenSegment>
                     alignment: Alignment.center,
                   ),
                 ),
-                Container(
-                  padding: EdgeInsets.only(left: 10, top: 7, bottom: 7),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(20)),
-                    color: theme.colorScheme.onBackground.withAlpha(20),
-                  ),
-                  width: 180,
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.search,
-                        color: theme.colorScheme.onBackground.withAlpha(200),
-                      ),
-                      SizedBox(
-                        width: 5,
-                      ),
-                      Text(
-                        "Search...",
-                        style: TextStyle(
-                          fontSize: 15,
+                InkWell(
+                  onTap: () => {Utils.navigate_to(AppConfig.SearchScreen, context)},
+                  child: Container(
+                    margin: EdgeInsets.only( top: 10),
+                    padding: EdgeInsets.only(left: 10, top: 7, bottom: 7),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(20)),
+                      color: theme.colorScheme.onBackground.withAlpha(20),
+                    ),
+                    width: 240,
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.search,
                           color: theme.colorScheme.onBackground.withAlpha(200),
                         ),
-                      ),
-                    ],
+                        SizedBox(
+                          width: 5,
+                        ),
+                        Text(
+                          "Search...",
+                          style: TextStyle(
+                            fontSize: 15,
+                            color: theme.colorScheme.onBackground.withAlpha(200),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-                InkWell(
+                /*InkWell(
                   onTap: () {
                     Navigator.push(context, SlideLeftRoute(AppSettingScreen()));
                   },
@@ -183,7 +188,7 @@ class _HomesScreenSegmentState extends State<HomesScreenSegment>
                       height: 26,
                     ),
                   ),
-                ),
+                ),*/
               ],
             ),
           ),
@@ -443,7 +448,7 @@ class _HomesScreenSegmentState extends State<HomesScreenSegment>
                           child: Image(
                             height: 20,
                             width: 20,
-                            image: AssetImage(Images.documentationIcon),
+                            image: AssetImage(Images.languageOutline),
                             color: CustomTheme.skyBlue,
                           ),
                           color: CustomTheme.skyBlue.withAlpha(20),

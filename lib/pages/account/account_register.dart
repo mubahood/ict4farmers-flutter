@@ -9,6 +9,7 @@ import 'package:ict4farmers/utils/Utils.dart';
 import 'package:ict4farmers/widgets/images.dart';
 
 import '../../models/UserModel.dart';
+import '../../utils/AppConfig.dart';
 
 class AccountRegister extends StatefulWidget {
   @override
@@ -36,12 +37,6 @@ class _AccountRegisterState extends State<AccountRegister> {
 
     Future<void> submit_form() async {
 
-      UserModel _u = new UserModel();
-      _u.name = "Muhindo Mubaraka";
-      _u.id = 11;
-      Utils.login_user(_u);
-      return;
-
       error_message = "";
       setState(() {});
       if (!_formKey.currentState!.validate()) {
@@ -66,29 +61,29 @@ class _AccountRegisterState extends State<AccountRegister> {
       onLoading = false;
       setState(() {});
 
-
       if (_resp == null || _resp.isEmpty) {
         setState(() {
           error_message =
-          "Failed to connect to internet. Please check your network and try again.";
+              "Failed to connect to internet. Please check your network and try again.";
         });
         return;
       }
-      dynamic resp_obg =  jsonDecode(_resp);
-      if(resp_obg['status'].toString() != "1"){
+      dynamic resp_obg = jsonDecode(_resp);
+      if (resp_obg['status'].toString() != "1") {
         error_message = resp_obg['message'];
         setState(() {});
         return;
       }
 
-
       UserModel u = UserModel.fromMap(resp_obg['data']);
 
-      print("====> ${u.id} <=== ");
-
-      print("good to go!....");
-
-      return;
+      if (await Utils.login_user(u)) {
+        Navigator.pushNamedAndRemoveUntil(context, "/HomesScreen", (r) => false);
+      } else {
+        error_message =
+            "Account created but failed to login. Please try again.";
+        setState(() {});
+      }
     }
 
     return Theme(
@@ -105,7 +100,7 @@ class _AccountRegisterState extends State<AccountRegister> {
                 children: [
                   Container(
                     child: Image.asset(
-                      Images.logo_2,
+                      Images.logo_1,
                       height: 70,
                     ),
                   ),
@@ -137,7 +132,7 @@ class _AccountRegisterState extends State<AccountRegister> {
                         ),
                       ]),
                       decoration: customTheme.input_decoration(
-                          labelText: "Name", icon: Icons.person)),
+                          labelText: "Your Full Name", icon: Icons.person)),
                   FxSpacing.height(24),
                   FormBuilderTextField(
                       name: "email",
@@ -201,6 +196,17 @@ class _AccountRegisterState extends State<AccountRegister> {
                           labelText: "Re-enter Password",
                           icon: Icons.lock_outline)),
                   FxSpacing.height(16),
+
+                  FxButton.text(
+                      onPressed: () {
+                        Utils.navigate_to(AppConfig.PrivacyPolicy, context);
+                      },
+                      splashColor: CustomTheme.primary.withAlpha(40),
+                      child: FxText.l2("I have read and agreed with Privacy Policy  of ${AppConfig.AppName}.",
+                          textAlign: TextAlign.center,
+                          decoration: TextDecoration.underline,
+                          color: CustomTheme.primary)),
+
                   Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -219,7 +225,6 @@ class _AccountRegisterState extends State<AccountRegister> {
                             ),
                           ),
                   ),
-
                   FxSpacing.height(16),
                   onLoading
                       ? Padding(
@@ -243,14 +248,12 @@ class _AccountRegisterState extends State<AccountRegister> {
                   FxSpacing.height(16),
                   FxButton.text(
                       onPressed: () {
-                        Navigator.of(context, rootNavigator: true).push(
-                          MaterialPageRoute(
-                              builder: (context) => Text("CookifyLoginScreen")),
-                        );
+                        Utils.navigate_to(AppConfig.AccountLogin, context);
                       },
                       splashColor: CustomTheme.primary.withAlpha(40),
                       child: FxText.l2("I have already an account",
-                          decoration: TextDecoration.underline,
+                          fontSize: 14,
+
                           color: CustomTheme.accent)),
                   FxSpacing.height(16),
                 ],

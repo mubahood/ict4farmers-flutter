@@ -240,7 +240,7 @@ class _AppSettingScreenState extends State<AppSettingScreen> {
                           child: Image(
                             height: 20,
                             width: 20,
-                            image: AssetImage(Images.documentationIcon),
+                            image: AssetImage(Images.darkModeOutline),
                             color: CustomTheme.skyBlue,
                           ),
                           color: CustomTheme.skyBlue.withAlpha(20),
@@ -269,7 +269,7 @@ class _AppSettingScreenState extends State<AppSettingScreen> {
                           child: Image(
                             height: 20,
                             width: 20,
-                            image: AssetImage(Images.changeLogIcon),
+                            image: AssetImage(Images.darkModeOutline),
                             color: CustomTheme.peach,
                           ),
                           color: CustomTheme.peach.withAlpha(20),

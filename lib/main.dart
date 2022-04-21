@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutx/themes/app_theme_notifier.dart';
 import 'package:ict4farmers/localizations/app_localization_delegate.dart';
 import 'package:ict4farmers/localizations/language.dart';
+import 'package:ict4farmers/pages/account/onboarding_widget.dart';
 import 'package:ict4farmers/pages/homes/homes_screen.dart';
 import 'package:ict4farmers/theme/app_notifier.dart';
 import 'package:ict4farmers/theme/app_theme.dart';
@@ -16,6 +17,8 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
   AppTheme.init();
+
+  //
   Utils.init_databse();
 
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
@@ -48,8 +51,11 @@ class MyApp extends StatelessWidget {
             AppLocalizationsDelegate(context), // Add this line
           ],
           supportedLocales: Language.getLocales(),
-
-          home: HomesScreen(),
+          home: OnBoardingWidget2(),
+          routes: {
+            '/OnBoardingWidget': (context) => OnBoardingWidget2(),
+            '/HomesScreen': (context) => HomesScreen(),
+          },
         );
       },
     );

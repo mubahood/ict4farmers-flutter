@@ -1,39 +1,197 @@
-class UserModel {
+import 'dart:convert';
+
+import 'package:hive_flutter/hive_flutter.dart';
+
+import '../utils/Utils.dart';
+
+part 'UserModel.g.dart';
+
+@HiveType(typeId: 40)
+class UserModel extends HiveObject {
+  static Future<void> save_to_local_db(List<UserModel> data) async {
+    Utils.init_databse();
+    await Hive.initFlutter();
+    var box = null;
+    if (!Hive.isBoxOpen("UserModel")) {
+      box = await Hive.openBox<UserModel>("UserModel");
+    }
+    if (box == null) {
+      box = await Hive.openBox<UserModel>("UserModel");
+    }
+    if (box == null) {
+      return;
+    }
+
+    List<UserModel> _local_items = [];
+    int logged_id = 0;
+    box.values.forEach((item) {
+      if (item.status != 'logged_in') {
+        _local_items.add(item);
+      } else {
+        logged_id = item.id;
+      }
+    });
+
+    if (await Utils.is_connected()) {
+      for (int x = 0; x < _local_items.length; x++) {
+        await _local_items[x].delete();
+      }
+
+      for (int x = 0; x < data.length; x++) {
+        if (data[x].id != logged_id) {
+          await box.add(data[x]);
+        }
+      }
+    }
+
+    return;
+  }
+
+  static Future<List<UserModel>> get_local_items() async {
+    get_online_users({});
+    Utils.init_databse();
+    await Hive.initFlutter();
+    var box = await Hive.openBox<UserModel>("UserModel");
+    if (box.values.isEmpty) {
+      await get_online_users({});
+      box = await Hive.openBox<UserModel>("UserModel");
+    }
+    List<UserModel> items = [];
+    box.values.forEach((element) {
+      items.add(element);
+    });
+
+    return items;
+  }
+
+  static Future<List<UserModel>> get_online_users(
+      Map<String, String> params) async {
+    if (!(await Utils.is_connected())) {
+      return [];
+    }
+    List<UserModel> items = [];
+
+    String resp = await Utils.http_get('api/users', params);
+
+    if (resp != null && !resp.isEmpty) {
+      json.decode(resp).map((element) {
+        UserModel item = new UserModel();
+        item = UserModel.fromMap(element);
+        item.status = '';
+        items.add(item);
+      }).toList();
+    }
+
+    if (await Utils.is_connected()) {
+      await UserModel.save_to_local_db(items);
+    }
+
+    return items;
+  }
+
+  @HiveField(0)
   int id = 0;
 
+  @HiveField(1)
   String username = "";
+
+  @HiveField(2)
   String password = "";
+
+  @HiveField(3)
   String name = "";
+
+  @HiveField(4)
   String avatar = "";
+
+  @HiveField(5)
   String remember_token = "";
+
+  @HiveField(6)
   String created_at = "";
+
+  @HiveField(7)
   String updated_at = "";
+
+  @HiveField(8)
   String last_name = "";
+
+  @HiveField(9)
   String company_name = "";
+
+  @HiveField(10)
   String email = "";
+
+  @HiveField(11)
   String phone_number = "";
+
+  @HiveField(12)
   String address = "";
+
+  @HiveField(13)
   String about = "";
+
+  @HiveField(14)
   String services = "";
+
+  @HiveField(15)
   String longitude = "";
+
+  @HiveField(16)
   String latitude = "";
+
+  @HiveField(17)
   String division = "";
+
+  @HiveField(18)
   String opening_hours = "";
+
+  @HiveField(19)
   String cover_photo = "";
+
+  @HiveField(20)
   String facebook = "";
+
+  @HiveField(21)
   String twitter = "";
+
+  @HiveField(22)
   String whatsapp = "";
+
+  @HiveField(23)
   String youtube = "";
+
+  @HiveField(24)
   String instagram = "";
+
+  @HiveField(25)
   String last_seen = "";
+
+  @HiveField(26)
   String status = "";
+
+  @HiveField(27)
   String linkedin = "";
+
+  @HiveField(28)
   String category_id = "";
+
+  @HiveField(29)
   String status_comment = "";
+
+  @HiveField(30)
   String country_id = "";
+
+  @HiveField(31)
   String region = "";
+
+  @HiveField(32)
   String district = "";
+
+  @HiveField(33)
   String sub_county = "";
+
+  @HiveField(34)
   String logged_in_user = "0";
 
   static UserModel fromMap(data) {
@@ -83,7 +241,6 @@ class UserModel {
     u.district = data['district'].toString();
     u.sub_county = data['sub_county'].toString();
     u.logged_in_user = data['logged_in_user'].toString();
-
     return u;
   }
 }

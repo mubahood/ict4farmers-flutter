@@ -5,16 +5,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutx/flutx.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:ict4farmers/models/ProductModel.dart';
 
+import '../../../models/map_item.dart';
 import '../../../theme/app_theme.dart';
-import '../../../widgets/images.dart';
 
 class SearchController extends FxController {
   final LatLng center = const LatLng(45.521563, -122.677433);
-  bool showLoading = true, uiLoading = true;
+  bool showLoading = false, uiLoading = false;
   late GoogleMapController mapController;
-  List<ProductModel>? houses;
+  List<MapItem> map_items = [];
   final PageController pageController =
       PageController(initialPage: 0, viewportFraction: 0.85);
   int currentPage = 0;
@@ -30,7 +29,6 @@ class SearchController extends FxController {
   void initState() {
     super.save = false;
     super.initState();
-    fetchData();
   }
 
   Future<void> setMapTheme() async {
@@ -41,36 +39,30 @@ class SearchController extends FxController {
     }
   }
 
-  void fetchData() async {
-    await Future.delayed(Duration(seconds: 1));
-
-    houses = [];
-
-    showLoading = false;
-    uiLoading = false;
-    update();
-  }
-
   @override
   String getTag() {
     return "search_controller";
   }
 
-  onMarkerTap(int position) {
-    currentPage = position;
-    update();
+  onMarkerTap(MapItem item) {
+    if (map_items.isEmpty) {
+      return;
+    }
+    int position = 0;
+    int x = 0;
+    map_items.forEach((element) {
+      if (element.id.toString() == item.id.toString()) {
+        position = x;
+      }
+      x++;
+    });
 
     pageController.animateToPage(
-      currentPage,
+      position,
       duration: Duration(milliseconds: 800),
       curve: Curves.ease,
     );
-  }
-
-  onPageChange(int position) {
-    print("page changing ===> ${position} <=== ");
-    mapController.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
-        target: marker.toList()[position].position, zoom: 10.5)));
+    update();
   }
 
   @override
@@ -79,23 +71,41 @@ class SearchController extends FxController {
     pageController.dispose();
   }
 
-  add_marker(LatLng point) async {
+  add_marker(MapItem item) async {
+    double lati = 0.364607;
+    double long = 32.604781;
+
+    try {
+      lati = double.parse(item.lati.toString());
+      long = double.parse(item.longi.toString());
+    } catch (e) {
+      lati = 0.364607;
+      long = 32.604781;
+    }
+    LatLng point = new LatLng(lati, long);
+
     marker.add(
-        Marker(
-            icon: BitmapDescriptor.fromBytes(await getBytesFromAsset(
-                'assets/project/marker.png', 64)),
-        markerId: MarkerId("id-2"),
-        position: point,
-        onTap: () {
-          onMarkerTap(1);
-        }),
+      Marker(
+          icon: BitmapDescriptor.fromBytes(
+              await getBytesFromAsset('assets/project/marker.png', 70)),
+          markerId: MarkerId("${item.type}-${item.id}"),
+          position: point,
+          onTap: () {
+            onMarkerTap(item);
+          }),
     );
   }
 
-  addMarkers() async {
-    Images.locations.forEach((element) {
-      add_marker(element);
-    });
+  addMarkers(List<MapItem> items) async {
+    if (items.isEmpty) {
+      return;
+    }
+    marker.clear();
+    map_items.clear();
+    for (int x = 0; x < items.length; x++) {
+      map_items.add(items[x]);
+      await add_marker(items[x]);
+    }
     update();
   }
 

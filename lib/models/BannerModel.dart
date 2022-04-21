@@ -48,7 +48,7 @@ class BannerModel extends HiveObject {
 
     items = await BannerModel.get_local_banners();
 
-     if (items == null || items.isEmpty) {
+    if (items == null || items.isEmpty) {
       items = await get_online_items();
     } else {
       return items;
@@ -94,7 +94,6 @@ class BannerModel extends HiveObject {
       await box.clear();
     }
     box.addAll(data);
-    box.close();
     return;
   }
 

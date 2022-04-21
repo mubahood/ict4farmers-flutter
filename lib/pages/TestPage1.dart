@@ -1,14 +1,18 @@
-import 'dart:math';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutx/widgets/button/button.dart';
+import 'package:flutx/widgets/text/text.dart';
+import 'package:ict4farmers/models/UserModel.dart';
+import 'package:ict4farmers/pages/products/product_details.dart';
 import 'package:ict4farmers/utils/AppConfig.dart';
+import 'package:ict4farmers/widget/my_widgets.dart';
 
 import '../models/BannerModel.dart';
 import '../models/ProductModel.dart';
+import '../theme/custom_theme.dart';
 import '../utils/Utils.dart';
-import '../widget/empty_list.dart';
+import '../widget/product_item_ui.dart';
 import '../widget/shimmer_loading_widget.dart';
 
 class TestPage1 extends StatefulWidget {
@@ -27,20 +31,44 @@ bool store_initilized = false;
 BannerModel horizontal_banner_1 = BannerModel();
 BannerModel horizontal_banner_2 = BannerModel();
 BannerModel horizontal_banner_3 = BannerModel();
+List<ProductModel> _trending_products = [];
 
 class _TestPage1State extends State<TestPage1> {
   int page_num;
 
   _TestPage1State(this.page_num);
 
+  bool is_logged_in = true;
+  bool complete_profile = true;
+  UserModel logged_in_user = new UserModel();
+
   Future<void> _init_databse() async {
+    is_logged_in = await Utils.is_login();
+    if (is_logged_in) {
+      logged_in_user = await Utils.get_logged_in();
+      if (logged_in_user.address == "null" ||
+          logged_in_user.address.isEmpty ||
+          (logged_in_user.address.length < 3)) {
+        complete_profile = false;
+      } else {
+        complete_profile = true;
+      }
+    } else {
+      complete_profile = true;
+    }
+
+    _trending_products.clear();
+    List<ProductModel> _trending_get = await ProductModel.get_trending();
+    _trending_get.forEach((element) {
+      _trending_products.add(element);
+    });
+
     banners = await BannerModel.get();
     int i = 0;
     _gridItems.clear();
-    _products.clear();
+
     _gridBannersItems.clear();
     _gridBannersItems2.clear();
-    print("refreshing... ${banners.length} ..... ");
     banners.forEach((element) {
       i++;
 
@@ -90,11 +118,9 @@ class _TestPage1State extends State<TestPage1> {
 
       if (i == 17 && page_num == 1) {
         horizontal_banner_3 = element;
-      }
-      else if (i == 34 && page_num == 2) {
+      } else if (i == 34 && page_num == 2) {
         horizontal_banner_3 = element;
-      }
-      else if (i == (34+17) && page_num == 3) {
+      } else if (i == (34 + 17) && page_num == 3) {
         horizontal_banner_3 = element;
       }
     });
@@ -119,7 +145,6 @@ class _TestPage1State extends State<TestPage1> {
   List<BannerModel> _gridItems = [];
   List<BannerModel> _gridBannersItems = [];
   List<BannerModel> _gridBannersItems2 = [];
-  List<ProductModel> _products = [];
   int i = 0;
 
   Future<Null> _onRefresh() async {
@@ -141,18 +166,64 @@ class _TestPage1State extends State<TestPage1> {
         onRefresh: _onRefresh,
         child: CustomScrollView(
           slivers: [
+            (is_logged_in && complete_profile)
+                ? SliverList(
+                    delegate: SliverChildBuilderDelegate(
+                      (BuildContext context, int index) {
+                        return Container();
+                      },
+                      childCount: 0, // 1000 list items
+                    ),
+                  )
+                : SliverAppBar(
+                    title: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        FxText(
+                          complete_profile
+                              ? "Want to access everything?"
+                              : "Just 1 more step remaining!",
+                          color: Colors.yellow.shade700,
+                          fontWeight: 600,
+                        ),
+                        FxButton.text(
+                            onPressed: () {
+                              if (!is_logged_in) {
+                                show_not_account_bottom_sheet(context);
+                              } else if (!complete_profile) {
+                                Utils.navigate_to(
+                                    AppConfig.AccountEdit, context);
+                              }
+                            },
+                            splashColor: CustomTheme.primary.withAlpha(40),
+                            child: FxText.l2(complete_profile ? "YES" : "WHAT?",
+                                fontSize: 18,
+                                textAlign: TextAlign.center,
+                                color: Colors.white))
+                      ],
+                    ),
+                    floating: true,
+                    backgroundColor: Colors.red.shade700,
+                  ),
             SliverList(
               delegate: SliverChildBuilderDelegate(
                 (BuildContext context, int index) {
-                  return Container(
-                    alignment: Alignment.center,
-                    child: CachedNetworkImage(
-                      height: 200,
-                      fit: BoxFit.fill,
-                      imageUrl:
-                          "${AppConfig.BASE_URL}/${horizontal_banner_1.image}",
-                      placeholder: (context, url) => ShimmerLoadingWidget(height: 200,),
-                      errorWidget: (context, url, error) => Icon(Icons.error),
+                  return InkWell(
+                    onTap: () => {open_product_listting(horizontal_banner_1)},
+                    child: Container(
+                      alignment: Alignment.center,
+                      width: MediaQuery.of(context).size.width,
+                      child: CachedNetworkImage(
+                        width: double.infinity,
+                        height: 220,
+                        fit: BoxFit.cover,
+                        imageUrl:
+                            "${AppConfig.BASE_URL}/${horizontal_banner_1.image}",
+                        placeholder: (context, url) => ShimmerLoadingWidget(
+                          height: 200,
+                        ),
+                        errorWidget: (context, url, error) => Icon(Icons.error),
+                      ),
                     ),
                   );
                 },
@@ -176,16 +247,19 @@ class _TestPage1State extends State<TestPage1> {
             SliverList(
               delegate: SliverChildBuilderDelegate(
                 (BuildContext context, int index) {
-                  return Container(
-                    padding: EdgeInsets.all(10),
-                    alignment: Alignment.center,
-                    child: CachedNetworkImage(
-                      height: 90,
-                      fit: BoxFit.fill,
-                      imageUrl:
-                          "${AppConfig.BASE_URL}/${horizontal_banner_2.image}",
-                      placeholder: (context, url) => ShimmerLoadingWidget(height: 90,width: 90,is_circle: true),
-                      errorWidget: (context, url, error) => Icon(Icons.error),
+                  return InkWell(
+                    onTap: () => {open_product_listting(horizontal_banner_2)},
+                    child: Container(
+                      padding: EdgeInsets.all(10),
+                      alignment: Alignment.center,
+                      child: CachedNetworkImage(
+                        fit: BoxFit.fill,
+                        imageUrl:
+                            "${AppConfig.BASE_URL}/${horizontal_banner_2.image}",
+                        placeholder: (context, url) => ShimmerLoadingWidget(
+                            height: 90, width: 90, is_circle: true),
+                        errorWidget: (context, url, error) => Icon(Icons.error),
+                      ),
                     ),
                   );
                 },
@@ -198,7 +272,7 @@ class _TestPage1State extends State<TestPage1> {
                   mainAxisSpacing: 10,
                   crossAxisSpacing: 7,
                   childAspectRatio: 2,
-                  mainAxisExtent: 215),
+                  mainAxisExtent: 240),
               delegate: SliverChildBuilderDelegate(
                 (context, index) {
                   return singleGridImageItem(_gridBannersItems[index], index);
@@ -223,16 +297,21 @@ class _TestPage1State extends State<TestPage1> {
             SliverList(
               delegate: SliverChildBuilderDelegate(
                 (BuildContext context, int index) {
-                  return Container(
-                    padding: EdgeInsets.all(15),
-                    alignment: Alignment.center,
-                    child: CachedNetworkImage(
-                      height: 220,
-                      fit: BoxFit.fill,
-                      imageUrl:
-                          "${AppConfig.BASE_URL}/${horizontal_banner_3.image}",
-                      placeholder: (context, url) => ShimmerLoadingWidget(height: 220,),
-                      errorWidget: (context, url, error) => Icon(Icons.error),
+                  return InkWell(
+                    onTap: () => {open_product_listting(horizontal_banner_3)},
+                    child: Container(
+                      padding: EdgeInsets.all(15),
+                      alignment: Alignment.center,
+                      child: CachedNetworkImage(
+                        height: 220,
+                        fit: BoxFit.fill,
+                        imageUrl:
+                            "${AppConfig.BASE_URL}/${horizontal_banner_3.image}",
+                        placeholder: (context, url) => ShimmerLoadingWidget(
+                          height: 220,
+                        ),
+                        errorWidget: (context, url, error) => Icon(Icons.error),
+                      ),
                     ),
                   );
                 },
@@ -244,12 +323,8 @@ class _TestPage1State extends State<TestPage1> {
                 (BuildContext context, int index) {
                   return Container(
                     margin: EdgeInsets.only(top: 0, left: 18),
-                    child: Text(
+                    child: FxText.b1(
                       "You may also like",
-                      style: const TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold,
-                      ),
                     ),
                   );
                 },
@@ -259,15 +334,16 @@ class _TestPage1State extends State<TestPage1> {
             SliverGrid(
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
-                  mainAxisSpacing: 0,
-                  crossAxisSpacing: 0,
+                  mainAxisSpacing: 10,
+                  crossAxisSpacing: 10,
                   childAspectRatio: 1,
-                  mainAxisExtent: 250),
+                  mainAxisExtent: 280),
               delegate: SliverChildBuilderDelegate(
                 (context, index) {
-                  return singleGridImageIte3(_products[index], index);
+                  return ProductItemUi(
+                      index, _trending_products[index], context);
                 },
-                childCount: _products.length,
+                childCount: _trending_products.length,
               ),
             ),
           ],
@@ -275,132 +351,160 @@ class _TestPage1State extends State<TestPage1> {
   }
 
   Widget singleGridImageIte3(ProductModel productModel, int index) {
-    return Container(
-      alignment: Alignment.center,
-      margin: EdgeInsets.only(
-        top: 10,
-        left: (index.isOdd) ? 0 : 15,
-        right: (index.isOdd) ? 15 : 0,
-      ),
-      child: Column(
-        children: [
-          Image.asset(
-            "assets/project/${productModel.thumbnail}",
-            height: 210,
-            fit: BoxFit.cover,
+    return InkWell(
+      onTap: () => {
+        Navigator.push(
+          context,
+          PageRouteBuilder(
+            pageBuilder: (context, animation1, animation2) =>
+                ProductDetails(productModel),
+            transitionDuration: Duration.zero,
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Container(
-                padding: EdgeInsets.only(top: 5, bottom: 5, left: 5),
-                child: Text(
-                  productModel.name,
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.grey.shade800,
-                      fontSize: 16),
+        )
+      },
+      child: Container(
+        alignment: Alignment.center,
+        margin: EdgeInsets.only(
+          top: 10,
+          left: (index.isOdd) ? 0 : 15,
+          right: (index.isOdd) ? 15 : 0,
+        ),
+        child: Column(
+          children: [
+            Image.asset(
+              "assets/project/${productModel.thumbnail}",
+              height: 210,
+              fit: BoxFit.cover,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  padding: EdgeInsets.only(top: 5, bottom: 5, left: 5),
+                  child: Text(
+                    productModel.name,
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.grey.shade800,
+                        fontSize: 16),
+                  ),
                 ),
-              ),
-              Container(
-                padding: EdgeInsets.only(top: 5, bottom: 5, right: 5),
-                child: Icon(
-                  Icons.verified_rounded,
-                  color: Colors.grey.shade800,
-                  size: 18,
+                Container(
+                  padding: EdgeInsets.only(top: 5, bottom: 5, right: 5),
+                  child: Icon(
+                    Icons.verified_rounded,
+                    color: Colors.grey.shade800,
+                    size: 18,
+                  ),
                 ),
-              ),
-            ],
-          ),
-        ],
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
 
   Widget singleGridImageIte2(BannerModel productModel, int index) {
-    return Container(
-      color: (page_num == 1)
-          ? Color.fromARGB(255, 188, 223, 204)
-          : (page_num == 2)
-              ? Color.fromARGB(255, 219, 184, 158)
-          : (page_num == 3)
-              ? Color.fromARGB(255, 150, 204, 239)
-              : Color.fromARGB(255, 188, 223, 204),
-      alignment: Alignment.center,
-      padding: EdgeInsets.all(5),
-      margin: EdgeInsets.only(
-        top: 10,
-        left: (index.isOdd) ? 0 : 15,
-        right: (index.isOdd) ? 15 : 0,
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                productModel.name,
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              Text(productModel.sub_title),
-            ],
-          ),
-          CachedNetworkImage(
-            height: 100,
-            fit: BoxFit.cover,
-            imageUrl: "${AppConfig.BASE_URL}/${productModel.image}",
-            placeholder: (context, url) => ShimmerLoadingWidget(height: 100,width: 100,is_circle: true),
-            errorWidget: (context, url, error) => Icon(Icons.error),
-          )
-        ],
+    return InkWell(
+      onTap: () => {open_product_listting(productModel)},
+      child: Container(
+        color: (page_num == 1)
+            ? Color.fromARGB(255, 188, 223, 204)
+            : (page_num == 2)
+                ? Color.fromARGB(255, 219, 184, 158)
+                : (page_num == 3)
+                    ? Color.fromARGB(255, 150, 204, 239)
+                    : Color.fromARGB(255, 188, 223, 204),
+        alignment: Alignment.center,
+        padding: EdgeInsets.all(5),
+        margin: EdgeInsets.only(
+          top: 10,
+          left: (index.isOdd) ? 0 : 15,
+          right: (index.isOdd) ? 15 : 0,
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  productModel.name,
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                Text(productModel.sub_title),
+              ],
+            ),
+            CachedNetworkImage(
+              height: 100,
+              fit: BoxFit.cover,
+              imageUrl: "${AppConfig.BASE_URL}/${productModel.image}",
+              placeholder: (context, url) => ShimmerLoadingWidget(
+                  height: 100, width: 100, is_circle: true),
+              errorWidget: (context, url, error) => Icon(Icons.error),
+            )
+          ],
+        ),
       ),
     );
   }
 
   Widget singleGridImageItem(BannerModel bannerModel, int index) {
-    return Container(
-      padding: EdgeInsets.only(
-        top: 5,
-        left: (index.isOdd) ? 0 : 15,
-        right: (index.isOdd) ? 15 : 0,
-      ),
-      alignment: Alignment.center,
-      child: Column(
-        children: [
-          CachedNetworkImage(
+    return InkWell(
+      onTap: () => {open_product_listting(bannerModel)},
+      child: Container(
+        height: 240,
+        padding: EdgeInsets.only(
+          top: 5,
+          left: (index.isOdd) ? 0 : 15,
+          right: (index.isOdd) ? 15 : 0,
+        ),
+        alignment: Alignment.center,
+        child: CachedNetworkImage(
+          width: ((MediaQuery.of(context).size.width / 2) - 15),
+          fit: BoxFit.fill,
+          imageUrl: "${AppConfig.BASE_URL}/${bannerModel.image}",
+          placeholder: (context, url) => ShimmerLoadingWidget(
             height: 210,
-            fit: BoxFit.cover,
-            imageUrl: "${AppConfig.BASE_URL}/${bannerModel.image}",
-            placeholder: (context, url) => ShimmerLoadingWidget(height: 210,),
-            errorWidget: (context, url, error) => Icon(Icons.error),
           ),
-        ],
+          errorWidget: (context, url, error) => Icon(Icons.error),
+        ),
       ),
     );
   }
 
   Widget singleGridItem(BannerModel data) {
-
-
-    return Container(
-      padding: EdgeInsets.only(top: 10),
-      alignment: Alignment.center,
-      child: Column(
-        children: [
-          CachedNetworkImage(
-            height: 70,
-            imageUrl: "${AppConfig.BASE_URL}/${data.image}",
-            placeholder: (context, url) => ShimmerLoadingWidget(height: 100,width: 100,is_circle: true, padding: 0),
-            errorWidget: (context, url, error) => Icon(Icons.error),
-          ),
-          Text(
-            data.name,
-            style: TextStyle(fontSize: 14),
-          ),
-        ],
+    return InkWell(
+      onTap: () => {open_product_listting(data)},
+      child: Container(
+        padding: EdgeInsets.only(top: 10),
+        alignment: Alignment.center,
+        child: Column(
+          children: [
+            CachedNetworkImage(
+              height: 70,
+              imageUrl: "${AppConfig.BASE_URL}/${data.image}",
+              placeholder: (context, url) => ShimmerLoadingWidget(
+                  height: 100, width: 100, is_circle: true, padding: 0),
+              errorWidget: (context, url, error) => Icon(Icons.error),
+            ),
+            Text(
+              data.name,
+              style: TextStyle(fontSize: 14),
+            ),
+          ],
+        ),
       ),
     );
+  }
+
+  void open_product_listting(BannerModel item) {
+    Utils.navigate_to(AppConfig.ProductListting, context, data: {
+      'title': item.name,
+      'id': item.category_id,
+      'task': 'Banner',
+    });
   }
 }
