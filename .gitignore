@@ -26,3 +26,5 @@ doc/api/
 .flutter-plugins
 .flutter-plugins-dependencies
 .idea/libraries/Flutter_Plugins.xml
+*.xml
+.idea/libraries/Flutter_Plugins.xml
