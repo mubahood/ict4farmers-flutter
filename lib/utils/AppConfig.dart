@@ -1,8 +1,8 @@
 class AppConfig {
-  static String BASE_URL = "http://app2.unffeict4farmers.org";
+  static String BASE_URL = "https://jotrace.com";
   static const String HomePage = "HomePage";
   static const String MyProductsScreen = "MyProductsScreen";
-  static const String AppName = "UNFFE ICT4Farmers";
+  static const String AppName = "JO-TRACE";
   static const String AccountRegister = "AccountRegister";
   static const String AccountSplash = "AccountSplash";
   static const String ProductDetails = "ProductDetails";
@@ -27,13 +27,4 @@ class AppConfig {
   static const String SellFast = "SellFast";
   static const String ViewFullImagesScreen = "ViewFullImagesScreen";
   static const String SearchScreen = "SearchScreen";
-
-  static const String CallUs = "CallUs";
-  static const String OurWhatsApp = "OurWhatsApp";
-  static const String OUR_PHONE_NUMBER = "+256414230705";
-  static const String OUR_WHATSAPP_NUMBER = "+8801632257609";
-  static const String OUR_FACEBOOK_LINK = "https://ugnews24.info";
-  static const String OUR_TWITTER_LINK = "https://twitter.com/ugnews24";
-  static const String OUR_YOUTUBE_LINK = "https://twitter.com/ugnews24";
-  static const String OUR_INSTAGRAM_LINK = "https://www.youtube.com/ugnews24/";
 }

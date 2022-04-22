@@ -20,8 +20,8 @@ Widget not_logged_screen(context) {
         Container(
           margin: EdgeInsets.only(top: 20, bottom: 20),
           child: Image.asset(
-            Images.logo_2,
-            height: 70,
+            Images.logo_1,
+            height: 80,
           ),
         ),
         Container(

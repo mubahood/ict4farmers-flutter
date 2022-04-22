@@ -90,6 +90,20 @@ class Utils {
     );
   }
 
+  static int int_parse(dynamic x) {
+    if(x == null){
+      return 0;
+    }
+    int temp = 0;
+    try {
+      temp = int.parse(x.toString());
+    } catch (e) {
+      temp = 0;
+    }
+
+    return temp;
+  }
+
   static bool bool_parse(dynamic x) {
     int temp = 0;
     bool ans = false;

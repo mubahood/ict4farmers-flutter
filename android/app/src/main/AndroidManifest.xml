@@ -33,7 +33,7 @@
 
    <application
        android:icon="@drawable/logo"
-       android:label="ict4farmers"
+       android:label="JO-Trace"
         android:name="${applicationName}"
        android:allowBackup="true"
        >

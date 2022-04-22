@@ -54,7 +54,9 @@ class CategoryModel extends HiveObject {
       Map<String, dynamic> data) async {
     List<CategoryModel> items = [];
 
+    print("getting");
     String resp = await Utils.http_get('api/categories', data);
+    print(resp);
 
     if (resp != null && !resp.isEmpty) {
       json.decode(resp).map((element) {
@@ -78,7 +80,7 @@ class CategoryModel extends HiveObject {
       }
     }
 
-    item.parent = int.parse(data['parent'].toString());
+    item.parent = Utils.int_parse(data['parent']);
     item.name = data['name'].toString();
     item.description = data['description'].toString();
     item.slug = data['slug'].toString();
