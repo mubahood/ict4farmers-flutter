@@ -18,6 +18,7 @@ import 'package:ict4farmers/pages/HomPage.dart';
 import 'package:ict4farmers/pages/account/account_register.dart';
 import 'package:ict4farmers/pages/account/account_splash.dart';
 import 'package:ict4farmers/theme/app_theme.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../models/CategoryModel.dart';
 import '../models/ChatModel.dart';
@@ -44,6 +45,30 @@ import '../pages/search/search_screen.dart';
 import 'AppConfig.dart';
 
 class Utils {
+
+
+  static void launchURL(String _url) async {
+    if (!await launch(_url)) throw 'Could not launch $_url';
+  }
+
+  static void launchPhone(String phone_number) async {
+    if (!await launch('tel:${phone_number}'))
+      throw 'Could not launch $phone_number';
+  }
+
+//
+  static void launchOuLink(String link) async {
+    if (link == AppConfig.CallUs) {
+      Utils.launchPhone(AppConfig.OUR_PHONE_NUMBER);
+    } else if (link == AppConfig.OurWhatsApp) {
+      Utils.launchURL(
+          'https://wa.me/${AppConfig.OUR_WHATSAPP_NUMBER}?text=Hi, I am contacting you from go ${AppConfig.AppName}.\n\n');
+    } else {
+      Utils.launchURL(link);
+    }
+  }
+
+
   static LatLng get_default_lati_long() {
     double lati = 0.364607;
     double long = 32.604781;
@@ -118,6 +143,7 @@ class Utils {
           }));
       return jsonEncode(response.data);
     } catch (e) {
+      print(e);
       return "";
     }
 

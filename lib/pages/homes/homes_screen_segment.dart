@@ -154,7 +154,7 @@ class _HomesScreenSegmentState extends State<HomesScreenSegment>
                       borderRadius: BorderRadius.all(Radius.circular(20)),
                       color: theme.colorScheme.onBackground.withAlpha(20),
                     ),
-                    width: 240,
+                    width: (MediaQuery.of(context).size.width-160),
                     child: Row(
                       children: [
                         Icon(

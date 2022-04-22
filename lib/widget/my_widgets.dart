@@ -6,8 +6,10 @@ import 'package:flutx/widgets/text/text.dart';
 import 'package:ict4farmers/utils/AppConfig.dart';
 import 'package:ict4farmers/widget/shimmer_loading_widget.dart';
 
+import '../theme/app_theme.dart';
 import '../theme/custom_theme.dart';
 import '../utils/Utils.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 Widget myNetworkImage(String url,double _height,double _width,double radiusAll){
   return ClipRRect(
@@ -31,6 +33,86 @@ Widget myNetworkImage(String url,double _height,double _width,double radiusAll){
   );
 }
 
+Widget social_media_links(context) {
+  return Row(
+    children: <Widget>[
+      InkWell(
+        onTap: () => {Utils.launchOuLink(AppConfig.OurWhatsApp)},
+        child: Container(
+          margin: EdgeInsets.only(left: 0),
+          padding: EdgeInsets.all(3),
+          child: Icon(
+            Icons.whatsapp,
+            size: 30,
+            color: Colors.green.shade600,
+          ),
+          decoration: BoxDecoration(
+              border: Border.all(
+                  color: Colors.grey.shade500, width: 1),
+              color: AppTheme.lightTheme.backgroundColor,
+              borderRadius:
+              BorderRadius.all(Radius.circular(11))),
+        ),
+      ),
+      InkWell(
+        onTap: () =>
+        {Utils.launchOuLink(AppConfig.OUR_FACEBOOK_LINK)},
+        child: Container(
+          margin: EdgeInsets.only(left: 16),
+          padding: EdgeInsets.all(3),
+          child: Icon(
+            Icons.facebook,
+            size: 30,
+            color: Colors.blue.shade800,
+          ),
+          decoration: BoxDecoration(
+              border: Border.all(
+                  color: Colors.grey.shade500, width: 1),
+              color: AppTheme.lightTheme.backgroundColor,
+              borderRadius:
+              BorderRadius.all(Radius.circular(11))),
+        ),
+      ),
+      InkWell(
+        onTap: () =>
+        {Utils.launchOuLink(AppConfig.OUR_TWITTER_LINK)},
+        child: Container(
+          margin: EdgeInsets.only(left: 16),
+          padding: EdgeInsets.all(3),
+          child: Icon(
+            MdiIcons.twitter,
+            size: 30,
+            color: Colors.blue.shade500,
+          ),
+          decoration: BoxDecoration(
+              border: Border.all(
+                  color: Colors.grey.shade500, width: 1),
+              borderRadius:
+              BorderRadius.all(Radius.circular(11))),
+        ),
+      ),
+      InkWell(
+        onTap: () =>
+        {Utils.launchOuLink(AppConfig.OUR_YOUTUBE_LINK)},
+        child: Container(
+          margin: EdgeInsets.only(left: 16),
+          padding: EdgeInsets.all(3),
+          child: Icon(
+            MdiIcons.youtube,
+            size: 30,
+            color: Colors.red.shade700,
+          ),
+          decoration: BoxDecoration(
+              border: Border.all(
+                  color: Colors.grey.shade500, width: 1),
+              borderRadius:
+              BorderRadius.all(Radius.circular(11))),
+        ),
+      ),
+
+    ],
+  );
+}
 void show_not_account_bottom_sheet(context) {
   showModalBottomSheet(
       isScrollControlled: true,
