@@ -36,7 +36,7 @@ flutter_native_splash:
   # ios_content_mode value.
 
 
-  #branding_mode: bottom
+  branding_mode: center
 
   # The color_dark, background_image_dark, and image_dark are parameters that set the background
   # and image when the device is in dark mode. If they are not specified, the app will use the
