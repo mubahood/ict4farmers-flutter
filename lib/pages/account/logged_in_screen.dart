@@ -14,6 +14,7 @@ import '../../theme/app_theme.dart';
 import '../../theme/custom_theme.dart';
 import '../../utils/AppConfig.dart';
 import '../../utils/Utils.dart';
+import '../../widget/my_widgets.dart';
 import '../../widget/shimmer_loading_widget.dart';
 import '../product_add_form/product_add_form.dart';
 
@@ -97,29 +98,34 @@ class LoggedInScreenState extends State<LoggedInScreen> {
           ],
         ),
         FxSpacing.height(24),
-        FxContainer(
-          color: CustomTheme.accent,
-          padding: FxSpacing.xy(16, 8),
-          borderRadiusAll: 4,
-          child: Row(
-            children: <Widget>[
-              Icon(MdiIcons.informationOutline,
-                  color: theme.colorScheme.onPrimary, size: 18),
-              FxSpacing.width(16),
-              Expanded(
-                child: FxText.b2("Need help?",
-                    color: FxColorUtils.goldColor,
-                    fontWeight: 600,
-                    letterSpacing: 0.2),
-              ),
-              FxSpacing.width(16),
-              FxText.caption(
-                "Call Free Now!",
-                fontWeight: 600,
-                letterSpacing: 0.2,
-                color: theme.colorScheme.onPrimary,
-              )
-            ],
+        InkWell(
+          onTap: ()=>{
+            Utils.launchPhone(AppConfig.OUR_PHONE_NUMBER)
+          },
+          child: FxContainer(
+            color: CustomTheme.accent,
+            padding: FxSpacing.xy(16, 8),
+            borderRadiusAll: 4,
+            child: Row(
+              children: <Widget>[
+                Icon(MdiIcons.informationOutline,
+                    color: theme.colorScheme.onPrimary, size: 18),
+                FxSpacing.width(16),
+                Expanded(
+                  child: FxText.b2("Need help?",
+                      color: FxColorUtils.goldColor,
+                      fontWeight: 600,
+                      letterSpacing: 0.2),
+                ),
+                FxSpacing.width(16),
+                FxText.caption(
+                  "Call Free Now!",
+                  fontWeight: 600,
+                  letterSpacing: 0.2,
+                  color: theme.colorScheme.onPrimary,
+                )
+              ],
+            ),
           ),
         ),
         FxSpacing.height(24),
@@ -129,9 +135,8 @@ class LoggedInScreenState extends State<LoggedInScreen> {
               _context,
               theme,
               iconData: Icons.question_answer_outlined,
-              option: "Farmers forum",
-              navigation: AppConfig.ForumScreen,
-              badge: _has_pending_form ? "4" : "4",
+              option: "Extension services",
+              navigation: '',
             ),
             Divider(),
             singleOption(_context, theme,
@@ -155,28 +160,13 @@ class LoggedInScreenState extends State<LoggedInScreen> {
                 navigation: AppConfig.MyProductsScreen),
             Divider(),
             singleOption(_context, theme,
-                iconData: MdiIcons.heartOutline,
-                option: "My Favourites",
-                navigation: ""),
-            Divider(),
-            singleOption(_context, theme,
-                iconData: Icons.post_add_outlined,
-                option: "My Posts",
-                navigation: ""),
-            Divider(),
-            singleOption(_context, theme,
-                iconData: Icons.live_help_outlined,
-                option: "Ask an expert",
-                navigation: ""),
-            Divider(),
-            singleOption(_context, theme,
                 iconData: Icons.assignment_ind_outlined,
                 option: "My Profile",
                 navigation: AppConfig.AccountEdit),
             Divider(),
             singleOption(_context, theme,
                 iconData: Icons.bolt,
-                option: "Sell faster",
+                option: "How to sell faster",
                 navigation: AppConfig.SellFast),
             Divider(),
             singleOption(_context, theme,
@@ -190,9 +180,17 @@ class LoggedInScreenState extends State<LoggedInScreen> {
                 navigation: AppConfig.PrivacyPolicy),
             Divider(),
             singleOption(_context, theme,
-                iconData: MdiIcons.faceAgent,
-                option: "Help \& Support",
+                iconData: Icons.live_help_outlined,
+                option: "Ask an expert",
                 navigation: ""),
+            Divider(),
+            singleOption(_context, theme,
+                iconData: MdiIcons.faceAgent,
+                option: "Toll Free",
+                navigation: ""),
+            Divider(),
+            FxSpacing.height(24),
+            social_media_links(context),
             FxSpacing.height(24),
             Center(
               child: FxButton(

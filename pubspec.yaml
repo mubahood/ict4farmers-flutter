@@ -30,6 +30,9 @@ dependencies:
   google_maps_flutter: ^2.0.3
   image_picker: ^0.8.4+11
   geolocator: ^8.0.3
+  url_launcher: ^6.0.20
+  flutter_native_splash: ^2.1.6
+
 
   #(Syncfusion Flutter packages - Charts, Calendar, ETC.)
   syncfusion_flutter_charts: ^19.4.38

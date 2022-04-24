@@ -138,7 +138,7 @@ class CategoriesMainScreenState extends State<CategoriesMainScreen> {
       children: [
         ListTile(
           leading: FxContainer(
-            child: myNetworkImage(item.image, 45, 45, 10),
+            child: myNetworkImage(AppConfig.BASE_URL+"/"+item.image, 45, 45, 10),
             width: 45,
             height: 45,
             paddingAll: 0,
