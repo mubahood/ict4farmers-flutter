@@ -75,7 +75,7 @@ class ProductDetailsState extends State<ProductDetails> {
         if (element != null) {
           if (element['thumbnail'] != null) {
             thumbnails.add(
-                "${AppConfig.BASE_URL}/${element['thumbnail'].toString()}");
+                "${AppConfig.BASE_URL}/storage.${element['thumbnail'].toString()}");
             images.add("${AppConfig.BASE_URL}/${element['src'].toString()}");
           }
         }

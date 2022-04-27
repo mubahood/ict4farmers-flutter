@@ -218,7 +218,7 @@ class _TestPage1State extends State<TestPage1> {
                         height: 220,
                         fit: BoxFit.cover,
                         imageUrl:
-                            "${AppConfig.BASE_URL}/${horizontal_banner_1.image}",
+                            "${AppConfig.BASE_URL}/storage/${horizontal_banner_1.image}",
                         placeholder: (context, url) => ShimmerLoadingWidget(
                           height: 200,
                         ),
@@ -255,10 +255,15 @@ class _TestPage1State extends State<TestPage1> {
                       child: CachedNetworkImage(
                         fit: BoxFit.fill,
                         imageUrl:
-                            "${AppConfig.BASE_URL}/${horizontal_banner_2.image}",
+                            "${AppConfig.BASE_URL}/storage/${horizontal_banner_2.image}",
                         placeholder: (context, url) => ShimmerLoadingWidget(
                             height: 90, width: 90, is_circle: true),
-                        errorWidget: (context, url, error) => Icon(Icons.error),
+                        errorWidget: (context, url, error) => Image(
+                          image: AssetImage('./assets/project/no_image.jpg'),
+                          height: 90,
+                          width: 90,
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     ),
                   );
@@ -306,11 +311,15 @@ class _TestPage1State extends State<TestPage1> {
                         height: 220,
                         fit: BoxFit.fill,
                         imageUrl:
-                            "${AppConfig.BASE_URL}/${horizontal_banner_3.image}",
+                            "${AppConfig.BASE_URL}/storage/${horizontal_banner_3.image}",
                         placeholder: (context, url) => ShimmerLoadingWidget(
                           height: 220,
                         ),
-                        errorWidget: (context, url, error) => Icon(Icons.error),
+                        errorWidget: (context, url, error) =>  Image(
+                          image: AssetImage('./assets/project/no_image.jpg'),
+                          height: 200,
+                          fit: BoxFit.fill,
+                        ),
                       ),
                     ),
                   );
@@ -372,7 +381,7 @@ class _TestPage1State extends State<TestPage1> {
         child: Column(
           children: [
             Image.asset(
-              "assets/project/${productModel.thumbnail}",
+              "assets/project/no_image.jpg",
               height: 210,
               fit: BoxFit.cover,
             ),
@@ -440,10 +449,15 @@ class _TestPage1State extends State<TestPage1> {
             CachedNetworkImage(
               height: 100,
               fit: BoxFit.cover,
-              imageUrl: "${AppConfig.BASE_URL}/${productModel.image}",
+              imageUrl: "${AppConfig.BASE_URL}/storage/${productModel.image}",
               placeholder: (context, url) => ShimmerLoadingWidget(
                   height: 100, width: 100, is_circle: true),
-              errorWidget: (context, url, error) => Icon(Icons.error),
+              errorWidget: (context, url, error) => Image(
+                image: AssetImage('./assets/project/no_image.jpg'),
+                height: 100,
+                width: 100,
+                fit: BoxFit.cover,
+              ),
             )
           ],
         ),
@@ -465,11 +479,15 @@ class _TestPage1State extends State<TestPage1> {
         child: CachedNetworkImage(
           width: ((MediaQuery.of(context).size.width / 2) - 15),
           fit: BoxFit.fill,
-          imageUrl: "${AppConfig.BASE_URL}/${bannerModel.image}",
+          imageUrl: "${AppConfig.BASE_URL}/storage/${bannerModel.image}",
           placeholder: (context, url) => ShimmerLoadingWidget(
             height: 210,
           ),
-          errorWidget: (context, url, error) => Icon(Icons.error),
+          errorWidget: (context, url, error) => Image(
+            image: AssetImage('./assets/project/no_image.jpg'),
+            height: 210,
+            fit: BoxFit.cover,
+          ),
         ),
       ),
     );
@@ -485,10 +503,15 @@ class _TestPage1State extends State<TestPage1> {
           children: [
             CachedNetworkImage(
               height: 70,
-              imageUrl: "${AppConfig.BASE_URL}/${data.image}",
+              imageUrl: "${AppConfig.BASE_URL}/storage/${data.image}",
               placeholder: (context, url) => ShimmerLoadingWidget(
                   height: 100, width: 100, is_circle: true, padding: 0),
-              errorWidget: (context, url, error) => Icon(Icons.error),
+              errorWidget: (context, url, error) => Image(
+                image: AssetImage('./assets/project/no_image.jpg'),
+                height: 100,
+                width: 100,
+                fit: BoxFit.cover,
+              ),
             ),
             Text(
               data.name,

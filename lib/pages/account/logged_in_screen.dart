@@ -1,11 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutx/utils/color_utils.dart';
 import 'package:flutx/utils/spacing.dart';
 import 'package:flutx/widgets/button/button.dart';
 import 'package:flutx/widgets/container/container.dart';
 import 'package:flutx/widgets/text/text.dart';
+import 'package:ict4farmers/models/ChatModel.dart';
 import 'package:ict4farmers/models/FormItemModel.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
@@ -14,7 +14,6 @@ import '../../theme/app_theme.dart';
 import '../../theme/custom_theme.dart';
 import '../../utils/AppConfig.dart';
 import '../../utils/Utils.dart';
-import '../../widget/my_widgets.dart';
 import '../../widget/shimmer_loading_widget.dart';
 import '../product_add_form/product_add_form.dart';
 
@@ -32,6 +31,7 @@ class LoggedInScreen extends StatefulWidget {
 class LoggedInScreenState extends State<LoggedInScreen> {
   ThemeData theme;
   BuildContext _context;
+  UserModel logged_in_user = new UserModel();
 
   LoggedInScreenState(this.theme, this._context);
 
@@ -40,19 +40,10 @@ class LoggedInScreenState extends State<LoggedInScreen> {
     // TODO: implement initState
     super.initState();
     my_init();
-    check_daft_form();
   }
 
   bool _has_pending_form = false;
-  UserModel logged_in_user = new UserModel();
-
-  void check_daft_form() async {
-    if ((await FormItemModel.get_all()).isEmpty) {
-      _has_pending_form = false;
-    } else {
-      _has_pending_form = true;
-    }
-  }
+  List<ChatModel> chat_threads = [];
 
   Future<void> my_init() async {
     logged_in_user = await Utils.get_logged_in();
@@ -60,15 +51,24 @@ class LoggedInScreenState extends State<LoggedInScreen> {
       Utils.showSnackBar("Login before you proceed.", _context, Colors.red);
       return;
     }
-
+    chat_threads = await ChatModel.get_threads(logged_in_user.id);
+    await check_daft_form();
     setState(() {});
+  }
+
+  Future<void> check_daft_form() async {
+    if ((await FormItemModel.get_all()).isEmpty) {
+      _has_pending_form = false;
+    } else {
+      _has_pending_form = true;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return ListView(
       padding:
-          FxSpacing.fromLTRB(20, FxSpacing.safeAreaTop(_context) + 20, 20, 20),
+      FxSpacing.fromLTRB(20, FxSpacing.safeAreaTop(_context) + 20, 20, 20),
       children: <Widget>[
         Column(
           children: <Widget>[
@@ -98,100 +98,127 @@ class LoggedInScreenState extends State<LoggedInScreen> {
           ],
         ),
         FxSpacing.height(24),
-        InkWell(
-          onTap: ()=>{
-            Utils.launchPhone(AppConfig.OUR_PHONE_NUMBER)
-          },
-          child: FxContainer(
-            color: CustomTheme.accent,
-            padding: FxSpacing.xy(16, 8),
-            borderRadiusAll: 4,
-            child: Row(
-              children: <Widget>[
-                Icon(MdiIcons.informationOutline,
-                    color: theme.colorScheme.onPrimary, size: 18),
-                FxSpacing.width(16),
-                Expanded(
-                  child: FxText.b2("Need help?",
-                      color: FxColorUtils.goldColor,
-                      fontWeight: 600,
-                      letterSpacing: 0.2),
-                ),
-                FxSpacing.width(16),
-                FxText.caption(
-                  "Call Free Now!",
-                  fontWeight: 600,
-                  letterSpacing: 0.2,
-                  color: theme.colorScheme.onPrimary,
-                )
-              ],
-            ),
-          ),
-        ),
-        FxSpacing.height(24),
         Column(
           children: <Widget>[
             singleOption(
               _context,
               theme,
-              iconData: Icons.question_answer_outlined,
-              option: "Extension services",
-              navigation: '',
+              iconData: MdiIcons.plusThick,
+              option: "Post Advert",
+              navigation: AppConfig.ProductAddForm,
+              badge: _has_pending_form ? "1" : "",
             ),
             Divider(),
             singleOption(_context, theme,
-                iconData: Icons.agriculture_outlined,
-                option: "Farm management",
-                navigation: ""),
-            Divider(),
-            singleOption(_context, theme,
-                iconData: Icons.task_alt,
-                option: "Enterprise selection",
-                navigation: ""),
-            Divider(),
-            singleOption(_context, theme,
-                iconData: Icons.sell,
-                option: "Farm products pricing",
-                navigation: ""),
-            Divider(),
-            singleOption(_context, theme,
-                iconData: Icons.inventory_2_outlined,
-                option: "My products",
+                iconData: MdiIcons.shapeOutline,
+                option: "My Products",
                 navigation: AppConfig.MyProductsScreen),
             Divider(),
             singleOption(_context, theme,
-                iconData: Icons.assignment_ind_outlined,
+                iconData: Icons.manage_accounts,
                 option: "My Profile",
                 navigation: AppConfig.AccountEdit),
             Divider(),
             singleOption(_context, theme,
-                iconData: Icons.bolt,
-                option: "How to sell faster",
+                iconData: Icons.access_alarm_outlined,
+                option: "Sell fast",
                 navigation: AppConfig.SellFast),
             Divider(),
             singleOption(_context, theme,
-                iconData: Icons.emoji_objects_outlined,
-                option: "About This App",
-                navigation: AppConfig.PrivacyPolicy),
-            Divider(),
-            singleOption(_context, theme,
-                iconData: Icons.security,
-                option: "Privacy policy",
-                navigation: AppConfig.PrivacyPolicy),
-            Divider(),
-            singleOption(_context, theme,
-                iconData: Icons.live_help_outlined,
-                option: "Ask an expert",
-                navigation: ""),
+                iconData: MdiIcons.creditCardOutline,
+                option: "About ${AppConfig.AppName}",
+                navigation: AppConfig.AboutUs),
             Divider(),
             singleOption(_context, theme,
                 iconData: MdiIcons.faceAgent,
-                option: "Toll Free",
-                navigation: ""),
+                option: "Help \& Support",
+                navigation: AppConfig.CallUs),
             Divider(),
+
+            Container(
+              margin: EdgeInsets.only(top: 5),
+              child: Row(
+                children: <Widget>[
+                  InkWell(
+                    onTap: () => {Utils.launchOuLink(AppConfig.OurWhatsApp)},
+                    child: Container(
+                      margin: EdgeInsets.only(left: 0),
+                      padding: EdgeInsets.all(3),
+                      child: Icon(
+                        Icons.whatsapp,
+                        size: 30,
+                        color: Colors.green.shade600,
+                      ),
+                      decoration: BoxDecoration(
+                          border: Border.all(
+                              color: Colors.grey.shade500, width: 1),
+                          color: AppTheme.lightTheme.backgroundColor,
+                          borderRadius:
+                          BorderRadius.all(Radius.circular(11))),
+                    ),
+                  ),
+                  InkWell(
+                    onTap: () =>
+                    {Utils.launchOuLink(AppConfig.OUR_FACEBOOK_LINK)},
+                    child: Container(
+                      margin: EdgeInsets.only(left: 16),
+                      padding: EdgeInsets.all(3),
+                      child: Icon(
+                        Icons.facebook,
+                        size: 30,
+                        color: Colors.blue.shade800,
+                      ),
+                      decoration: BoxDecoration(
+                          border: Border.all(
+                              color: Colors.grey.shade500, width: 1),
+                          color: AppTheme.lightTheme.backgroundColor,
+                          borderRadius:
+                          BorderRadius.all(Radius.circular(11))),
+                    ),
+                  ),
+                  InkWell(
+                    onTap: () =>
+                    {Utils.launchOuLink(AppConfig.OUR_TWITTER_LINK)},
+                    child: Container(
+                      margin: EdgeInsets.only(left: 16),
+                      padding: EdgeInsets.all(3),
+                      child: Icon(
+                        MdiIcons.twitter,
+                        size: 30,
+                        color: Colors.blue.shade500,
+                      ),
+                      decoration: BoxDecoration(
+                          border: Border.all(
+                              color: Colors.grey.shade500, width: 1),
+                          borderRadius:
+                          BorderRadius.all(Radius.circular(11))),
+                    ),
+                  ),
+                  InkWell(
+                    onTap: () =>
+                    {Utils.launchOuLink(AppConfig.OUR_INSTAGRAM_LINK)},
+                    child: Container(
+                      margin: EdgeInsets.only(left: 16),
+                      padding: EdgeInsets.all(3),
+                      child: Icon(
+                        MdiIcons.instagram,
+                        size: 30,
+                        color: Colors.purple.shade300,
+                      ),
+                      decoration: BoxDecoration(
+                          border: Border.all(
+                              color: Colors.grey.shade500, width: 1),
+                          borderRadius:
+                          BorderRadius.all(Radius.circular(11))),
+                    ),
+                  ),
+
+                ],
+              ),
+            ),
+
             FxSpacing.height(24),
-            social_media_links(context),
-            FxSpacing.height(24),
+
             Center(
               child: FxButton(
                 elevation: 0,
@@ -264,21 +291,22 @@ class LoggedInScreenState extends State<LoggedInScreen> {
 
   Widget singleOption(_context, theme,
       {IconData? iconData,
-      required String option,
-      String navigation: "",
-      String badge: ""}) {
+        required String option,
+        String navigation: "",
+        String badge: ""}) {
     return Container(
-      padding: FxSpacing.y(10),
+      padding: FxSpacing.y(8),
       child: InkWell(
         onTap: () {
-          /*Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => CreatePostScreen()),
-          );
-
-          return;*/
-          if (navigation == AppConfig.ProductAddForm) {
-            _show_bottom_sheet_sell_or_buy(_context);
+          //print("======> ${logged_in_user.avatar}");
+          //return;
+          //Utils.navigate_to(AppConfig.MyProductsScreen, _context);
+          //return;
+          if (navigation == AppConfig.CallUs) {
+            Utils.launchOuLink(navigation);
+          } else if (navigation == AppConfig.ProductAddForm) {
+            Utils.navigate_to(navigation, _context);
+            //_show_bottom_sheet_sell_or_buy(_context);
           } else {
             Utils.navigate_to(navigation, _context);
           }
@@ -289,17 +317,13 @@ class LoggedInScreenState extends State<LoggedInScreen> {
             Container(
               child: Icon(
                 iconData,
-                size: 30,
-                color: CustomTheme.primary,
+                size: 22,
+                color: theme.colorScheme.onBackground,
               ),
             ),
             FxSpacing.width(16),
             Expanded(
-              child: FxText.b1(
-                option,
-                fontWeight: 600,
-                fontSize: 18,
-              ),
+              child: FxText.b1(option, fontWeight: 600),
             ),
             Container(
               child: Row(
@@ -307,15 +331,19 @@ class LoggedInScreenState extends State<LoggedInScreen> {
                   badge.toString().isEmpty
                       ? SizedBox()
                       : FxContainer(
-                          paddingAll: 5,
-                          borderRadiusAll: 30,
-                          color: Colors.red.shade500,
-                          child: Text(
-                            "12",
-                            style: TextStyle(color: Colors.white),
-                          )),
+                      color: Colors.red.shade500,
+                      width: 28,
+                      paddingAll: 0,
+                      marginAll: 0,
+                      alignment: Alignment.center,
+                      borderRadiusAll: 15,
+                      height: 28,
+                      child: FxText(
+                        badge.toString(),
+                        color: Colors.white,
+                      )),
                   Icon(MdiIcons.chevronRight,
-                      size: 30, color: CustomTheme.primary),
+                      size: 22, color: theme.colorScheme.onBackground),
                 ],
               ),
             ),
@@ -323,6 +351,13 @@ class LoggedInScreenState extends State<LoggedInScreen> {
         ),
       ),
     );
+  }
+
+  Future<void> do_logout() async {
+    await Utils.logged_out();
+    Utils.showSnackBar(
+        "Logged out successfully.", _context, Colors.white);
+    my_init();
   }
 
   open_add_product(BuildContext context) async {
@@ -338,11 +373,5 @@ class LoggedInScreenState extends State<LoggedInScreen> {
         }
       }
     }
-  }
-
-  Future<void> do_logout() async {
-    await Utils.logged_out();
-    Utils.showSnackBar("Logged out successfully.", _context, Colors.white);
-    my_init();
   }
 }

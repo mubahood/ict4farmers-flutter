@@ -27,4 +27,13 @@ class AppConfig {
   static const String SellFast = "SellFast";
   static const String ViewFullImagesScreen = "ViewFullImagesScreen";
   static const String SearchScreen = "SearchScreen";
+  static const String AboutUs = "AboutUs";
+  static const String CallUs = "CallUs";
+  static const String OurWhatsApp = "OurWhatsApp";
+  static const String OUR_PHONE_NUMBER = "+256414230705";
+  static const String OUR_WHATSAPP_NUMBER = "+8801632257609";
+  static const String OUR_FACEBOOK_LINK = "https://ugnews24.info";
+  static const String OUR_TWITTER_LINK = "https://twitter.com/ugnews24";
+  static const String OUR_YOUTUBE_LINK = "https://twitter.com/ugnews24";
+  static const String OUR_INSTAGRAM_LINK = "https://www.youtube.com/ugnews24/";
 }
