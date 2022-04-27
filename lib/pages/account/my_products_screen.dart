@@ -179,22 +179,7 @@ class MyProductsScreenState extends State<MyProductsScreen> {
   }
 
   SingleProduct(ProductModel item) {
-    String thumbnail = AppConfig.BASE_URL + "/" + "no_image.jpg";
-
-    if (item.thumbnail != null) {
-      if (item.thumbnail.toString() != "null") {
-        Map<String, dynamic> thumbnail_map = jsonDecode(item.thumbnail);
-        if (thumbnail_map != null) {
-          if (thumbnail_map['thumbnail'] != null) {
-            if (thumbnail_map['thumbnail'].toString().length > 3) {
-              thumbnail = AppConfig.BASE_URL +
-                  "/storage/" +
-                  thumbnail_map['thumbnail'].toString();
-            }
-          }
-        }
-      }
-    }
+    String thumbnail = item.get_thumbnail();
 
     double height = 100;
     return InkWell(

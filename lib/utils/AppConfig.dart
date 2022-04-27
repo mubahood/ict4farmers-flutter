@@ -27,7 +27,7 @@ class AppConfig {
   static const String SellFast = "SellFast";
   static const String ViewFullImagesScreen = "ViewFullImagesScreen";
   static const String SearchScreen = "SearchScreen";
-
+  static const String AboutUs = "AboutUs";
   static const String CallUs = "CallUs";
   static const String OurWhatsApp = "OurWhatsApp";
   static const String OUR_PHONE_NUMBER = "+256414230705";

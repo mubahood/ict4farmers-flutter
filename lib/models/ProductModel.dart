@@ -72,7 +72,7 @@ class ProductModel extends HiveObject {
           if (element['thumbnail'] != null) {
             if (!found) {
               thumbnail_link =
-                  "${AppConfig.BASE_URL}/${element['thumbnail'].toString()}";
+                  "${AppConfig.BASE_URL}/storage/${element['thumbnail'].toString()}";
               found = true;
             }
           }
@@ -80,6 +80,7 @@ class ProductModel extends HiveObject {
       });
     }
 
+    print("======> ${thumbnail_link} <======");
     if (thumbnail_link.isEmpty) {
       thumbnail_link = AppConfig.BASE_URL + "/" + "no_image.jpg";
     }

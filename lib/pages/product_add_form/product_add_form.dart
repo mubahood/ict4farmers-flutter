@@ -543,11 +543,11 @@ class ProductAddFormState extends State<ProductAddForm> {
         if (first_found) {
           try {
             var img = await MultipartFile.fromFile(photos_picked[__counter],
-                filename: 'image_${__counter}');
+                filename: 'image_${__counter}' );
             if (img != null) {
               form_data_map['image_${__counter}'] =
               await MultipartFile.fromFile(photos_picked[__counter],
-                  filename: 'image_${__counter}');
+                  filename: photos_picked[__counter].toString());
             } else {}
           } catch (e) {}
         }
