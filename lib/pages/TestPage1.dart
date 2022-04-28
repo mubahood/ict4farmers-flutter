@@ -218,11 +218,12 @@ class _TestPage1State extends State<TestPage1> {
                         height: 220,
                         fit: BoxFit.cover,
                         imageUrl:
-                            "${AppConfig.BASE_URL}/storage/${horizontal_banner_1.image}",
+                            "${AppConfig.BASE_URL}/storage/${horizontal_banner_1.image.toString().trim()}",
                         placeholder: (context, url) => ShimmerLoadingWidget(
                           height: 200,
                         ),
-                        errorWidget: (context, url, error) => Icon(Icons.error),
+                        errorWidget: (context, url, error) => Text(
+                            "${AppConfig.BASE_URL}/storage/${horizontal_banner_1.image.toString().trim()}"),
                       ),
                     ),
                   );

@@ -11,20 +11,7 @@ import '../pages/products/product_details.dart';
 import '../theme/custom_theme.dart';
 
 Widget ProductItemUi(int index, ProductModel productModel, context) {
-  String thumbnail = AppConfig.BASE_URL + "/" + "no_image.jpg";
 
-  if (productModel.thumbnail != null &&
-      (!productModel.thumbnail.toString().trim().isEmpty)) {
-    Map<String, dynamic> thumbnail_map = jsonDecode(productModel.thumbnail);
-    if (thumbnail_map != null) {
-      if (thumbnail_map['thumbnail'] != null) {
-        if (thumbnail_map['thumbnail'].toString().length > 3) {
-          thumbnail =
-              AppConfig.BASE_URL + "/" + thumbnail_map['thumbnail'].toString();
-        }
-      }
-    }
-  }
 
   return InkWell(
     onTap: () {
@@ -49,7 +36,7 @@ Widget ProductItemUi(int index, ProductModel productModel, context) {
             height: 230,
             width: double.infinity,
             fit: BoxFit.cover,
-            imageUrl: thumbnail,
+            imageUrl: productModel.get_thumbnail(),
             placeholder: (context, url) => ShimmerLoadingWidget(
               height: 240,
             ),
