@@ -60,28 +60,26 @@ class ProductModel extends HiveObject {
   String fixed_price = "";
 
   String get_thumbnail() {
-    List<String> thumbnails = [];
-    String thumbnail_link = "";
+    String thumbnail_link = "no_image.jpg";
     bool found = false;
 
-    thumbnails.clear();
-    List<dynamic> raw_list = jsonDecode(this.images);
-    if (raw_list != null) {
-      raw_list.forEach((element) {
-        if (element != null) {
-          if (element['thumbnail'] != null) {
-            if (!found) {
+    if (this.thumbnail != null) {
+      if (this.thumbnail.length > 3) {
+        try {
+          dynamic raw_thumb = jsonDecode(this.thumbnail);
+          if (raw_thumb['thumbnail'] != null) {
+            if (raw_thumb['thumbnail'].toString().length > 2) {
               thumbnail_link =
-                  "${AppConfig.BASE_URL}/storage/${element['thumbnail'].toString()}";
-              found = true;
+                  "${AppConfig.BASE_URL}/storage/${raw_thumb['thumbnail'].toString()}";
             }
           }
+        } catch (x) {
+          String thumbnail_link = "";
         }
-      });
+      }
     }
 
-    print("======> ${thumbnail_link} <======");
-    if (thumbnail_link.isEmpty) {
+    if (thumbnail_link == null || (thumbnail_link.length < 5)) {
       thumbnail_link = AppConfig.BASE_URL + "/" + "no_image.jpg";
     }
     return thumbnail_link;

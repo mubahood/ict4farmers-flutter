@@ -72,11 +72,13 @@ class ProductDetailsState extends State<ProductDetails> {
     List<dynamic> raw_list = jsonDecode(this.productModel.images);
     if (raw_list != null) {
       raw_list.forEach((element) {
+
         if (element != null) {
           if (element['thumbnail'] != null) {
             thumbnails.add(
-                "${AppConfig.BASE_URL}/storage.${element['thumbnail'].toString()}");
-            images.add("${AppConfig.BASE_URL}/${element['src'].toString()}");
+                "${AppConfig.BASE_URL}/storage/${element['thumbnail'].toString()}");
+            images.add("${AppConfig.BASE_URL}/storage/${element['src'].toString()}");
+
           }
         }
       });
@@ -546,6 +548,7 @@ List<Widget> _buildHouseList() {
   List<Widget> list = [];
 
   thumbnails.forEach((element) {
+    print("==========> ${element.toString()} <============");
     list.add(_SinglePosition(element.toString()));
   });
 
