@@ -34,6 +34,8 @@ import '../pages/account/onboarding_widget.dart';
 import '../pages/chat/chat_home_screen.dart';
 import '../pages/forum/create_post_screen.dart';
 import '../pages/homes/advisory/advisory_home.dart';
+import '../pages/other_pages/PaymentPage.dart';
+import '../pages/other_pages/SuccessPaymentPage.dart';
 import '../pages/other_pages/privacy_policy.dart';
 import '../pages/other_pages/sell_fast.dart';
 import '../pages/posts/post_details_screen.dart';
@@ -68,6 +70,13 @@ class Utils {
     }
   }
 
+  static void launch_browser(String _url) {
+    do_launch_browser(_url);
+  }
+
+  static void do_launch_browser(dynamic _url) async {
+    if (!await launch(_url)) throw 'Could not launch $_url';
+  }
 
   static LatLng get_default_lati_long() {
     double lati = 0.364607;
@@ -256,7 +265,30 @@ class Utils {
 
   static navigate_to(String screen, context, {dynamic data: null}) {
     switch (screen) {
-      case AppConfig.ViewFullImagesScreen:
+      case AppConfig.PaymentPage:
+        Navigator.push(
+          context,
+          PageRouteBuilder(
+            pageBuilder: (context, animation1, animation2) =>
+                PaymentPage(),
+            transitionDuration: Duration.zero,
+          ),
+        );
+        break;
+
+        case AppConfig.SuccessPaymentPage:
+        Navigator.push(
+          context,
+          PageRouteBuilder(
+            pageBuilder: (context, animation1, animation2) =>
+                SuccessPaymentPage(),
+            transitionDuration: Duration.zero,
+          ),
+        );
+        break;
+
+
+        case AppConfig.ViewFullImagesScreen:
         Navigator.push(
           context,
           PageRouteBuilder(

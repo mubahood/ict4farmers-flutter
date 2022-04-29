@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutx/flutx.dart';
 import 'package:ict4farmers/extensions/string.dart';
 import 'package:ict4farmers/extensions/widgets_extension.dart';
+import 'package:ict4farmers/models/BannerModel.dart';
 import 'package:ict4farmers/models/ProductModel.dart';
 import 'package:ict4farmers/pages/TestPage1.dart';
 import 'package:ict4farmers/pages/homes/select_language_dialog.dart';
@@ -12,9 +14,12 @@ import 'package:ict4farmers/theme/custom_theme.dart';
 import 'package:ict4farmers/theme/theme_type.dart';
 import 'package:ict4farmers/utils/Utils.dart';
 import 'package:ict4farmers/widgets/images.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../../utils/AppConfig.dart';
+import '../TestPage.dart';
+import 'app_setting_screen.dart';
 
 class HomesScreenSegment extends StatefulWidget {
   HomesScreenSegment({Key? key}) : super(key: key);
@@ -31,8 +36,6 @@ class _HomesScreenSegmentState extends State<HomesScreenSegment>
   late CustomTheme customTheme;
   GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
 
-  late TabController tabController;
-  late List<NavItem> navItems;
 
   bool isDark = false;
   TextDirection textDirection = TextDirection.ltr;
@@ -47,31 +50,8 @@ class _HomesScreenSegmentState extends State<HomesScreenSegment>
   @override
   void initState() {
     super.initState();
-    //_init_databse();
-    tabController = TabController(length: 3, vsync: this, initialIndex: 0);
 
-    navItems = [
-      NavItem('Men', Images.homeIcon, TestPage1(1)),
-      NavItem('Women', Images.app2Icon, TestPage1(2)),
-      NavItem('Accessories', Images.materialDesignIcon, TestPage1(3)),
-    ];
 
-    tabController.addListener(() {
-      currentIndex = tabController.index;
-
-      setState(() {});
-    });
-
-    tabController.animation!.addListener(() {
-      final aniValue = tabController.animation!.value;
-      if (aniValue - currentIndex > 0.5) {
-        currentIndex++;
-      } else if (aniValue - currentIndex < -0.5) {
-        currentIndex--;
-      }
-
-      setState(() {});
-    });
   }
 
   void changeDirection() {
@@ -132,10 +112,9 @@ class _HomesScreenSegmentState extends State<HomesScreenSegment>
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Container(
-                  margin: EdgeInsets.only(top: 10),
                   child: Image(
                     image: AssetImage(Images.logo_1),
-                    width: 140,
+                    width: 120,
                     color: null,
                     fit: BoxFit.scaleDown,
                     alignment: Alignment.center,
@@ -144,13 +123,13 @@ class _HomesScreenSegmentState extends State<HomesScreenSegment>
                 InkWell(
                   onTap: () => {Utils.navigate_to(AppConfig.SearchScreen, context)},
                   child: Container(
-                    margin: EdgeInsets.only(top: 10),
+                    margin: EdgeInsets.only( top: 10),
                     padding: EdgeInsets.only(left: 10, top: 7, bottom: 7),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(20)),
                       color: theme.colorScheme.onBackground.withAlpha(20),
                     ),
-                    width: 220,
+                    width: (MediaQuery.of(context).size.width-160),
                     child: Row(
                       children: [
                         Icon(
@@ -188,74 +167,7 @@ class _HomesScreenSegmentState extends State<HomesScreenSegment>
               ],
             ),
           ),
-          body: Column(
-            children: [
-             /* FxButton.text(
-                  padding: FxSpacing.zero,
-                  onPressed: () {
-                    //print("one love");
-                    //Utils.http_get('api/proudcts', {});
-                  },
-                  splashColor: CustomTheme.primary.withAlpha(40),
-                  child:
-                      FxText.b3("Forgot Password?", color: CustomTheme.accent)),*/
-
-              /*Row(
-                children: [
-                  InkWell(
-                    onTap: () => {_init_databse()},
-                    child: Container(
-                        color: Colors.green.shade200,
-                        width: 100,
-                        height: 100,
-                        child: Text("Init Data")),
-                  ),
-                  InkWell(
-                    onTap: () => {print("adding")},
-                    child: Container(
-                        color: Colors.blue.shade200,
-                        width: 100,
-                        height: 100,
-                        child: Text("Add Data")),
-                  ),
-                  InkWell(
-                    onTap: () => {_get_data()},
-                    child: Container(
-                        color: Colors.red.shade200,
-                        width: 100,
-                        height: 100,
-                        child: Text("Read Data")),
-                  ),
-                ],
-              ),*/
-              FxContainer.none(
-                padding: EdgeInsets.only(top: 10, bottom: 11),
-                color: theme.scaffoldBackgroundColor,
-                enableBorderRadius: false,
-                borderRadiusAll: 0,
-                child: TabBar(
-                  labelPadding: EdgeInsets.all(0),
-                  controller: tabController,
-                  indicator: FxTabIndicator(
-                      indicatorColor: CustomTheme.primary,
-                      indicatorStyle: FxTabIndicatorStyle.rectangle,
-                      indicatorHeight: 3,
-                      radius: 0,
-                      yOffset: 28,
-                      width: 60),
-                  indicatorSize: TabBarIndicatorSize.tab,
-                  indicatorColor: theme.colorScheme.primary,
-                  tabs: buildTab(),
-                ),
-              ),
-              Expanded(
-                child: TabBarView(
-                    controller: tabController,
-                    children:
-                        navItems.map((navItem) => navItem.screen).toList()),
-              ),
-            ],
-          ),
+          body: TestPage1(1),
 /*          drawer: _buildDrawer(),*/
         );
       },
@@ -511,24 +423,7 @@ class _HomesScreenSegmentState extends State<HomesScreenSegment>
       )),
     );
   }
-
-  List<Widget> buildTab() {
-    List<Widget> tabs = [];
-
-    for (int i = 0; i < navItems.length; i++) {
-      tabs.add(Container(
-          child: Text(
-        navItems[i].title,
-        style: TextStyle(
-          fontSize: 15,
-          color: (currentIndex == i)
-              ? CustomTheme.primary
-              : theme.colorScheme.onBackground.withAlpha(220),
-        ),
-      )));
-    }
-    return tabs;
-  }
+ 
 }
 
 class NavItem {
