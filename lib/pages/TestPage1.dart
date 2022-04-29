@@ -271,7 +271,7 @@ class _TestPage1State extends State<TestPage1> {
                 childCount: 1, // 1000 list items
               ),
             ),
-            SliverGrid(
+           /* SliverGrid(
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
                   mainAxisSpacing: 10,
@@ -284,8 +284,8 @@ class _TestPage1State extends State<TestPage1> {
                 },
                 childCount: _gridBannersItems.length,
               ),
-            ),
-            SliverGrid(
+            ),*/
+            /*SliverGrid(
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
                   mainAxisSpacing: 2,
@@ -298,8 +298,8 @@ class _TestPage1State extends State<TestPage1> {
                 },
                 childCount: _gridBannersItems2.length,
               ),
-            ),
-            SliverList(
+            ),*/
+           /* SliverList(
               delegate: SliverChildBuilderDelegate(
                 (BuildContext context, int index) {
                   return InkWell(
@@ -326,14 +326,16 @@ class _TestPage1State extends State<TestPage1> {
                 },
                 childCount: 1, // 1000 list items
               ),
-            ),
+            ),*/
             SliverList(
               delegate: SliverChildBuilderDelegate(
                 (BuildContext context, int index) {
                   return Container(
-                    margin: EdgeInsets.only(top: 0, left: 18),
-                    child: FxText.b1(
-                      "You may also like",
+                    margin: EdgeInsets.only(top: 10, bottom: 10, left: 18),
+                    child: FxText.h3(
+                      "Just in",
+                      color: Colors.grey.shade800,
+                      fontWeight: 700,
                     ),
                   );
                 },

@@ -60,10 +60,7 @@ class _PaymentPage extends State<PaymentPage> {
                 ),
               ),
               InkWell(
-                onTap: () => {
-                Utils.launch_browser(
-                'https://ravesandbox.flutterwave.com/pay/lp8fz2bblnfp')
-                },
+                onTap: () => {pay_online()},
                 child: Container(
                   decoration: BoxDecoration(
                     color: Colors.white,
@@ -87,7 +84,7 @@ class _PaymentPage extends State<PaymentPage> {
                 ),
               ),
               InkWell(
-                onTap: () => {pay_online()},
+                onTap: () => {cash_on_delivery()},
                 child: Container(
                   color: CustomTheme.primary,
                   width: double.infinity,
@@ -118,9 +115,15 @@ class _PaymentPage extends State<PaymentPage> {
     }
   }
 
+  cash_on_delivery() {
+    Utils.navigate_to(AppConfig.SuccessPaymentPage, context);
+  }
+
   pay_online() {
+    Utils.launch_browser(
+        'https://ravesandbox.flutterwave.com/pay/lp8fz2bblnfp');
+    Utils.navigate_to(AppConfig.SuccessPaymentPage, context);
     //Utils.launch_browser(
     //   AppConfig.BASE_URL + "/privacy-policy.html");
-    Utils.navigate_to(AppConfig.SuccessPaymentPage, context);
   }
 }
