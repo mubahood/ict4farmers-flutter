@@ -7,6 +7,7 @@ class AppConfig {
   static const String AccountSplash = "AccountSplash";
   static const String ProductDetails = "ProductDetails";
   static const String ProductAddForm = "ProductAddForm";
+  static const String SuccessPaymentPage = "SuccessPaymentPage";
   static const String PickProductCategory = "PickProductCategory";
   static const String form_field_text = "text";
   static const String form_field_select = "select";
@@ -26,6 +27,7 @@ class AppConfig {
   static const String ForumScreen = "ForumScreen";
   static const String SellFast = "SellFast";
   static const String ViewFullImagesScreen = "ViewFullImagesScreen";
+  static const String PaymentPage = "PaymentPage";
   static const String SearchScreen = "SearchScreen";
   static const String AboutUs = "AboutUs";
   static const String CallUs = "CallUs";
