@@ -168,46 +168,46 @@ class _TestPage1State extends State<TestPage1> {
           slivers: [
             (is_logged_in && complete_profile)
                 ? SliverList(
-                    delegate: SliverChildBuilderDelegate(
-                      (BuildContext context, int index) {
-                        return Container();
-                      },
-                      childCount: 0, // 1000 list items
-                    ),
-                  )
+              delegate: SliverChildBuilderDelegate(
+                    (BuildContext context, int index) {
+                  return Container();
+                },
+                childCount: 0, // 1000 list items
+              ),
+            )
                 : SliverAppBar(
-                    title: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        FxText(
-                          complete_profile
-                              ? "Want to access everything?"
-                              : "Just 1 more step remaining!",
-                          color: Colors.yellow.shade700,
-                          fontWeight: 600,
-                        ),
-                        FxButton.text(
-                            onPressed: () {
-                              if (!is_logged_in) {
-                                show_not_account_bottom_sheet(context);
-                              } else if (!complete_profile) {
-                                Utils.navigate_to(
-                                    AppConfig.AccountEdit, context);
-                              }
-                            },
-                            splashColor: CustomTheme.primary.withAlpha(40),
-                            child: FxText.l2(complete_profile ? "YES" : "WHAT?",
-                                fontSize: 18,
-                                textAlign: TextAlign.center,
-                                color: Colors.white))
-                      ],
-                    ),
-                    floating: true,
-                    backgroundColor: Colors.red.shade700,
+              title: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  FxText(
+                    complete_profile
+                        ? "Want to access everything?"
+                        : "Just 1 more step remaining!",
+                    color: Colors.yellow.shade700,
+                    fontWeight: 600,
                   ),
+                  FxButton.text(
+                      onPressed: () {
+                        if (!is_logged_in) {
+                          show_not_account_bottom_sheet(context);
+                        } else if (!complete_profile) {
+                          Utils.navigate_to(
+                              AppConfig.AccountEdit, context);
+                        }
+                      },
+                      splashColor: CustomTheme.primary.withAlpha(40),
+                      child: FxText.l2(complete_profile ? "YES" : "WHAT?",
+                          fontSize: 18,
+                          textAlign: TextAlign.center,
+                          color: Colors.white))
+                ],
+              ),
+              floating: true,
+              backgroundColor: Colors.red.shade700,
+            ),
             SliverList(
               delegate: SliverChildBuilderDelegate(
-                (BuildContext context, int index) {
+                    (BuildContext context, int index) {
                   return InkWell(
                     onTap: () => {open_product_listting(horizontal_banner_1)},
                     child: Container(
@@ -218,11 +218,12 @@ class _TestPage1State extends State<TestPage1> {
                         height: 220,
                         fit: BoxFit.cover,
                         imageUrl:
-                            "${AppConfig.BASE_URL}/storage/${horizontal_banner_1.image}",
+                        "${AppConfig.BASE_URL}/storage/${horizontal_banner_1.image.toString().trim()}",
                         placeholder: (context, url) => ShimmerLoadingWidget(
                           height: 200,
                         ),
-                        errorWidget: (context, url, error) => Icon(Icons.error),
+                        errorWidget: (context, url, error) => Text(
+                            "${AppConfig.BASE_URL}/storage/${horizontal_banner_1.image.toString().trim()}"),
                       ),
                     ),
                   );
@@ -238,7 +239,7 @@ class _TestPage1State extends State<TestPage1> {
                   childAspectRatio: 2,
                   mainAxisExtent: 100),
               delegate: SliverChildBuilderDelegate(
-                (context, index) {
+                    (context, index) {
                   return singleGridItem(_gridItems[index]);
                 },
                 childCount: _gridItems.length,
@@ -246,7 +247,7 @@ class _TestPage1State extends State<TestPage1> {
             ),
             SliverList(
               delegate: SliverChildBuilderDelegate(
-                (BuildContext context, int index) {
+                    (BuildContext context, int index) {
                   return InkWell(
                     onTap: () => {open_product_listting(horizontal_banner_2)},
                     child: Container(
@@ -255,7 +256,7 @@ class _TestPage1State extends State<TestPage1> {
                       child: CachedNetworkImage(
                         fit: BoxFit.fill,
                         imageUrl:
-                            "${AppConfig.BASE_URL}/storage/${horizontal_banner_2.image}",
+                        "${AppConfig.BASE_URL}/storage/${horizontal_banner_2.image}",
                         placeholder: (context, url) => ShimmerLoadingWidget(
                             height: 90, width: 90, is_circle: true),
                         errorWidget: (context, url, error) => Image(
@@ -271,7 +272,7 @@ class _TestPage1State extends State<TestPage1> {
                 childCount: 1, // 1000 list items
               ),
             ),
-           /* SliverGrid(
+            SliverGrid(
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
                   mainAxisSpacing: 10,
@@ -279,13 +280,13 @@ class _TestPage1State extends State<TestPage1> {
                   childAspectRatio: 2,
                   mainAxisExtent: 240),
               delegate: SliverChildBuilderDelegate(
-                (context, index) {
+                    (context, index) {
                   return singleGridImageItem(_gridBannersItems[index], index);
                 },
                 childCount: _gridBannersItems.length,
               ),
-            ),*/
-            /*SliverGrid(
+            ),
+            SliverGrid(
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
                   mainAxisSpacing: 2,
@@ -293,15 +294,15 @@ class _TestPage1State extends State<TestPage1> {
                   childAspectRatio: 1,
                   mainAxisExtent: 110),
               delegate: SliverChildBuilderDelegate(
-                (context, index) {
+                    (context, index) {
                   return singleGridImageIte2(_gridBannersItems2[index], index);
                 },
                 childCount: _gridBannersItems2.length,
               ),
-            ),*/
-           /* SliverList(
+            ),
+            SliverList(
               delegate: SliverChildBuilderDelegate(
-                (BuildContext context, int index) {
+                    (BuildContext context, int index) {
                   return InkWell(
                     onTap: () => {open_product_listting(horizontal_banner_3)},
                     child: Container(
@@ -311,7 +312,7 @@ class _TestPage1State extends State<TestPage1> {
                         height: 220,
                         fit: BoxFit.fill,
                         imageUrl:
-                            "${AppConfig.BASE_URL}/storage/${horizontal_banner_3.image}",
+                        "${AppConfig.BASE_URL}/storage/${horizontal_banner_3.image}",
                         placeholder: (context, url) => ShimmerLoadingWidget(
                           height: 220,
                         ),
@@ -326,16 +327,14 @@ class _TestPage1State extends State<TestPage1> {
                 },
                 childCount: 1, // 1000 list items
               ),
-            ),*/
+            ),
             SliverList(
               delegate: SliverChildBuilderDelegate(
-                (BuildContext context, int index) {
+                    (BuildContext context, int index) {
                   return Container(
-                    margin: EdgeInsets.only(top: 10, bottom: 10, left: 18),
-                    child: FxText.h3(
-                      "Just in",
-                      color: Colors.grey.shade800,
-                      fontWeight: 700,
+                    margin: EdgeInsets.only(top: 0, left: 18),
+                    child: FxText.b1(
+                      "You may also like",
                     ),
                   );
                 },
@@ -350,7 +349,7 @@ class _TestPage1State extends State<TestPage1> {
                   childAspectRatio: 1,
                   mainAxisExtent: 280),
               delegate: SliverChildBuilderDelegate(
-                (context, index) {
+                    (context, index) {
                   return ProductItemUi(
                       index, _trending_products[index], context);
                 },
@@ -423,10 +422,10 @@ class _TestPage1State extends State<TestPage1> {
         color: (page_num == 1)
             ? Color.fromARGB(255, 188, 223, 204)
             : (page_num == 2)
-                ? Color.fromARGB(255, 219, 184, 158)
-                : (page_num == 3)
-                    ? Color.fromARGB(255, 150, 204, 239)
-                    : Color.fromARGB(255, 188, 223, 204),
+            ? Color.fromARGB(255, 219, 184, 158)
+            : (page_num == 3)
+            ? Color.fromARGB(255, 150, 204, 239)
+            : Color.fromARGB(255, 188, 223, 204),
         alignment: Alignment.center,
         padding: EdgeInsets.all(5),
         margin: EdgeInsets.only(
