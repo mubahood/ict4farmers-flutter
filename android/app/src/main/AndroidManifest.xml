@@ -3,6 +3,25 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <!--
+    keytool -genkey -v -keystore /Users/mac/Desktop/github/ict4farmers-flutter/jotrace-key.jks -keyalg RSA -keysize 2048 -validity 10000 -alias key
+
+    /Users/mac/Desktop/github/ict4farmers-flutter/jotrace-key.jks
+
+    PASSWORD
+    intellectual+256
+
+    First name
+    Joel Sekajja
+
+    Organization name
+    Jotrace
+
+    Is CN=Joel Sekajja, OU=Jotrace, O=Jotrace, L=UG, ST=Kampala, C=UG correct?
+
+
+    -->
+
     <queries>
         <!-- If your app opens https URLs -->
         <intent>
