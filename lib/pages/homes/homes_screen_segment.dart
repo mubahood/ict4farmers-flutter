@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutx/flutx.dart';
 import 'package:ict4farmers/extensions/string.dart';
 import 'package:ict4farmers/extensions/widgets_extension.dart';
-import 'package:ict4farmers/models/BannerModel.dart';
 import 'package:ict4farmers/models/ProductModel.dart';
 import 'package:ict4farmers/pages/TestPage1.dart';
 import 'package:ict4farmers/pages/homes/select_language_dialog.dart';
@@ -14,12 +12,9 @@ import 'package:ict4farmers/theme/custom_theme.dart';
 import 'package:ict4farmers/theme/theme_type.dart';
 import 'package:ict4farmers/utils/Utils.dart';
 import 'package:ict4farmers/widgets/images.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../../utils/AppConfig.dart';
-import '../TestPage.dart';
-import 'app_setting_screen.dart';
 
 class HomesScreenSegment extends StatefulWidget {
   HomesScreenSegment({Key? key}) : super(key: key);
@@ -56,14 +51,13 @@ class _HomesScreenSegmentState extends State<HomesScreenSegment>
     tabController = TabController(length: 3, vsync: this, initialIndex: 0);
 
     navItems = [
-      NavItem('Crops', Images.homeIcon, TestPage1(1)),
-      NavItem('Livestock', Images.app2Icon, TestPage1(2)),
-      NavItem('Services', Images.materialDesignIcon, TestPage1(3)),
+      NavItem('Textile', Images.homeIcon, TestPage1(1)),
+      NavItem('Electronics', Images.app2Icon, TestPage1(2)),
+      NavItem('More', Images.materialDesignIcon, TestPage1(3)),
     ];
 
     tabController.addListener(() {
       currentIndex = tabController.index;
-
       setState(() {});
     });
 

@@ -28,7 +28,7 @@ Widget not_logged_screen(context) {
           alignment: Alignment.center,
           margin: EdgeInsets.only(top: 8),
           child: FxText.sh1(
-              "Sell your farm products, Chat with experts, Compare farm products prices, Manage your farms and much more...",
+              "Buy and sell your products through a smart and secure online connection ${AppConfig.AppName}",
               textAlign: TextAlign.center,
               fontWeight: 600,
               letterSpacing: 0),
@@ -86,12 +86,12 @@ Widget not_logged_screen(context) {
               singleOption(context, AppTheme.theme,
                   iconData: Icons.info,
                   option: "About this App",
-                  navigation: AppConfig.PrivacyPolicy),
+                  navigation: AppConfig.AboutUs),
               Divider(),
               singleOption(context, AppTheme.theme,
                   iconData: Icons.call,
-                  option: "Toll free",
-                  navigation: AppConfig.PrivacyPolicy),
+                  option: "Talk to us now",
+                  navigation: AppConfig.CallUs),
               SizedBox(
                 height: 10,
               ),
@@ -187,9 +187,11 @@ Widget singleOption(_context, theme,
           );
 
           return;*/
-        if (navigation == AppConfig.ProductAddForm) {
-        } else {
+        if ((navigation == AppConfig.PrivacyPolicy) ||
+            (navigation == AppConfig.AboutUs)) {
           Utils.navigate_to(navigation, _context);
+        } else {
+          Utils.launchOuLink(navigation);
         }
       },
       child: Row(

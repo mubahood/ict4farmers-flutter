@@ -57,7 +57,7 @@ class _EstateSplashScreenState extends State<EstateSplashScreen> {
                     left: 0,
                     right: 0,
                     child: FxText.h3(
-                      'Let\'s Help you set a right price for your farm products',
+                      'Let\'s Help you set a right price for your products',
                       color: customTheme.estateOnPrimary,
                       textAlign: TextAlign.center,
                       letterSpacing: 0.4,

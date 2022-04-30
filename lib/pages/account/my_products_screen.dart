@@ -137,9 +137,9 @@ class MyProductsScreenState extends State<MyProductsScreen> {
                           : items.isEmpty
                               ? EmptyList(
                                   body:
-                                      "You have no any farm product or service in your store.",
+                                      "You have no any product or service in your store.",
                                   action_text:
-                                      "Press on the Plus (+) button to Add a new farm product.")
+                                      "Press on the Plus (+) button to Add a new product.")
                               : CustomScrollView(
                                   slivers: [
                                     SliverList(

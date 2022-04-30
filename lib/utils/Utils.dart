@@ -7,8 +7,6 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutx/widgets/text/text.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:ict4farmers/models/BannerModel.dart';
 import 'package:ict4farmers/models/PostCategoryModel.dart';
@@ -17,6 +15,7 @@ import 'package:ict4farmers/models/UserModel.dart';
 import 'package:ict4farmers/pages/HomPage.dart';
 import 'package:ict4farmers/pages/account/account_register.dart';
 import 'package:ict4farmers/pages/account/account_splash.dart';
+import 'package:ict4farmers/pages/other_pages/about_is.dart';
 import 'package:ict4farmers/theme/app_theme.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -66,14 +65,6 @@ class Utils {
     } else {
       Utils.launchURL(link);
     }
-  }
-
-
-  static LatLng get_default_lati_long() {
-    double lati = 0.364607;
-    double long = 32.604781;
-
-    return new LatLng(lati, long);
   }
 
   static void showSnackBar(String message, BuildContext _context, color,
@@ -318,6 +309,16 @@ class Utils {
         );
         break;
 
+      case AppConfig.AboutUs:
+        Navigator.push(
+          context,
+          PageRouteBuilder(
+            pageBuilder: (context, animation1, animation2) => AboutUs(),
+            transitionDuration: Duration.zero,
+          ),
+        );
+        break;
+
       case AppConfig.PrivacyPolicy:
         Navigator.push(
           context,
@@ -552,41 +553,5 @@ class Utils {
     });
 
     return items;
-  }
-
-  static Future<Position> get_device_location() async {
-    bool serviceEnabled;
-    LocationPermission permission;
-
-    // Test if location services are enabled.
-    serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    if (!serviceEnabled) {
-      // Location services are not enabled don't continue
-      // accessing the position and request users of the
-      // App to enable the location services.
-
-    }
-
-    permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied) {
-        // Permissions are denied, next time you could try
-        // requesting permissions again (this is also where
-        // Android's shouldShowRequestPermissionRationale
-        // returned true. According to Android guidelines
-        // your App should show an explanatory UI now.
-      }
-    }
-
-    if (permission == LocationPermission.deniedForever) {
-      // Permissions are denied forever, handle appropriately.
-
-    }
-
-    Position p = await Geolocator.getCurrentPosition();
-    // When we reach here, permissions are granted and we can
-    // continue accessing the position of the device.
-    return await Geolocator.getCurrentPosition();
   }
 }

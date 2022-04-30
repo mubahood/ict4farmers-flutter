@@ -18,18 +18,14 @@ dependencies:
   # Base Dependencies
   cupertino_icons: ^1.0.3
   provider: ^5.0.0
-  shared_preferences: ^2.0.5
   google_fonts: 2.2.0
-  path_provider: ^2.0.9
   cached_network_image: ^3.2.0
   flutter_form_builder: ^7.0.0
   form_builder_validators: ^7.2.0
   hive: ^2.0.6
   hive_flutter: ^1.1.0
   shimmer: ^2.0.0
-  google_maps_flutter: ^2.0.3
   image_picker: ^0.8.4+11
-  geolocator: ^8.0.3
   url_launcher: ^6.0.20
   flutter_native_splash: ^2.1.6
 
@@ -45,6 +41,9 @@ dev_dependencies:
     sdk: flutter
   hive_generator: ^1.1.2
   build_runner: ^2.1.7
+  change_app_package_name: ^1.0.0
+
+
 
 
 

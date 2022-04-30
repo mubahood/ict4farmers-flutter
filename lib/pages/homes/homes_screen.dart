@@ -12,7 +12,6 @@ import 'package:provider/provider.dart';
 import '../account/my_products_screen.dart';
 import '../chat/chat_home_screen.dart';
 import '../search/categories_main_screen.dart';
-import 'on_map/on_map_screen.dart';
 
 class HomesScreen extends StatefulWidget {
   HomesScreen({Key? key}) : super(key: key);

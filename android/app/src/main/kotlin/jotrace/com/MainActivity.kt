@@ -1,4 +1,4 @@
-package eighttechnologies.net.ict4farmers
+package jotrace.com
 
 import io.flutter.embedding.android.FlutterActivity
 
