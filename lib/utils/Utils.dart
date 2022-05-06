@@ -23,6 +23,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../models/CategoryModel.dart';
 import '../models/ChatModel.dart';
 import '../models/ChatThreadModel.dart';
+import '../models/DynamicTable.dart';
 import '../models/FormItemModel.dart';
 import '../models/LocationModel.dart';
 import '../models/PostModel.dart';
@@ -260,6 +261,9 @@ class Utils {
 
     if (!Hive.isAdapterRegistered(56)) {
       Hive.registerAdapter(ChatThreadModelAdapter());
+    }
+    if (!Hive.isAdapterRegistered(57)) {
+      Hive.registerAdapter(DynamicTableAdapter());
     }
   }
 
