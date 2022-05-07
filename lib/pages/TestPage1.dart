@@ -245,7 +245,7 @@ class _TestPage1State extends State<TestPage1> {
                 childCount: _gridItems.length,
               ),
             ),
-            SliverList(
+            /*SliverList(
               delegate: SliverChildBuilderDelegate(
                     (BuildContext context, int index) {
                   return InkWell(
@@ -327,15 +327,14 @@ class _TestPage1State extends State<TestPage1> {
                 },
                 childCount: 1, // 1000 list items
               ),
-            ),
+            ),*/
             SliverList(
               delegate: SliverChildBuilderDelegate(
                     (BuildContext context, int index) {
                   return Container(
-                    margin: EdgeInsets.only(top: 0, left: 18),
-                    child: FxText.b1(
-                      "You may also like",
-                    ),
+                    margin: EdgeInsets.only(top: 20, left: 18, bottom: 10),
+                    child: FxText.h4("Just In",
+                        fontSize: 20, fontWeight: 800, color: Colors.black),
                   );
                 },
                 childCount: 1, // 1000 list items
