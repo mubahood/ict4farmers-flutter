@@ -1,10 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="eighttechnologies.net.ict4farmers">
+    package="goprint.ug">
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
-
 
     <queries>
         <!-- If your app opens https URLs -->
@@ -33,8 +32,8 @@
 
    <application
        android:icon="@drawable/logo"
-       android:label="PET-Shop"
-        android:name="${applicationName}"
+       android:name="${applicationName}"
+       android:label="GO-Print"
        android:allowBackup="true"
        >
 

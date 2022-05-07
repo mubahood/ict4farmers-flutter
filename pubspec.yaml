@@ -32,6 +32,7 @@ dependencies:
   geolocator: ^8.0.3
   url_launcher: ^6.0.20
   flutter_native_splash: ^2.1.6
+  change_app_package_name: ^1.0.0
 
 
   #(Syncfusion Flutter packages - Charts, Calendar, ETC.)
