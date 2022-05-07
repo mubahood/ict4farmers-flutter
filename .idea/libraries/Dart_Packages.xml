@@ -404,7 +404,7 @@
         <entry key="geolocator_apple">
           <value>
             <list>
-              <option value="$USER_HOME$/src/flutter/.pub-cache/hosted/pub.dartlang.org/geolocator_apple-2.1.2/lib" />
+              <option value="$USER_HOME$/src/flutter/.pub-cache/hosted/pub.dartlang.org/geolocator_apple-2.1.3/lib" />
             </list>
           </value>
         </entry>
