@@ -1,8 +1,8 @@
 class AppConfig {
-  static String BASE_URL = "https://jotrace.com";
+  static String BASE_URL = "https://pet-shop.jotrace.com";
   static const String HomePage = "HomePage";
   static const String MyProductsScreen = "MyProductsScreen";
-  static const String AppName = "JO-TRACE";
+  static const String AppName = "PET-SHOP";
   static const String AccountRegister = "AccountRegister";
   static const String AccountSplash = "AccountSplash";
   static const String ProductDetails = "ProductDetails";
