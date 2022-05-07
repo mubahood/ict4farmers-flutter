@@ -1,5 +1,5 @@
 class AppConfig {
-  static String BASE_URL = "https://farmers.ugnews24.info";
+  static String BASE_URL = "http://app2.unffeict4farmers.org";
   static const String HomePage = "HomePage";
   static const String MyProductsScreen = "MyProductsScreen";
   static const String AppName = "UNFFE ICT4Farmers";
