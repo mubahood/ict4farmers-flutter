@@ -16,11 +16,12 @@ Widget widget_dashboard_item(context) {
   return FxContainer(
     bordered: true,
     width: MediaQuery.of(context).size.width / 2.25,
+    border: Border.all(color: CustomTheme.primary, width: 1),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Image(
-          width: MediaQuery.of(context).size.width / 4,
+          width: MediaQuery.of(context).size.width / 5,
           image: AssetImage("assets/project/no_chat.png"),
         ),
         FxText(
@@ -37,6 +38,7 @@ Widget widget_dashboard_item(context) {
 
 Widget widget_item_counter(context) {
   return FxContainer(
+    bordered: true,
     width: MediaQuery.of(context).size.width / 3.9,
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -97,11 +99,9 @@ Widget social_media_links(context) {
             color: Colors.green.shade600,
           ),
           decoration: BoxDecoration(
-              border: Border.all(
-                  color: Colors.grey.shade500, width: 1),
+              border: Border.all(color: CustomTheme.primary, width: 1),
               color: AppTheme.lightTheme.backgroundColor,
-              borderRadius:
-              BorderRadius.all(Radius.circular(11))),
+              borderRadius: BorderRadius.all(Radius.circular(11))),
         ),
       ),
       InkWell(
