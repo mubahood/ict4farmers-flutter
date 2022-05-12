@@ -83,7 +83,8 @@ class DashboardState extends State<Dashboard> {
                   top: (MediaQuery.of(context).size.height / 3.8),
                 ),
                 width: double.infinity,
-         
+                height: ((MediaQuery.of(context).size.height) -
+                    (MediaQuery.of(context).size.height / 2.75)),
                 child: ListView(
                   children: [
                     FxContainer(
