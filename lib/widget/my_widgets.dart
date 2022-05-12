@@ -1,17 +1,67 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutx/flutx.dart';
 import 'package:flutx/utils/spacing.dart';
 import 'package:flutx/widgets/button/button.dart';
 import 'package:flutx/widgets/text/text.dart';
 import 'package:ict4farmers/utils/AppConfig.dart';
 import 'package:ict4farmers/widget/shimmer_loading_widget.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 import '../theme/app_theme.dart';
 import '../theme/custom_theme.dart';
 import '../utils/Utils.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
-Widget myNetworkImage(String url,double _height,double _width,double radiusAll){
+Widget widget_dashboard_item(context) {
+  return FxContainer(
+    bordered: true,
+    width: MediaQuery.of(context).size.width / 2.25,
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Image(
+          width: MediaQuery.of(context).size.width / 4,
+          image: AssetImage("assets/project/no_chat.png"),
+        ),
+        FxText(
+          'Market place',
+          fontSize: 20,
+          fontWeight: 700,
+          color: Colors.grey.shade900,
+        ),
+      ],
+    ),
+    color: Colors.white,
+  );
+}
+
+Widget widget_item_counter(context) {
+  return FxContainer(
+    width: MediaQuery.of(context).size.width / 3.9,
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        FxText(
+          "10%",
+          fontWeight: 700,
+          fontSize: 24,
+          textAlign: TextAlign.start,
+          color: Colors.white,
+        ),
+        FxText(
+          'Discount',
+          fontSize: 10,
+          fontWeight: 200,
+          color: Colors.white,
+        ),
+      ],
+    ),
+    color: CustomTheme.primary,
+  );
+}
+
+Widget myNetworkImage(
+    String url, double _height, double _width, double radiusAll) {
   return ClipRRect(
     borderRadius: BorderRadius.all(Radius.circular(radiusAll)),
     child: CachedNetworkImage(
