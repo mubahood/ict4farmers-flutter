@@ -194,6 +194,8 @@ class UserModel extends HiveObject {
   @HiveField(34)
   String logged_in_user = "0";
 
+
+
   static UserModel fromMap(data) {
     UserModel u = new UserModel();
     u.id = 0;
