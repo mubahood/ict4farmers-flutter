@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutx/flutx.dart';
 
 class CustomTheme {
-  static final Color primary = Color.fromRGBO(105, 58, 1, 1.0);
+  static final Color primary = Color.fromRGBO(17, 104, 57, 1.0);
   static final Color onPrimary = Colors.white;
   static final Color accent = Color(0xffdf7463);
   static final Color occur = Color(0xffb38220);

@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutx/flutx.dart';
-import 'package:ict4farmers/pages/account/account_splash.dart';
 import 'package:ict4farmers/pages/homes/homes_screen_segment.dart';
 import 'package:ict4farmers/theme/app_notifier.dart';
 import 'package:ict4farmers/theme/app_theme.dart';
@@ -9,10 +8,10 @@ import 'package:ict4farmers/theme/custom_theme.dart';
 import 'package:ict4farmers/theme/theme_type.dart';
 import 'package:provider/provider.dart';
 
+import '../Dashboard.dart';
 import '../account/my_products_screen.dart';
 import '../chat/chat_home_screen.dart';
 import '../search/categories_main_screen.dart';
-import 'on_map/on_map_screen.dart';
 
 class HomesScreen extends StatefulWidget {
   HomesScreen({Key? key}) : super(key: key);
@@ -51,7 +50,7 @@ class _HomesScreenState extends State<HomesScreen>
       NavItem('Categories', CupertinoIcons.search, CategoriesMainScreen()),
       NavItem('Sell Now', CupertinoIcons.plus_circle, MyProductsScreen()),
       NavItem('Chats', CupertinoIcons.envelope_badge, ChatHomeScreen()),
-      NavItem('Account', CupertinoIcons.person, AccountSplash()),
+      NavItem('Dashboard', CupertinoIcons.person, Dashboard( context)),
     ];
 
     tabController.addListener(() {
