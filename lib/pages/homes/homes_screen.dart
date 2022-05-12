@@ -11,7 +11,6 @@ import 'package:provider/provider.dart';
 import '../Dashboard.dart';
 import '../account/my_products_screen.dart';
 import '../chat/chat_home_screen.dart';
-import '../search/categories_main_screen.dart';
 
 class HomesScreen extends StatefulWidget {
   HomesScreen({Key? key}) : super(key: key);
@@ -46,16 +45,16 @@ class _HomesScreenState extends State<HomesScreen>
         initialIndex: 0);
 
     navItems = [
-      NavItem('Home', CupertinoIcons.home, HomesScreenSegment()),
-      NavItem('Categories', CupertinoIcons.search, CategoriesMainScreen()),
-      NavItem('Sell Now', CupertinoIcons.plus_circle, MyProductsScreen()),
+      NavItem(
+          'Dashboard', CupertinoIcons.home, Dashboard(context, tabController)),
+      NavItem('Farm', Icons.agriculture, HomesScreenSegment()),
+      NavItem('Market', CupertinoIcons.shopping_cart, HomesScreenSegment()),
+      NavItem('Forum', CupertinoIcons.plus_circle, MyProductsScreen()),
       NavItem('Chats', CupertinoIcons.envelope_badge, ChatHomeScreen()),
-      NavItem('Dashboard', CupertinoIcons.person, Dashboard( context)),
     ];
 
     tabController.addListener(() {
       currentIndex = tabController.index;
-
       setState(() {});
     });
 

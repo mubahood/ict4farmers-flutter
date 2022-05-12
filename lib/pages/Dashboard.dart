@@ -1,10 +1,9 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutx/utils/spacing.dart';
 import 'package:flutx/widgets/container/container.dart';
 import 'package:flutx/widgets/text/text.dart';
-import 'package:ict4farmers/models/ChatModel.dart';
-import 'package:ict4farmers/models/FormItemModel.dart';
 import 'package:ict4farmers/pages/product_add_form/product_add_form.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
@@ -13,22 +12,24 @@ import '../../theme/app_theme.dart';
 import '../../utils/AppConfig.dart';
 import '../../utils/Utils.dart';
 import '../widget/my_widgets.dart';
+import '../widget/shimmer_loading_widget.dart';
 
 class Dashboard extends StatefulWidget {
   BuildContext _context;
+  TabController tabController;
 
-  Dashboard(this._context);
+  Dashboard(this._context, this.tabController);
 
   @override
-  DashboardState createState() => DashboardState(_context);
+  DashboardState createState() => DashboardState(_context, tabController);
 }
 
 class DashboardState extends State<Dashboard> {
   late ThemeData theme;
   BuildContext _context;
-  UserModel logged_in_user = new UserModel();
+  TabController tabController;
 
-  DashboardState(this._context);
+  DashboardState(this._context, this.tabController);
 
   @override
   void initState() {
@@ -38,27 +39,24 @@ class DashboardState extends State<Dashboard> {
     my_init();
   }
 
-  bool _has_pending_form = false;
-  List<ChatModel> chat_threads = [];
+  animate_to_page() {
+    this.tabController.animateTo(2);
+
+    //print("===!!=== ${this.tabController.length}");
+    //this.tabController
+  }
 
   Future<void> my_init() async {
-    logged_in_user = await Utils.get_logged_in();
-    if (logged_in_user.id < 1) {
-      Utils.showSnackBar("Login before you proceed.", _context, Colors.red);
+    loggedUser = await Utils.get_logged_in();
+    if (loggedUser.id < 1) {
       return;
     }
-    chat_threads = await ChatModel.get_threads(logged_in_user.id);
-    await check_daft_form();
+    is_logged_in = true;
     setState(() {});
   }
 
-  Future<void> check_daft_form() async {
-    if ((await FormItemModel.get_all()).isEmpty) {
-      _has_pending_form = false;
-    } else {
-      _has_pending_form = true;
-    }
-  }
+  bool is_logged_in = false;
+  UserModel loggedUser = new UserModel();
 
   @override
   Widget build(BuildContext context) {
@@ -87,7 +85,7 @@ class DashboardState extends State<Dashboard> {
                     (MediaQuery.of(context).size.height / 2.75)),
                 child: ListView(
                   children: [
-                    FxContainer(
+                    /*FxContainer(
                         padding: EdgeInsets.only(
                             top: 20, left: 15, right: 15, bottom: 20),
                         color: Colors.transparent,
@@ -98,9 +96,9 @@ class DashboardState extends State<Dashboard> {
                             widget_item_counter(context),
                             widget_item_counter(context),
                           ],
-                        )),
+                        )),*/
                     FxContainer(
-                        color: Colors.grey.shade50,
+                        color: Colors.green.shade50,
                         borderRadius: BorderRadius.only(
                           topRight: Radius.circular(35),
                           topLeft: Radius.circular(35),
@@ -171,37 +169,79 @@ class DashboardState extends State<Dashboard> {
                   ],
                 ),
               ),
-              Container(
-                margin: EdgeInsets.only(
-                  left: 20,
-                  right: 20,
-                  top: (MediaQuery.of(context).size.height / 8),
-                ),
-                child: Row(
-                  children: [
-                    FxContainer.rounded(
-                      paddingAll: 0,
-                      color: CustomTheme.primary,
-                      child: Image(
-                        width: 70,
-                        height: 70,
-                        image: AssetImage("assets/project/no_chat.png"),
+              InkWell(
+                onTap: () => {
+                  if (!is_logged_in)
+                    {show_not_account_bottom_sheet(context)}
+                  else
+                    {Utils.navigate_to(AppConfig.AccountEdit, context)}
+                },
+                child: Container(
+                  margin: EdgeInsets.only(
+                    left: 20,
+                    right: 20,
+                    top: (MediaQuery.of(context).size.height / 9.4),
+                  ),
+                  child: Row(
+                    children: [
+                      FxContainer.rounded(
+                        paddingAll: 0,
+                        color: CustomTheme.primary,
+                        child: is_logged_in
+                            ? CachedNetworkImage(
+                                width: 100,
+                                height: 100,
+                                fit: BoxFit.cover,
+                                imageUrl: loggedUser.avatar,
+                                placeholder: (context, url) =>
+                                    ShimmerLoadingWidget(
+                                  height: 100,
+                                  width: 100,
+                                ),
+                                errorWidget: (context, url, error) => Image(
+                                  image:
+                                      AssetImage('./assets/project/user.png'),
+                                  height: 100,
+                                  width: 100,
+                                  fit: BoxFit.cover,
+                                ),
+                              )
+                            : Image(
+                                width: 80,
+                                height: 80,
+                                image: AssetImage("./assets/project/user.png"),
+                              ),
                       ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(left: 10),
-                      child: FxText.h1(
-                        "Tusiime bob",
-                        fontWeight: 700,
-                        fontSize: 30,
-                        color: Colors.black,
+                      Container(
+                        margin: EdgeInsets.only(left: 10),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            FxText.h1(
+                              (is_logged_in)
+                                  ? loggedUser.name
+                                  : "Join ${AppConfig.AppName}",
+                              fontWeight: 700,
+                              fontSize: 20,
+                              color: Colors.black,
+                            ),
+                            FxText.caption(
+                              (is_logged_in)
+                                  ? loggedUser.email
+                                  : "To access all features of ${AppConfig.AppName}!",
+                              fontWeight: 500,
+                              fontSize: 14,
+                              color: Colors.grey.shade700,
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                    /* Container(
-                      child:
-                      FxText.h2("Bob Tusiime"),
-                    )*/
-                  ],
+                      /* Container(
+                        child:
+                        FxText.h2("Bob Tusiime"),
+                      )*/
+                    ],
+                  ),
                 ),
               ),
               Container(
@@ -212,32 +252,62 @@ class DashboardState extends State<Dashboard> {
                 ),
                 child: Row(
                   children: [
-                    FxContainer.rounded(
-                      color: Colors.transparent,
-                      child: Icon(
-                        Icons.home,
-                        size: 25,
+                    InkWell(
+                      onTap: () =>
+                          {Utils.launchPhone(AppConfig.TOLL_FREE_PHONE_NUMBER)},
+                      child: Container(
+                        child: Row(
+                          children: [
+                            FxContainer.rounded(
+                              bordered: true,
+                              border: Border.all(color: CustomTheme.primary),
+                              paddingAll: 10,
+                              splashColor: CustomTheme.primary,
+                              color: Colors.green.shade50,
+                              child: Icon(
+                                CupertinoIcons.phone,
+                                size: 25,
+                              ),
+                            ),
+                            FxContainer(
+                              padding: EdgeInsets.only(
+                                  top: 3, bottom: 3, left: 10, right: 10),
+                              splashColor: CustomTheme.primary,
+                              color: Colors.white,
+                              child: FxText(
+                                "Toll free",
+                                fontWeight: 800,
+                                color: CustomTheme.primary,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                     Spacer(),
-                    FxContainer.rounded(
-                      bordered: true,
-                      border: Border.all(color: CustomTheme.primary),
-                      paddingAll: 10,
-                      splashColor: CustomTheme.primary,
-                      color: Colors.white,
-                      child: Icon(
-                        Icons.shopping_cart,
-                        size: 25,
+                    InkWell(
+                      onTap: () => {animate_to_page()},
+                      child: FxContainer.rounded(
+                        bordered: true,
+                        border: Border.all(color: CustomTheme.primary),
+                        paddingAll: 10,
+                        splashColor: CustomTheme.primary,
+                        color: Colors.green.shade50,
+                        child: Icon(
+                          CupertinoIcons.shopping_cart,
+                          size: 25,
+                        ),
                       ),
                     ),
                     FxContainer.rounded(
+                      bordered: true,
+                      border: Border.all(color: CustomTheme.primary),
                       margin: EdgeInsets.only(left: 10),
                       paddingAll: 11,
                       splashColor: CustomTheme.primary,
-                      color: Colors.white,
+                      color: Colors.green.shade50,
                       child: Icon(
-                        Icons.sort,
+                        CupertinoIcons.bell,
                         size: 25,
                       ),
                     ),
@@ -296,9 +366,9 @@ class DashboardState extends State<Dashboard> {
 
   Widget singleOption(_context, theme,
       {IconData? iconData,
-      required String option,
-      String navigation: "",
-      String badge: ""}) {
+        required String option,
+        String navigation: "",
+        String badge: ""}) {
     return Container(
       padding: FxSpacing.y(8),
       child: InkWell(
@@ -336,17 +406,17 @@ class DashboardState extends State<Dashboard> {
                   badge.toString().isEmpty
                       ? SizedBox()
                       : FxContainer(
-                          color: Colors.red.shade500,
-                          width: 28,
-                          paddingAll: 0,
-                          marginAll: 0,
-                          alignment: Alignment.center,
-                          borderRadiusAll: 15,
-                          height: 28,
-                          child: FxText(
-                            badge.toString(),
-                            color: Colors.white,
-                          )),
+                      color: Colors.red.shade500,
+                      width: 28,
+                      paddingAll: 0,
+                      marginAll: 0,
+                      alignment: Alignment.center,
+                      borderRadiusAll: 15,
+                      height: 28,
+                      child: FxText(
+                        badge.toString(),
+                        color: Colors.white,
+                      )),
                   Icon(MdiIcons.chevronRight,
                       size: 22, color: theme.colorScheme.onBackground),
                 ],

@@ -32,7 +32,8 @@ class AppConfig {
   static const String AboutUs = "AboutUs";
   static const String CallUs = "CallUs";
   static const String OurWhatsApp = "OurWhatsApp";
-  static const String OUR_PHONE_NUMBER = "+256414230705";
+  static const String OUR_PHONE_NUMBER = "0414230705";
+  static const String TOLL_FREE_PHONE_NUMBER = "0800209003";
   static const String OUR_WHATSAPP_NUMBER = "+8801632257609";
   static const String OUR_FACEBOOK_LINK = "https://ugnews24.info";
   static const String OUR_TWITTER_LINK = "https://twitter.com/ugnews24";
