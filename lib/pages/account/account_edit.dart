@@ -16,9 +16,11 @@ import 'package:ict4farmers/utils/Utils.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
+import '../../models/FarmersGroup.dart';
 import '../../models/UserModel.dart';
 import '../../widget/shimmer_loading_widget.dart';
 import '../location_picker/product_category_picker.dart';
+import '../location_picker/single_item_picker.dart';
 
 class AccountEdit extends StatefulWidget {
   @override
@@ -51,6 +53,7 @@ class _AccountEditState extends State<AccountEdit> {
 
   Future<void> my_init() async {
     item = await Utils.get_logged_in();
+
     if (item.id < 1) {
       Utils.showSnackBar("Login before you proceed.", context, Colors.red);
       Navigator.pop(context);
@@ -124,7 +127,6 @@ class _AccountEditState extends State<AccountEdit> {
       'services': item.services,
       'about': item.about,
       'district': item.district,
-      'division': item.division,
       'facebook': item.facebook,
       'twitter': item.twitter,
       'whatsapp': item.whatsapp,
@@ -132,8 +134,19 @@ class _AccountEditState extends State<AccountEdit> {
       'district': item.district,
     });
 
+    farmers_groups = await FarmersGroup.get_items();
+    farmers_groups.forEach((element) {
+      if (element.id.toString() == item.region.toString()) {
+        _formKey.currentState!.patchValue({
+          'farm_group_text': element.name.toString(),
+        });
+      }
+    });
+
     setState(() {});
   }
+
+  List<FarmersGroup> farmers_groups = [];
 
   @override
   void initState() {
@@ -165,6 +178,7 @@ class _AccountEditState extends State<AccountEdit> {
       form_data_map = {
         'name': _formKey.currentState?.fields['name']?.value,
         'user_id': item.id.toString(),
+        'region': item.region.toString(),
         'company_name': _formKey.currentState?.fields['company_name']?.value,
         'email': _formKey.currentState?.fields['email']?.value,
         'phone_number': _formKey.currentState?.fields['phone_number']?.value,
@@ -389,6 +403,21 @@ password
                           labelText: "Phone number", icon: Icons.phone)),
                   FxSpacing.height(10),
                   FormBuilderTextField(
+                      name: "farm_group_text",
+                      readOnly: true,
+                      onTap: () => {prick_farmer_group()},
+                      textCapitalization: TextCapitalization.sentences,
+                      textInputAction: TextInputAction.next,
+                      validator: FormBuilderValidators.compose([
+                        FormBuilderValidators.required(
+                          context,
+                          errorText: "Farm group required.",
+                        ),
+                      ]),
+                      decoration: customTheme.input_decoration(
+                          labelText: "Select farm group", icon: Icons.group)),
+                  FxSpacing.height(10),
+                  FormBuilderTextField(
                       name: "company_name",
                       textCapitalization: TextCapitalization.sentences,
                       textInputAction: TextInputAction.next,
@@ -457,7 +486,6 @@ password
                       onTap: () => {pick_category()},
                       textCapitalization: TextCapitalization.sentences,
                       textInputAction: TextInputAction.next,
-                      keyboardType: TextInputType.phone,
                       validator: FormBuilderValidators.compose([
                         FormBuilderValidators.required(
                           context,
@@ -705,5 +733,27 @@ password
     });
 
     setState(() {});
+  }
+
+  prick_farmer_group() async {
+    farmers_groups = await FarmersGroup.get_items();
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => SingleItemPicker(
+          "Pick farmer group",
+          jsonEncode(farmers_groups),
+          "0",
+        ),
+      ),
+    );
+    if (result != null) {
+      if (result['id'] != null && result['name'] != null) {
+        item.region = result['id'].toString();
+        _formKey.currentState!.patchValue({
+          'farm_group_text': result['name'].toString(),
+        });
+      }
+    }
   }
 }

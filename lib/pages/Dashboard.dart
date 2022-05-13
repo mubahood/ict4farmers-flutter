@@ -1,9 +1,12 @@
+import 'dart:convert';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutx/utils/spacing.dart';
 import 'package:flutx/widgets/container/container.dart';
 import 'package:flutx/widgets/text/text.dart';
+import 'package:ict4farmers/pages/location_picker/single_item_picker.dart';
 import 'package:ict4farmers/pages/product_add_form/product_add_form.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
@@ -11,6 +14,7 @@ import '../../models/UserModel.dart';
 import '../../theme/app_theme.dart';
 import '../../utils/AppConfig.dart';
 import '../../utils/Utils.dart';
+import '../models/FarmersGroup.dart';
 import '../widget/my_widgets.dart';
 import '../widget/shimmer_loading_widget.dart';
 
@@ -41,9 +45,6 @@ class DashboardState extends State<Dashboard> {
 
   animate_to_page() {
     this.tabController.animateTo(2);
-
-    //print("===!!=== ${this.tabController.length}");
-    //this.tabController
   }
 
   Future<void> my_init() async {
@@ -108,62 +109,42 @@ class DashboardState extends State<Dashboard> {
                           children: [
                             Container(
                               padding: EdgeInsets.only(
-                                  top: 30, left: 15, right: 15, bottom: 0),
+                                  top: 30, left: 20, right: 20, bottom: 0),
                               child: Row(
                                 children: [
-                                  widget_dashboard_item(context),
+                                  widget_dashboard_item(context,
+                                      title: "Market place",
+                                      asset_image: "2.png"),
                                   Spacer(),
-                                  widget_dashboard_item(context),
+                                  widget_dashboard_item(context,
+                                      title: "Farm management",
+                                      asset_image: "1.png"),
                                 ],
                               ),
                             ),
                             Container(
                               padding: EdgeInsets.only(
-                                  top: 15, left: 15, right: 15, bottom: 25),
+                                  top: 15, left: 20, right: 20, bottom: 25),
                               child: Row(
                                 children: [
-                                  widget_dashboard_item(context),
+                                  widget_dashboard_item(context,
+                                      title: "Pest-disease control",
+                                      asset_image: "4.png"),
                                   Spacer(),
-                                  widget_dashboard_item(context),
+                                  widget_dashboard_item(context,
+                                      title: "Farmers forum",
+                                      asset_image: "3.png"),
                                 ],
                               ),
                             ),
-                            FxText(
-                              "1",
-                              fontSize: 50,
-                            ),
-                            FxText(
-                              "1",
-                              fontSize: 50,
-                            ),
-                            FxText(
-                              "1",
-                              fontSize: 50,
-                            ),
-                            FxText(
-                              "1",
-                              fontSize: 50,
-                            ),
-                            FxText(
-                              "1",
-                              fontSize: 50,
-                            ),
-                            FxText(
-                              "1",
-                              fontSize: 50,
-                            ),
-                            FxText(
-                              "1",
-                              fontSize: 50,
-                            ),
-                            FxText(
-                              "2",
-                              fontSize: 50,
-                            ),
-                            FxText(
-                              "3",
-                              fontSize: 50,
-                            ),
+                            singleOption(_context, theme,
+                                iconData: MdiIcons.shapeOutline,
+                                option: "My Products",
+                                navigation: AppConfig.MyProductsScreen),
+                            singleOption(_context, theme,
+                                iconData: MdiIcons.shapeOutline,
+                                option: "My Products",
+                                navigation: AppConfig.MyProductsScreen),
                           ],
                         ))
                   ],
@@ -189,28 +170,28 @@ class DashboardState extends State<Dashboard> {
                         color: CustomTheme.primary,
                         child: is_logged_in
                             ? CachedNetworkImage(
-                                width: 100,
+                          width: 100,
+                          height: 100,
+                          fit: BoxFit.cover,
+                          imageUrl: loggedUser.avatar,
+                          placeholder: (context, url) =>
+                              ShimmerLoadingWidget(
                                 height: 100,
-                                fit: BoxFit.cover,
-                                imageUrl: loggedUser.avatar,
-                                placeholder: (context, url) =>
-                                    ShimmerLoadingWidget(
-                                  height: 100,
-                                  width: 100,
-                                ),
-                                errorWidget: (context, url, error) => Image(
-                                  image:
-                                      AssetImage('./assets/project/user.png'),
-                                  height: 100,
-                                  width: 100,
-                                  fit: BoxFit.cover,
-                                ),
-                              )
-                            : Image(
-                                width: 80,
-                                height: 80,
-                                image: AssetImage("./assets/project/user.png"),
+                                width: 100,
                               ),
+                          errorWidget: (context, url, error) => Image(
+                            image:
+                            AssetImage('./assets/project/user.png'),
+                            height: 100,
+                            width: 100,
+                            fit: BoxFit.cover,
+                          ),
+                        )
+                            : Image(
+                          width: 80,
+                          height: 80,
+                          image: AssetImage("./assets/project/user.png"),
+                        ),
                       ),
                       Container(
                         margin: EdgeInsets.only(left: 10),
@@ -254,7 +235,7 @@ class DashboardState extends State<Dashboard> {
                   children: [
                     InkWell(
                       onTap: () =>
-                          {Utils.launchPhone(AppConfig.TOLL_FREE_PHONE_NUMBER)},
+                      {Utils.launchPhone(AppConfig.TOLL_FREE_PHONE_NUMBER)},
                       child: Container(
                         child: Row(
                           children: [
@@ -299,16 +280,19 @@ class DashboardState extends State<Dashboard> {
                         ),
                       ),
                     ),
-                    FxContainer.rounded(
-                      bordered: true,
-                      border: Border.all(color: CustomTheme.primary),
-                      margin: EdgeInsets.only(left: 10),
-                      paddingAll: 11,
-                      splashColor: CustomTheme.primary,
-                      color: Colors.green.shade50,
-                      child: Icon(
-                        CupertinoIcons.bell,
-                        size: 25,
+                    InkWell(
+                      onTap: () => {test_function()},
+                      child: FxContainer.rounded(
+                        bordered: true,
+                        border: Border.all(color: CustomTheme.primary),
+                        margin: EdgeInsets.only(left: 10),
+                        paddingAll: 11,
+                        splashColor: CustomTheme.primary,
+                        color: Colors.green.shade50,
+                        child: Icon(
+                          CupertinoIcons.bell,
+                          size: 25,
+                        ),
                       ),
                     ),
                     /* Container(
@@ -369,14 +353,13 @@ class DashboardState extends State<Dashboard> {
         required String option,
         String navigation: "",
         String badge: ""}) {
-    return Container(
-      padding: FxSpacing.y(8),
+    return FxContainer(
+      margin: EdgeInsets.only(left: 20, top: 0, bottom: 20, right: 20),
+      padding: FxSpacing.all(20),
+      bordered: true,
+      border: Border.all(color: CustomTheme.primary, width: 1),
       child: InkWell(
         onTap: () {
-          //print("======> ${logged_in_user.avatar}");
-          //return;
-          //Utils.navigate_to(AppConfig.MyProductsScreen, _context);
-          //return;
           if (navigation == AppConfig.CallUs) {
             Utils.launchOuLink(navigation);
           } else if (navigation == AppConfig.ProductAddForm) {
@@ -398,7 +381,12 @@ class DashboardState extends State<Dashboard> {
             ),
             FxSpacing.width(16),
             Expanded(
-              child: FxText.b1(option, fontWeight: 600),
+              child: FxText.b1(
+                option,
+                fontWeight: 800,
+                color: Colors.black,
+                fontSize: 18,
+              ),
             ),
             Container(
               child: Row(
@@ -445,6 +433,24 @@ class DashboardState extends State<Dashboard> {
         if (result['task'] == 'success') {
           Utils.navigate_to(AppConfig.MyProductsScreen, context);
         }
+      }
+    }
+  }
+
+  List<FarmersGroup> farmers_groups = [];
+
+  test_function() async {
+    farmers_groups = await FarmersGroup.get_items();
+
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => SingleItemPicker(
+              "Pick farmer group", jsonEncode(farmers_groups), "0")),
+    );
+    if (result != null) {
+      if (result['id'] != null && result['name'] != null) {
+        print(result);
       }
     }
   }

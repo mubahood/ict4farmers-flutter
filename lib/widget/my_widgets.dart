@@ -12,23 +12,35 @@ import '../theme/app_theme.dart';
 import '../theme/custom_theme.dart';
 import '../utils/Utils.dart';
 
-Widget widget_dashboard_item(context) {
+Widget widget_dashboard_item(
+  context, {
+  required String title,
+  required String asset_image,
+}) {
   return FxContainer(
+    paddingAll: 0,
     bordered: true,
-    width: MediaQuery.of(context).size.width / 2.25,
+    width: MediaQuery.of(context).size.width / 2.3,
+    height: MediaQuery.of(context).size.width / 2.5,
     border: Border.all(color: CustomTheme.primary, width: 1),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+    child: Stack(
+      // crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Image(
-          width: MediaQuery.of(context).size.width / 5,
-          image: AssetImage("assets/project/no_chat.png"),
+        ClipRRect(
+          borderRadius: BorderRadius.all(Radius.circular(10)),
+          child: Image(
+            image: AssetImage("assets/project/${asset_image}"),
+          ),
         ),
-        FxText(
-          'Market place',
-          fontSize: 20,
-          fontWeight: 700,
-          color: Colors.grey.shade900,
+        Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: FxText(
+            title,
+            fontSize: 22,
+            height: 1,
+            fontWeight: 700,
+            color: Colors.grey.shade900,
+          ),
         ),
       ],
     ),

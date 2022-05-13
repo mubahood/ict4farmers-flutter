@@ -1,5 +1,5 @@
 class AppConfig {
-  static String BASE_URL = "https://pet-shop.jotrace.com";
+  static String BASE_URL = "https://app2.unffeict4farmers.org";
   static const String HomePage = "HomePage";
   static const String MyProductsScreen = "MyProductsScreen";
   static const String AppName = "PET-SHOP";

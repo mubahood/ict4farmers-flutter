@@ -14,8 +14,14 @@ class DynamicTable extends HiveObject {
   }) async {
     List<DynamicTable> items = [];
 
-    await DynamicTable.get_online_items(
+    DynamicTable.get_online_items(
         end_point: end_point, clear_previous: clear_previous, params: params);
+    items = await DynamicTable.get_local_items(endpoint: end_point);
+    if (items.isEmpty) {
+      await DynamicTable.get_online_items(
+          end_point: end_point, clear_previous: clear_previous, params: params);
+      items = await DynamicTable.get_local_items(endpoint: end_point);
+    }
 
     return items;
   }
