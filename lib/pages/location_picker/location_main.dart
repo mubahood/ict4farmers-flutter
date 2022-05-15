@@ -47,13 +47,12 @@ bool is_loading = false;
 
 class LocationMainState extends State<LocationMain> {
   final PageController pageController = PageController(initialPage: 0);
-  late ThemeData theme;
+
 
   @override
   void initState() {
     super.initState();
     customTheme = AppTheme.customTheme;
-    theme = AppTheme.theme;
     _do_refresh();
   }
 

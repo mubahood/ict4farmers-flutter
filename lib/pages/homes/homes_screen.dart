@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutx/flutx.dart';
 import 'package:ict4farmers/pages/account/account_splash.dart';
 import 'package:ict4farmers/pages/homes/homes_screen_segment.dart';
@@ -39,6 +40,9 @@ class _HomesScreenState extends State<HomesScreen>
   void initState() {
     super.initState();
     AppTheme.init();
+
+    SystemChrome.setSystemUIOverlayStyle(
+        SystemUiOverlayStyle(statusBarColor: CustomTheme.primary));
 
     tabController = TabController(
         //       animationDuration: Duration.zero,
