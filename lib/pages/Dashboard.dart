@@ -14,6 +14,7 @@ import '../../models/UserModel.dart';
 import '../../theme/app_theme.dart';
 import '../../utils/AppConfig.dart';
 import '../../utils/Utils.dart';
+import '../models/BannerModel.dart';
 import '../models/FarmersGroup.dart';
 import '../widget/my_widgets.dart';
 import '../widget/shimmer_loading_widget.dart';
@@ -32,6 +33,13 @@ class DashboardState extends State<Dashboard> {
   late ThemeData theme;
   BuildContext _context;
   TabController tabController;
+
+  List<BannerModel> menu_items = [
+    new BannerModel(),
+    new BannerModel(),
+    new BannerModel(),
+    new BannerModel(),
+  ];
 
   DashboardState(this._context, this.tabController);
 
@@ -54,305 +62,337 @@ class DashboardState extends State<Dashboard> {
     }
     is_logged_in = true;
     setState(() {});
+    Utils.ini_theme();
   }
 
   bool is_logged_in = false;
   UserModel loggedUser = new UserModel();
 
+  Future<Null> _onRefresh() async {
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Column(
-        children: [
-          Stack(
-            children: [
-              Image(
-                width: double.infinity,
-                image: AssetImage("assets/project/farm_doodle.jpg"),
-              ),
-              Container(
-                decoration: BoxDecoration(
-                  color: Colors.green.shade100,
-                  borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(35),
-                    topLeft: Radius.circular(35),
-                  ),
-                ),
-                margin: EdgeInsets.only(
-                  top: (MediaQuery.of(context).size.height / 3.8),
-                ),
-                width: double.infinity,
-                height: ((MediaQuery.of(context).size.height) -
-                    (MediaQuery.of(context).size.height / 2.75)),
-                child: ListView(
-                  children: [
-                    /*FxContainer(
-                        padding: EdgeInsets.only(
-                            top: 20, left: 15, right: 15, bottom: 20),
-                        color: Colors.transparent,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            widget_item_counter(context),
-                            widget_item_counter(context),
-                            widget_item_counter(context),
-                          ],
-                        )),*/
-                    FxContainer(
-                        color: Colors.green.shade50,
-                        borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(35),
-                          topLeft: Radius.circular(35),
-                        ),
-                        paddingAll: 0,
-                        child: Column(
-                          children: [
-                            Container(
-                              padding: EdgeInsets.only(
-                                  top: 30, left: 20, right: 20, bottom: 0),
-                              child: Row(
-                                children: [
-                                  widget_dashboard_item(context,
-                                      title: "Market place",
-                                      asset_image: "2.png"),
-                                  Spacer(),
-                                  widget_dashboard_item(context,
-                                      title: "Farm management",
-                                      asset_image: "1.png"),
-                                ],
-                              ),
-                            ),
-                            Container(
-                              padding: EdgeInsets.only(
-                                  top: 15, left: 20, right: 20, bottom: 25),
-                              child: Row(
-                                children: [
-                                  widget_dashboard_item(context,
-                                      title: "Pest-disease control",
-                                      asset_image: "4.png"),
-                                  Spacer(),
-                                  widget_dashboard_item(context,
-                                      title: "Farmers forum",
-                                      asset_image: "3.png"),
-                                ],
-                              ),
-                            ),
-                            singleOption(_context, theme,
-                                iconData: MdiIcons.shapeOutline,
-                                option: "My Products",
-                                navigation: AppConfig.MyProductsScreen),
-                            singleOption(_context, theme,
-                                iconData: MdiIcons.shapeOutline,
-                                option: "My Products",
-                                navigation: AppConfig.MyProductsScreen),
-                          ],
-                        ))
-                  ],
-                ),
-              ),
-              InkWell(
-                onTap: () => {
-                  if (!is_logged_in)
-                    {show_not_account_bottom_sheet(context)}
-                  else
-                    {Utils.navigate_to(AppConfig.AccountEdit, context)}
-                },
-                child: Container(
-                  margin: EdgeInsets.only(
-                    left: 20,
-                    right: 20,
-                    top: (MediaQuery.of(context).size.height / 9.4),
-                  ),
-                  child: Row(
+      child: RefreshIndicator(
+          color: CustomTheme.primary,
+          backgroundColor: Colors.white,
+          onRefresh: _onRefresh,
+          child: CustomScrollView(
+            slivers: [
+              SliverAppBar(
+                  titleSpacing: 0,
+                  toolbarHeight: (Utils.screen_height(context) / 3),
+                  title: Stack(
                     children: [
-                      FxContainer.rounded(
-                        paddingAll: 0,
-                        color: CustomTheme.primary,
-                        child: is_logged_in
-                            ? CachedNetworkImage(
-                          width: 100,
-                          height: 100,
+                      ClipRRect(
+                        borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(80),
+                          bottomRight: Radius.circular(80),
+                        ),
+                        child: Image(
+                          width: double.infinity,
+                          height: (Utils.screen_height(context) / 3),
                           fit: BoxFit.cover,
-                          imageUrl: loggedUser.avatar,
-                          placeholder: (context, url) =>
-                              ShimmerLoadingWidget(
-                                height: 100,
-                                width: 100,
-                              ),
-                          errorWidget: (context, url, error) => Image(
-                            image:
-                            AssetImage('./assets/project/user.png'),
-                            height: 100,
-                            width: 100,
-                            fit: BoxFit.cover,
+                          image: AssetImage("assets/project/farm_doodle.jpg"),
+                        ),
+                      ),
+                      InkWell(
+                        onTap: () => {
+                          if (!is_logged_in)
+                            {show_not_account_bottom_sheet(context)}
+                          else
+                            {Utils.navigate_to(AppConfig.AccountEdit, context)}
+                        },
+                        child: Container(
+                          margin: EdgeInsets.only(
+                            left: 20,
+                            right: 20,
+                            top: (MediaQuery.of(context).size.height / 7),
                           ),
-                        )
-                            : Image(
-                          width: 80,
-                          height: 80,
-                          image: AssetImage("./assets/project/user.png"),
+                          child: Row(
+                            children: [
+                              FxContainer.rounded(
+                                paddingAll: 0,
+                                color: CustomTheme.primary,
+                                child: is_logged_in
+                                    ? CachedNetworkImage(
+                                        width: 100,
+                                        height: 100,
+                                        fit: BoxFit.cover,
+                                        imageUrl: loggedUser.avatar,
+                                        placeholder: (context, url) =>
+                                            ShimmerLoadingWidget(
+                                          height: 100,
+                                          width: 100,
+                                        ),
+                                        errorWidget: (context, url, error) =>
+                                            Image(
+                                          image: AssetImage(
+                                              './assets/project/user.png'),
+                                          height: 100,
+                                          width: 100,
+                                          fit: BoxFit.cover,
+                                        ),
+                                      )
+                                    : Image(
+                                        width: 60,
+                                        height: 60,
+                                        image: AssetImage(
+                                            "./assets/project/user.png"),
+                                      ),
+                              ),
+                              Container(
+                                margin: EdgeInsets.only(left: 10),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    FxText.h1(
+                                      (is_logged_in)
+                                          ? loggedUser.name
+                                          : "Join ${AppConfig.AppName}",
+                                      fontWeight: 700,
+                                      fontSize: 20,
+                                      color: Colors.black,
+                                    ),
+                                    FxText.caption(
+                                      (is_logged_in)
+                                          ? loggedUser.email
+                                          : "To access all features of ${AppConfig.AppName}!",
+                                      fontWeight: 500,
+                                      fontSize: 14,
+                                      color: Colors.grey.shade700,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              /* Container(
+                          child:
+                          FxText.h2("Bob Tusiime"),
+                        )*/
+                            ],
+                          ),
                         ),
                       ),
                       Container(
-                        margin: EdgeInsets.only(left: 10),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            FxText.h1(
-                              (is_logged_in)
-                                  ? loggedUser.name
-                                  : "Join ${AppConfig.AppName}",
-                              fontWeight: 700,
-                              fontSize: 20,
-                              color: Colors.black,
-                            ),
-                            FxText.caption(
-                              (is_logged_in)
-                                  ? loggedUser.email
-                                  : "To access all features of ${AppConfig.AppName}!",
-                              fontWeight: 500,
-                              fontSize: 14,
-                              color: Colors.grey.shade700,
-                            ),
-                          ],
+                        margin: EdgeInsets.only(
+                          left: 20,
+                          right: 20,
+                          top: 20,
                         ),
-                      ),
-                      /* Container(
+                        child: Row(
+                          children: [
+                            InkWell(
+                              onTap: () => {
+                                Utils.launchPhone(
+                                    AppConfig.TOLL_FREE_PHONE_NUMBER)
+                              },
+                              child: Container(
+                                child: Row(
+                                  children: [
+                                    FxContainer.rounded(
+                                      bordered: true,
+                                      border: Border.all(
+                                          color: CustomTheme.primary),
+                                      paddingAll: 10,
+                                      splashColor: CustomTheme.primary,
+                                      color: Colors.green.shade50,
+                                      child: Icon(
+                                        CupertinoIcons.phone,
+                                        size: 25,
+                                      ),
+                                    ),
+                                    FxContainer(
+                                      padding: EdgeInsets.only(
+                                          top: 3,
+                                          bottom: 3,
+                                          left: 10,
+                                          right: 10),
+                                      splashColor: CustomTheme.primary,
+                                      color: Colors.white,
+                                      child: FxText(
+                                        "Toll free",
+                                        fontWeight: 800,
+                                        color: CustomTheme.primary,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            Spacer(),
+                            InkWell(
+                              onTap: () => {animate_to_page()},
+                              child: FxContainer.rounded(
+                                bordered: true,
+                                border: Border.all(color: CustomTheme.primary),
+                                paddingAll: 10,
+                                splashColor: CustomTheme.primary,
+                                color: Colors.green.shade50,
+                                child: Icon(
+                                  CupertinoIcons.shopping_cart,
+                                  size: 25,
+                                ),
+                              ),
+                            ),
+                            InkWell(
+                              onTap: () => {test_function()},
+                              child: FxContainer.rounded(
+                                bordered: true,
+                                border: Border.all(color: CustomTheme.primary),
+                                margin: EdgeInsets.only(left: 10),
+                                paddingAll: 11,
+                                splashColor: CustomTheme.primary,
+                                color: Colors.green.shade50,
+                                child: Icon(
+                                  CupertinoIcons.bell,
+                                  size: 25,
+                                ),
+                              ),
+                            ),
+                            /* Container(
                         child:
                         FxText.h2("Bob Tusiime"),
                       )*/
-                    ],
-                  ),
-                ),
-              ),
-              Container(
-                margin: EdgeInsets.only(
-                  left: 10,
-                  right: 10,
-                  top: 10,
-                ),
-                child: Row(
-                  children: [
-                    InkWell(
-                      onTap: () =>
-                      {Utils.launchPhone(AppConfig.TOLL_FREE_PHONE_NUMBER)},
-                      child: Container(
-                        child: Row(
-                          children: [
-                            FxContainer.rounded(
-                              bordered: true,
-                              border: Border.all(color: CustomTheme.primary),
-                              paddingAll: 10,
-                              splashColor: CustomTheme.primary,
-                              color: Colors.green.shade50,
-                              child: Icon(
-                                CupertinoIcons.phone,
-                                size: 25,
-                              ),
-                            ),
-                            FxContainer(
-                              padding: EdgeInsets.only(
-                                  top: 3, bottom: 3, left: 10, right: 10),
-                              splashColor: CustomTheme.primary,
-                              color: Colors.white,
-                              child: FxText(
-                                "Toll free",
-                                fontWeight: 800,
-                                color: CustomTheme.primary,
-                              ),
-                            ),
                           ],
                         ),
                       ),
-                    ),
-                    Spacer(),
-                    InkWell(
-                      onTap: () => {animate_to_page()},
-                      child: FxContainer.rounded(
-                        bordered: true,
-                        border: Border.all(color: CustomTheme.primary),
-                        paddingAll: 10,
-                        splashColor: CustomTheme.primary,
-                        color: Colors.green.shade50,
-                        child: Icon(
-                          CupertinoIcons.shopping_cart,
-                          size: 25,
-                        ),
-                      ),
-                    ),
-                    InkWell(
-                      onTap: () => {test_function()},
-                      child: FxContainer.rounded(
-                        bordered: true,
-                        border: Border.all(color: CustomTheme.primary),
-                        margin: EdgeInsets.only(left: 10),
-                        paddingAll: 11,
-                        splashColor: CustomTheme.primary,
-                        color: Colors.green.shade50,
-                        child: Icon(
-                          CupertinoIcons.bell,
-                          size: 25,
-                        ),
-                      ),
-                    ),
-                    /* Container(
-                      child:
-                      FxText.h2("Bob Tusiime"),
-                    )*/
+                    ],
+                  ),
+                  floating: true,
+                  backgroundColor: CustomTheme.primary),
+              SliverGrid(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    mainAxisSpacing: 0,
+                    crossAxisSpacing: 0,
+                    childAspectRatio: 2,
+                    mainAxisExtent: (160)),
+                delegate: SliverChildBuilderDelegate(
+                  (context, index) {
+                    return _single_item();
+                  },
+                  childCount: menu_items.length,
+                ),
+              ),
+              SliverList(
+                delegate: SliverChildBuilderDelegate(
+                  (BuildContext context, int index) {
+                    return InkWell(
+                      onTap: () => {},
+                      child: _list_item(),
+                    );
+                  },
+                  childCount: menu_items.length, // 1000 list items
+                ),
+              ),
+            ],
+          )),
+    );
+  }
+
+  Widget _list_item() {
+    String badge = "1";
+    return Container(
+      color: CustomTheme.primary,
+      child: FxContainer(
+        margin: EdgeInsets.only(left: 10, top: 10, bottom: 0, right: 10),
+        padding: FxSpacing.all(20),
+        bordered: true,
+        border: Border.all(color: CustomTheme.primary, width: 1),
+        child: InkWell(
+          onTap: () {
+
+          },
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Container(
+                child: Icon(
+                  Icons.access_alarms,
+                  size: 22,
+                  color: theme.colorScheme.onBackground,
+                ),
+              ),
+              FxSpacing.width(16),
+              Expanded(
+                child: FxText.b1(
+                  'Simple title...',
+                  fontWeight: 800,
+                  color: Colors.black,
+                  fontSize: 18,
+                ),
+              ),
+              Container(
+                child: Row(
+                  children: [
+                    badge.toString().isEmpty
+                        ? SizedBox()
+                        : FxContainer(
+                        color: Colors.red.shade500,
+                        width: 28,
+                        paddingAll: 0,
+                        marginAll: 0,
+                        alignment: Alignment.center,
+                        borderRadiusAll: 15,
+                        height: 28,
+                        child: FxText(
+                          badge.toString(),
+                          color: Colors.white,
+                        )),
+                    Icon(MdiIcons.chevronRight,
+                        size: 22, color: theme.colorScheme.onBackground),
                   ],
                 ),
               ),
             ],
           ),
-        ],
+        ),
       ),
     );
   }
 
-  void _show_bottom_sheet_sell_or_buy(context) {
-    showModalBottomSheet(
-        context: context,
-        builder: (BuildContext buildContext) {
-          return Container(
-            color: Colors.transparent,
-            child: Container(
-              decoration: BoxDecoration(
-                  color: theme.backgroundColor,
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(16),
-                      topRight: Radius.circular(16))),
-              child: Padding(
-                padding: FxSpacing.all(16),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    ListTile(
-                      onTap: () => {open_add_product(context)},
-                      dense: false,
-                      leading: Icon(Icons.sell,
-                          color: theme.colorScheme.onBackground),
-                      title: FxText.b1("Sell something", fontWeight: 600),
-                    ),
-                    ListTile(
-                        dense: false,
-                        onTap: () => {open_add_product(context)},
-                        leading: Icon(Icons.campaign,
-                            color: theme.colorScheme.onBackground),
-                        title: FxText.b1("Look for something to buy",
-                            fontWeight: 600)),
-                  ],
-                ),
+  Widget _single_item() {
+    return Container(
+      color: CustomTheme.primary,
+      padding: EdgeInsets.only(left: 10, top: 20, right: 10),
+      child: FxContainer(
+        paddingAll: 0,
+        bordered: true,
+        width: MediaQuery.of(context).size.width / 2.3,
+        border: Border.all(color: CustomTheme.primary, width: 1),
+        child: Stack(
+          // crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.all(Radius.circular(10)),
+              child: Image(
+                image: AssetImage("assets/project/3.png"),
               ),
             ),
-          );
-        });
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: FxText(
+                '3.png',
+                fontSize: 22,
+                height: 1,
+                fontWeight: 700,
+                color: Colors.grey.shade900,
+              ),
+            ),
+          ],
+        ),
+        color: Colors.white,
+      ),
+    );
   }
 
   Widget singleOption(_context, theme,
       {IconData? iconData,
-        required String option,
-        String navigation: "",
-        String badge: ""}) {
+      required String option,
+      String navigation: "",
+      String badge: ""}) {
     return FxContainer(
       margin: EdgeInsets.only(left: 20, top: 0, bottom: 20, right: 20),
       padding: FxSpacing.all(20),

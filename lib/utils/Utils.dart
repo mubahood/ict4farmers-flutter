@@ -6,6 +6,7 @@ import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutx/widgets/text/text.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -114,6 +115,8 @@ class Utils {
     return temp;
   }
 
+
+
   static bool bool_parse(dynamic x) {
     int temp = 0;
     bool ans = false;
@@ -132,10 +135,11 @@ class Utils {
   }
 
   static double screen_width(BuildContext context) {
-    return MediaQuery.of(context).size.width;
+    double x = MediaQuery.of(context).size.width;
+    return x;
   }
 
-  static double screen_height(BuildContext context) {
+   static double get_screen_height(BuildContext context) {
     return MediaQuery.of(context).size.width;
   }
 
@@ -625,4 +629,16 @@ class Utils {
     // continue accessing the position of the device.
     return await Geolocator.getCurrentPosition();
   }
+
+  static screen_height(BuildContext context) {
+    return MediaQuery.of(context).size.height;
+  }
+
+  static void ini_theme() {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      statusBarColor: CustomTheme.primary,
+      statusBarIconBrightness: Brightness.light,
+    ));
+  }
+
 }
