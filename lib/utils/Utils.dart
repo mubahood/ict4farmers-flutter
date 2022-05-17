@@ -24,6 +24,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../models/CategoryModel.dart';
 import '../models/ChatModel.dart';
 import '../models/ChatThreadModel.dart';
+import '../models/CropCategory.dart';
 import '../models/DynamicTable.dart';
 import '../models/FormItemModel.dart';
 import '../models/LocationModel.dart';
@@ -51,7 +52,9 @@ import '../pages/search/search_screen.dart';
 import 'AppConfig.dart';
 
 class Utils {
-
+  static void boot_system() async {
+    await CropCategory.get_items();
+  }
 
   static void launchURL(String _url) async {
     if (!await launch(_url)) throw 'Could not launch $_url';
@@ -89,12 +92,12 @@ class Utils {
     return new LatLng(lati, long);
   }
 
-  static void showSnackBar(String message, BuildContext _context, color,
+  static void showSnackBar(String message, BuildContext context, color,
       {background_color: Colors.green}) {
     if (Colors.green == background_color) {
       background_color = CustomTheme.primary;
     }
-    ScaffoldMessenger.of(_context).showSnackBar(
+    ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: FxText.sh2(message, color: color),
         backgroundColor: background_color,
@@ -268,7 +271,7 @@ class Utils {
     if (!Hive.isAdapterRegistered(56)) {
       Hive.registerAdapter(ChatThreadModelAdapter());
     }
-    if (!Hive.isAdapterRegistered(57)) {
+    if (!Hive.isAdapterRegistered(60)) {
       Hive.registerAdapter(DynamicTableAdapter());
     }
   }

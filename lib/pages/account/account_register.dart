@@ -27,6 +27,7 @@ class _AccountRegisterState extends State<AccountRegister> {
   @override
   void initState() {
     super.initState();
+    Utils.ini_theme();
     customTheme = AppTheme.customTheme;
     theme = AppTheme.theme;
   }

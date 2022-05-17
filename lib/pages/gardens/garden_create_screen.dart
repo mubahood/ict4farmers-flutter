@@ -8,6 +8,8 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutx/flutx.dart';
 import 'package:flutx/utils/spacing.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:ict4farmers/models/CropCategory.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
@@ -22,7 +24,6 @@ import '../../utils/AppConfig.dart';
 import '../../utils/Utils.dart';
 import '../location_picker/location_main.dart';
 import '../option_pickers/multiple_option_picker.dart';
-import '../product_add_form/item_picker_screen.dart';
 
 class GardenCreateScreen extends StatefulWidget {
   @override
@@ -33,11 +34,14 @@ late CustomTheme customTheme;
 
 class GardenCreateScreenState extends State<GardenCreateScreen> {
   String nature_of_off = "";
+  double latitude = 0.0;
+  double longitude = 0.0;
 
   @override
   void initState() {
     super.initState();
     customTheme = AppTheme.customTheme;
+    my_init();
   }
 
   @override
@@ -63,6 +67,7 @@ class GardenCreateScreenState extends State<GardenCreateScreen> {
           elevation: 1,
           titleSpacing: 0,
           title: FxContainer(
+            borderRadiusAll: 0,
             color: CustomTheme.primary,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -76,7 +81,7 @@ class GardenCreateScreenState extends State<GardenCreateScreen> {
                       padding: FxSpacing.x(0),
                       child: Icon(
                         CupertinoIcons.clear,
-                        size: 30,
+                        size: 25,
                         color: Colors.white,
                       )),
                 ),
@@ -178,6 +183,23 @@ class GardenCreateScreenState extends State<GardenCreateScreen> {
                                 FxDashedDivider(
                                   color: Colors.grey.shade300,
                                 ),
+                                FormBuilderDateTimePicker(
+                                    name: "harvest_date",
+                                    textInputAction: TextInputAction.next,
+                                    inputType: InputType.date,
+                                    validator: FormBuilderValidators.compose([
+                                      FormBuilderValidators.required(
+                                        context,
+                                        errorText: "Harvest date is required",
+                                      ),
+                                    ]),
+                                    decoration: customTheme.input_decoration_2(
+                                        labelText: "Harvest date",
+                                        hintText:
+                                            "When did you expect to harvest?")),
+                                FxDashedDivider(
+                                  color: Colors.grey.shade300,
+                                ),
                                 FormBuilderTextField(
                                     name: "details",
                                     minLines: 2,
@@ -206,19 +228,17 @@ class GardenCreateScreenState extends State<GardenCreateScreen> {
                             color: Colors.grey.shade100,
                             height: 25,
                           ),
-                          Container(
-                            padding: FxSpacing.all(20),
-                            child: InkWell(
-                              onTap: () {
-                                pick_crop();
-                              },
+                          InkWell(
+                            onTap: () => {pick_crop()},
+                            child: Container(
+                              padding: FxSpacing.all(20),
                               child: Row(
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: <Widget>[
                                   FxSpacing.width(16),
                                   Expanded(
                                     child: FxText.b1(
-                                      'Category',
+                                      'Crop',
                                       fontSize: 18,
                                       fontWeight: 500,
                                       color: Colors.grey.shade900,
@@ -284,19 +304,19 @@ class GardenCreateScreenState extends State<GardenCreateScreen> {
                             color: Colors.grey.shade200,
                             height: 1,
                           ),
-                          Container(
-                            padding: FxSpacing.all(20),
-                            child: InkWell(
-                              onTap: () {
-                                pick_offer();
-                              },
+                          InkWell(
+                            onTap: () {
+                              pick_gps();
+                            },
+                            child: Container(
+                              padding: FxSpacing.all(20),
                               child: Row(
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: <Widget>[
                                   FxSpacing.width(16),
                                   Expanded(
                                     child: FxText.b1(
-                                      'Nature of offer',
+                                      'Garden GPS',
                                       fontSize: 18,
                                       fontWeight: 500,
                                       color: Colors.grey.shade900,
@@ -306,7 +326,7 @@ class GardenCreateScreenState extends State<GardenCreateScreen> {
                                     child: Row(
                                       children: [
                                         FxText(
-                                          nature_of_off,
+                                          '${latitude},${longitude}',
                                           color: Colors.grey.shade500,
                                         ),
                                         Icon(CupertinoIcons.right_chevron,
@@ -330,7 +350,8 @@ class GardenCreateScreenState extends State<GardenCreateScreen> {
                           Container(
                             padding: EdgeInsets.only(top: 10, bottom: 10),
                             color: Colors.white,
-                            child: Text("Add item's photos. Not more than 15."),
+                            child: Text(
+                                "Add garden's photos. Not more than 15 photos."),
                           ),
                         ],
                       ),
@@ -379,7 +400,8 @@ class GardenCreateScreenState extends State<GardenCreateScreen> {
                                     },
                                     backgroundColor: CustomTheme.primary,
                                     child: FxText.l1(
-                                      "UPLOAD",
+                                      "SUBMIT",
+                                      fontSize: 20,
                                       color: customTheme.cookifyOnPrimary,
                                     )),
                           ),
@@ -465,7 +487,7 @@ class GardenCreateScreenState extends State<GardenCreateScreen> {
 
   List<FormItemModel> form_data_to_upload = [];
 
-  String category_id = "";
+  String crop_category_id = "";
   String category_text = "";
   String location_sub_name = "";
   String location_id = "";
@@ -488,47 +510,36 @@ class GardenCreateScreenState extends State<GardenCreateScreen> {
   }
 
   Future<void> pick_crop() async {
-    List<OptionPickerModel> items = [];
-    OptionPickerModel l1 = new OptionPickerModel();
-    l1.name = "Cereals";
-    l1.parent_id = "0";
-    l1.id = "1";
-    items.add(l1);
+    if (crop_categories.isEmpty) {
+      crop_categories = await CropCategory.get_items();
+    }
+    if (crop_categories.isEmpty) {
+      Utils.showSnackBar(
+          "Please connect to internet and try again.", context, Colors.white,
+          background_color: Colors.red);
+      return;
+    }
 
-    OptionPickerModel l2 = new OptionPickerModel();
-    l2.name = "Fruits";
-    l2.parent_id = "0";
-    l2.id = "2";
-    items.add(l2);
+    List<OptionPickerModel> local_items = [];
 
-    OptionPickerModel l3 = new OptionPickerModel();
-    l3.name = "Mangoes";
-    l3.parent_id = "2";
-    l3.id = "3";
-    items.add(l3);
-
-    OptionPickerModel l4 = new OptionPickerModel();
-    l4.name = "Lemons";
-    l4.parent_id = "2";
-    l4.id = "4";
-    items.add(l4);
-
-    OptionPickerModel l5 = new OptionPickerModel();
-    l4.name = "Rice";
-    l4.parent_id = "1";
-    l4.id = "5";
-    items.add(l5);
+    crop_categories.forEach((element) {
+      OptionPickerModel item = new OptionPickerModel();
+      item.parent_id = element.parent.toString();
+      item.id = element.id.toString();
+      item.name = element.name.toString();
+      local_items.add(item);
+    });
 
     final result = await Navigator.push(
       context,
       MaterialPageRoute(
           builder: (context) => MultipleOptionPicker(
-              "Select crop category", "Select crop", items)),
+              "Select crop category", "Select crop", local_items)),
     );
 
     if (result != null) {
       if ((result['id'] != null) && (result['text'] != null)) {
-        category_id = result['id'];
+        crop_category_id = result['id'];
         category_text = result['text'];
         setState(() {});
       }
@@ -559,17 +570,26 @@ class GardenCreateScreenState extends State<GardenCreateScreen> {
     }
 
     bool first_found = false;
-    form_data_map['user_id'] = userModel.id;
+    form_data_map['administrator_id'] = userModel.id;
 
-    form_data_map["Advert's_title"] =
+    form_data_map["name"] =
         _formKey.currentState?.fields['name']?.value;
-    form_data_map['Product_price'] =
-        _formKey.currentState?.fields['price']?.value;
-    form_data_map['Product_description'] =
-        _formKey.currentState?.fields['description']?.value;
 
-    if (category_id.isEmpty) {
-      Utils.showSnackBar("Please pick item category", context, Colors.white,
+    form_data_map["plant_date"] =
+        _formKey.currentState?.fields['plant_date']?.value;
+
+
+    form_data_map["harvest_date"] =
+        _formKey.currentState?.fields['harvest_date']?.value;
+
+    form_data_map['size'] =
+        _formKey.currentState?.fields['size']?.value;
+    form_data_map['details']  =
+        _formKey.currentState?.fields['details']?.value;
+
+    if (crop_category_id.isEmpty) {
+      Utils.showSnackBar(
+          "Please pick crop planted in this garden.", context, Colors.white,
           background_color: Colors.red);
       return;
     }
@@ -580,16 +600,20 @@ class GardenCreateScreenState extends State<GardenCreateScreen> {
       return;
     }
 
+    if (latitude == 0.00 || longitude == 0.0) {
+      Utils.showSnackBar("Please collect garden's GPS", context, Colors.white,
+          background_color: Colors.red);
+      return;
+    }
+
     if (photos_picked.length < 2) {
       Utils.showSnackBar("Please add at least one photo", context, Colors.white,
           background_color: Colors.red);
       return;
     }
 
-    form_data_map['Category'] = category_id;
-    form_data_map['Sub_Category'] = category_id;
-    form_data_map['District'] = location_id;
-    form_data_map['Sub_county'] = location_id;
+    form_data_map['crop_category_id'] = crop_category_id;
+    form_data_map['location_id'] = location_id;
 
     if (!photos_picked.isEmpty) {
       for (int __counter = 0; __counter < photos_picked.length; __counter++) {
@@ -607,6 +631,13 @@ class GardenCreateScreenState extends State<GardenCreateScreen> {
         first_found = true;
       }
     }
+
+
+
+
+    print(form_data_map);
+    print("Good to go!");
+    return;
 
     var formData = FormData.fromMap(form_data_map);
     var dio = Dio();
@@ -668,38 +699,27 @@ class GardenCreateScreenState extends State<GardenCreateScreen> {
     setState(() {});
   }
 
-  Future<void> pick_offer() async {
-    final result = await Navigator.push(
-      context,
-      MaterialPageRoute(
-          builder: (context) => ItemPickerScreen(
-                ['For sale', 'For hire', 'Service'],
-                nature_of_off,
-                'Nature of the offer',
-              )),
-    );
-
-    if (result != null) {
-      if ((result['value'] != null) && (result['value'] != null)) {
-        nature_of_off = result['value'].toString();
-        setState(() {});
-      }
+  Future<void> pick_gps() async {
+    Position p = await Utils.get_device_location();
+    if (p != null) {
+      latitude = p.latitude;
+      longitude = p.longitude;
+      setState(() {});
     }
   }
-}
 
+  List<CropCategory> crop_categories = [];
+
+  void my_init() async {
+    crop_categories = await CropCategory.get_items();
+  }
+}
 /*
 
-->
-->
-->
 
--> crop_category_id
--> harvest_date
 
--> location_id
--> latitude
--> longitude
+
+
 
 -> image
 

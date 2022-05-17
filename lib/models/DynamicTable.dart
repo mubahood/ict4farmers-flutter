@@ -5,7 +5,7 @@ import 'package:ict4farmers/utils/Utils.dart';
 
 part 'DynamicTable.g.dart';
 
-@HiveType(typeId: 57)
+@HiveType(typeId: 60)
 class DynamicTable extends HiveObject {
   static Future<List<DynamicTable>> get_items({
     required String end_point,

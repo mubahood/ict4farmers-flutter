@@ -8,7 +8,7 @@ part of 'DynamicTable.dart';
 
 class DynamicTableAdapter extends TypeAdapter<DynamicTable> {
   @override
-  final int typeId = 57;
+  final int typeId = 60;
 
   @override
   DynamicTable read(BinaryReader reader) {

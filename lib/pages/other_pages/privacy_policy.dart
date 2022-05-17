@@ -9,6 +9,7 @@ import 'package:ict4farmers/utils/AppConfig.dart';
 import 'package:provider/provider.dart';
 
 import '../../theme/app_notifier.dart';
+import '../../utils/Utils.dart';
 
 class PrivacyPolicy extends StatefulWidget {
   @override
@@ -25,6 +26,7 @@ class PrivacyPolicyState extends State<PrivacyPolicy> {
   @override
   void initState() {
     super.initState();
+    Utils.ini_theme();
     customTheme = AppTheme.customTheme;
     theme = AppTheme.theme;
   }
@@ -38,15 +40,19 @@ class PrivacyPolicyState extends State<PrivacyPolicy> {
         builder: (BuildContext context, AppNotifier value, Widget? child) {
       return Scaffold(
         appBar: AppBar(
+          backgroundColor: CustomTheme.primary,
           systemOverlayStyle: SystemUiOverlayStyle(
-            statusBarColor: Colors.white,
-            statusBarIconBrightness: Brightness.dark,
+            statusBarColor: CustomTheme.primary,
+            statusBarIconBrightness: Brightness.light,
             statusBarBrightness: Brightness.light, // For iOS (dark icons)
           ),
           elevation: .5,
+          iconTheme: IconThemeData(
+            color: Colors.white, // <= You can change your color here.
+          ),
           title: Text(
             "Our Privacy Policy",
-            style: TextStyle(color: Colors.black),
+            style: TextStyle(color: Colors.white),
           ),
         ),
         body: SafeArea(

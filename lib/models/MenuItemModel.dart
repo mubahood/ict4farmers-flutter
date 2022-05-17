@@ -10,7 +10,8 @@ class MenuItemModel  {
   String title = "";
   String photo = "";
   String screen = "";
+  bool is_protected = false;
 
-  MenuItemModel(this.title, this.photo, this.screen);
+  MenuItemModel(this.title, this.photo, this.screen,this.is_protected);
 }
 

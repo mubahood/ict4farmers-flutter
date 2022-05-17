@@ -5,6 +5,7 @@ import 'package:flutx/widgets/text/text.dart';
 import 'package:flutx/widgets/widgets.dart';
 import 'package:ict4farmers/pages/option_pickers/single_option_picker.dart';
 import 'package:ict4farmers/theme/app_theme.dart';
+import 'package:ict4farmers/utils/Utils.dart';
 import 'package:provider/provider.dart';
 
 import '../../models/option_picker_model.dart';
@@ -48,13 +49,16 @@ class MultipleOptionPickerState extends State<MultipleOptionPicker> {
 
   Future<Null> _onRefresh(BuildContext _context) async {
     items.clear();
+
     widget.original_items.forEach((element) {
-      if (element.parent_id == "0") {
+      if (Utils.int_parse(element.parent_id.toString()) == 0) {
         items.add(element);
       }
     });
 
+    items.sort((a, b) => a.name.compareTo(b.name));
     setState(() {});
+
     return null;
   }
 

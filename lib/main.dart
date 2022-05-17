@@ -16,8 +16,8 @@ void main() {
   //You will need to initialize AppThemeNotifier class for theme changes.
   WidgetsFlutterBinding.ensureInitialized();
 
+  Utils.boot_system();
   AppTheme.init();
-
   //
   Utils.init_databse();
 

@@ -35,10 +35,11 @@ class DashboardState extends State<Dashboard> {
   TabController tabController;
 
   List<MenuItemModel> main_menu_items = [
-    new MenuItemModel('My Gardens', "1.png", AppConfig.GardensScreen),
-    new MenuItemModel('Pest & disease control', "4.png", AppConfig.HomePage),
-    new MenuItemModel('Our forum', "3.png", AppConfig.HomePage),
-    new MenuItemModel('Market place', "2.png", AppConfig.HomePage),
+    new MenuItemModel('My Gardens', "1.png", AppConfig.GardensScreen, true),
+    new MenuItemModel(
+        'Pest & disease control', "4.png", AppConfig.HomePage, true),
+    new MenuItemModel('Our forum', "3.png", AppConfig.HomePage, true),
+    new MenuItemModel('Market place', "2.png", AppConfig.HomePage, true),
   ];
 
   DashboardState(this._context, this.tabController);
@@ -75,20 +76,25 @@ class DashboardState extends State<Dashboard> {
   @override
   Widget build(BuildContext context) {
     List<MenuItemModel> sub_menu_items = [
-      new MenuItemModel('My farmer calender', "1.png", AppConfig.HomePage),
-      new MenuItemModel('My workers', "1.png", AppConfig.HomePage),
-      new MenuItemModel('My farm records', "1.png", AppConfig.HomePage),
-      new MenuItemModel('My products & services', "1.png", AppConfig.HomePage),
-      new MenuItemModel('My orders', "1.png", AppConfig.HomePage),
-      new MenuItemModel('Resources', "1.png", AppConfig.HomePage),
-      new MenuItemModel('Browse farmers', "1.png", AppConfig.HomePage),
-      new MenuItemModel('Extension services', "1.png", AppConfig.HomePage),
-      new MenuItemModel('Products pricing', "1.png", AppConfig.HomePage),
-      new MenuItemModel('Ask an expert', "1.png", AppConfig.HomePage),
-      new MenuItemModel('About this App', "1.png", AppConfig.HomePage),
-      new MenuItemModel('Our privacy policy', "1.png", AppConfig.HomePage),
-      new MenuItemModel('Help & Support', "1.png", AppConfig.HomePage),
-      new MenuItemModel('Toll free', "1.png", AppConfig.HomePage),
+      new MenuItemModel(
+          'My farmer calender', "1.png", AppConfig.HomePage, true),
+      new MenuItemModel('My workers', "1.png", AppConfig.HomePage, true),
+      new MenuItemModel('My farm records', "1.png", AppConfig.HomePage, true),
+      new MenuItemModel(
+          'My products & services', "1.png", AppConfig.HomePage, true),
+      new MenuItemModel('My orders', "1.png", AppConfig.HomePage, true),
+      new MenuItemModel('Production guides', "1.png", AppConfig.HomePage, true),
+      new MenuItemModel('Resources', "1.png", AppConfig.HomePage, true),
+      new MenuItemModel('Browse farmers', "1.png", AppConfig.HomePage, true),
+      new MenuItemModel(
+          'Extension services', "1.png", AppConfig.HomePage, true),
+      new MenuItemModel('Products pricing', "1.png", AppConfig.HomePage, true),
+      new MenuItemModel('Ask an expert', "1.png", AppConfig.HomePage, true),
+      new MenuItemModel('About this App', "1.png", AppConfig.HomePage, true),
+      new MenuItemModel(
+          'Our privacy policy', "1.png", AppConfig.HomePage, true),
+      new MenuItemModel('Help & Support', "1.png", AppConfig.HomePage, true),
+      new MenuItemModel('Toll free', "1.png", AppConfig.HomePage, true),
     ];
 
     return SafeArea(
@@ -371,7 +377,13 @@ class DashboardState extends State<Dashboard> {
 
   Widget _single_item(MenuItemModel item) {
     return InkWell(
-      onTap: () => {Utils.navigate_to(item.screen, context)},
+      onTap: () => {
+        item.is_protected
+            ? (loggedUser.id > 0)
+                ? Utils.navigate_to(item.screen, context)
+                : show_not_account_bottom_sheet(context)
+            : Utils.navigate_to(item.screen, context)
+      },
       child: Container(
         color: CustomTheme.primary,
         padding: EdgeInsets.only(left: 10, top: 20, right: 10),

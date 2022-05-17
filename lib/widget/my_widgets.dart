@@ -267,7 +267,7 @@ void show_not_account_bottom_sheet(context) {
 
 Widget NoAccountWidget(BuildContext context,
     {String body: "You are not logged in yet.\n\n"
-        "Create your ${AppConfig.AppName} account today! and share farming experience with hundreds of farmers in Uganda.",
+        "Create your ${AppConfig.AppName} account today! and share farming experience with thousands of farmers in Uganda.",
     String action_text:
         "Sell your farm products, Chat with experts, Compare farm products prices, Manage your farms and much more...",
     String empty_image: ""}) {
