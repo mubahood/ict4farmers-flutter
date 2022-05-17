@@ -12,42 +12,66 @@ import '../theme/app_theme.dart';
 import '../theme/custom_theme.dart';
 import '../utils/Utils.dart';
 
+final List<String> my_colors = [
+  '#BA0A1E',
+  '#EE2908',
+  '#542889',
+  '#35A9B9',
+  '#273A85',
+  '#35A9B9',
+  '#273988',
+  '#219847',
+  '#FE9F23',
+  '#7C00FF',
+  '#FC4E51',
+  '#AA2754',
+  '#186986',
+  '#FFAE00',
+  '#44372E',
+  '#000000',
+  '#3E51A1',
+];
+
+extension HexString on String {
+  int getHexValue() => int.parse(replaceAll('#', '0xff'));
+}
+
 Widget widget_grid_item(
   context, {
   required String title,
   required String asset_image,
+  String bg_color: "",
 }) {
   return FxContainer(
-    paddingAll: 0,
-    bordered: true,
-    width: MediaQuery.of(context).size.width / 2.3,
-    height: MediaQuery.of(context).size.width / 2.5,
-    border: Border.all(color: CustomTheme.primary, width: 1),
-    child: Stack(
-      // crossAxisAlignment: CrossAxisAlignment.start,
+    paddingAll: 10,
+    marginAll: 10,
+    color: (bg_color.isEmpty)
+        ? CustomTheme.primary
+        : Color(bg_color.getHexValue()),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        ClipRRect(
-          borderRadius: BorderRadius.all(Radius.circular(10)),
-          child: Image(
-            image: AssetImage("assets/project/${asset_image}"),
-          ),
+        FxText(
+          "My Maize garden X",
+          color: Colors.white,
+          fontWeight: 800,
+          height: 1.0,
+          fontSize: 20,
         ),
-        Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: FxText(
-            title,
-            fontSize: 22,
-            height: 1,
-            fontWeight: 700,
-            color: Colors.grey.shade900,
-          ),
+        Container(
+          height: 10,
+        ),
+        FxText(
+          "No missing activity.",
+          color: Colors.grey.shade100,
+          fontWeight: 600,
+          fontSize: 14,
         ),
       ],
     ),
-    color: Colors.white,
   );
 }
-
 
 Widget widget_dashboard_item(
   context, {

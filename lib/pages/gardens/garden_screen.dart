@@ -1,24 +1,23 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:ict4farmers/utils/AppConfig.dart';
 
 import '../../models/UserModel.dart';
 import '../../theme/app_theme.dart';
 import '../../utils/Utils.dart';
 import '../../widget/my_widgets.dart';
 
-class GardensScreen extends StatefulWidget {
-  GardensScreen();
+class GardenScreen extends StatefulWidget {
+  GardenScreen();
 
   @override
-  GardensScreenState createState() => GardensScreenState();
+  GardenScreenState createState() => GardenScreenState();
 }
 
-class GardensScreenState extends State<GardensScreen> {
+class GardenScreenState extends State<GardenScreen> {
   late ThemeData theme;
-  String title = "My gardens";
+  String title = "My garden";
 
-  GardensScreenState();
+  GardenScreenState();
 
   @override
   void initState() {
@@ -48,13 +47,6 @@ class GardensScreenState extends State<GardensScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () =>
-            {Utils.navigate_to(AppConfig.GardenCreateScreen, context)},
-        tooltip: 'Create new garden.',
-        backgroundColor: CustomTheme.primary,
-        child: const Icon(Icons.add),
-      ),
       body: RefreshIndicator(
           color: CustomTheme.primary,
           backgroundColor: Colors.white,
@@ -79,14 +71,19 @@ class GardensScreenState extends State<GardensScreen> {
                     childAspectRatio: 2,
                     mainAxisExtent: (160)),
                 delegate: SliverChildBuilderDelegate(
-                  (context, index) {
-                    my_colors.shuffle();
+                      (context, index) {
                     return widget_grid_item(context,
-                        title: "Title",
-                        asset_image: "Sub title",
-                        bg_color: my_colors[2]);
+                        title: "Title", asset_image: "Sub title");
                   },
                   childCount: ["1", 2, 3, 4, 6].length,
+                ),
+              ),
+              SliverList(
+                delegate: SliverChildBuilderDelegate(
+                      (BuildContext context, int index) {
+                    return Text("Anjane");
+                  },
+                  childCount: [2, 4, 5, 6].length, // 1000 list items
                 ),
               ),
             ],
