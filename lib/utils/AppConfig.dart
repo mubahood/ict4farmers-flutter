@@ -1,4 +1,6 @@
 class AppConfig {
+  static const String GardensScreen = "GardensScreen";
+
   static String BASE_URL = "https://app2.unffeict4farmers.org";
   static const String HomePage = "HomePage";
   static const String MyProductsScreen = "MyProductsScreen";

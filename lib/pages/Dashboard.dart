@@ -35,14 +35,10 @@ class DashboardState extends State<Dashboard> {
   TabController tabController;
 
   List<MenuItemModel> main_menu_items = [
-    new MenuItemModel('My Gardens', "1.png", AppConfig.HomePage),
-    new MenuItemModel('Pest & disease control', "1.png", AppConfig.HomePage),
-    new MenuItemModel('Our forum', "1.png", AppConfig.HomePage),
-    new MenuItemModel('Market place', "1.png", AppConfig.HomePage),
-  ];
-
-  List<MenuItemModel> menu_items = [
-    new MenuItemModel('My Gardens', "1.png", AppConfig.HomePage),
+    new MenuItemModel('My Gardens', "1.png", AppConfig.GardensScreen),
+    new MenuItemModel('Pest & disease control', "4.png", AppConfig.HomePage),
+    new MenuItemModel('Our forum', "3.png", AppConfig.HomePage),
+    new MenuItemModel('Market place', "2.png", AppConfig.HomePage),
   ];
 
   DashboardState(this._context, this.tabController);
@@ -78,6 +74,23 @@ class DashboardState extends State<Dashboard> {
 
   @override
   Widget build(BuildContext context) {
+    List<MenuItemModel> sub_menu_items = [
+      new MenuItemModel('My farmer calender', "1.png", AppConfig.HomePage),
+      new MenuItemModel('My workers', "1.png", AppConfig.HomePage),
+      new MenuItemModel('My farm records', "1.png", AppConfig.HomePage),
+      new MenuItemModel('My products & services', "1.png", AppConfig.HomePage),
+      new MenuItemModel('My orders', "1.png", AppConfig.HomePage),
+      new MenuItemModel('Resources', "1.png", AppConfig.HomePage),
+      new MenuItemModel('Browse farmers', "1.png", AppConfig.HomePage),
+      new MenuItemModel('Extension services', "1.png", AppConfig.HomePage),
+      new MenuItemModel('Products pricing', "1.png", AppConfig.HomePage),
+      new MenuItemModel('Ask an expert', "1.png", AppConfig.HomePage),
+      new MenuItemModel('About this App', "1.png", AppConfig.HomePage),
+      new MenuItemModel('Our privacy policy', "1.png", AppConfig.HomePage),
+      new MenuItemModel('Help & Support', "1.png", AppConfig.HomePage),
+      new MenuItemModel('Toll free', "1.png", AppConfig.HomePage),
+    ];
+
     return SafeArea(
       child: RefreshIndicator(
           color: CustomTheme.primary,
@@ -87,6 +100,7 @@ class DashboardState extends State<Dashboard> {
             slivers: [
               SliverAppBar(
                   titleSpacing: 0,
+                  elevation: 0,
                   toolbarHeight: (Utils.screen_height(context) / 3.5),
                   title: Stack(
                     children: [
@@ -122,30 +136,30 @@ class DashboardState extends State<Dashboard> {
                                 color: CustomTheme.primary,
                                 child: is_logged_in
                                     ? CachedNetworkImage(
-                                        width: 100,
-                                        height: 100,
+                                        width: 70,
+                                        height: 70,
                                         fit: BoxFit.cover,
                                         imageUrl: loggedUser.avatar,
                                         placeholder: (context, url) =>
                                             ShimmerLoadingWidget(
-                                          height: 100,
-                                          width: 100,
+                                          height: 70,
+                                          width: 70,
                                         ),
                                         errorWidget: (context, url, error) =>
                                             Image(
                                           image: AssetImage(
                                               './assets/project/user.png'),
-                                          height: 100,
-                                          width: 100,
+                                          height: 80,
+                                          width: 80,
                                           fit: BoxFit.cover,
                                         ),
-                                      )
+                                )
                                     : Image(
-                                        width: 60,
-                                        height: 60,
-                                        image: AssetImage(
-                                            "./assets/project/user.png"),
-                                      ),
+                                  width: 60,
+                                  height: 60,
+                                  image: AssetImage(
+                                      "./assets/project/user.png"),
+                                ),
                               ),
                               Container(
                                 margin: EdgeInsets.only(left: 10),
@@ -272,9 +286,9 @@ class DashboardState extends State<Dashboard> {
                     mainAxisSpacing: 0,
                     crossAxisSpacing: 0,
                     childAspectRatio: 2,
-                    mainAxisExtent: 200),
+                    mainAxisExtent: (160)),
                 delegate: SliverChildBuilderDelegate(
-                      (context, index) {
+                  (context, index) {
                     return _single_item(main_menu_items[index]);
                   },
                   childCount: main_menu_items.length,
@@ -285,10 +299,10 @@ class DashboardState extends State<Dashboard> {
                   (BuildContext context, int index) {
                     return InkWell(
                       onTap: () => {},
-                      child: _list_item(),
+                      child: _list_item(sub_menu_items[index]),
                     );
                   },
-                  childCount: menu_items.length, // 1000 list items
+                  childCount: sub_menu_items.length, // 1000 list items
                 ),
               ),
             ],
@@ -296,7 +310,7 @@ class DashboardState extends State<Dashboard> {
     );
   }
 
-  Widget _list_item() {
+  Widget _list_item(MenuItemModel menu_item) {
     String badge = "1";
     return Container(
       color: CustomTheme.primary,
@@ -306,9 +320,7 @@ class DashboardState extends State<Dashboard> {
         bordered: true,
         border: Border.all(color: CustomTheme.primary, width: 1),
         child: InkWell(
-          onTap: () {
-
-          },
+          onTap: () {},
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
@@ -322,10 +334,10 @@ class DashboardState extends State<Dashboard> {
               FxSpacing.width(16),
               Expanded(
                 child: FxText.b1(
-                  'Simple title...',
+                  menu_item.title,
                   fontWeight: 800,
                   color: Colors.black,
-                  fontSize: 18,
+                  fontSize: (menu_item.title.length > 20) ? 16 : 18,
                 ),
               ),
               Container(
@@ -358,36 +370,42 @@ class DashboardState extends State<Dashboard> {
   }
 
   Widget _single_item(MenuItemModel item) {
-    return Container(
-      color: CustomTheme.primary,
-      padding: EdgeInsets.only(left: 10, top: 20, right: 10),
-      child: FxContainer(
-        paddingAll: 0,
-        bordered: true,
-        width: MediaQuery.of(context).size.width / 2.3,
-        border: Border.all(color: CustomTheme.primary, width: 1),
-        child: Stack(
-          // crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            ClipRRect(
-              borderRadius: BorderRadius.all(Radius.circular(10)),
-              child: Image(
-                image: AssetImage("assets/project/3.png"),
+    return InkWell(
+      onTap: () => {Utils.navigate_to(item.screen, context)},
+      child: Container(
+        color: CustomTheme.primary,
+        padding: EdgeInsets.only(left: 10, top: 20, right: 10),
+        child: FxContainer(
+          paddingAll: 0,
+          bordered: true,
+          width: MediaQuery.of(context).size.width / 2.3,
+          border: Border.all(color: CustomTheme.primary, width: 1),
+          child: Column(
+            children: [
+              Container(
+                height: 60,
+                padding: const EdgeInsets.all(10.0),
+                child: FxText(
+                  item.title,
+                  maxLines: 3,
+                  fontSize: (item.title == "Pest & disease control") ? 18 : 22,
+                  height: 1,
+                  fontWeight: 700,
+                  color: Colors.grey.shade900,
+                ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: FxText(
-                item.title,
-                fontSize: 22,
-                height: 1,
-                fontWeight: 700,
-                color: Colors.grey.shade900,
+              Container(
+                height: 75,
+                width: double.infinity,
+                child: Image(
+                  height: 70,
+                  image: AssetImage("assets/project/${item.photo}"),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
+          color: Colors.white,
         ),
-        color: Colors.white,
       ),
     );
   }

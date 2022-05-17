@@ -35,6 +35,7 @@ import '../pages/account/my_products_screen.dart';
 import '../pages/account/onboarding_widget.dart';
 import '../pages/chat/chat_home_screen.dart';
 import '../pages/forum/create_post_screen.dart';
+import '../pages/gardens/gardens_screen.dart';
 import '../pages/homes/advisory/advisory_home.dart';
 import '../pages/other_pages/PaymentPage.dart';
 import '../pages/other_pages/SuccessPaymentPage.dart';
@@ -273,18 +274,27 @@ class Utils {
 
   static navigate_to(String screen, context, {dynamic data: null}) {
     switch (screen) {
-      case AppConfig.PaymentPage:
+      case AppConfig.GardensScreen:
         Navigator.push(
           context,
           PageRouteBuilder(
-            pageBuilder: (context, animation1, animation2) =>
-                PaymentPage(),
+            pageBuilder: (context, animation1, animation2) => GardensScreen(),
             transitionDuration: Duration.zero,
           ),
         );
         break;
 
-        case AppConfig.SuccessPaymentPage:
+      case AppConfig.PaymentPage:
+        Navigator.push(
+          context,
+          PageRouteBuilder(
+            pageBuilder: (context, animation1, animation2) => PaymentPage(),
+            transitionDuration: Duration.zero,
+          ),
+        );
+        break;
+
+      case AppConfig.SuccessPaymentPage:
         Navigator.push(
           context,
           PageRouteBuilder(

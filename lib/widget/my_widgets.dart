@@ -12,6 +12,43 @@ import '../theme/app_theme.dart';
 import '../theme/custom_theme.dart';
 import '../utils/Utils.dart';
 
+Widget widget_grid_item(
+  context, {
+  required String title,
+  required String asset_image,
+}) {
+  return FxContainer(
+    paddingAll: 0,
+    bordered: true,
+    width: MediaQuery.of(context).size.width / 2.3,
+    height: MediaQuery.of(context).size.width / 2.5,
+    border: Border.all(color: CustomTheme.primary, width: 1),
+    child: Stack(
+      // crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        ClipRRect(
+          borderRadius: BorderRadius.all(Radius.circular(10)),
+          child: Image(
+            image: AssetImage("assets/project/${asset_image}"),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: FxText(
+            title,
+            fontSize: 22,
+            height: 1,
+            fontWeight: 700,
+            color: Colors.grey.shade900,
+          ),
+        ),
+      ],
+    ),
+    color: Colors.white,
+  );
+}
+
+
 Widget widget_dashboard_item(
   context, {
   required String title,
