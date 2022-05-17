@@ -634,6 +634,7 @@ class Utils {
     return MediaQuery.of(context).size.height;
   }
 
+
   static void ini_theme() {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       statusBarColor: CustomTheme.primary,

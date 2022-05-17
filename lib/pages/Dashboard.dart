@@ -14,8 +14,8 @@ import '../../models/UserModel.dart';
 import '../../theme/app_theme.dart';
 import '../../utils/AppConfig.dart';
 import '../../utils/Utils.dart';
-import '../models/BannerModel.dart';
 import '../models/FarmersGroup.dart';
+import '../models/MenuItemModel.dart';
 import '../widget/my_widgets.dart';
 import '../widget/shimmer_loading_widget.dart';
 
@@ -34,11 +34,15 @@ class DashboardState extends State<Dashboard> {
   BuildContext _context;
   TabController tabController;
 
-  List<BannerModel> menu_items = [
-    new BannerModel(),
-    new BannerModel(),
-    new BannerModel(),
-    new BannerModel(),
+  List<MenuItemModel> main_menu_items = [
+    new MenuItemModel('My Gardens', "1.png", AppConfig.HomePage),
+    new MenuItemModel('Pest & disease control', "1.png", AppConfig.HomePage),
+    new MenuItemModel('Our forum', "1.png", AppConfig.HomePage),
+    new MenuItemModel('Market place', "1.png", AppConfig.HomePage),
+  ];
+
+  List<MenuItemModel> menu_items = [
+    new MenuItemModel('My Gardens', "1.png", AppConfig.HomePage),
   ];
 
   DashboardState(this._context, this.tabController);
@@ -83,7 +87,7 @@ class DashboardState extends State<Dashboard> {
             slivers: [
               SliverAppBar(
                   titleSpacing: 0,
-                  toolbarHeight: (Utils.screen_height(context) / 3),
+                  toolbarHeight: (Utils.screen_height(context) / 3.5),
                   title: Stack(
                     children: [
                       ClipRRect(
@@ -93,7 +97,7 @@ class DashboardState extends State<Dashboard> {
                         ),
                         child: Image(
                           width: double.infinity,
-                          height: (Utils.screen_height(context) / 3),
+                          height: (Utils.screen_height(context) / 3.5),
                           fit: BoxFit.cover,
                           image: AssetImage("assets/project/farm_doodle.jpg"),
                         ),
@@ -268,12 +272,12 @@ class DashboardState extends State<Dashboard> {
                     mainAxisSpacing: 0,
                     crossAxisSpacing: 0,
                     childAspectRatio: 2,
-                    mainAxisExtent: (160)),
+                    mainAxisExtent: 200),
                 delegate: SliverChildBuilderDelegate(
-                  (context, index) {
-                    return _single_item();
+                      (context, index) {
+                    return _single_item(main_menu_items[index]);
                   },
-                  childCount: menu_items.length,
+                  childCount: main_menu_items.length,
                 ),
               ),
               SliverList(
@@ -353,7 +357,7 @@ class DashboardState extends State<Dashboard> {
     );
   }
 
-  Widget _single_item() {
+  Widget _single_item(MenuItemModel item) {
     return Container(
       color: CustomTheme.primary,
       padding: EdgeInsets.only(left: 10, top: 20, right: 10),
@@ -374,7 +378,7 @@ class DashboardState extends State<Dashboard> {
             Padding(
               padding: const EdgeInsets.all(10.0),
               child: FxText(
-                '3.png',
+                item.title,
                 fontSize: 22,
                 height: 1,
                 fontWeight: 700,

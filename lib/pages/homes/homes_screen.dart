@@ -47,10 +47,10 @@ class _HomesScreenState extends State<HomesScreen>
     navItems = [
       NavItem(
           'Dashboard', CupertinoIcons.home, Dashboard(context, tabController)),
-      NavItem('Farm', Icons.agriculture, HomesScreenSegment()),
+      NavItem('My Gardens', Icons.agriculture, HomesScreenSegment()),
       NavItem('Market', CupertinoIcons.shopping_cart, HomesScreenSegment()),
       NavItem('Forum', CupertinoIcons.plus_circle, MyProductsScreen()),
-      NavItem('Chats', CupertinoIcons.envelope_badge, ChatHomeScreen()),
+      NavItem('Orders', CupertinoIcons.envelope_badge, ChatHomeScreen()),
     ];
 
     tabController.addListener(() {
