@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -632,21 +633,21 @@ class GardenCreateScreenState extends State<GardenCreateScreen> {
       }
     }
 
-
-
-
-    print(form_data_map);
-    print("Good to go!");
-    return;
-
     var formData = FormData.fromMap(form_data_map);
     var dio = Dio();
+    (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
+        (HttpClient client) {
+      client.badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
+      return client;
+    };
+
     setState(() {
       is_uploading = true;
     });
 
-    var response =
-        await dio.post('${AppConfig.BASE_URL}/api/products', data: formData);
+    var response = await dio
+        .post('https://app2.unffeict4farmers.org/api/gardens', data: formData);
 
     await ProductModel.get_user_products(userModel.id);
     setState(() {
@@ -670,10 +671,10 @@ class GardenCreateScreenState extends State<GardenCreateScreen> {
           response.data['status'].toString(), context, Colors.red.shade700);
       return;
     }
-    await ProductModel.get_user_products(userModel.id);
-    //await FormItemModel.delete_all();
+
     Utils.showSnackBar(
-        response.data['message'].toString(), context, CustomTheme.onPrimary);
+        response.data['message'].toString(), context, Colors.white,
+        background_color: CustomTheme.primary);
 
     Navigator.pop(context, {"task": 'success'});
   }
