@@ -79,4 +79,39 @@ class GardenActivityModel {
       'details': this.details,
     };
   }
+
+  bool is_missing() {
+    bool is_missing = false;
+    try {
+      final old = DateTime.parse(this.due_date);
+      if (old != null) {
+        final date2 = DateTime.now();
+        final difference = date2.difference(old).inDays;
+        if (difference >= 0) {
+          is_missing = true;
+        } else {
+          is_missing = false;
+        }
+      }
+    } catch (e) {}
+    return is_missing;
+  }
+
+  int get_status() {
+    int status = 0;
+    if (this.is_done) {
+      if (this.done_status.toString() == "Missed") {
+        status = 4;
+      } else {
+        status = 5;
+      }
+    } else {
+      if (this.is_missing()) {
+        status = 2;
+      } else {
+        status = 3;
+      }
+    }
+    return status;
+  }
 }

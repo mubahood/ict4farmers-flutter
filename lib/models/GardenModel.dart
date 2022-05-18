@@ -44,7 +44,7 @@ class GardenModel {
           item.id = Utils.int_parse(map['id']);
           if (item.id > 0) {
 
-            item.details = map['details'].toStgarden_idring();
+            item.details = map['details'].toString();
             item.name = map['name'].toString();
             item.crop_category_name = map['crop_category_name'].toString();
             item.administrator_id = Utils.int_parse(map['parent']);
@@ -77,4 +77,6 @@ class GardenModel {
       'details': this.details,
     };
   }
+
+
 }

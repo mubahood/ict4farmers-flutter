@@ -39,14 +39,9 @@ class GardenScreenState extends State<GardenScreen> {
 
   Future<void> my_init() async {
 
-    print("=======INITING=========");
-
-/*    List<GardenActivityModel> all_activities = await GardenActivityModel.get_items();
-    print(all_activities.length);*/
 
 
-
-    is_logged_in = false;
+    is_logged_in = true;
     setState(() {});
 
     if (widget.params != null) {
@@ -73,7 +68,17 @@ class GardenScreenState extends State<GardenScreen> {
       Navigator.pop(context);
       return;
     }
-    is_logged_in = true;
+
+    List<GardenActivityModel> all_activities =
+        await GardenActivityModel.get_items();
+    activities.clear();
+    all_activities.forEach((element) {
+      if (element.garden_id.toString() == item.id.toString()) {
+        activities.add(element);
+      }
+    });
+
+    is_logged_in = false;
     setState(() {});
   }
 
@@ -134,14 +139,85 @@ class GardenScreenState extends State<GardenScreen> {
               SliverList(
                 delegate: SliverChildBuilderDelegate(
                   (BuildContext context, int index) {
-                    return Text("Anjane");
+                    return FxContainer(
+                        color: Colors.white,
+                        padding: EdgeInsets.only(
+                            top: 20, bottom: 10, left: 15, right: 10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            FxText(
+                              "Activities",
+                              color: Colors.black,
+                              fontSize: 20,
+                              fontWeight: 800,
+                            ),
+                            FxContainer(
+                              padding: EdgeInsets.only(
+                                  top: 3, bottom: 3, left: 15, right: 10),
+                              child: FxText(
+                                "See All",
+                                fontSize: 16,
+                                fontWeight: 700,
+                                color: CustomTheme.primary,
+                              ),
+                            )
+                          ],
+                        ));
                   },
-                  childCount: [2, 4, 5, 6].length, // 1000 list items
+                  childCount: 1, // 1000 list items
+                ),
+              ),
+              SliverList(
+                delegate: SliverChildBuilderDelegate(
+                  (BuildContext context, int index) {
+                    return _widget_garden_activity_ui(activities[index]);
+                  },
+                  childCount: activities.length, // 1000 list items
                 ),
               ),
             ],
           )),
     );
+  }
+
+  Widget _widget_garden_activity_ui(GardenActivityModel m) {
+    return FxContainer(
+        color: Colors.white,
+        padding: EdgeInsets.only(top: 0, left: 15, right: 10),
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                    width: (Utils.screen_width(context) / 1.5),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        FxText(
+                          m.name,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          color: Colors.black,
+                          fontWeight: 800,
+                        ),
+                        FxText(
+                          m.due_date,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ],
+                    )),
+                Container(child: activity_status_widget(m)),
+              ],
+            ),
+            Divider(
+              height: 20,
+              thickness: 1,
+            ),
+          ],
+        ));
   }
 
   Widget _widget_grid_item(int index) {
@@ -250,7 +326,7 @@ class GardenScreenState extends State<GardenScreen> {
 
                     Container(
                       padding: EdgeInsets.only(top: 5),
-                      width: (Utils.screen_width(context) / 1.5),
+                      width: (Utils.screen_width(context) / 1.6),
                       child: RichText(
                         text: TextSpan(
                           children: <TextSpan>[
@@ -308,10 +384,10 @@ class GardenScreenState extends State<GardenScreen> {
                       color: Colors.white,
                     ),
                     FxText(
-                      'Done',
+                      'Completed',
                       height: .8,
                       fontWeight: 400,
-                      fontSize: 20,
+                      fontSize: 16.5,
                       color: Colors.white,
                     ),
                   ],
@@ -341,6 +417,78 @@ class GardenScreenState extends State<GardenScreen> {
         ),
       ),
     );
+  }
+
+  activity_status_widget(GardenActivityModel m) {
+    int status = m.get_status();
+
+    return (status == 5)
+        ? Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              FxText(
+                'Done',
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                color: Colors.green.shade600,
+                fontWeight: 800,
+              ),
+              Icon(
+                Icons.close,
+                color: Colors.green.shade600,
+              ),
+            ],
+          )
+        : (status == 4)
+            ? Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  FxText(
+                    'Missed',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    color: Colors.red.shade600,
+                    fontWeight: 800,
+                  ),
+                  Icon(
+                    Icons.close,
+                    color: Colors.red.shade600,
+                  ),
+                ],
+              )
+            : (status == 2)
+                ? Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      FxText(
+                        'Missing',
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        color: Colors.red.shade600,
+                        fontWeight: 800,
+                      ),
+                      Icon(
+                        Icons.warning,
+                        color: Colors.red.shade600,
+                      ),
+                    ],
+                  )
+                : Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      FxText(
+                        'Pending',
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        color: Colors.grey.shade600,
+                        fontWeight: 800,
+                      ),
+                      Icon(
+                        Icons.alarm_outlined,
+                        color: Colors.grey.shade600,
+                      ),
+                    ],
+                  );
   }
 }
 
