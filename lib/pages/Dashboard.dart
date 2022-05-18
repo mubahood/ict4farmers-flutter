@@ -107,6 +107,7 @@ class DashboardState extends State<Dashboard> {
               SliverAppBar(
                   titleSpacing: 0,
                   elevation: 0,
+                  pinned: true,
                   toolbarHeight: (Utils.screen_height(context) / 3.5),
                   title: Stack(
                     children: [
@@ -284,7 +285,7 @@ class DashboardState extends State<Dashboard> {
                       ),
                     ],
                   ),
-                  floating: true,
+                  floating: false,
                   backgroundColor: CustomTheme.primary),
               SliverGrid(
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(

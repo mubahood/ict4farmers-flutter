@@ -19,7 +19,7 @@ class GardenScreen extends StatefulWidget {
 
 class GardenScreenState extends State<GardenScreen> {
   late ThemeData theme;
-  String title = "Garden overview";
+
 
   GardenScreenState();
 
@@ -90,7 +90,7 @@ class GardenScreenState extends State<GardenScreen> {
                   titleSpacing: 0,
                   elevation: 0,
                   title: FxText(
-                    title,
+                    item.name,
                     color: Colors.white,
                     fontSize: 22,
                     fontWeight: 500,
@@ -112,7 +112,7 @@ class GardenScreenState extends State<GardenScreen> {
                     mainAxisSpacing: 0,
                     crossAxisSpacing: 0,
                     childAspectRatio: 2,
-                    mainAxisExtent: (160)),
+                    mainAxisExtent: (180)),
                 delegate: SliverChildBuilderDelegate(
                   (context, index) {
                     return _widget_grid_item(index);
@@ -136,13 +136,37 @@ class GardenScreenState extends State<GardenScreen> {
   Widget _widget_grid_item(int index) {
     GridItemWidget item = new GridItemWidget();
     if (index == 0) {
-      item.title = "Activities";
+      item.title = "Garden activities";
       item.all = "ALL";
       item.all_text = "25";
       item.done = "DONE";
       item.done_text = "10";
       item.complete = "REMAINING";
       item.complete_text = "11";
+    } else if (index == 1) {
+      item.title = "Financial records";
+      item.all = "EXPENSE";
+      item.all_text = "UGX 25";
+      item.done = "INCOME";
+      item.done_text = "10";
+      item.complete = "PROFIT/LOSS";
+      item.complete_text = " 11";
+    } else if (index == 2) {
+      item.title = "Garden records";
+      item.all = "All records";
+      item.all_text = "25";
+      item.done = "INCOME";
+      item.done_text = "10";
+      item.complete = "PROFIT/LOSS";
+      item.complete_text = " 11";
+    } else if (index == 3) {
+      item.title = "Garden's gallery";
+      item.all = "All albums";
+      item.all_text = "8";
+      item.done = "INCOME";
+      item.done_text = "10";
+      item.complete = "PROFIT/LOSS";
+      item.complete_text = " 11";
     }
 
     return InkWell(
@@ -164,17 +188,20 @@ class GardenScreenState extends State<GardenScreen> {
                 color: CustomTheme.primary,
                 fontWeight: 800,
                 height: 1.0,
-                fontSize: 22,
+                fontSize: 20,
               ),
-              Container(
-                height: 10,
-              ),
+              Spacer(),
               my_rich_text(
                   item.all, item.all_text.toString(), Colors.grey.shade800),
-              my_rich_text(
-                  item.done, item.done_text.toString(), Colors.grey.shade800),
-              my_rich_text(item.complete, item.complete_text.toString(),
-                  Colors.grey.shade800),
+              (index > 1)
+                  ? SizedBox()
+                  : my_rich_text(item.done, item.done_text.toString(),
+                      Colors.grey.shade800),
+              (index > 1)
+                  ? SizedBox()
+                  : my_rich_text(item.complete, item.complete_text.toString(),
+                      Colors.grey.shade800),
+              Spacer(),
               FxContainer(
                 child: FxText(
                   "See All",
@@ -184,7 +211,6 @@ class GardenScreenState extends State<GardenScreen> {
                 ),
                 paddingAll: 0,
                 padding: EdgeInsets.only(top: 2, bottom: 2),
-                margin: EdgeInsets.only(top: 5),
                 color: CustomTheme.primary.withAlpha(20),
                 alignment: Alignment.center,
                 width: double.infinity,
@@ -202,44 +228,85 @@ class GardenScreenState extends State<GardenScreen> {
         color: CustomTheme.primary,
         child: Column(
           children: [
+
+
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    FxText(
-                      item.name,
-                      color: Colors.white,
-                      fontWeight: 800,
-                      fontSize: 25,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    FxText(
-                      item.plant_date,
-                      fontWeight: 500,
-                      fontSize: 14,
-                      color: Colors.grey.shade300,
+
+                    Container(
+                      padding: EdgeInsets.only(top: 5),
+                      width: (Utils.screen_width(context) / 1.5),
+                      child: RichText(
+                        text: TextSpan(
+                          children: <TextSpan>[
+                            TextSpan(
+                                text: 'CROP: ',
+                                style: TextStyle(fontWeight: FontWeight.bold)),
+                            TextSpan(
+                              text: '${item.crop_category_name}, ',
+                              style: TextStyle(
+                                fontWeight: FontWeight.normal,
+                              ),
+                            ),
+                            TextSpan(
+                                text: 'PLANTED: ',
+                                style: TextStyle(fontWeight: FontWeight.bold)),
+                            TextSpan(
+                              text: '${item.plant_date}, ',
+                              style: TextStyle(
+                                fontWeight: FontWeight.normal,
+                              ),
+                            ),
+                            TextSpan(
+                                text: 'LAND SIZE: ',
+                                style: TextStyle(fontWeight: FontWeight.bold)),
+                            TextSpan(
+                              text: '${item.size} acres, ',
+                              style: TextStyle(
+                                fontWeight: FontWeight.normal,
+                              ),
+                            ),
+                            TextSpan(
+                                text: 'LOCATION: ',
+                                style: TextStyle(fontWeight: FontWeight.bold)),
+                            TextSpan(
+                              text: '${item.location_name} acres, ',
+                              style: TextStyle(
+                                fontWeight: FontWeight.normal,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                   ],
                 ),
-                FxText(
-                  '%40',
-                  fontWeight: 800,
-                  fontSize: 40,
-                  color: Colors.white,
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    FxText(
+                      '%40',
+                      fontWeight: 800,
+                      fontSize: 40,
+                      height: .8,
+                      color: Colors.white,
+                    ),
+                    FxText(
+                      'Done',
+                      height: .8,
+                      fontWeight: 400,
+                      fontSize: 20,
+                      color: Colors.white,
+                    ),
+                  ],
                 ),
               ],
             ),
-            Container(
-              height: 15,
-            ),
-            my_rich_text(
-                "CROP", item.crop_category_id.toString(), Colors.white),
-            my_rich_text("PLANTED", item.plant_date.toString(), Colors.white),
-            my_rich_text("GARDEN SIZE", item.size.toString(), Colors.white),
-            my_rich_text("LOCATION", item.location_id.toString(), Colors.white),
           ],
           crossAxisAlignment: CrossAxisAlignment.start,
         ));
@@ -249,6 +316,8 @@ class GardenScreenState extends State<GardenScreen> {
     return Padding(
       padding: const EdgeInsets.only(top: 2.0),
       child: RichText(
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
         text: TextSpan(
           children: <TextSpan>[
             TextSpan(
