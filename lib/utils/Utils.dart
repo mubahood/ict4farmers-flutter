@@ -12,6 +12,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:ict4farmers/models/BannerModel.dart';
+import 'package:ict4farmers/models/GardenModel.dart';
 import 'package:ict4farmers/models/PostCategoryModel.dart';
 import 'package:ict4farmers/models/ProductModel.dart';
 import 'package:ict4farmers/models/UserModel.dart';
@@ -37,6 +38,7 @@ import '../pages/account/onboarding_widget.dart';
 import '../pages/chat/chat_home_screen.dart';
 import '../pages/forum/create_post_screen.dart';
 import '../pages/gardens/garden_create_screen.dart';
+import '../pages/gardens/garden_screen.dart';
 import '../pages/gardens/gardens_screen.dart';
 import '../pages/homes/advisory/advisory_home.dart';
 import '../pages/other_pages/PaymentPage.dart';
@@ -54,6 +56,7 @@ import 'AppConfig.dart';
 class Utils {
   static void boot_system() async {
     await CropCategory.get_items();
+    await GardenModel.get_items();
   }
 
   static void launchURL(String _url) async {
@@ -294,6 +297,15 @@ class Utils {
           context,
           PageRouteBuilder(
             pageBuilder: (context, animation1, animation2) => GardensScreen(),
+            transitionDuration: Duration.zero,
+          ),
+        );
+        break;
+      case AppConfig.GardenScreen:
+        Navigator.push(
+          context,
+          PageRouteBuilder(
+            pageBuilder: (context, animation1, animation2) => GardenScreen(data),
             transitionDuration: Duration.zero,
           ),
         );

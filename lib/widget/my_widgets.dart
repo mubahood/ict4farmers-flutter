@@ -39,36 +39,41 @@ extension HexString on String {
 Widget widget_grid_item(
   context, {
   required String title,
-  required String asset_image,
+  required String caption,
   String bg_color: "",
+  String screen: "",
+  String id: "",
 }) {
-  return FxContainer(
-    paddingAll: 10,
-    marginAll: 10,
-    color: (bg_color.isEmpty)
-        ? CustomTheme.primary
-        : Color(bg_color.getHexValue()),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: [
-        FxText(
-          "My Maize garden X",
-          color: Colors.white,
-          fontWeight: 800,
-          height: 1.0,
-          fontSize: 20,
-        ),
-        Container(
-          height: 10,
-        ),
-        FxText(
-          "No missing activity.",
-          color: Colors.grey.shade100,
-          fontWeight: 600,
-          fontSize: 14,
-        ),
-      ],
+  return InkWell(
+    onTap: () => {Utils.navigate_to(screen, context,data: {'id':id})},
+    child: FxContainer(
+      paddingAll: 10,
+      marginAll: 10,
+      color: (bg_color.isEmpty)
+          ? CustomTheme.primary
+          : Color(bg_color.getHexValue()),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          FxText(
+            title,
+            color: Colors.white,
+            fontWeight: 800,
+            height: 1.0,
+            fontSize: 20,
+          ),
+          Container(
+            height: 10,
+          ),
+          FxText(
+            caption,
+            color: Colors.grey.shade100,
+            fontWeight: 600,
+            fontSize: 14,
+          ),
+        ],
+      ),
     ),
   );
 }

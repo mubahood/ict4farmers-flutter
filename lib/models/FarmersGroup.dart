@@ -22,7 +22,7 @@ class FarmersGroup {
         if (map['id'] != null) {
           FarmersGroup item = new FarmersGroup();
           item.id = Utils.int_parse(map['id']);
-          if (item.id > 1) {
+          if (item.id > 0) {
             item.details = map['details'].toString();
             item.name = map['name'].toString();
             _items.add(item);

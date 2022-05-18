@@ -1,9 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:ict4farmers/utils/AppConfig.dart';
+import 'package:ict4farmers/models/GardenModel.dart';
 
 import '../../models/UserModel.dart';
 import '../../theme/app_theme.dart';
+import '../../utils/AppConfig.dart';
 import '../../utils/Utils.dart';
 import '../../widget/my_widgets.dart';
 
@@ -28,14 +29,24 @@ class GardensScreenState extends State<GardensScreen> {
     my_init();
   }
 
+  List<GardenModel> gardens = [];
+
   Future<void> my_init() async {
-    loggedUser = await Utils.get_logged_in();
-    if (loggedUser.id < 1) {
-      return;
-    }
+    Utils.ini_theme();
+
     is_logged_in = true;
     setState(() {});
-    Utils.ini_theme();
+
+    loggedUser = await Utils.get_logged_in();
+    if (loggedUser.id < 1) {
+      Navigator.pop(context);
+      return;
+    }
+
+    gardens = await GardenModel.get_items();
+
+    is_logged_in = false;
+    setState(() {});
   }
 
   bool is_logged_in = false;
@@ -79,14 +90,16 @@ class GardensScreenState extends State<GardensScreen> {
                     childAspectRatio: 2,
                     mainAxisExtent: (160)),
                 delegate: SliverChildBuilderDelegate(
-                  (context, index) {
+                      (context, index) {
                     my_colors.shuffle();
                     return widget_grid_item(context,
-                        title: "Title",
-                        asset_image: "Sub title",
-                        bg_color: my_colors[2]);
+                        title: gardens[index].name,
+                        id: gardens[index].id.toString(),
+                        screen: AppConfig.GardenScreen,
+                        caption: gardens[index].created_at,
+                        bg_color: gardens[index].color);
                   },
-                  childCount: ["1", 2, 3, 4, 6].length,
+                  childCount: gardens.length,
                 ),
               ),
             ],
