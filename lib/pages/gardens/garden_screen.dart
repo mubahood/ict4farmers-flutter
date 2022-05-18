@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutx/flutx.dart';
 import 'package:flutx/widgets/text/text.dart';
 import 'package:ict4farmers/models/GardenModel.dart';
+import 'package:ict4farmers/utils/AppConfig.dart';
 
 import '../../models/GardenActivityModel.dart';
 import '../../models/UserModel.dart';
@@ -152,14 +153,20 @@ class GardenScreenState extends State<GardenScreen> {
                               fontSize: 20,
                               fontWeight: 800,
                             ),
-                            FxContainer(
-                              padding: EdgeInsets.only(
-                                  top: 3, bottom: 3, left: 15, right: 10),
-                              child: FxText(
-                                "See All",
-                                fontSize: 16,
-                                fontWeight: 700,
-                                color: CustomTheme.primary,
+                            InkWell(
+                              onTap: () => {
+                                Utils.navigate_to(
+                                    AppConfig.GardenActivitiesScreen, context)
+                              },
+                              child: FxContainer(
+                                padding: EdgeInsets.only(
+                                    top: 3, bottom: 3, left: 15, right: 10),
+                                child: FxText(
+                                  "See All",
+                                  fontSize: 16,
+                                  fontWeight: 700,
+                                  color: CustomTheme.primary,
+                                ),
                               ),
                             )
                           ],

@@ -37,6 +37,7 @@ import '../pages/account/my_products_screen.dart';
 import '../pages/account/onboarding_widget.dart';
 import '../pages/chat/chat_home_screen.dart';
 import '../pages/forum/create_post_screen.dart';
+import '../pages/gardens/garden_activities_screen.dart';
 import '../pages/gardens/garden_create_screen.dart';
 import '../pages/gardens/garden_screen.dart';
 import '../pages/gardens/gardens_screen.dart';
@@ -287,6 +288,17 @@ class Utils {
           PageRouteBuilder(
             pageBuilder: (context, animation1, animation2) =>
                 GardenCreateScreen(),
+            transitionDuration: Duration.zero,
+          ),
+        );
+        break;
+
+      case AppConfig.GardenActivitiesScreen:
+        Navigator.push(
+          context,
+          PageRouteBuilder(
+            pageBuilder: (context, animation1, animation2) =>
+                GardenActivitiesScreen(),
             transitionDuration: Duration.zero,
           ),
         );
