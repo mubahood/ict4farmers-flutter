@@ -4,6 +4,7 @@ import 'package:flutx/flutx.dart';
 import 'package:flutx/widgets/text/text.dart';
 import 'package:ict4farmers/models/GardenModel.dart';
 
+import '../../models/GardenActivityModel.dart';
 import '../../models/UserModel.dart';
 import '../../theme/app_theme.dart';
 import '../../utils/Utils.dart';
@@ -34,7 +35,17 @@ class GardenScreenState extends State<GardenScreen> {
   GardenModel item = new GardenModel();
   String id = "";
 
+  List<GardenActivityModel> activities = [];
+
   Future<void> my_init() async {
+
+    print("=======INITING=========");
+
+/*    List<GardenActivityModel> all_activities = await GardenActivityModel.get_items();
+    print(all_activities.length);*/
+
+
+
     is_logged_in = false;
     setState(() {});
 

@@ -45,6 +45,7 @@ class GardensScreenState extends State<GardensScreen> {
 
     gardens = await GardenModel.get_items();
 
+
     is_logged_in = false;
     setState(() {});
   }
@@ -53,6 +54,7 @@ class GardensScreenState extends State<GardensScreen> {
   UserModel loggedUser = new UserModel();
 
   Future<Null> _onRefresh() async {
+    my_init();
     return null;
   }
 

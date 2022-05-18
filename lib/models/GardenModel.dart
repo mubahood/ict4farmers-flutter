@@ -12,6 +12,7 @@ class GardenModel {
   int crop_category_id = 0;
   int location_id = 0;
   int size = 0;
+
   String name = "";
   String crop_category_name = "";
   String location_name = "";
@@ -42,8 +43,8 @@ class GardenModel {
           GardenModel item = new GardenModel();
           item.id = Utils.int_parse(map['id']);
           if (item.id > 0) {
-            item.details = map['details'].toString();
-            item.name = map['name'].toString();
+
+            item.details = map['details'].toStgarden_idring();
             item.name = map['name'].toString();
             item.crop_category_name = map['crop_category_name'].toString();
             item.administrator_id = Utils.int_parse(map['parent']);
