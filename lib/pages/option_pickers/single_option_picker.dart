@@ -96,7 +96,7 @@ class SingleOptionPickerState extends State<SingleOptionPicker> {
   SingleProduct(OptionPickerModel item) {
     return ListTile(
       dense: true,
-      title: FxText.h3(item.name, fontWeight: 400, fontSize: 20),
+      title: FxText.h3(item.name, fontWeight: 600, fontSize: 18),
       onTap: () {
         pick_location(item);
       },
@@ -104,6 +104,7 @@ class SingleOptionPickerState extends State<SingleOptionPicker> {
   }
 
   Future<void> pick_location(OptionPickerModel item) async {
-    Navigator.pop(context, {"id": item.id.toString(), "text": item.name});
+    Navigator.pop(
+        context, {"id": item.id.toString().trim(), "text": item.name.trim()});
   }
 }

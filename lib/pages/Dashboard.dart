@@ -35,11 +35,12 @@ class DashboardState extends State<Dashboard> {
   TabController tabController;
 
   List<MenuItemModel> main_menu_items = [
-    new MenuItemModel('My Gardens', "1.png", AppConfig.GardensScreen, true),
     new MenuItemModel(
-        'Pest & disease control', "4.png", AppConfig.HomePage, true),
-    new MenuItemModel('Our forum', "3.png", AppConfig.HomePage, true),
-    new MenuItemModel('Market place', "2.png", AppConfig.HomePage, true),
+        'Garden management', "1.png", AppConfig.GardensScreen, true),
+    new MenuItemModel(
+        'Pest & disease control', "4.png", AppConfig.PestsScreen, true),
+    new MenuItemModel('Market place', "3.png", AppConfig.HomePage, true),
+    new MenuItemModel('Resource sharing', "2.png", AppConfig.HomePage, true),
   ];
 
   DashboardState(this._context, this.tabController);

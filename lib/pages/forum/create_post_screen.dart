@@ -135,8 +135,6 @@ class CcreatPposSscreenState extends State<CreatePostScreen> {
 
   @override
   Widget build(BuildContext context) {
-    //setState(() { onLoading = false;});
-    //is_uploading = false;
 
     Future<void> submit_form() async {
       await check_login();

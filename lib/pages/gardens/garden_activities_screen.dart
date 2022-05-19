@@ -6,6 +6,7 @@ import 'package:flutx/widgets/text/text.dart';
 import '../../models/GardenActivityModel.dart';
 import '../../models/UserModel.dart';
 import '../../theme/app_theme.dart';
+import '../../utils/AppConfig.dart';
 import '../../utils/Utils.dart';
 
 class GardenActivitiesScreen extends StatefulWidget {
@@ -56,6 +57,14 @@ class GardenActivitiesScreenState extends State<GardenActivitiesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Utils.navigate_to(AppConfig.GardenActivityCreateScreen, context);
+        },
+        backgroundColor: CustomTheme.primary,
+        child: Icon(Icons.add),
+        elevation: 5,
+      ),
       body: RefreshIndicator(
           color: CustomTheme.primary,
           backgroundColor: Colors.white,
@@ -79,7 +88,7 @@ class GardenActivitiesScreenState extends State<GardenActivitiesScreen> {
                   backgroundColor: CustomTheme.primary),
               SliverList(
                 delegate: SliverChildBuilderDelegate(
-                  (BuildContext context, int index) {
+                      (BuildContext context, int index) {
                     return _widget_garden_activity_ui(activities[index]);
                   },
                   childCount: activities.length, // 1000 list items

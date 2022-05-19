@@ -3,6 +3,10 @@ class AppConfig {
   static const String GardenCreateScreen = "GardenCreateScreen";
   static const String GardenScreen = "GardenScreen";
   static const String GardenActivitiesScreen = "GardenActivitiesScreen";
+  static const String GardenActivityCreateScreen = "GardenActivityCreateScreen";
+  static const String PestCaseCreateScreen = "PestCaseCreateScreen";
+  static const String PestScreen = "PestScreen";
+  static const String PestsScreen = "PestsScreen";
 
   static String BASE_URL = "https://app2.unffeict4farmers.org";
   static const String HomePage = "HomePage";

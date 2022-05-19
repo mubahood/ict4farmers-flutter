@@ -12,6 +12,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:ict4farmers/models/BannerModel.dart';
+import 'package:ict4farmers/models/GardenActivityModel.dart';
 import 'package:ict4farmers/models/GardenModel.dart';
 import 'package:ict4farmers/models/PostCategoryModel.dart';
 import 'package:ict4farmers/models/ProductModel.dart';
@@ -19,6 +20,8 @@ import 'package:ict4farmers/models/UserModel.dart';
 import 'package:ict4farmers/pages/HomPage.dart';
 import 'package:ict4farmers/pages/account/account_register.dart';
 import 'package:ict4farmers/pages/account/account_splash.dart';
+import 'package:ict4farmers/pages/gardens/garden_activity_create_screen.dart';
+import 'package:ict4farmers/pages/pests/pests_screen.dart';
 import 'package:ict4farmers/theme/app_theme.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -29,6 +32,7 @@ import '../models/CropCategory.dart';
 import '../models/DynamicTable.dart';
 import '../models/FormItemModel.dart';
 import '../models/LocationModel.dart';
+import '../models/PestModel.dart';
 import '../models/PostModel.dart';
 import '../pages/account/account_details.dart';
 import '../pages/account/account_edit.dart';
@@ -46,6 +50,8 @@ import '../pages/other_pages/PaymentPage.dart';
 import '../pages/other_pages/SuccessPaymentPage.dart';
 import '../pages/other_pages/privacy_policy.dart';
 import '../pages/other_pages/sell_fast.dart';
+import '../pages/pests/pest_case_create_screen.dart';
+import '../pages/pests/pest_screen.dart';
 import '../pages/posts/post_details_screen.dart';
 import '../pages/product_add_form/product_add_form.dart';
 import '../pages/products/product_details.dart';
@@ -58,6 +64,8 @@ class Utils {
   static void boot_system() async {
     await CropCategory.get_items();
     await GardenModel.get_items();
+    await GardenActivityModel.get_items();
+    await PestModel.get_items();
   }
 
   static void launchURL(String _url) async {
@@ -282,6 +290,48 @@ class Utils {
 
   static navigate_to(String screen, context, {dynamic data: null}) {
     switch (screen) {
+      case AppConfig.PestCaseCreateScreen:
+        Navigator.push(
+          context,
+          PageRouteBuilder(
+            pageBuilder: (context, animation1, animation2) =>
+                PestCaseCreateScreen(),
+            transitionDuration: Duration.zero,
+          ),
+        );
+        break;
+
+      case AppConfig.PestScreen:
+        Navigator.push(
+          context,
+          PageRouteBuilder(
+            pageBuilder: (context, animation1, animation2) => PestScreen(data),
+            transitionDuration: Duration.zero,
+          ),
+        );
+        break;
+
+      case AppConfig.GardenActivityCreateScreen:
+        Navigator.push(
+          context,
+          PageRouteBuilder(
+            pageBuilder: (context, animation1, animation2) =>
+                GardenActivityCreateScreen(),
+            transitionDuration: Duration.zero,
+          ),
+        );
+        break;
+
+      case AppConfig.PestsScreen:
+        Navigator.push(
+          context,
+          PageRouteBuilder(
+            pageBuilder: (context, animation1, animation2) => PestsScreen(),
+            transitionDuration: Duration.zero,
+          ),
+        );
+        break;
+
       case AppConfig.GardenCreateScreen:
         Navigator.push(
           context,
