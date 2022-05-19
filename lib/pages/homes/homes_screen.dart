@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutx/flutx.dart';
+import 'package:ict4farmers/pages/account/account_splash.dart';
 import 'package:ict4farmers/pages/homes/homes_screen_segment.dart';
 import 'package:ict4farmers/theme/app_notifier.dart';
 import 'package:ict4farmers/theme/app_theme.dart';
@@ -8,9 +9,9 @@ import 'package:ict4farmers/theme/custom_theme.dart';
 import 'package:ict4farmers/theme/theme_type.dart';
 import 'package:provider/provider.dart';
 
-import '../Dashboard.dart';
 import '../account/my_products_screen.dart';
 import '../chat/chat_home_screen.dart';
+import '../search/categories_main_screen.dart';
 
 class HomesScreen extends StatefulWidget {
   HomesScreen({Key? key}) : super(key: key);
@@ -39,22 +40,22 @@ class _HomesScreenState extends State<HomesScreen>
     AppTheme.init();
 
     tabController = TabController(
-        //       animationDuration: Duration.zero,
+      //       animationDuration: Duration.zero,
         length: 5,
         vsync: this,
         initialIndex: 0);
 
     navItems = [
-      NavItem(
-          'Dashboard', CupertinoIcons.home, Dashboard(context, tabController)),
-      NavItem('My Gardens', Icons.agriculture, HomesScreenSegment()),
-      NavItem('Market', CupertinoIcons.shopping_cart, HomesScreenSegment()),
-      NavItem('Forum', CupertinoIcons.plus_circle, MyProductsScreen()),
-      NavItem('Orders', CupertinoIcons.envelope_badge, ChatHomeScreen()),
+      NavItem('Home', CupertinoIcons.home, HomesScreenSegment()),
+      NavItem('Categories', CupertinoIcons.search, CategoriesMainScreen()),
+      NavItem('Sell Now', CupertinoIcons.plus_circle, MyProductsScreen()),
+      NavItem('Chats', CupertinoIcons.envelope_badge, ChatHomeScreen()),
+      NavItem('Account', CupertinoIcons.person, AccountSplash()),
     ];
 
     tabController.addListener(() {
       currentIndex = tabController.index;
+
       setState(() {});
     });
 
@@ -82,18 +83,6 @@ class _HomesScreenState extends State<HomesScreen>
     setState(() {});
   }
 
-  void changeTheme() {
-    if (AppTheme.themeType == ThemeType.light) {
-      Provider.of<AppNotifier>(context, listen: false)
-          .updateTheme(ThemeType.dark);
-    } else {
-      Provider.of<AppNotifier>(context, listen: false)
-          .updateTheme(ThemeType.light);
-    }
-
-    setState(() {});
-  }
-
   void launchCodecanyonURL() async {
     String url = "https://codecanyon.net/user/coderthemes/portfolio";
     //await launch(url);
@@ -113,7 +102,7 @@ class _HomesScreenState extends State<HomesScreen>
   Widget build(BuildContext context) {
     return Consumer<AppNotifier>(
       builder: (BuildContext context, AppNotifier value, Widget? child) {
-        isDark = AppTheme.themeType == ThemeType.dark;
+
         textDirection = AppTheme.textDirection;
         theme = AppTheme.theme;
         customTheme = AppTheme.customTheme;

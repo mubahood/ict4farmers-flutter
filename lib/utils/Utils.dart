@@ -46,6 +46,8 @@ import '../pages/gardens/garden_create_screen.dart';
 import '../pages/gardens/garden_screen.dart';
 import '../pages/gardens/gardens_screen.dart';
 import '../pages/homes/advisory/advisory_home.dart';
+import '../pages/homes/homes_screen.dart';
+import '../pages/market/MarketPlace1.dart';
 import '../pages/other_pages/PaymentPage.dart';
 import '../pages/other_pages/SuccessPaymentPage.dart';
 import '../pages/other_pages/privacy_policy.dart';
@@ -290,6 +292,16 @@ class Utils {
 
   static navigate_to(String screen, context, {dynamic data: null}) {
     switch (screen) {
+      case AppConfig.MarketPlace1:
+        Navigator.push(
+          context,
+          PageRouteBuilder(
+            pageBuilder: (context, animation1, animation2) => HomesScreen(),
+            transitionDuration: Duration.zero,
+          ),
+        );
+        break;
+
       case AppConfig.PestCaseCreateScreen:
         Navigator.push(
           context,

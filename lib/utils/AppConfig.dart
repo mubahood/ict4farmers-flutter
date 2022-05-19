@@ -7,6 +7,7 @@ class AppConfig {
   static const String PestCaseCreateScreen = "PestCaseCreateScreen";
   static const String PestScreen = "PestScreen";
   static const String PestsScreen = "PestsScreen";
+  static const String MarketPlace1 = "MarketPlace1";
 
   static String BASE_URL = "https://app2.unffeict4farmers.org";
   static const String HomePage = "HomePage";

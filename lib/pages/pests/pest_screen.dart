@@ -8,7 +8,6 @@ import 'package:ict4farmers/models/PestModel.dart';
 import '../../theme/app_theme.dart';
 import '../../utils/AppConfig.dart';
 import '../../utils/Utils.dart';
-import '../../widget/my_widgets.dart';
 import '../../widget/shimmer_loading_widget.dart';
 
 class PestScreen extends StatefulWidget {
@@ -138,9 +137,11 @@ class PestScreenState extends State<PestScreen> {
                   (BuildContext context, int index) {
                     return Column(
                       children: [
+                        ItemTile('Video', 'Coming soon...'),
                         ItemTile('About this pest', item.description),
                         ItemTile('Causes of this pest', item.cause),
                         ItemTile('Prevention & Cure', item.cure),
+                        ItemTile('Community solutions', 'Coming soon...'),
                       ],
                     );
                   },
@@ -195,7 +196,6 @@ class PestScreenState extends State<PestScreen> {
                         ),
                       ],
                     )),
-                widget_video_player(),
                 ClipRRect(
                     borderRadius: BorderRadius.all(Radius.circular(10)),
                     child: CachedNetworkImage(

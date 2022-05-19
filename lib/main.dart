@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutx/themes/app_theme_notifier.dart';
 import 'package:ict4farmers/localizations/app_localization_delegate.dart';
 import 'package:ict4farmers/localizations/language.dart';
+import 'package:ict4farmers/pages/Dashboard.dart';
 import 'package:ict4farmers/pages/account/onboarding_widget.dart';
 import 'package:ict4farmers/pages/homes/homes_screen.dart';
 import 'package:ict4farmers/theme/app_notifier.dart';
@@ -54,7 +55,7 @@ class MyApp extends StatelessWidget {
           home: OnBoardingWidget2(),
           routes: {
             '/OnBoardingWidget': (context) => OnBoardingWidget2(),
-            '/HomesScreen': (context) => HomesScreen(),
+            '/HomesScreen': (context) => Dashboard(context),
           },
         );
       },
