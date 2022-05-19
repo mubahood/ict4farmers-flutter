@@ -8,6 +8,7 @@ import 'package:ict4farmers/models/PestModel.dart';
 import '../../theme/app_theme.dart';
 import '../../utils/AppConfig.dart';
 import '../../utils/Utils.dart';
+import '../../widget/my_widgets.dart';
 import '../../widget/shimmer_loading_widget.dart';
 
 class PestScreen extends StatefulWidget {
@@ -135,9 +136,15 @@ class PestScreenState extends State<PestScreen> {
               SliverList(
                 delegate: SliverChildBuilderDelegate(
                   (BuildContext context, int index) {
-                    return _widget_garden_activity_ui(items[index]);
+                    return Column(
+                      children: [
+                        ItemTile('About this pest', item.description),
+                        ItemTile('Causes of this pest', item.cause),
+                        ItemTile('Prevention & Cure', item.cure),
+                      ],
+                    );
                   },
-                  childCount: items.length, // 1000 list items
+                  childCount: 1, // 1000 list items
                 ),
               ),
             ],
@@ -188,6 +195,7 @@ class PestScreenState extends State<PestScreen> {
                         ),
                       ],
                     )),
+                widget_video_player(),
                 ClipRRect(
                     borderRadius: BorderRadius.all(Radius.circular(10)),
                     child: CachedNetworkImage(
@@ -282,6 +290,40 @@ class PestScreenState extends State<PestScreen> {
           ),
         ],
       ),
+    );
+  }
+}
+
+class ItemTile extends StatelessWidget {
+  String title;
+  String details;
+
+  ItemTile(this.title, this.details);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: <Widget>[
+        ExpansionTile(
+          key: PageStorageKey<int>(1),
+          title: FxText(
+            '${this.title}',
+            color: Colors.black,
+            fontSize: 25,
+            fontWeight: 700,
+            maxLines: 1,
+          ),
+          children: <Widget>[
+            Container(
+              padding: EdgeInsets.only(left: 15, right: 15, bottom: 20, top: 0),
+              child: FxText(
+                '${this.details}',
+              ),
+            )
+          ],
+        ),
+        Divider(height: 0)
+      ],
     );
   }
 }
