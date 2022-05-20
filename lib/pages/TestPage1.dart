@@ -176,35 +176,37 @@ class _TestPage1State extends State<TestPage1> {
               ),
             )
                 : SliverAppBar(
-              title: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  FxText(
-                    complete_profile
-                        ? "Want to access everything?"
-                        : "Just 1 more step remaining!",
-                    color: Colors.yellow.shade700,
-                    fontWeight: 600,
+                    automaticallyImplyLeading: false,
+                    title: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        FxText(
+                          complete_profile
+                              ? "Want to access everything?"
+                              : "Just 1 more step remaining!",
+                          fontSize: 14,
+                          color: Colors.yellow.shade700,
+                          fontWeight: 600,
+                        ),
+                        FxButton.text(
+                            onPressed: () {
+                              if (!is_logged_in) {
+                                show_not_account_bottom_sheet(context);
+                              } else if (!complete_profile) {
+                                Utils.navigate_to(
+                                    AppConfig.AccountEdit, context);
+                              }
+                            },
+                            splashColor: CustomTheme.primary.withAlpha(40),
+                            child: FxText.l2(complete_profile ? "YES" : "WHAT?",
+                                fontSize: 16,
+                                textAlign: TextAlign.center,
+                                color: Colors.white))
+                      ],
+                    ),
+                    floating: true,
+                    backgroundColor: Colors.red.shade700,
                   ),
-                  FxButton.text(
-                      onPressed: () {
-                        if (!is_logged_in) {
-                          show_not_account_bottom_sheet(context);
-                        } else if (!complete_profile) {
-                          Utils.navigate_to(
-                              AppConfig.AccountEdit, context);
-                        }
-                      },
-                      splashColor: CustomTheme.primary.withAlpha(40),
-                      child: FxText.l2(complete_profile ? "YES" : "WHAT?",
-                          fontSize: 18,
-                          textAlign: TextAlign.center,
-                          color: Colors.white))
-                ],
-              ),
-              floating: true,
-              backgroundColor: Colors.red.shade700,
-            ),
             SliverList(
               delegate: SliverChildBuilderDelegate(
                     (BuildContext context, int index) {
@@ -217,13 +219,12 @@ class _TestPage1State extends State<TestPage1> {
                         width: double.infinity,
                         height: 220,
                         fit: BoxFit.cover,
-                        imageUrl:
-                        "${AppConfig.BASE_URL}/storage/${horizontal_banner_1.image.toString().trim()}",
+                        imageUrl: "${horizontal_banner_1.get_image()}",
                         placeholder: (context, url) => ShimmerLoadingWidget(
                           height: 200,
                         ),
-                        errorWidget: (context, url, error) => Text(
-                            "${AppConfig.BASE_URL}/storage/${horizontal_banner_1.image.toString().trim()}"),
+                        errorWidget: (context, url, error) =>
+                            Text("${horizontal_banner_1.get_image()}"),
                       ),
                     ),
                   );

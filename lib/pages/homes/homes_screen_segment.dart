@@ -1,12 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_feather_icons/flutter_feather_icons.dart';
-import 'package:flutx/flutx.dart';
-import 'package:ict4farmers/extensions/string.dart';
-import 'package:ict4farmers/extensions/widgets_extension.dart';
 import 'package:ict4farmers/models/ProductModel.dart';
 import 'package:ict4farmers/pages/TestPage1.dart';
-import 'package:ict4farmers/pages/homes/select_language_dialog.dart';
 import 'package:ict4farmers/theme/app_notifier.dart';
 import 'package:ict4farmers/theme/app_theme.dart';
 import 'package:ict4farmers/theme/custom_theme.dart';
@@ -60,8 +55,8 @@ class _HomesScreenSegmentState extends State<HomesScreenSegment>
         return Scaffold(
           appBar: AppBar(
             systemOverlayStyle: SystemUiOverlayStyle(
-              statusBarColor: Colors.white,
-              statusBarIconBrightness: Brightness.dark,
+              statusBarColor: CustomTheme.primary,
+              statusBarIconBrightness: Brightness.light,
               statusBarBrightness: Brightness.light, // For iOS (dark icons)
             ),
             automaticallyImplyLeading: false,
@@ -85,6 +80,7 @@ class _HomesScreenSegmentState extends State<HomesScreenSegment>
                     margin: EdgeInsets.only( top: 10),
                     padding: EdgeInsets.only(left: 10, top: 7, bottom: 7),
                     decoration: BoxDecoration(
+                      color: Colors.grey.shade200,
                       borderRadius: BorderRadius.all(Radius.circular(20)),
                     ),
                     width: (MediaQuery.of(context).size.width-160),
@@ -100,6 +96,7 @@ class _HomesScreenSegmentState extends State<HomesScreenSegment>
                           "Search...",
                           style: TextStyle(
                             fontSize: 15,
+                            color: Colors.grey.shade800,
                           ),
                         ),
                       ],
