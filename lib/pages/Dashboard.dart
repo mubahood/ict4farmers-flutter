@@ -37,8 +37,8 @@ class DashboardState extends State<Dashboard> {
         'Garden management', "1.png", AppConfig.GardensScreen, true),
     new MenuItemModel(
         'Pest & disease control', "4.png", AppConfig.PestsScreen, true),
-    new MenuItemModel('Market place', "3.png", AppConfig.MarketPlace1, true),
-    new MenuItemModel('Resource sharing', "2.png", AppConfig.HomePage, true),
+    new MenuItemModel('Market place', "3.png", AppConfig.MarketPlace1, false),
+    new MenuItemModel('Resource sharing', "2.png", AppConfig.ComingSoon, true),
   ];
 
   DashboardState(this._context);
@@ -71,25 +71,27 @@ class DashboardState extends State<Dashboard> {
   @override
   Widget build(BuildContext context) {
     List<MenuItemModel> sub_menu_items = [
+      new MenuItemModel('My farmer calender', "1.png",
+          AppConfig.GardenActivitiesScreen, true),
+      new MenuItemModel('My workers', "1.png", AppConfig.ComingSoon, true),
+      new MenuItemModel('My farm records', "1.png", AppConfig.ComingSoon, true),
       new MenuItemModel(
-          'My farmer calender', "1.png", AppConfig.HomePage, true),
-      new MenuItemModel('My workers', "1.png", AppConfig.HomePage, true),
-      new MenuItemModel('My farm records', "1.png", AppConfig.HomePage, true),
+          'My products & services', "1.png", AppConfig.MyProductsScreen, true),
+      new MenuItemModel('My orders', "1.png", AppConfig.ComingSoon, true),
       new MenuItemModel(
-          'My products & services', "1.png", AppConfig.HomePage, true),
-      new MenuItemModel('My orders', "1.png", AppConfig.HomePage, true),
-      new MenuItemModel('Production guides', "1.png", AppConfig.HomePage, true),
-      new MenuItemModel('Resources', "1.png", AppConfig.HomePage, true),
-      new MenuItemModel('Browse farmers', "1.png", AppConfig.HomePage, true),
+          'Production guides', "1.png", AppConfig.ComingSoon, true),
+      new MenuItemModel('Resources', "1.png", AppConfig.ComingSoon, true),
+      new MenuItemModel('Browse farmers', "1.png", AppConfig.ComingSoon, true),
       new MenuItemModel(
-          'Extension services', "1.png", AppConfig.HomePage, true),
-      new MenuItemModel('Products pricing', "1.png", AppConfig.HomePage, true),
-      new MenuItemModel('Ask an expert', "1.png", AppConfig.HomePage, true),
-      new MenuItemModel('About this App', "1.png", AppConfig.HomePage, true),
+          'Extension services', "1.png", AppConfig.ComingSoon, true),
       new MenuItemModel(
-          'Our privacy policy', "1.png", AppConfig.HomePage, true),
-      new MenuItemModel('Help & Support', "1.png", AppConfig.HomePage, true),
-      new MenuItemModel('Toll free', "1.png", AppConfig.HomePage, true),
+          'Products pricing', "1.png", AppConfig.ComingSoon, true),
+      new MenuItemModel('Ask an expert', "1.png", AppConfig.ComingSoon, true),
+      new MenuItemModel('About this App', "1.png", AppConfig.ComingSoon, true),
+      new MenuItemModel(
+          'Our privacy policy', "1.png", AppConfig.PrivacyPolicy, true),
+      new MenuItemModel('Help & Support', "1.png", AppConfig.ComingSoon, true),
+      new MenuItemModel('Toll free', "1.png", AppConfig.ComingSoon, true),
     ];
 
     return SafeArea(
@@ -98,7 +100,9 @@ class DashboardState extends State<Dashboard> {
         floatingActionButton: FloatingActionButton.extended(
             backgroundColor: CustomTheme.primary,
             elevation: 20,
-            onPressed: () {},
+            onPressed: () {
+              Utils.navigate_to(AppConfig.MoreMenuScreen, context);
+            },
             label: Row(
               children: [
                 Icon(
@@ -324,12 +328,126 @@ class DashboardState extends State<Dashboard> {
                 SliverList(
                   delegate: SliverChildBuilderDelegate(
                     (BuildContext context, int index) {
-                      return InkWell(
-                        onTap: () => {},
-                        child: _list_item(sub_menu_items[index]),
-                      );
+                      return _list_item(sub_menu_items[index]);
                     },
                     childCount: sub_menu_items.length, // 1000 list items
+                  ),
+                ),
+                SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                    (BuildContext context, int index) {
+                      return Container(
+                        margin: EdgeInsets.only(top: 10),
+                        padding: EdgeInsets.only(top: 15),
+                        color: Colors.white,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(left: 15),
+                              child: FxText.caption("FOLLOW US"),
+                            ),
+                            Container(
+                              margin:
+                                  EdgeInsets.only(top: 5, left: 15, right: 10),
+                              child: Row(
+                                children: <Widget>[
+                                  InkWell(
+                                    onTap: () => {
+                                      Utils.launchOuLink(AppConfig.OurWhatsApp)
+                                    },
+                                    child: Container(
+                                      margin: EdgeInsets.only(left: 0),
+                                      padding: EdgeInsets.all(3),
+                                      child: Icon(
+                                        Icons.whatsapp,
+                                        size: 30,
+                                        color: Colors.green.shade600,
+                                      ),
+                                      decoration: BoxDecoration(
+                                          border: Border.all(
+                                              color: Colors.grey.shade500,
+                                              width: 1),
+                                          color: AppTheme
+                                              .lightTheme.backgroundColor,
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(11))),
+                                    ),
+                                  ),
+                                  InkWell(
+                                    onTap: () => {
+                                      Utils.launchOuLink(
+                                          AppConfig.OUR_FACEBOOK_LINK)
+                                    },
+                                    child: Container(
+                                      margin: EdgeInsets.only(left: 16),
+                                      padding: EdgeInsets.all(3),
+                                      child: Icon(
+                                        Icons.facebook,
+                                        size: 30,
+                                        color: Colors.blue.shade800,
+                                      ),
+                                      decoration: BoxDecoration(
+                                          border: Border.all(
+                                              color: Colors.grey.shade500,
+                                              width: 1),
+                                          color: AppTheme
+                                              .lightTheme.backgroundColor,
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(11))),
+                                    ),
+                                  ),
+                                  InkWell(
+                                    onTap: () => {
+                                      Utils.launchOuLink(
+                                          AppConfig.OUR_TWITTER_LINK)
+                                    },
+                                    child: Container(
+                                      margin: EdgeInsets.only(left: 16),
+                                      padding: EdgeInsets.all(3),
+                                      child: Icon(
+                                        MdiIcons.twitter,
+                                        size: 30,
+                                        color: Colors.blue.shade500,
+                                      ),
+                                      decoration: BoxDecoration(
+                                          border: Border.all(
+                                              color: Colors.grey.shade500,
+                                              width: 1),
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(11))),
+                                    ),
+                                  ),
+                                  InkWell(
+                                    onTap: () => {
+                                      Utils.launchOuLink(
+                                          AppConfig.OUR_INSTAGRAM_LINK)
+                                    },
+                                    child: Container(
+                                      margin: EdgeInsets.only(left: 16),
+                                      padding: EdgeInsets.all(3),
+                                      child: Icon(
+                                        MdiIcons.instagram,
+                                        size: 30,
+                                        color: Colors.purple.shade300,
+                                      ),
+                                      decoration: BoxDecoration(
+                                          border: Border.all(
+                                              color: Colors.grey.shade500,
+                                              width: 1),
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(11))),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            FxSpacing.height(22),
+                          ],
+                        ),
+                      );
+                    },
+                    childCount: 1,
                   ),
                 ),
               ],
@@ -340,57 +458,60 @@ class DashboardState extends State<Dashboard> {
 
   Widget _list_item(MenuItemModel menu_item) {
     String badge = "1";
-    return Container(
-      color: CustomTheme.primary,
-      child: FxContainer(
-        margin: EdgeInsets.only(left: 10, top: 10, bottom: 0, right: 10),
-        padding: FxSpacing.all(20),
-        bordered: true,
-        border: Border.all(color: CustomTheme.primary, width: 1),
-        child: InkWell(
-          onTap: () {},
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              Container(
-                child: Icon(
-                  Icons.access_alarms,
-                  size: 22,
-                  color: theme.colorScheme.onBackground,
+    return InkWell(
+      onTap: () => {Utils.navigate_to(menu_item.screen, context)},
+      child: Container(
+        color: CustomTheme.primary,
+        child: FxContainer(
+          margin: EdgeInsets.only(left: 10, top: 10, bottom: 0, right: 10),
+          padding: FxSpacing.all(20),
+          bordered: true,
+          border: Border.all(color: CustomTheme.primary, width: 1),
+          child: InkWell(
+            onTap: () {},
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Container(
+                  child: Icon(
+                    Icons.access_alarms,
+                    size: 22,
+                    color: theme.colorScheme.onBackground,
+                  ),
                 ),
-              ),
-              FxSpacing.width(16),
-              Expanded(
-                child: FxText.b1(
-                  menu_item.title,
-                  fontWeight: 800,
-                  color: Colors.black,
-                  fontSize: (menu_item.title.length > 20) ? 16 : 18,
+                FxSpacing.width(16),
+                Expanded(
+                  child: FxText.b1(
+                    menu_item.title,
+                    fontWeight: 800,
+                    color: Colors.black,
+                    fontSize: (menu_item.title.length > 20) ? 16 : 18,
+                  ),
                 ),
-              ),
-              Container(
-                child: Row(
-                  children: [
-                    badge.toString().isEmpty
-                        ? SizedBox()
-                        : FxContainer(
-                        color: Colors.red.shade500,
-                        width: 28,
-                        paddingAll: 0,
-                        marginAll: 0,
-                        alignment: Alignment.center,
-                        borderRadiusAll: 15,
-                        height: 28,
-                        child: FxText(
-                          badge.toString(),
-                          color: Colors.white,
-                        )),
-                    Icon(MdiIcons.chevronRight,
-                        size: 22, color: theme.colorScheme.onBackground),
-                  ],
+                Container(
+                  child: Row(
+                    children: [
+                      badge.toString().isEmpty
+                          ? SizedBox()
+                          : FxContainer(
+                              color: Colors.red.shade500,
+                              width: 28,
+                              paddingAll: 0,
+                              marginAll: 0,
+                              alignment: Alignment.center,
+                              borderRadiusAll: 15,
+                              height: 28,
+                              child: FxText(
+                                badge.toString(),
+                                color: Colors.white,
+                              )),
+                      Icon(MdiIcons.chevronRight,
+                          size: 22, color: theme.colorScheme.onBackground),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

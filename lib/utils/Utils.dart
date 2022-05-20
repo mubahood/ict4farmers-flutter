@@ -47,7 +47,7 @@ import '../pages/gardens/garden_screen.dart';
 import '../pages/gardens/gardens_screen.dart';
 import '../pages/homes/advisory/advisory_home.dart';
 import '../pages/homes/homes_screen.dart';
-import '../pages/market/MarketPlace1.dart';
+import '../pages/other_pages/MoreMenuScreen1.dart';
 import '../pages/other_pages/PaymentPage.dart';
 import '../pages/other_pages/SuccessPaymentPage.dart';
 import '../pages/other_pages/privacy_policy.dart';
@@ -297,6 +297,16 @@ class Utils {
           context,
           PageRouteBuilder(
             pageBuilder: (context, animation1, animation2) => HomesScreen(),
+            transitionDuration: Duration.zero,
+          ),
+        );
+        break;
+
+      case AppConfig.MoreMenuScreen:
+        Navigator.push(
+          context,
+          PageRouteBuilder(
+            pageBuilder: (context, animation1, animation2) => MoreMenuScreen1(),
             transitionDuration: Duration.zero,
           ),
         );
@@ -611,6 +621,9 @@ class Utils {
             transitionDuration: Duration.zero,
           ),
         );
+        break;
+      default:
+        Utils.showSnackBar("Coming soon...", context, Colors.white);
         break;
     }
   }
