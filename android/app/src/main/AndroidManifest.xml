@@ -33,7 +33,7 @@
    <application
        android:icon="@drawable/logo"
        android:name="${applicationName}"
-       android:label="GO-Print"
+       android:label="TMC"
        android:allowBackup="true"
        >
 

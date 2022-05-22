@@ -1,5 +1,5 @@
 class AppConfig {
-  static String BASE_URL = "https://goprint.ug";
+  static String BASE_URL = "https://tmc.ugnews24.info";
   static const String OUR_PHONE_NUMBER = "+256755906818";
   static const String OUR_WHATSAPP_NUMBER = "+256755906818";
   static const String OUR_FACEBOOK_LINK =
@@ -10,7 +10,7 @@ class AppConfig {
 
   static const String HomePage = "HomePage";
   static const String MyProductsScreen = "MyProductsScreen";
-  static const String AppName = "PET-SHOP";
+  static const String AppName = "TMC";
   static const String AccountRegister = "AccountRegister";
   static const String AccountSplash = "AccountSplash";
   static const String ProductDetails = "ProductDetails";
