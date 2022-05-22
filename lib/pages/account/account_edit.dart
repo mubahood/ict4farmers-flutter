@@ -400,7 +400,7 @@ password
                         ),
                       ]),
                       decoration: customTheme.input_decoration(
-                          labelText: "Farm/Enterprise name",
+                          labelText: "Enterprise name",
                           icon: Icons.business)),
                   FxSpacing.height(10),
                   FormBuilderTextField(
@@ -417,7 +417,7 @@ password
                         ),
                       ]),
                       decoration: customTheme.input_decoration(
-                          labelText: "Farm/Enterprise location",
+                          labelText: "Enterprise location",
                           icon: Icons.place)),
                   FxSpacing.height(10),
                   FormBuilderTextField(
@@ -448,7 +448,7 @@ password
                         ),
                       ]),
                       decoration: customTheme.input_decoration(
-                          labelText: "Farm/Enterprise street address",
+                          labelText: "Business street address",
                           icon: Icons.map_outlined)),
                   FxSpacing.height(10),
                   FormBuilderTextField(
