@@ -164,6 +164,8 @@ class _TestPage1State extends State<TestPage1> {
 
     return RefreshIndicator(
         onRefresh: _onRefresh,
+        color: CustomTheme.primary,
+        backgroundColor: Colors.white,
         child: CustomScrollView(
           slivers: [
             (is_logged_in && complete_profile)
@@ -218,12 +220,15 @@ class _TestPage1State extends State<TestPage1> {
                         height: 220,
                         fit: BoxFit.cover,
                         imageUrl:
-                        "${AppConfig.BASE_URL}/storage/${horizontal_banner_1.image.toString().trim()}",
+                        "${horizontal_banner_1.get_image()}",
                         placeholder: (context, url) => ShimmerLoadingWidget(
                           height: 200,
                         ),
-                        errorWidget: (context, url, error) => Text(
-                            "${AppConfig.BASE_URL}/storage/${horizontal_banner_1.image.toString().trim()}"),
+                        errorWidget: (context, url, error) => Image(
+                            fit: BoxFit.cover,
+                            image: AssetImage(
+                              './assets/project/no_image.jpg',
+                            ),),
                       ),
                     ),
                   );
@@ -503,7 +508,7 @@ class _TestPage1State extends State<TestPage1> {
           children: [
             CachedNetworkImage(
               height: 70,
-              imageUrl: "${AppConfig.BASE_URL}/storage/${data.image}",
+              imageUrl: "${data.get_image()}",
               placeholder: (context, url) => ShimmerLoadingWidget(
                   height: 100, width: 100, is_circle: true, padding: 0),
               errorWidget: (context, url, error) => Image(
