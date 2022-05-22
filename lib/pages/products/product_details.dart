@@ -448,7 +448,7 @@ class ProductDetailsState extends State<ProductDetails> {
                                           show_not_account_bottom_sheet(
                                               context);
                                         } else {
-                                          /*Utils.navigate_to(
+/*                                          Utils.navigate_to(
                                               AppConfig.PaymentPage, context);*/
                                           start_chat();
                                         }
@@ -459,7 +459,7 @@ class ProductDetailsState extends State<ProductDetails> {
                                             MainAxisAlignment.center,
                                         children: <Widget>[
                                           Icon(
-                                            MdiIcons.message,
+                                            MdiIcons.chat,
                                             color: Colors.grey.shade100,
                                             size: 22,
                                           ),
@@ -467,6 +467,7 @@ class ProductDetailsState extends State<ProductDetails> {
                                           FxText.sh2("Chat",
                                               color: Colors.white,
                                               fontWeight: 600,
+                                              fontSize: 18,
                                               letterSpacing: 0)
                                         ],
                                       ),

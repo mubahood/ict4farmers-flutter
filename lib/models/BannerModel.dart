@@ -42,6 +42,11 @@ class BannerModel extends HiveObject {
   @HiveField(10)
   String image = "";
 
+  String get_image(){
+    String img =  '${AppConfig.BASE_URL}/${image}';
+    return  img;
+  }
+
   static Future<List<BannerModel>> get() async {
     List<BannerModel> items = [];
     get_online_items();

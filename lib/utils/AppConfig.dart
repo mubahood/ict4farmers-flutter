@@ -1,5 +1,13 @@
 class AppConfig {
-  static String BASE_URL = "https://tmc.ugnews24.info";
+  static String BASE_URL = "https://goprint.ug";
+  static const String OUR_PHONE_NUMBER = "+256755906818";
+  static const String OUR_WHATSAPP_NUMBER = "+256755906818";
+  static const String OUR_FACEBOOK_LINK =
+      "https://www.facebook.com/Go-Print-UG-100191332538556";
+  static const String OUR_TWITTER_LINK = "https://twitter.com/Goprintug";
+  static const String OUR_INSTAGRAM_LINK =
+      "https://www.instagram.com/goprintug/";
+
   static const String HomePage = "HomePage";
   static const String MyProductsScreen = "MyProductsScreen";
   static const String AppName = "PET-SHOP";
@@ -32,10 +40,5 @@ class AppConfig {
   static const String AboutUs = "AboutUs";
   static const String CallUs = "CallUs";
   static const String OurWhatsApp = "OurWhatsApp";
-  static const String OUR_PHONE_NUMBER = "+256414230705";
-  static const String OUR_WHATSAPP_NUMBER = "+8801632257609";
-  static const String OUR_FACEBOOK_LINK = "https://ugnews24.info";
-  static const String OUR_TWITTER_LINK = "https://twitter.com/ugnews24";
-  static const String OUR_YOUTUBE_LINK = "https://twitter.com/ugnews24";
-  static const String OUR_INSTAGRAM_LINK = "https://www.youtube.com/ugnews24/";
+  static const String OUR_YOUTUBE_LINK = "https://twitter.com/Goprintug";
 }

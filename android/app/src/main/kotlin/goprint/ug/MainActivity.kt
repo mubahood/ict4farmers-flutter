@@ -1,4 +1,4 @@
-package eighttechnologies.net.ict4farmers
+package goprint.ug
 
 import io.flutter.embedding.android.FlutterActivity
 
