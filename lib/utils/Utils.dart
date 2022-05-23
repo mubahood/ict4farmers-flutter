@@ -47,6 +47,7 @@ import '../pages/gardens/garden_activities_screen.dart';
 import '../pages/gardens/garden_create_screen.dart';
 import '../pages/gardens/garden_screen.dart';
 import '../pages/gardens/gardens_screen.dart';
+import '../pages/gardens/submit_activity_screen.dart';
 import '../pages/homes/advisory/advisory_home.dart';
 import '../pages/homes/homes_screen.dart';
 import '../pages/other_pages/MoreMenuScreen1.dart';
@@ -300,6 +301,17 @@ class Utils {
           context,
           PageRouteBuilder(
             pageBuilder: (context, animation1, animation2) => WorkersScreen(),
+            transitionDuration: Duration.zero,
+          ),
+        );
+        break;
+
+
+      case AppConfig.SubmitActivityScreen:
+        Navigator.push(
+          context,
+          PageRouteBuilder(
+            pageBuilder: (context, animation1, animation2) => SubmitActivityScreen(data),
             transitionDuration: Duration.zero,
           ),
         );

@@ -71,7 +71,9 @@ class GardenActivitiesScreenState extends State<GardenActivitiesScreen> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Utils.navigate_to(AppConfig.GardenActivityCreateScreen, context,data: {
-            'garden_id':id
+            'garden_id':id,
+            'activity_text':'Activity name',
+            'enterprise_text':'Garden name',
           });
         },
         backgroundColor: CustomTheme.primary,
@@ -111,7 +113,7 @@ class GardenActivitiesScreenState extends State<GardenActivitiesScreen> {
 
               SliverList(
                 delegate: SliverChildBuilderDelegate(
-                      (BuildContext context, int index) {
+                  (BuildContext context, int index) {
                     return _widget_garden_activity_ui(activities[index]);
                   },
                   childCount: activities.length, // 1000 list items
@@ -122,43 +124,137 @@ class GardenActivitiesScreenState extends State<GardenActivitiesScreen> {
     );
   }
 
-  Widget _widget_garden_activity_ui(GardenActivityModel m) {
-    return FxContainer(
-        color: Colors.white,
-        padding: EdgeInsets.only(top: 10, left: 15, right: 15),
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  void _show_details_bottom_sheet(context, GardenActivityModel m) {
+    showModalBottomSheet(
+        isScrollControlled: true,
+        context: context,
+        builder: (BuildContext buildContext) {
+          return DraggableScrollableSheet(
+              initialChildSize: 0.75,
+              //set this as you want
+              maxChildSize: 0.75,
+              //set this as you want
+              minChildSize: 0.75,
+              //set this as you want
+              expand: true,
+              builder: (context, scrollController) {
+                return Container(
+                  color: Colors.transparent,
+                  child: Container(
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(16),
+                            topRight: Radius.circular(16))),
+                    child: _details_bottom_sheet_content(context, m),
+                  ),
+                );
+              });
+        });
+  }
+
+  Widget _details_bottom_sheet_content(
+      BuildContext context, GardenActivityModel m) {
+    return Center(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          Container(
+            alignment: Alignment.center,
+            margin: EdgeInsets.all(10),
+            padding: EdgeInsets.only(left: 30, right: 30),
+          ),
+          Container(
+            padding: EdgeInsets.only(
+              left: 40,
+              right: 20,
+            ),
+            child: Row(
               children: [
-                Container(
-                    width: (Utils.screen_width(context) / 1.5),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        FxText(
-                          m.name,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          color: Colors.black,
-                          fontWeight: 800,
-                        ),
-                        FxText(
-                          m.due_date,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ],
-                    )),
-                Container(child: activity_status_widget(m)),
+                Expanded(
+                    child: FxButton.outlined(
+                  borderRadiusAll: 10,
+                  borderColor: CustomTheme.accent,
+                  splashColor: CustomTheme.primary.withAlpha(40),
+                  padding: FxSpacing.y(12),
+                  onPressed: () {
+                    Utils.navigate_to(AppConfig.SubmitActivityScreen, context);
+                  },
+                  child: FxText.l1(
+                    "SUBMIT REPORT",
+                    color: CustomTheme.accent,
+                    letterSpacing: 0.5,
+                  ),
+                )),
+                SizedBox(
+                  width: 20,
+                ),
+                Expanded(
+                    child: FxButton(
+                  elevation: 0,
+                  padding: FxSpacing.y(12),
+                  borderRadiusAll: 4,
+                  onPressed: () {
+                    Utils.navigate_to(AppConfig.AccountLogin, context);
+                  },
+                  child: FxText.l1(
+                    "DELETE ACTIVITY",
+                    color: Colors.white,
+                    letterSpacing: 0.5,
+                  ),
+                  backgroundColor: CustomTheme.primary,
+                )),
               ],
             ),
-            Divider(
-              height: 20,
-              thickness: 1,
-            ),
-          ],
-        ));
+          ),
+          SizedBox(
+            height: 30,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _widget_garden_activity_ui(GardenActivityModel m) {
+    return InkWell(
+      onTap: () => {_show_details_bottom_sheet(context, m)},
+      child: FxContainer(
+          color: Colors.white,
+          padding: EdgeInsets.only(top: 10, left: 15, right: 15),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                      width: (Utils.screen_width(context) / 1.5),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          FxText(
+                            m.name,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            color: Colors.black,
+                            fontWeight: 800,
+                          ),
+                          FxText(
+                            m.due_date,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ],
+                      )),
+                  Container(child: activity_status_widget(m)),
+                ],
+              ),
+              Divider(
+                height: 20,
+                thickness: 1,
+              ),
+            ],
+          )),
+    );
   }
 
   Widget my_rich_text(String t, String s, Color c) {

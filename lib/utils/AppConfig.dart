@@ -12,6 +12,7 @@ class AppConfig {
   static const String ComingSoon = "ComingSoon";
   static const String MoreMenuScreen = "MoreMenuScreen";
   static const String WorkerCreateScreen = "WorkerCreateScreen";
+  static const String SubmitActivityScreen = "SubmitActivityScreen";
 
   static String BASE_URL = "https://app2.unffeict4farmers.org";
   static const String HomePage = "HomePage";

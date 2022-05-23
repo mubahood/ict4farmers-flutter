@@ -87,7 +87,7 @@ class GardenActivityModel {
       if (old != null) {
         final date2 = DateTime.now();
         final difference = date2.difference(old).inDays;
-        if (difference >= 0) {
+        if (difference > 1) {
           is_missing = true;
         } else {
           is_missing = false;

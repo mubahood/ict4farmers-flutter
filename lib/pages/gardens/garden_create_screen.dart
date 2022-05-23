@@ -15,7 +15,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 import '../../models/FormItemModel.dart';
-import '../../models/ProductModel.dart';
 import '../../models/UserModel.dart';
 import '../../models/option_picker_model.dart';
 import '../../theme/app_notifier.dart';
@@ -646,9 +645,8 @@ class GardenCreateScreenState extends State<GardenCreateScreen> {
       is_uploading = true;
     });
 
-    var response = await dio
-        .post('https://app2.unffeict4farmers.org/api/gardens', data: formData);
-
+    var response =
+        await dio.post('${AppConfig.BASE_URL}/api/gardens', data: formData);
 
     setState(() {
       is_uploading = false;
