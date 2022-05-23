@@ -10,12 +10,17 @@ import '../../utils/AppConfig.dart';
 import '../../utils/Utils.dart';
 
 class GardenActivitiesScreen extends StatefulWidget {
+  dynamic params;
+
+  GardenActivitiesScreen(this.params);
+
   @override
   GardenActivitiesScreenState createState() => GardenActivitiesScreenState();
 }
 
 class GardenActivitiesScreenState extends State<GardenActivitiesScreen> {
   late ThemeData theme;
+  int id = 0;
 
   GardenActivitiesScreenState();
 
@@ -40,6 +45,12 @@ class GardenActivitiesScreenState extends State<GardenActivitiesScreen> {
       return;
     }
 
+    if (widget.params != null) {
+      if (widget.params['id'] != null) {
+        id = Utils.int_parse(widget.params['id'].toString());
+      }
+    }
+
     activities = await GardenActivityModel.get_items();
 
     is_logged_in = false;
@@ -59,7 +70,9 @@ class GardenActivitiesScreenState extends State<GardenActivitiesScreen> {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Utils.navigate_to(AppConfig.GardenActivityCreateScreen, context);
+          Utils.navigate_to(AppConfig.GardenActivityCreateScreen, context,data: {
+            'garden_id':id
+          });
         },
         backgroundColor: CustomTheme.primary,
         child: Icon(Icons.add),
@@ -78,7 +91,7 @@ class GardenActivitiesScreenState extends State<GardenActivitiesScreen> {
                   titleSpacing: 0,
                   elevation: 0,
                   title: FxText(
-                    'My Activities',
+                    'Production Activities',
                     color: Colors.white,
                     fontSize: 22,
                     fontWeight: 500,
@@ -86,6 +99,16 @@ class GardenActivitiesScreenState extends State<GardenActivitiesScreen> {
                   floating: false,
                   pinned: true,
                   backgroundColor: CustomTheme.primary),
+
+              SliverList(
+                delegate: SliverChildBuilderDelegate(
+                      (BuildContext context, int index) {
+                    return _widget_overview();
+                  },
+                  childCount: 1, // 1000 list items
+                ),
+              ),
+
               SliverList(
                 delegate: SliverChildBuilderDelegate(
                       (BuildContext context, int index) {
@@ -228,6 +251,124 @@ class GardenActivitiesScreenState extends State<GardenActivitiesScreen> {
                       ),
                     ],
                   );
+  }
+
+  Widget _widget_overview() {
+    return FxContainer(
+        borderRadiusAll: 0,
+        color: CustomTheme.primary,
+        child: Column(
+          children: [
+
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    FxText('Overview',color: Colors.white,fontSize: 45,fontWeight: 400,),
+                    Container(
+                      padding: EdgeInsets.only(top: 5),
+                      width: (Utils.screen_width(context) / 1.6),
+                      child: RichText(
+                        text: TextSpan(
+                          style: TextStyle(height: 1.2,
+                            fontSize: 16
+
+                          ),
+                          children: <TextSpan>[
+                            TextSpan(
+                                text: 'Enterprize: ',
+                                style: TextStyle(fontWeight: FontWeight.bold)),
+                            TextSpan(
+                              text: 'xxxxx\n',
+                              style: TextStyle(
+                                fontWeight: FontWeight.normal,
+                              ),
+                            ),
+                            TextSpan(
+                                text: 'All activities: ',
+                                style: TextStyle(fontWeight: FontWeight.bold)),
+                            TextSpan(
+                              text: '13\n',
+                              style: TextStyle(
+                                fontWeight: FontWeight.normal,
+                              ),
+                            ),
+                            TextSpan(
+                                text: 'SUBMITTED: ',
+                                style: TextStyle(fontWeight: FontWeight.bold)),
+                            TextSpan(
+                              text: '11\n',
+                              style: TextStyle(
+                                fontWeight: FontWeight.normal,
+                              ),
+                            ),
+                            TextSpan(
+                                text: 'MISSING: ',
+                                style: TextStyle(fontWeight: FontWeight.bold)),
+                            TextSpan(
+                              text: '1\n',
+                              style: TextStyle(
+                                fontWeight: FontWeight.normal,
+                              ),
+                            ),
+
+                            TextSpan(
+                                text: 'MISSED: ',
+                                style: TextStyle(fontWeight: FontWeight.bold)),
+                            TextSpan(
+                              text: '1\n',
+                              style: TextStyle(
+                                fontWeight: FontWeight.normal,
+                              ),
+                            ),
+
+
+                            TextSpan(
+                                text: 'DONE: ',
+                                style: TextStyle(fontWeight: FontWeight.bold)),
+                            TextSpan(
+                              text: '1\n',
+                              style: TextStyle(
+                                fontWeight: FontWeight.normal,
+                              ),
+                            ),
+
+
+
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    FxText(
+                      '%40',
+                      fontWeight: 800,
+                      fontSize: 40,
+                      height: .8,
+                      color: Colors.white,
+                    ),
+                    FxText(
+                      'Completed',
+                      height: .8,
+                      fontWeight: 400,
+                      fontSize: 16.5,
+                      color: Colors.white,
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ],
+          crossAxisAlignment: CrossAxisAlignment.start,
+        ));
   }
 }
 

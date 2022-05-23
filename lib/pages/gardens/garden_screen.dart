@@ -237,6 +237,7 @@ class GardenScreenState extends State<GardenScreen> {
       item.done_text = "10";
       item.complete = "REMAINING";
       item.complete_text = "11";
+      item.screen = AppConfig.GardenActivitiesScreen;
     } else if (index == 1) {
       item.title = "Financial records";
       item.all = "EXPENSE";
@@ -296,18 +297,24 @@ class GardenScreenState extends State<GardenScreen> {
                   : my_rich_text(item.complete, item.complete_text.toString(),
                       Colors.grey.shade800),
               Spacer(),
-              FxContainer(
-                child: FxText(
-                  "See All",
-                  fontSize: 16,
-                  fontWeight: 700,
-                  color: CustomTheme.primary,
+              InkWell(
+                onTap: () => {
+                  Utils.navigate_to(item.screen, context,
+                      data: {'id': id.toString()})
+                },
+                child: FxContainer(
+                  child: FxText(
+                    "See All",
+                    fontSize: 16,
+                    fontWeight: 700,
+                    color: CustomTheme.primary,
+                  ),
+                  paddingAll: 0,
+                  padding: EdgeInsets.only(top: 2, bottom: 2),
+                  color: CustomTheme.primary.withAlpha(20),
+                  alignment: Alignment.center,
+                  width: double.infinity,
                 ),
-                paddingAll: 0,
-                padding: EdgeInsets.only(top: 2, bottom: 2),
-                color: CustomTheme.primary.withAlpha(20),
-                alignment: Alignment.center,
-                width: double.infinity,
               )
             ],
           ),
@@ -510,4 +517,6 @@ class GridItemWidget {
 
   String complete = "Title";
   String complete_text = "Title";
+
+  String screen = '';
 }

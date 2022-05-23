@@ -363,7 +363,7 @@ class Utils {
           context,
           PageRouteBuilder(
             pageBuilder: (context, animation1, animation2) =>
-                GardenActivityCreateScreen(),
+                GardenActivityCreateScreen(data),
             transitionDuration: Duration.zero,
           ),
         );
@@ -395,7 +395,7 @@ class Utils {
           context,
           PageRouteBuilder(
             pageBuilder: (context, animation1, animation2) =>
-                GardenActivitiesScreen(),
+                GardenActivitiesScreen(data),
             transitionDuration: Duration.zero,
           ),
         );

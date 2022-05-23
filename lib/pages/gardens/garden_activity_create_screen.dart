@@ -11,12 +11,12 @@ import 'package:flutx/utils/spacing.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:ict4farmers/models/GardenModel.dart';
+import 'package:ict4farmers/models/WorkerModel.dart';
 import 'package:ict4farmers/pages/option_pickers/single_option_picker.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 import '../../models/FormItemModel.dart';
-import '../../models/ProductModel.dart';
 import '../../models/UserModel.dart';
 import '../../models/option_picker_model.dart';
 import '../../theme/app_notifier.dart';
@@ -27,6 +27,10 @@ import '../../utils/Utils.dart';
 import '../location_picker/location_main.dart';
 
 class GardenActivityCreateScreen extends StatefulWidget {
+  dynamic params;
+
+  GardenActivityCreateScreen(this.params);
+
   @override
   State<GardenActivityCreateScreen> createState() =>
       GardenActivityCreateScreenState();
@@ -117,6 +121,42 @@ class GardenActivityCreateScreenState
                       padding: EdgeInsets.all(0),
                       child: Column(
                         children: [
+                          InkWell(
+                            onTap: () => {pick_a_garden()},
+                            child: Container(
+                              padding: FxSpacing.all(20),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: <Widget>[
+                                  FxSpacing.width(16),
+                                  Expanded(
+                                    child: FxText.b1(
+                                      'Select an enterprise',
+                                      fontSize: 18,
+                                      fontWeight: 500,
+                                      color: Colors.grey.shade900,
+                                    ),
+                                  ),
+                                  Container(
+                                    child: Row(
+                                      children: [
+                                        FxText(
+                                          garden_text,
+                                          color: Colors.grey.shade500,
+                                        ),
+                                        Icon(CupertinoIcons.right_chevron,
+                                            size: 22,
+                                            color: Colors.grey.shade600),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          FxDashedDivider(
+                            color: Colors.grey.shade300,
+                          ),
                           Container(
                             padding: EdgeInsets.only(
                               left: 15,
@@ -197,26 +237,27 @@ class GardenActivityCreateScreenState
                             color: Colors.grey.shade300,
                           ),
                           InkWell(
-                            onTap: () => {pick_a_garden()},
+                            onTap: () => {pick_a_worker()},
                             child: Container(
-                              padding: FxSpacing.all(20),
+                              padding: FxSpacing.only(
+                                  left: 15, top: 20, bottom: 20, right: 15),
                               child: Row(
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: <Widget>[
                                   FxSpacing.width(16),
                                   Expanded(
                                     child: FxText.b1(
-                                      'Garden',
-                                      fontSize: 18,
+                                      'Person responsible',
+                                      fontSize: 16,
                                       fontWeight: 500,
-                                      color: Colors.grey.shade900,
+                                      color: Colors.grey.shade700,
                                     ),
                                   ),
                                   Container(
                                     child: Row(
                                       children: [
                                         FxText(
-                                          garden_text,
+                                          worker_text,
                                           color: Colors.grey.shade500,
                                         ),
                                         Icon(CupertinoIcons.right_chevron,
@@ -287,71 +328,11 @@ class GardenActivityCreateScreenState
   String error_message = "";
   List<String> photos_picked = [AppConfig.form_field_image_picker];
 
-  Widget single_image_picker(int index, String _item, BuildContext context) {
-    return (_item == AppConfig.form_field_image_picker)
-        ? InkWell(
-            onTap: () => {do_pick_image()},
-            child: Container(
-                margin: EdgeInsets.all(5),
-                decoration: BoxDecoration(
-                  border: Border.all(
-                      color: CustomTheme.primary,
-                      width: 1,
-                      style: BorderStyle.solid),
-                  color: CustomTheme.primary.withAlpha(25),
-                ),
-                padding: EdgeInsets.all(0),
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.add, size: 35, color: CustomTheme.primary),
-                      Center(child: Text("add photo")),
-                    ])))
-        : Stack(
-            children: [
-              Container(
-                margin: EdgeInsets.all(5),
-                decoration: BoxDecoration(
-                  border: Border.all(
-                      color: CustomTheme.primary,
-                      width: 1,
-                      style: BorderStyle.solid),
-                  color: CustomTheme.primary.withAlpha(25),
-                ),
-                padding: EdgeInsets.all(0),
-                child: Image.file(
-                  File(_item),
-                  fit: BoxFit.cover,
-                  width: double.infinity,
-                  height: double.infinity,
-                ),
-              ),
-              Positioned(
-                  child: InkWell(
-                    onTap: () => {romove_image_at(index)},
-                    child: Container(
-                      child: FxContainer(
-                        width: 35,
-                        alignment: Alignment.center,
-                        borderRadiusAll: 17,
-                        height: 35,
-                        child: Icon(
-                          Icons.close,
-                          color: Colors.white,
-                        ),
-                        color: Colors.red.shade700,
-                        paddingAll: 0,
-                      ),
-                    ),
-                  ),
-                  right: 0),
-            ],
-          );
-  }
-
   List<FormItemModel> form_data_to_upload = [];
 
   String garden_id = "";
+  String worker_text = "";
+  String worker_id = "";
   String garden_text = "";
   String location_sub_name = "";
   String location_id = "";
@@ -368,6 +349,43 @@ class GardenActivityCreateScreenState
           (result['location_sub_name'] != null)) {
         location_sub_name = result['location_sub_name'];
         location_id = result['location_sub_id'];
+        setState(() {});
+      }
+    }
+  }
+
+  Future<void> pick_a_worker() async {
+    if (workers.isEmpty) {
+      workers = await WorkerModel.get_items();
+    }
+
+    List<OptionPickerModel> local_items = [];
+
+    OptionPickerModel item = new OptionPickerModel();
+    item.parent_id = "1";
+    item.id = logged_in_user.id.toString();
+    item.name = "Me";
+    local_items.add(item);
+
+    workers.forEach((element) {
+      OptionPickerModel item = new OptionPickerModel();
+      item.parent_id = "1";
+      item.id = element.id.toString();
+      item.name = element.name.toString();
+      local_items.add(item);
+    });
+
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) =>
+              SingleOptionPicker("Select an worker", local_items)),
+    );
+
+    if (result != null) {
+      if ((result['id'] != null) && (result['text'] != null)) {
+        worker_id = result['id'];
+        worker_text = result['text'];
         setState(() {});
       }
     }
@@ -398,7 +416,7 @@ class GardenActivityCreateScreenState
       context,
       MaterialPageRoute(
           builder: (context) =>
-              SingleOptionPicker("Select a farm", local_items)),
+              SingleOptionPicker("Select an enterprise", local_items)),
     );
 
     if (result != null) {
@@ -432,8 +450,15 @@ class GardenActivityCreateScreenState
       return;
     }
 
+    if (worker_id.isEmpty) {
+      Utils.showSnackBar(
+          "Please select person responsible.", context, CustomTheme.onPrimary);
+      return;
+    }
+
     bool first_found = false;
     form_data_map['administrator_id'] = userModel.id;
+    form_data_map['person_responsible'] = worker_id.toString();
 
     form_data_map["name"] = _formKey.currentState?.fields['name']?.value;
 
@@ -524,8 +549,28 @@ class GardenActivityCreateScreenState
   }
 
   List<GardenModel> gardens = [];
+  List<WorkerModel> workers = [];
+  UserModel logged_in_user = new UserModel();
 
   void my_init() async {
+    logged_in_user = await Utils.get_logged_in();
+
+    if (widget.params != null) {
+      if (widget.params['garden_id'] != null) {
+        garden_id = widget.params['garden_id'].toString();
+      }
+    }
+
     gardens = await GardenModel.get_items();
+    workers = await WorkerModel.get_items();
+
+    if (!garden_id.isEmpty) {
+      gardens.forEach((element) {
+        if (element.id.toString() == garden_id.toString()) ;
+        garden_text = element.name;
+      });
+    }
+
+    setState(() {});
   }
 }
