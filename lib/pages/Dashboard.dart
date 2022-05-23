@@ -33,6 +33,7 @@ class DashboardState extends State<Dashboard> {
   BuildContext _context;
 
   List<MenuItemModel> main_menu_items = [
+//    new MenuItemModel('HRM', "1.png", AppConfig.WorkersScreen, true),
     new MenuItemModel(
         'Garden management', "1.png", AppConfig.GardensScreen, true),
     new MenuItemModel(
@@ -52,6 +53,7 @@ class DashboardState extends State<Dashboard> {
   }
 
   Future<void> my_init() async {
+
     loggedUser = await Utils.get_logged_in();
     if (loggedUser.id < 1) {
       return;
@@ -65,6 +67,7 @@ class DashboardState extends State<Dashboard> {
   UserModel loggedUser = new UserModel();
 
   Future<Null> _onRefresh() async {
+    await my_init();
     return null;
   }
 
@@ -316,7 +319,7 @@ class DashboardState extends State<Dashboard> {
                       crossAxisCount: 2,
                       mainAxisSpacing: 0,
                       crossAxisSpacing: 0,
-                      childAspectRatio: 2,
+                      childAspectRatio: 1,
                       mainAxisExtent: (160)),
                   delegate: SliverChildBuilderDelegate(
                     (context, index) {

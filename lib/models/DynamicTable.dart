@@ -55,7 +55,9 @@ class DynamicTable extends HiveObject {
 
       for (int count = 0; count < current_items.length; count++) {
         if (clear_previous) {
-          await current_items[count].delete();
+          try {
+            await current_items[count].delete();
+          } catch (e) {}
         } else {
           if (new_ids.contains(current_items[count].own_id)) {
             await current_items[count].delete();

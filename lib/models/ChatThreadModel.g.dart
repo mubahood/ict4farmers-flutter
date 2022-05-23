@@ -8,7 +8,7 @@ part of 'ChatThreadModel.dart';
 
 class ChatThreadModelAdapter extends TypeAdapter<ChatThreadModel> {
   @override
-  final int typeId = 56;
+  final int typeId = 59;
 
   @override
   ChatThreadModel read(BinaryReader reader) {

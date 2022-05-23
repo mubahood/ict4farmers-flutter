@@ -22,6 +22,8 @@ import 'package:ict4farmers/pages/account/account_register.dart';
 import 'package:ict4farmers/pages/account/account_splash.dart';
 import 'package:ict4farmers/pages/gardens/garden_activity_create_screen.dart';
 import 'package:ict4farmers/pages/pests/pests_screen.dart';
+import 'package:ict4farmers/pages/workers/worker_create_screen.dart';
+import 'package:ict4farmers/pages/workers/workers_screen.dart';
 import 'package:ict4farmers/theme/app_theme.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -282,9 +284,10 @@ class Utils {
       Hive.registerAdapter(ChatModelAdapter());
     }
 
-    if (!Hive.isAdapterRegistered(56)) {
+    if (!Hive.isAdapterRegistered(59)) {
       Hive.registerAdapter(ChatThreadModelAdapter());
     }
+
     if (!Hive.isAdapterRegistered(60)) {
       Hive.registerAdapter(DynamicTableAdapter());
     }
@@ -292,6 +295,28 @@ class Utils {
 
   static navigate_to(String screen, context, {dynamic data: null}) {
     switch (screen) {
+      case AppConfig.WorkersScreen:
+        Navigator.push(
+          context,
+          PageRouteBuilder(
+            pageBuilder: (context, animation1, animation2) => WorkersScreen(),
+            transitionDuration: Duration.zero,
+          ),
+        );
+        break;
+
+
+        case AppConfig.WorkerCreateScreen:
+        Navigator.push(
+          context,
+          PageRouteBuilder(
+            pageBuilder: (context, animation1, animation2) => WorkerCreateScreen(),
+            transitionDuration: Duration.zero,
+          ),
+        );
+        break;
+
+
       case AppConfig.MarketPlace1:
         Navigator.push(
           context,

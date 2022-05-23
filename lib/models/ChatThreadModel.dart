@@ -6,7 +6,7 @@ import '../utils/Utils.dart';
 
 part 'ChatThreadModel.g.dart';
 
-@HiveType(typeId: 56)
+@HiveType(typeId: 59)
 class ChatThreadModel extends HiveObject {
   static Future<void> save_to_local_db(
     List<ChatThreadModel> data,

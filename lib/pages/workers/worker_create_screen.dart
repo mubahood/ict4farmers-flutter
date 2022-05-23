@@ -26,14 +26,14 @@ import '../../utils/AppConfig.dart';
 import '../../utils/Utils.dart';
 import '../location_picker/location_main.dart';
 
-class PestCaseCreateScreen extends StatefulWidget {
+class WorkerCreateScreen extends StatefulWidget {
   @override
-  State<PestCaseCreateScreen> createState() => PestCaseCreateScreenState();
+  State<WorkerCreateScreen> createState() => WorkerCreateScreenState();
 }
 
 late CustomTheme customTheme;
 
-class PestCaseCreateScreenState extends State<PestCaseCreateScreen> {
+class WorkerCreateScreenState extends State<WorkerCreateScreen> {
   String nature_of_off = "";
   double latitude = 0.0;
   double longitude = 0.0;
@@ -53,7 +53,7 @@ class PestCaseCreateScreenState extends State<PestCaseCreateScreen> {
   @override
   Widget build(BuildContext context) {
 
-    String _title = "Reporting new pest case";
+    String _title = "Reporting new worker";
     return Consumer<AppNotifier>(
         builder: (BuildContext context, AppNotifier value, Widget? child) {
       return Scaffold(
@@ -113,86 +113,75 @@ class PestCaseCreateScreenState extends State<PestCaseCreateScreen> {
                 delegate: SliverChildBuilderDelegate(
                   (BuildContext context, int index) {
                     return Container(
-                      padding: EdgeInsets.all(0),
+                      padding: EdgeInsets.only(left: 15, right: 15),
                       child: Column(
                         children: [
-                          InkWell(
-                            onTap: () => {pick_a_garden()},
-                            child: Container(
-                              padding: FxSpacing.all(20),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: <Widget>[
-                                  FxSpacing.width(16),
-                                  Expanded(
-                                    child: FxText.b1(
-                                      'Garden',
-                                      fontSize: 18,
-                                      fontWeight: 500,
-                                      color: Colors.grey.shade900,
-                                    ),
-                                  ),
-                                  Container(
-                                    child: Row(
-                                      children: [
-                                        FxText(
-                                          garden_text,
-                                          color: Colors.grey.shade500,
-                                        ),
-                                        Icon(CupertinoIcons.right_chevron,
-                                            size: 22,
-                                            color: Colors.grey.shade600),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
+                          FormBuilderTextField(
+                              name: "name",
+                              textInputAction: TextInputAction.next,
+                              keyboardType: TextInputType.name,
+                              validator: FormBuilderValidators.compose([
+                                FormBuilderValidators.required(
+                                  context,
+                                  errorText: "Name is required.",
+                                ),
+                                FormBuilderValidators.minLength(
+                                  context,
+                                  2,
+                                  errorText: "Name too short.",
+                                ),
+                                FormBuilderValidators.maxLength(
+                                  context,
+                                  45,
+                                  errorText: "Name too long.",
+                                ),
+                              ]),
+                              decoration: customTheme.input_decoration_2(
+                                  labelText: "Full name",
+                                  hintText:
+                                      "What is the name of this employee?")),
                           FxDashedDivider(
                             color: Colors.grey.shade300,
                           ),
-                          InkWell(
-                            onTap: () => {pick_a_pest()},
-                            child: Container(
-                              padding: FxSpacing.all(20),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: <Widget>[
-                                  FxSpacing.width(16),
-                                  Expanded(
-                                    child: FxText.b1(
-                                      'Pest',
-                                      fontSize: 18,
-                                      fontWeight: 500,
-                                      color: Colors.grey.shade900,
-                                    ),
-                                  ),
-                                  Container(
-                                    child: Row(
-                                      children: [
-                                        FxText(
-                                          pest_text,
-                                          color: Colors.grey.shade500,
-                                        ),
-                                        Icon(CupertinoIcons.right_chevron,
-                                            size: 22,
-                                            color: Colors.grey.shade600),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
+                          FormBuilderTextField(
+                              name: "phone",
+                              textInputAction: TextInputAction.next,
+                              keyboardType: TextInputType.phone,
+                              validator: FormBuilderValidators.compose([
+                                FormBuilderValidators.required(
+                                  context,
+                                  errorText: "Phone number is required.",
+                                ),
+                              ]),
+                              decoration: customTheme.input_decoration_2(
+                                  labelText: "Phone number",
+                                  hintText:
+                                      "What is the Phone number of this employee?")),
+                          FxDashedDivider(
+                            color: Colors.grey.shade300,
                           ),
+                          FormBuilderTextField(
+                              name: "password",
+                              textInputAction: TextInputAction.next,
+                              keyboardType: TextInputType.name,
+                              validator: FormBuilderValidators.compose([
+                                FormBuilderValidators.required(
+                                  context,
+                                  errorText: "Password is required.",
+                                ),
+                              ]),
+                              decoration: customTheme.input_decoration_2(
+                                  labelText: "Password",
+                                  hintText:
+                                      "Password the employee will use to login ")),
                           FxDashedDivider(
                             color: Colors.grey.shade300,
                           ),
                           Container(
                             padding: EdgeInsets.only(
-                              left: 15,
+                              left: 0,
                               top: 5,
-                              right: 15,
+                              right: 0,
                             ),
                             child: Column(
                               children: [
@@ -205,18 +194,19 @@ class PestCaseCreateScreenState extends State<PestCaseCreateScreen> {
                                     validator: FormBuilderValidators.compose([
                                       FormBuilderValidators.required(
                                         context,
-                                        errorText: "Description is required.",
+                                        errorText:
+                                            "about the employee is required.",
                                       ),
                                       FormBuilderValidators.minLength(
                                         context,
                                         5,
-                                        errorText: "Description too short.",
+                                        errorText: "About too short.",
                                       ),
                                     ]),
                                     decoration: customTheme.input_decoration_2(
-                                        labelText: "Case details",
+                                        labelText: "Worker's details",
                                         hintText:
-                                            "Write something about this activity")),
+                                            "Write something about this worker")),
                               ],
                             ),
                           ),
@@ -226,8 +216,7 @@ class PestCaseCreateScreenState extends State<PestCaseCreateScreen> {
                           Container(
                             padding: EdgeInsets.only(top: 10, bottom: 10),
                             color: Colors.white,
-                            child: Text(
-                                "Add photos that prove this case. Not more than 15."),
+                            child: Text("Add photo of this worker."),
                           ),
                         ],
                       ),
@@ -304,7 +293,7 @@ class PestCaseCreateScreenState extends State<PestCaseCreateScreen> {
         ? InkWell(
             onTap: () => {_show_bottom_sheet_photo(context)},
             child: Container(
-                margin: EdgeInsets.all(5),
+                margin: EdgeInsets.only(left: 20),
                 decoration: BoxDecoration(
                   border: Border.all(
                       color: CustomTheme.primary,
@@ -475,6 +464,8 @@ class PestCaseCreateScreenState extends State<PestCaseCreateScreen> {
       return;
     }
 
+
+
     Map<String, dynamic> form_data_map = {};
     form_data_to_upload.clear();
     form_data_to_upload = await FormItemModel.get_all();
@@ -486,26 +477,25 @@ class PestCaseCreateScreenState extends State<PestCaseCreateScreen> {
       return;
     }
 
-    form_data_map['administrator_id'] = userModel.id;
+    form_data_map['owner_id'] = userModel.id;
 
-    form_data_map["description"] =
+    form_data_map["about"] =
         _formKey.currentState?.fields['description']?.value;
 
-    if (garden_id.isEmpty) {
-      Utils.showSnackBar("Please pick a garden.", context, Colors.white,
-          background_color: Colors.red);
-      return;
-    }
+    form_data_map["phone_number"] =
+        _formKey.currentState?.fields['phone']?.value;
 
-    if (pest_id.isEmpty) {
-      Utils.showSnackBar("Please pick a pest.", context, Colors.white,
-          background_color: Colors.red);
-      return;
-    }
+    form_data_map["password"] =
+        _formKey.currentState?.fields['password']?.value;
 
-    form_data_map['garden_id'] = garden_id;
-    form_data_map['pest_id'] = pest_id;
+    form_data_map["name"] =
+        _formKey.currentState?.fields['name']?.value;
 
+
+
+    setState(() {
+      is_uploading = true;
+    });
     var formData = FormData.fromMap(form_data_map);
     var dio = Dio();
     (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
@@ -515,12 +505,9 @@ class PestCaseCreateScreenState extends State<PestCaseCreateScreen> {
       return client;
     };
 
-    setState(() {
-      is_uploading = true;
-    });
 
     var response =
-        await dio.post('${AppConfig.BASE_URL}/api/pest-cases', data: formData);
+        await dio.post('${AppConfig.BASE_URL}/api/workers', data: formData);
 
     setState(() {
       is_uploading = false;
@@ -593,7 +580,7 @@ class PestCaseCreateScreenState extends State<PestCaseCreateScreen> {
 
   do_pick_image_from_camera() async {
     Navigator.pop(context);
-    if (photos_picked.length > 15) {
+    if (photos_picked.length > 2) {
       Utils.showSnackBar('Too many photos.', context, Colors.red.shade700);
       return;
     }
@@ -603,7 +590,7 @@ class PestCaseCreateScreenState extends State<PestCaseCreateScreen> {
         await _picker.pickImage(source: ImageSource.camera, imageQuality: 100);
 
     if (pic != null) {
-      if (photos_picked.length < 16) {
+      if (photos_picked.length < 2) {
         photos_picked.add(pic.path);
       }
     }
@@ -619,7 +606,7 @@ class PestCaseCreateScreenState extends State<PestCaseCreateScreen> {
       if (element.path == null) {
         return;
       }
-      if (photos_picked.length < 16) {
+      if (photos_picked.length < 2) {
         photos_picked.add(element.path);
       }
       // /data/user/0/jotrace.com/cache/image_picker3734385312125071389.jpg
