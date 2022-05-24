@@ -5,7 +5,7 @@ import 'package:ict4farmers/utils/Utils.dart';
 
 import 'DynamicTable.dart';
 
-class GardenModel {
+class GardenProductionModel {
   static String end_point = "gardens";
   int id = 0;
   int administrator_id = 0;
@@ -29,13 +29,13 @@ class GardenModel {
   String images = "";
   String color = "#542889";
 
-  static Future<List<GardenModel>> get_items() async {
+  static Future<List<GardenProductionModel>> get_items() async {
     UserModel u = await Utils.get_logged_in();
     if (u.id < 1) {
       return [];
     }
     List<DynamicTable> items = [];
-    List<GardenModel> _items = [];
+    List<GardenProductionModel> _items = [];
     items = await DynamicTable.get_items(
         end_point: end_point, clear_previous: true, params: {'user_id': u.id});
 
@@ -43,7 +43,7 @@ class GardenModel {
       Map<dynamic, dynamic> map = jsonDecode(element.data);
       if (map != null) {
         if (map['id'] != null) {
-          GardenModel item = new GardenModel();
+          GardenProductionModel item = new GardenProductionModel();
           item.id = Utils.int_parse(map['id']);
           if (item.id > 0) {
 

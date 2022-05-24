@@ -4,6 +4,7 @@ import 'package:flutx/flutx.dart';
 import 'package:flutx/widgets/text/text.dart';
 
 import '../../models/GardenActivityModel.dart';
+import '../../models/GardenModel.dart';
 import '../../models/UserModel.dart';
 import '../../theme/app_theme.dart';
 import '../../utils/AppConfig.dart';
@@ -21,6 +22,7 @@ class GardenActivitiesScreen extends StatefulWidget {
 class GardenActivitiesScreenState extends State<GardenActivitiesScreen> {
   late ThemeData theme;
   int id = 0;
+  GardenModel gardenModel = new GardenModel();
 
   GardenActivitiesScreenState();
 
@@ -51,7 +53,19 @@ class GardenActivitiesScreenState extends State<GardenActivitiesScreen> {
       }
     }
 
-    activities = await GardenActivityModel.get_items();
+    List<GardenModel> temp_gardens = await GardenModel.get_items();
+    temp_gardens.forEach((e) {
+      gardenModel = e;
+    });
+
+    List<GardenActivityModel> temp_acts = await GardenActivityModel.get_items();
+
+    activities.clear();
+    temp_acts.forEach((element) {
+      if (element.garden_id.toString() == id.toString()) {
+        activities.add(element);
+      }
+    });
 
     is_logged_in = false;
     setState(() {});
@@ -98,19 +112,34 @@ class GardenActivitiesScreenState extends State<GardenActivitiesScreen> {
                   floating: false,
                   pinned: true,
                   backgroundColor: CustomTheme.primary),
-
               SliverList(
                 delegate: SliverChildBuilderDelegate(
-                      (BuildContext context, int index) {
+                  (BuildContext context, int index) {
                     return _widget_overview();
                   },
                   childCount: 1, // 1000 list items
                 ),
               ),
-
               SliverList(
                 delegate: SliverChildBuilderDelegate(
-                      (BuildContext context, int index) {
+                  (BuildContext context, int index) {
+                    return Container(
+                      height: 20,
+                      margin: EdgeInsets.only(bottom: 10),
+                      decoration: BoxDecoration(
+                        color: CustomTheme.primary,
+                        borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(20),
+                            bottomRight: Radius.circular(20)),
+                      ),
+                    );
+                  },
+                  childCount: 1, // 1000 list items
+                ),
+              ),
+              SliverList(
+                delegate: SliverChildBuilderDelegate(
+                  (BuildContext context, int index) {
                     return _widget_garden_activity_ui(activities[index]);
                   },
                   childCount: activities.length, // 1000 list items
@@ -127,13 +156,7 @@ class GardenActivitiesScreenState extends State<GardenActivitiesScreen> {
         context: context,
         builder: (BuildContext buildContext) {
           return DraggableScrollableSheet(
-              initialChildSize: 0.75,
-              //set this as you want
-              maxChildSize: 0.75,
-              //set this as you want
-              minChildSize: 0.75,
-              //set this as you want
-              expand: true,
+              expand: false,
               builder: (context, scrollController) {
                 return Container(
                   color: Colors.transparent,
@@ -156,62 +179,123 @@ class GardenActivitiesScreenState extends State<GardenActivitiesScreen> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
+          _widget_single_item('Enterprize', gardenModel.name),
+          _widget_single_item('Task', m.name),
+          _widget_single_item('Assigned to', m.person_responsible_name),
+          _widget_single_item(
+              'Submit before', '${Utils.to_date_1(m.due_date.toString())}'),
           Container(
-            alignment: Alignment.center,
-            margin: EdgeInsets.all(10),
-            padding: EdgeInsets.only(left: 30, right: 30),
-          ),
-          Container(
-            padding: EdgeInsets.only(
-              left: 40,
-              right: 20,
-            ),
+            padding: EdgeInsets.only(left: 16, right: 18, bottom: 5),
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Expanded(
-                    child: FxButton.outlined(
-                  borderRadiusAll: 10,
-                  borderColor: CustomTheme.accent,
-                  splashColor: CustomTheme.primary.withAlpha(40),
-                  padding: FxSpacing.y(12),
-                  onPressed: () {
-                    Utils.navigate_to(AppConfig.SubmitActivityScreen, context,
-                        data: {
-                          'activity_id': m.id.toString(),
-                          'garden_id': id,
-                          'activity_text': m.name,
-                          'enterprise_text': 'Enterprice #${m.garden_id}',
-                        });
-                  },
-                  child: FxText.l1(
-                    "SUBMIT REPORT",
-                    color: CustomTheme.accent,
-                    letterSpacing: 0.5,
-                  ),
-                )),
-                SizedBox(
-                  width: 20,
+                FxText.b1(
+                  "Submission STATUS:",
+                  fontWeight: 600,
+                  fontSize: 20,
+                  color: Colors.black,
                 ),
-                Expanded(
-                    child: FxButton(
-                  elevation: 0,
-                  padding: FxSpacing.y(12),
-                  borderRadiusAll: 4,
-                  onPressed: () {
-                    Utils.navigate_to(AppConfig.AccountLogin, context);
-                  },
-                  child: FxText.l1(
-                    "DELETE ACTIVITY",
-                    color: Colors.white,
-                    letterSpacing: 0.5,
-                  ),
-                  backgroundColor: CustomTheme.primary,
-                )),
+                activity_status_widget(m),
               ],
             ),
           ),
-          SizedBox(
-            height: 30,
+          Container(
+            alignment: Alignment.center,
+            margin: EdgeInsets.all(0),
+            padding: EdgeInsets.only(left: 30, top: 10, right: 30),
+          ),
+          Container(
+            padding: EdgeInsets.only(
+              left: 20,
+              right: 20,
+            ),
+            child: Column(
+              children: [
+
+                (m.is_done)? Container(
+                  width: double.infinity,
+                  child: Expanded(
+                      child: FxButton(
+                    elevation: 0,
+                    padding: FxSpacing.y(12),
+                    borderRadiusAll: 4,
+                    onPressed: () {
+                      Navigator.pop(context);
+                      Utils.navigate_to(AppConfig.GardenProductionRecordScreen, context,
+                          data: {
+                            'activity_id': m.id.toString(),
+                            'garden_id': id,
+                            'activity_text': m.name,
+                            'enterprise_text': '${gardenModel.name}',
+                          });
+                    },
+                    child: FxText.b1(
+                      "VIEW ACTIVITY REPORT",
+                      color: Colors.white,
+                      fontSize: 18,
+                      letterSpacing: 0.5,
+                      fontWeight: 700,
+                    ),
+                    backgroundColor: CustomTheme.primary,
+                  )),
+                ):
+                Container(
+                  width: double.infinity,
+                  child: Expanded(
+                      child: FxButton(
+                        elevation: 0,
+                        padding: FxSpacing.y(12),
+                        borderRadiusAll: 4,
+                        onPressed: () {
+                          Navigator.pop(context);
+                          Utils.navigate_to(AppConfig.SubmitActivityScreen, context,
+                              data: {
+                                'activity_id': m.id.toString(),
+                                'garden_id': id,
+                                'activity_text': m.name,
+                                'enterprise_text': '${gardenModel.name}',
+                              });
+                        },
+                        child: FxText.b1(
+                          "SUBMIT ACTIVITY REPORT",
+                          color: Colors.white,
+                          fontSize: 18,
+                          letterSpacing: 0.5,
+                          fontWeight: 700,
+                        ),
+                        backgroundColor: CustomTheme.primary,
+                      )),
+                ),
+
+                (!m.is_done)? Container(
+                  margin: EdgeInsets.only(top: 10),
+                  width: double.infinity,
+                  child: Expanded(
+                      child: FxButton.outlined(
+                    borderRadiusAll: 5,
+                    borderColor: CustomTheme.accent,
+                    splashColor: CustomTheme.primary.withAlpha(40),
+                    padding: FxSpacing.y(12),
+                    onPressed: () {
+                      Navigator.pop(context);
+                      Utils.navigate_to(AppConfig.SubmitActivityScreen, context,
+                          data: {
+                            'activity_id': m.id.toString(),
+                            'garden_id': id,
+                            'activity_text': m.name,
+                            'enterprise_text': 'Enterprice #${m.garden_id}',
+                          });
+                    },
+                    child: FxText.b1(
+                      "DELETE ACTIVITY",
+                      color: Colors.red.shade700,
+                      letterSpacing: 0.5,
+                      fontWeight: 700,
+                    ),
+                  )),
+                ):SizedBox(),
+              ],
+            ),
           ),
         ],
       ),
@@ -242,7 +326,7 @@ class GardenActivitiesScreenState extends State<GardenActivitiesScreen> {
                             fontWeight: 800,
                           ),
                           FxText(
-                            m.due_date,
+                            "Submit before: ${Utils.to_date_1(m.due_date.toString())}",
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                           ),
@@ -284,7 +368,7 @@ class GardenActivitiesScreenState extends State<GardenActivitiesScreen> {
     int status = m.get_status();
 
     return (status == 5)
-        ? Column(
+        ? Row(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               FxText(
@@ -295,13 +379,13 @@ class GardenActivitiesScreenState extends State<GardenActivitiesScreen> {
                 fontWeight: 800,
               ),
               Icon(
-                Icons.close,
+                Icons.check,
                 color: Colors.green.shade600,
               ),
             ],
           )
         : (status == 4)
-            ? Column(
+            ? Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   FxText(
@@ -318,7 +402,7 @@ class GardenActivitiesScreenState extends State<GardenActivitiesScreen> {
                 ],
               )
             : (status == 2)
-                ? Column(
+                ? Row(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       FxText(
@@ -334,7 +418,7 @@ class GardenActivitiesScreenState extends State<GardenActivitiesScreen> {
                       ),
                     ],
                   )
-                : Column(
+                : Row(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       FxText(
@@ -366,89 +450,22 @@ class GardenActivitiesScreenState extends State<GardenActivitiesScreen> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    FxText('Overview',color: Colors.white,fontSize: 45,fontWeight: 400,),
                     Container(
-                      padding: EdgeInsets.only(top: 5),
-                      width: (Utils.screen_width(context) / 1.6),
-                      child: RichText(
-                        text: TextSpan(
-                          style: TextStyle(height: 1.2,
-                            fontSize: 16
-
-                          ),
-                          children: <TextSpan>[
-                            TextSpan(
-                                text: 'Enterprize: ',
-                                style: TextStyle(fontWeight: FontWeight.bold)),
-                            TextSpan(
-                              text: 'xxxxx\n',
-                              style: TextStyle(
-                                fontWeight: FontWeight.normal,
-                              ),
-                            ),
-                            TextSpan(
-                                text: 'All activities: ',
-                                style: TextStyle(fontWeight: FontWeight.bold)),
-                            TextSpan(
-                              text: '13\n',
-                              style: TextStyle(
-                                fontWeight: FontWeight.normal,
-                              ),
-                            ),
-                            TextSpan(
-                                text: 'SUBMITTED: ',
-                                style: TextStyle(fontWeight: FontWeight.bold)),
-                            TextSpan(
-                              text: '11\n',
-                              style: TextStyle(
-                                fontWeight: FontWeight.normal,
-                              ),
-                            ),
-                            TextSpan(
-                                text: 'MISSING: ',
-                                style: TextStyle(fontWeight: FontWeight.bold)),
-                            TextSpan(
-                              text: '1\n',
-                              style: TextStyle(
-                                fontWeight: FontWeight.normal,
-                              ),
-                            ),
-
-                            TextSpan(
-                                text: 'MISSED: ',
-                                style: TextStyle(fontWeight: FontWeight.bold)),
-                            TextSpan(
-                              text: '1\n',
-                              style: TextStyle(
-                                fontWeight: FontWeight.normal,
-                              ),
-                            ),
-
-
-                            TextSpan(
-                                text: 'DONE: ',
-                                style: TextStyle(fontWeight: FontWeight.bold)),
-                            TextSpan(
-                              text: '1\n',
-                              style: TextStyle(
-                                fontWeight: FontWeight.normal,
-                              ),
-                            ),
-
-
-
-                          ],
-                        ),
-                      ),
-                    ),
+                        margin: EdgeInsets.only(bottom: 20),
+                        child: FxText(
+                          gardenModel.name,
+                          color: Colors.white,
+                          fontSize: 45,
+                          fontWeight: 400,
+                        )),
                   ],
                 ),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     FxText(
-                      '%40',
+                      '${gardenModel.get_percebtage_done()}%',
                       fontWeight: 800,
                       fontSize: 40,
                       height: .8,
@@ -468,6 +485,30 @@ class GardenActivitiesScreenState extends State<GardenActivitiesScreen> {
           ],
           crossAxisAlignment: CrossAxisAlignment.start,
         ));
+  }
+
+  Widget _widget_single_item(String title, String value) {
+    return Container(
+      padding: EdgeInsets.only(left: 16, right: 18, bottom: 10),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          FxText.b1(
+            "${title}:",
+            fontWeight: 600,
+            fontSize: 20,
+            color: Colors.black,
+          ),
+          FxText.b1(
+            "${value}",
+            maxLines: 1,
+            fontWeight: 600,
+            fontSize: 20,
+            color: Colors.grey.shade700,
+          ),
+        ],
+      ),
+    );
   }
 }
 

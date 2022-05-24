@@ -3,6 +3,7 @@ class AppConfig {
   static const String GardenCreateScreen = "GardenCreateScreen";
   static const String GardenScreen = "GardenScreen";
   static const String GardenActivitiesScreen = "GardenActivitiesScreen";
+  static const String GardenProductionRecordScreen = "GardenProductionRecordScreen";
   static const String GardenActivityCreateScreen = "GardenActivityCreateScreen";
   static const String PestCaseCreateScreen = "PestCaseCreateScreen";
   static const String PestScreen = "PestScreen";

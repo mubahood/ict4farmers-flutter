@@ -6,24 +6,26 @@ import 'package:ict4farmers/models/GardenModel.dart';
 import 'package:ict4farmers/utils/AppConfig.dart';
 
 import '../../models/GardenActivityModel.dart';
+import '../../models/GardenProductionModel.dart';
 import '../../models/UserModel.dart';
 import '../../theme/app_theme.dart';
 import '../../utils/Utils.dart';
 
-class GardenScreen extends StatefulWidget {
-  GardenScreen(this.params);
+class GardenProductionRecordScreen extends StatefulWidget {
+  GardenProductionRecordScreen(this.params);
 
   dynamic params;
 
   @override
-  GardenScreenState createState() => GardenScreenState();
+  GardenProductionRecordScreenState createState() =>
+      GardenProductionRecordScreenState();
 }
 
-class GardenScreenState extends State<GardenScreen> {
+class GardenProductionRecordScreenState
+    extends State<GardenProductionRecordScreen> {
   late ThemeData theme;
 
-
-  GardenScreenState();
+  GardenProductionRecordScreenState();
 
   @override
   void initState() {
@@ -38,8 +40,10 @@ class GardenScreenState extends State<GardenScreen> {
 
   Future<void> my_init() async {
 
+    GardenProductionModel.get_items();
+    print(" ==> Good <==");
 
-
+    return;
     is_logged_in = true;
     setState(() {});
 
@@ -105,7 +109,7 @@ class GardenScreenState extends State<GardenScreen> {
                   titleSpacing: 0,
                   elevation: 0,
                   title: FxText(
-                    'Enterprise overview',
+                    'Production record',
                     color: Colors.white,
                     fontSize: 22,
                     fontWeight: 500,
@@ -233,8 +237,7 @@ class GardenScreenState extends State<GardenScreen> {
     }
 
     return InkWell(
-      onTap: () =>
-      {
+      onTap: () => {
         Utils.navigate_to(item.screen, context, data: {'id': id.toString()})
       },
       child: Container(

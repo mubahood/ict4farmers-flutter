@@ -45,6 +45,7 @@ import '../pages/chat/chat_home_screen.dart';
 import '../pages/forum/create_post_screen.dart';
 import '../pages/gardens/garden_activities_screen.dart';
 import '../pages/gardens/garden_create_screen.dart';
+import '../pages/gardens/garden_production_record_screen.dart';
 import '../pages/gardens/garden_screen.dart';
 import '../pages/gardens/gardens_screen.dart';
 import '../pages/gardens/submit_activity_screen.dart';
@@ -301,6 +302,17 @@ class Utils {
           context,
           PageRouteBuilder(
             pageBuilder: (context, animation1, animation2) => WorkersScreen(),
+            transitionDuration: Duration.zero,
+          ),
+        );
+        break;
+
+
+      case AppConfig.GardenProductionRecordScreen:
+        Navigator.push(
+          context,
+          PageRouteBuilder(
+            pageBuilder: (context, animation1, animation2) => GardenProductionRecordScreen(data),
             transitionDuration: Duration.zero,
           ),
         );
@@ -791,6 +803,19 @@ class Utils {
     return await Geolocator.getCurrentPosition();
   }
 
+  static String to_date_1(String string_date) {
+    DateTime d;
+    try{
+      d=DateTime.parse(string_date);
+    }catch (d){
+      return "-";
+    }
+
+    if(d == null){
+      return "-";
+    }
+    return '${d.day}-${d.month}-${d.year}';
+  }
   static screen_height(BuildContext context) {
     return MediaQuery.of(context).size.height;
   }
