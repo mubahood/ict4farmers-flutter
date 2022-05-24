@@ -6,7 +6,7 @@ import 'package:ict4farmers/utils/Utils.dart';
 import 'DynamicTable.dart';
 
 class GardenProductionModel {
-  static String end_point = "gardens";
+  static String end_point = "garden-production-record";
   int id = 0;
   int administrator_id = 0;
   int crop_category_id = 0;

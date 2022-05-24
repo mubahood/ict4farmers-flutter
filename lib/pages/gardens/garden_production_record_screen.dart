@@ -40,8 +40,8 @@ class GardenProductionRecordScreenState
 
   Future<void> my_init() async {
 
-    GardenProductionModel.get_items();
-    print(" ==> Good <==");
+    List<GardenProductionModel> items = await GardenProductionModel.get_items();
+    print(" ==> Good <== ${items.length}");
 
     return;
     is_logged_in = true;

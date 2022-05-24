@@ -7,7 +7,6 @@ import 'package:flutx/widgets/text/text.dart';
 import 'package:ict4farmers/utils/AppConfig.dart';
 import 'package:ict4farmers/widget/shimmer_loading_widget.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 import '../theme/app_theme.dart';
 import '../theme/custom_theme.dart';
@@ -37,7 +36,7 @@ extension HexString on String {
   int getHexValue() => int.parse(replaceAll('#', '0xff'));
 }
 
-Widget widget_video_player() {
+/*Widget widget_video_player() {
   YoutubePlayerController _controller = YoutubePlayerController(
     initialVideoId: 'iLnmTe5Q2Qw',
     flags: YoutubePlayerFlags(
@@ -50,7 +49,7 @@ Widget widget_video_player() {
     controller: _controller,
     showVideoProgressIndicator: true,
   );
-}
+}*/
 
 Widget widget_grid_item(context, {
   required String title,
