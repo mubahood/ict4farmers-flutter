@@ -71,10 +71,7 @@ class GardenActivitiesScreenState extends State<GardenActivitiesScreen> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Utils.navigate_to(AppConfig.GardenActivityCreateScreen, context,data: {
-            'garden_id':id,
-            'activity_text':'Activity name',
-            'enterprise_text':'Garden name',
-          });
+            'garden_id': id});
         },
         backgroundColor: CustomTheme.primary,
         child: Icon(Icons.add),
@@ -113,7 +110,7 @@ class GardenActivitiesScreenState extends State<GardenActivitiesScreen> {
 
               SliverList(
                 delegate: SliverChildBuilderDelegate(
-                  (BuildContext context, int index) {
+                      (BuildContext context, int index) {
                     return _widget_garden_activity_ui(activities[index]);
                   },
                   childCount: activities.length, // 1000 list items
@@ -178,7 +175,13 @@ class GardenActivitiesScreenState extends State<GardenActivitiesScreen> {
                   splashColor: CustomTheme.primary.withAlpha(40),
                   padding: FxSpacing.y(12),
                   onPressed: () {
-                    Utils.navigate_to(AppConfig.SubmitActivityScreen, context);
+                    Utils.navigate_to(AppConfig.SubmitActivityScreen, context,
+                        data: {
+                          'activity_id': m.id.toString(),
+                          'garden_id': id,
+                          'activity_text': m.name,
+                          'enterprise_text': 'Enterprice #${m.garden_id}',
+                        });
                   },
                   child: FxText.l1(
                     "SUBMIT REPORT",

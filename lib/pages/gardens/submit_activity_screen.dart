@@ -10,7 +10,6 @@ import 'package:flutx/flutx.dart';
 import 'package:flutx/utils/spacing.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:ict4farmers/models/GardenModel.dart';
 import 'package:ict4farmers/models/PestModel.dart';
 import 'package:ict4farmers/pages/option_pickers/single_option_picker.dart';
 import 'package:image_picker/image_picker.dart';
@@ -41,10 +40,11 @@ late CustomTheme customTheme;
 class SubmitActivityScreenState extends State<SubmitActivityScreen> {
   String nature_of_off = "";
   String enterprise_text = "";
+  String activity_id = "";
   String activity_text = "";
+  String garden_id = "";
   double latitude = 0.0;
   double longitude = 0.0;
-
 
   @override
   void initState() {
@@ -229,42 +229,6 @@ class SubmitActivityScreenState extends State<SubmitActivityScreen> {
                           FxDashedDivider(
                             color: Colors.grey.shade300,
                           ),
-                          InkWell(
-                            onTap: () => {pick_a_pest()},
-                            child: Container(
-                              padding: FxSpacing.all(20),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: <Widget>[
-                                  FxSpacing.width(16),
-                                  Expanded(
-                                    child: FxText.b1(
-                                      'Pest',
-                                      fontSize: 18,
-                                      fontWeight: 500,
-                                      color: Colors.grey.shade900,
-                                    ),
-                                  ),
-                                  Container(
-                                    child: Row(
-                                      children: [
-                                        FxText(
-                                          pest_text,
-                                          color: Colors.grey.shade500,
-                                        ),
-                                        Icon(CupertinoIcons.right_chevron,
-                                            size: 22,
-                                            color: Colors.grey.shade600),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          FxDashedDivider(
-                            color: Colors.grey.shade300,
-                          ),
                           Container(
                             padding: EdgeInsets.only(
                               left: 15,
@@ -291,7 +255,7 @@ class SubmitActivityScreenState extends State<SubmitActivityScreen> {
                                       ),
                                     ]),
                                     decoration: customTheme.input_decoration_2(
-                                        labelText: "Case details",
+                                        labelText: "Activity details",
                                         hintText:
                                             "Write something about this activity")),
                               ],
@@ -462,61 +426,20 @@ class SubmitActivityScreenState extends State<SubmitActivityScreen> {
     }
   }
 
-  String pest_id = "";
-  String pest_text = "";
 
-  List<PestModel> pests = [];
 
-  Future<void> pick_a_pest() async {
-    if (pests.isEmpty) {
-      pests = await PestModel.get_items();
-    }
-    if (pests.isEmpty) {
-      Utils.showSnackBar(
-          "Please connect to internet and try again.", context, Colors.white,
-          background_color: Colors.red);
-      return;
-    }
-
-    List<OptionPickerModel> local_items = [];
-
-    pests.forEach((element) {
-      OptionPickerModel item = new OptionPickerModel();
-      item.parent_id = "1";
-      item.id = element.id.toString();
-      item.name = element.name.toString();
-      local_items.add(item);
-    });
-
-    final result = await Navigator.push(
-      context,
-      MaterialPageRoute(
-          builder: (context) =>
-              SingleOptionPicker("Select a pest", local_items)),
-    );
-
-    if (result != null) {
-      if ((result['id'] != null) && (result['text'] != null)) {
-        pest_id = result['id'];
-        pest_text = result['text'];
-        setState(() {});
-      }
-    }
-  }
 
   Future<void> pick_activity_status() async {
-
-
     List<OptionPickerModel> local_items = [];
 
     OptionPickerModel item = new OptionPickerModel();
     item.parent_id = "1";
-    item.id = 'Done';
+    item.id = '1';
     item.name = 'Done';
     local_items.add(item);
 
     item = new OptionPickerModel();
-    item.parent_id = "2";
+    item.parent_id = "0";
     item.id = 'Missed';
     item.name = 'Missed (Not done)';
     local_items.add(item);
@@ -538,6 +461,7 @@ class SubmitActivityScreenState extends State<SubmitActivityScreen> {
   }
 
   void do_upload_process() async {
+
     error_message = "";
     setState(() {});
     if (!_formKey.currentState!.validate()) {
@@ -559,25 +483,38 @@ class SubmitActivityScreenState extends State<SubmitActivityScreen> {
       return;
     }
 
+    form_data_map['activity_id'] = activity_id;
+    form_data_map['created_by_id'] = userModel.id;
     form_data_map['administrator_id'] = userModel.id;
-
+    form_data_map['done_status'] = status_id;
+    form_data_map['garden_id'] = garden_id;
     form_data_map["description"] =
         _formKey.currentState?.fields['description']?.value;
 
     if (status_id.isEmpty) {
-      Utils.showSnackBar("Please pick a garden.", context, Colors.white,
+      Utils.showSnackBar("Please pick activity status.", context, Colors.white,
           background_color: Colors.red);
       return;
     }
 
-    if (pest_id.isEmpty) {
-      Utils.showSnackBar("Please pick a pest.", context, Colors.white,
-          background_color: Colors.red);
-      return;
-    }
+    bool first_found = false;
 
-    form_data_map['status_id'] = status_id;
-    form_data_map['pest_id'] = pest_id;
+    if (!photos_picked.isEmpty) {
+      for (int __counter = 0; __counter < photos_picked.length; __counter++) {
+        if (first_found) {
+          try {
+            var img = await MultipartFile.fromFile(photos_picked[__counter],
+                filename: 'image_${__counter}');
+            if (img != null) {
+              form_data_map['image_${__counter}'] =
+              await MultipartFile.fromFile(photos_picked[__counter],
+                  filename: photos_picked[__counter].toString());
+            } else {}
+          } catch (e) {}
+        }
+        first_found = true;
+      }
+    }
 
     var formData = FormData.fromMap(form_data_map);
     var dio = Dio();
@@ -593,7 +530,7 @@ class SubmitActivityScreenState extends State<SubmitActivityScreen> {
     });
 
     var response =
-        await dio.post('${AppConfig.BASE_URL}/api/pest-cases', data: formData);
+        await dio.post('${AppConfig.BASE_URL}/api/garden-production-record', data: formData);
 
     setState(() {
       is_uploading = false;
@@ -716,9 +653,13 @@ class SubmitActivityScreenState extends State<SubmitActivityScreen> {
 
 
   void my_init() async {
-    pests = await PestModel.get_items();
-    enterprise_text = widget.params['enterprise_text'].toString();
-    activity_text = widget.params['activity_text'].toString();
 
+
+    enterprise_text = widget.params['enterprise_text'].toString();
+    print(enterprise_text);
+    activity_text = widget.params['activity_text'].toString();
+    garden_id = widget.params['garden_id'].toString();
+    activity_id = widget.params['activity_id'].toString();
+    setState(() {});
   }
 }
