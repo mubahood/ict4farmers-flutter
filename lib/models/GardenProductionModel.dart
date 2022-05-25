@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:ict4farmers/models/UserModel.dart';
 import 'package:ict4farmers/utils/Utils.dart';
 
+import '../utils/AppConfig.dart';
 import 'DynamicTable.dart';
 
 class GardenProductionModel {
@@ -48,6 +49,27 @@ class GardenProductionModel {
     return _items;
   }
 
+  List<String> get_images(bool get_thumbs){
+    if(this.images.toString().length<10){
+      return [];
+    }
+    List<String> items = [];
+    List<dynamic> map = jsonDecode(this.images.toString());
+    if(map!=null){
+      map.forEach((v) {
+        if(v!=null){
+          if((v['src'] !=null) && v['thumbnail'] !=null ){
+            if(get_thumbs){
+              items.add( AppConfig.BASE_URL+"/storage/"+v['thumbnail'].toString() );
+            }else{
+              items.add( AppConfig.BASE_URL+"/storage/"+v['src'].toString() );
+            }
+          }
+        }
+      });
+    }
 
+    return items;
+  }
 
 }

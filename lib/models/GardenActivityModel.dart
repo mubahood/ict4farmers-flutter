@@ -25,6 +25,7 @@ class GardenActivityModel {
   String done_details = "";
   String done_images = "";
   int garden_id = 0;
+  int garden_production_record_id = 0;
 
   static Future<List<GardenActivityModel>> get_items() async {
     UserModel u = await Utils.get_logged_in();
@@ -43,6 +44,7 @@ class GardenActivityModel {
           GardenActivityModel item = new GardenActivityModel();
           item.id = Utils.int_parse(map['id']);
           if (item.id > 0) {
+            item.garden_production_record_id = Utils.int_parse(map['garden_production_record_id']);
             item.position = Utils.int_parse(map['position']);
             item.person_responsible =
                 Utils.int_parse(map['person_responsible']);

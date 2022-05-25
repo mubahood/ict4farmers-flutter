@@ -1,15 +1,16 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutx/flutx.dart';
 import 'package:flutx/widgets/text/text.dart';
-import 'package:ict4farmers/models/GardenModel.dart';
-import 'package:ict4farmers/utils/AppConfig.dart';
 
 import '../../models/GardenActivityModel.dart';
 import '../../models/GardenProductionModel.dart';
 import '../../models/UserModel.dart';
 import '../../theme/app_theme.dart';
+import '../../utils/AppConfig.dart';
 import '../../utils/Utils.dart';
+import '../../widget/shimmer_loading_widget.dart';
 
 class GardenProductionRecordScreen extends StatefulWidget {
   GardenProductionRecordScreen(this.params);
@@ -35,17 +36,12 @@ class GardenProductionRecordScreenState
     my_init();
   }
 
-  GardenModel item = new GardenModel();
   String id = "";
+  GardenProductionModel gardenProductionModel = new GardenProductionModel();
+  List<String> thumbnails = [];
+  List<String> photos = [];
 
   Future<void> my_init() async {
-
-    List<GardenProductionModel> items = await GardenProductionModel.get_items();
-    print(" ==> Good <== ${items.length}");
-
-
-
-    return;
     is_logged_in = true;
     setState(() {});
 
@@ -54,34 +50,21 @@ class GardenProductionRecordScreenState
         id = widget.params['id'].toString();
       }
     }
-    List<GardenModel> gardens = [];
-    gardens = await GardenModel.get_items();
-    gardens.forEach((element) {
-      if (element.id.toString() == id) {
-        item = element;
+
+    List<GardenProductionModel> items = await GardenProductionModel.get_items();
+    items.forEach((element) {
+      if (element.id.toString() == id.toString()) {
+        gardenProductionModel = element;
       }
     });
-    if (item.id < 1) {
-      Utils.showSnackBar("Garden not found.", context, Colors.white);
-      Navigator.pop(context);
-      return;
-    }
+    thumbnails = gardenProductionModel.get_images(true);
+    photos = gardenProductionModel.get_images(false);
 
     loggedUser = await Utils.get_logged_in();
     if (loggedUser.id < 1) {
-      Utils.showSnackBar("Not logged in.", context, Colors.white);
       Navigator.pop(context);
       return;
     }
-
-    List<GardenActivityModel> all_activities =
-        await GardenActivityModel.get_items();
-
-    all_activities.forEach((element) {
-      if (element.garden_id.toString() == item.id.toString()) {
-        ///
-      }
-    });
 
     is_logged_in = false;
     setState(() {});
@@ -127,34 +110,65 @@ class GardenProductionRecordScreenState
                   childCount: 1, // 1000 list items
                 ),
               ),
+              SliverList(
+                delegate: SliverChildBuilderDelegate(
+                  (BuildContext context, int index) {
+                    return FxContainer(
+                      borderRadiusAll: 0,
+                      color: Colors.white,
+                      child: FxText.h2(
+                        "Photos",
+                        color: Colors.black,
+                      ),
+                    );
+                  },
+                  childCount: 1, // 1000 list items
+                ),
+              ),
               SliverGrid(
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
                     mainAxisSpacing: 0,
                     crossAxisSpacing: 0,
                     childAspectRatio: 2,
-                    mainAxisExtent: (190)),
+                    mainAxisExtent: (170)),
                 delegate: SliverChildBuilderDelegate(
                   (context, index) {
-                    return _widget_grid_item(index, item);
-                  },
-                  childCount: [2, 3, 4, 6].length,
-                ),
-              ),
-              SliverList(
-                delegate: SliverChildBuilderDelegate(
-                  (BuildContext context, int index) {
-                    return Container(
-                      height: 30,
-                      decoration: BoxDecoration(
-                        color: CustomTheme.primary,
-                        borderRadius: BorderRadius.only(
-                            bottomLeft: Radius.circular(30),
-                            bottomRight: Radius.circular(30)),
-                      ),
+                    return InkWell(
+                      onTap: () => {
+                        Utils.navigate_to(
+                            AppConfig.ViewFullImagesScreen, context,
+                            data: photos)
+                      },
+                      child: FxContainer(
+                          bordered: true,
+                          border: Border.all(color: CustomTheme.primary),
+                          margin: index.isEven
+                              ? EdgeInsets.only(left: 20, right: 5, bottom: 10)
+                              : EdgeInsets.only(left: 5, right: 10, bottom: 10),
+                          paddingAll: 0,
+                          color: Colors.white,
+                          borderRadiusAll: 0,
+                          child: CachedNetworkImage(
+                            width: 100,
+                            height: 100,
+                            fit: BoxFit.cover,
+                            imageUrl: thumbnails[index].toString(),
+                            placeholder: (context, url) => ShimmerLoadingWidget(
+                              height: 100,
+                              width: 100,
+                            ),
+                            errorWidget: (context, url, error) => Image(
+                              image:
+                                  AssetImage('./assets/project/no_image.jpg'),
+                              height: 100,
+                              width: 100,
+                              fit: BoxFit.cover,
+                            ),
+                          )),
                     );
                   },
-                  childCount: 1, // 1000 list items
+                  childCount: thumbnails.length,
                 ),
               ),
             ],
@@ -201,96 +215,6 @@ class GardenProductionRecordScreenState
         ));
   }
 
-  Widget _widget_grid_item(int index, GardenModel g) {
-    GridItemWidget item = new GridItemWidget();
-    if (index == 0) {
-      item.title = "Garden activities";
-      item.all = "ALL";
-      item.all_text = g.production_activities_all.toString();
-      item.done = "SUBMITTED";
-      item.done_text = g.production_activities_done.toString();
-      item.complete = "REMAINING";
-      item.complete_text = g.production_activities_remaining.toString();
-      item.screen = AppConfig.GardenActivitiesScreen;
-    } else if (index == 1) {
-      item.title = "Financial records";
-      item.all = "EXPENSE";
-      item.all_text = "UGX 25";
-      item.done = "INCOME";
-      item.done_text = "10";
-      item.complete = "PROFIT/LOSS";
-      item.complete_text = " 11";
-    } else if (index == 2) {
-      item.title = "Garden records";
-      item.all = "All records";
-      item.all_text = "25";
-      item.done = "INCOME";
-      item.done_text = "10";
-      item.complete = "PROFIT/LOSS";
-      item.complete_text = " 11";
-    } else if (index == 3) {
-      item.title = "Garden's gallery";
-      item.all = "All albums";
-      item.all_text = "8";
-      item.done = "INCOME";
-      item.done_text = "10";
-      item.complete = "PROFIT/LOSS";
-      item.complete_text = " 11";
-    }
-
-    return InkWell(
-      onTap: () => {
-        Utils.navigate_to(item.screen, context, data: {'id': id.toString()})
-      },
-      child: Container(
-        color: CustomTheme.primary,
-        child: FxContainer(
-          paddingAll: 10,
-          marginAll: 10,
-          color: Colors.white,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              FxText(
-                item.title,
-                color: CustomTheme.primary,
-                fontWeight: 800,
-                height: 1.0,
-                fontSize: 20,
-              ),
-              Spacer(),
-              my_rich_text(
-                  item.all, item.all_text.toString(), Colors.grey.shade800),
-              (index > 1)
-                  ? SizedBox()
-                  : my_rich_text(item.done, item.done_text.toString(),
-                      Colors.grey.shade800),
-              (index > 1)
-                  ? SizedBox()
-                  : my_rich_text(item.complete, item.complete_text.toString(),
-                      Colors.grey.shade800),
-              Spacer(),
-              FxContainer(
-                child: FxText(
-                  "See All",
-                  fontSize: 18,
-                  fontWeight: 700,
-                  color: CustomTheme.primary,
-                ),
-                paddingAll: 0,
-                padding: EdgeInsets.only(top: 5, bottom: 5),
-                color: CustomTheme.primary.withAlpha(20),
-                alignment: Alignment.center,
-                width: double.infinity,
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
   Widget _widget_overview() {
     return FxContainer(
         borderRadiusAll: 0,
@@ -300,89 +224,29 @@ class GardenProductionRecordScreenState
             Container(
                 margin: EdgeInsets.only(bottom: 20),
                 child: FxText(
-                  item.name,
+                  gardenProductionModel.garden_name,
                   color: Colors.white,
                   fontSize: 45,
                   fontWeight: 400,
                 )),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      width: (Utils.screen_width(context) / 1.6),
-                      child: RichText(
-                        text: TextSpan(
-                          style: TextStyle(
-                            height: 1.2,
-                            fontSize: 16,
-                          ),
-                          children: <TextSpan>[
-                            TextSpan(
-                                text: 'ENTERPRISE CATEGORY: ',
-                                style: TextStyle(fontWeight: FontWeight.bold)),
-                            TextSpan(
-                              text: '${item.crop_category_name}, ',
-                              style: TextStyle(
-                                fontWeight: FontWeight.normal,
-                              ),
-                            ),
-                            TextSpan(
-                                text: '\nSTARTED: ',
-                                style: TextStyle(fontWeight: FontWeight.bold)),
-                            TextSpan(
-                              text: '${Utils.to_date_1(item.plant_date)}, ',
-                              style: TextStyle(
-                                fontWeight: FontWeight.normal,
-                              ),
-                            ),
-                            TextSpan(
-                                text: '\nLAND SIZE: ',
-                                style: TextStyle(fontWeight: FontWeight.bold)),
-                            TextSpan(
-                              text: '${item.size} acres, ',
-                              style: TextStyle(
-                                fontWeight: FontWeight.normal,
-                              ),
-                            ),
-                            TextSpan(
-                                text: '\nLOCATION: ',
-                                style: TextStyle(fontWeight: FontWeight.bold)),
-                            TextSpan(
-                              text: '${item.location_name}.',
-                              style: TextStyle(
-                                fontWeight: FontWeight.normal,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
+            RichText(
+              text: TextSpan(
+                style: TextStyle(
+                  height: 1.2,
+                  fontSize: 16,
                 ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    FxText(
-                      '${item.get_percebtage_done()}%',
-                      fontWeight: 800,
-                      fontSize: 40,
-                      height: .8,
-                      color: Colors.white,
-                    ),
-                    FxText(
-                      'Completed',
-                      height: .8,
-                      fontWeight: 400,
-                      fontSize: 16.5,
-                      color: Colors.white,
-                    ),
-                  ],
-                ),
-              ],
+                children: <TextSpan>[
+                  TextSpan(
+                      text: 'Description\n',
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 25)),
+                  TextSpan(
+                    text: '${gardenProductionModel.description}, ',
+                    style:
+                        TextStyle(fontWeight: FontWeight.normal, fontSize: 18),
+                  ),
+                ],
+              ),
             ),
           ],
           crossAxisAlignment: CrossAxisAlignment.start,

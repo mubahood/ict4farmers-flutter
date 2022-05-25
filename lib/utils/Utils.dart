@@ -43,6 +43,8 @@ import '../pages/account/my_products_screen.dart';
 import '../pages/account/onboarding_widget.dart';
 import '../pages/chat/chat_home_screen.dart';
 import '../pages/forum/create_post_screen.dart';
+import '../pages/gardens/financial_records_create_screen.dart';
+import '../pages/gardens/financial_records_screen.dart';
 import '../pages/gardens/garden_activities_screen.dart';
 import '../pages/gardens/garden_create_screen.dart';
 import '../pages/gardens/garden_production_record_screen.dart';
@@ -307,23 +309,45 @@ class Utils {
         );
         break;
 
-
-      case AppConfig.GardenProductionRecordScreen:
+      case AppConfig.FinancialRecordsCreateScreen:
         Navigator.push(
           context,
           PageRouteBuilder(
-            pageBuilder: (context, animation1, animation2) => GardenProductionRecordScreen(data),
+            pageBuilder: (context, animation1, animation2) =>
+                FinancialRecordsCreateScreen(data),
             transitionDuration: Duration.zero,
           ),
         );
         break;
 
+      case AppConfig.FinancialRecordsScreen:
+        Navigator.push(
+          context,
+          PageRouteBuilder(
+            pageBuilder: (context, animation1, animation2) =>
+                FinancialRecordsScreen(data),
+            transitionDuration: Duration.zero,
+          ),
+        );
+        break;
+
+      case AppConfig.GardenProductionRecordScreen:
+        Navigator.push(
+          context,
+          PageRouteBuilder(
+            pageBuilder: (context, animation1, animation2) =>
+                GardenProductionRecordScreen(data),
+            transitionDuration: Duration.zero,
+          ),
+        );
+        break;
 
       case AppConfig.SubmitActivityScreen:
         Navigator.push(
           context,
           PageRouteBuilder(
-            pageBuilder: (context, animation1, animation2) => SubmitActivityScreen(data),
+            pageBuilder: (context, animation1, animation2) =>
+                SubmitActivityScreen(data),
             transitionDuration: Duration.zero,
           ),
         );

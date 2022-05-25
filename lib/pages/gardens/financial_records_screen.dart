@@ -3,28 +3,29 @@ import 'package:flutter/material.dart';
 import 'package:flutx/flutx.dart';
 import 'package:flutx/widgets/text/text.dart';
 
-import '../../models/GardenActivityModel.dart';
+import '../../models/FinancialRecordModel.dart';
 import '../../models/GardenModel.dart';
 import '../../models/UserModel.dart';
 import '../../theme/app_theme.dart';
 import '../../utils/AppConfig.dart';
 import '../../utils/Utils.dart';
 
-class GardenActivitiesScreen extends StatefulWidget {
+class FinancialRecordsScreen extends StatefulWidget {
   dynamic params;
 
-  GardenActivitiesScreen(this.params);
+  FinancialRecordsScreen(this.params);
 
   @override
-  GardenActivitiesScreenState createState() => GardenActivitiesScreenState();
+  FinancialRecordsScreenState createState() => FinancialRecordsScreenState();
 }
 
-class GardenActivitiesScreenState extends State<GardenActivitiesScreen> {
+class FinancialRecordsScreenState extends State<FinancialRecordsScreen> {
   late ThemeData theme;
   int id = 0;
+  int profit_loss = 0;
   GardenModel gardenModel = new GardenModel();
 
-  GardenActivitiesScreenState();
+  FinancialRecordsScreenState();
 
   @override
   void initState() {
@@ -34,10 +35,9 @@ class GardenActivitiesScreenState extends State<GardenActivitiesScreen> {
     my_init();
   }
 
-  List<GardenActivityModel> activities = [];
+  List<FinancialRecordModel> activities = [];
 
   Future<void> my_init() async {
-    is_logged_in = true;
     setState(() {});
 
     loggedUser = await Utils.get_logged_in();
@@ -58,20 +58,20 @@ class GardenActivitiesScreenState extends State<GardenActivitiesScreen> {
       gardenModel = e;
     });
 
-    List<GardenActivityModel> temp_acts = await GardenActivityModel.get_items();
+    List<FinancialRecordModel> temp_finances =
+        await FinancialRecordModel.get_items();
 
     activities.clear();
-    temp_acts.forEach((element) {
+    temp_finances.forEach((element) {
       if (element.garden_id.toString() == id.toString()) {
         activities.add(element);
+        profit_loss += element.amount;
       }
     });
 
-    is_logged_in = false;
     setState(() {});
   }
 
-  bool is_logged_in = false;
   UserModel loggedUser = new UserModel();
 
   Future<Null> _onRefresh() async {
@@ -84,8 +84,8 @@ class GardenActivitiesScreenState extends State<GardenActivitiesScreen> {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Utils.navigate_to(AppConfig.GardenActivityCreateScreen, context,data: {
-            'garden_id': id});
+          Utils.navigate_to(AppConfig.FinancialRecordsCreateScreen, context,
+              data: {'garden_id': id});
         },
         backgroundColor: CustomTheme.primary,
         child: Icon(Icons.add),
@@ -104,7 +104,7 @@ class GardenActivitiesScreenState extends State<GardenActivitiesScreen> {
                   titleSpacing: 0,
                   elevation: 0,
                   title: FxText(
-                    'Production Activities',
+                    'Financial records',
                     color: Colors.white,
                     fontSize: 22,
                     fontWeight: 500,
@@ -150,7 +150,7 @@ class GardenActivitiesScreenState extends State<GardenActivitiesScreen> {
     );
   }
 
-  void _show_details_bottom_sheet(context, GardenActivityModel m) {
+  void _show_details_bottom_sheet(context, FinancialRecordModel m) {
     showModalBottomSheet(
         isScrollControlled: true,
         context: context,
@@ -174,23 +174,19 @@ class GardenActivitiesScreenState extends State<GardenActivitiesScreen> {
   }
 
   Widget _details_bottom_sheet_content(
-      BuildContext context, GardenActivityModel m) {
+      BuildContext context, FinancialRecordModel m) {
     return Center(
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          _widget_single_item('Enterprize', gardenModel.name),
-          _widget_single_item('Task', m.name),
-          _widget_single_item('Assigned to', m.person_responsible_name),
-          _widget_single_item(
-              'Submit before', '${Utils.to_date_1(m.due_date.toString())}'),
+          _widget_single_item('Description', m.description),
           Container(
             padding: EdgeInsets.only(left: 16, right: 18, bottom: 5),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 FxText.b1(
-                  "Submission STATUS:",
+                  "Amount:",
                   fontWeight: 600,
                   fontSize: 20,
                   color: Colors.black,
@@ -199,6 +195,10 @@ class GardenActivitiesScreenState extends State<GardenActivitiesScreen> {
               ],
             ),
           ),
+          _widget_single_item('Enterprize', gardenModel.name),
+          _widget_single_item('Created by', m.created_by_name.toString()),
+          _widget_single_item(
+              'DATE', '${Utils.to_date_1(m.created_at.toString())}'),
           Container(
             alignment: Alignment.center,
             margin: EdgeInsets.all(0),
@@ -211,8 +211,7 @@ class GardenActivitiesScreenState extends State<GardenActivitiesScreen> {
             ),
             child: Column(
               children: [
-
-                (m.is_done)? Container(
+                Container(
                   width: double.infinity,
                   child: Expanded(
                       child: FxButton(
@@ -220,78 +219,23 @@ class GardenActivitiesScreenState extends State<GardenActivitiesScreen> {
                     padding: FxSpacing.y(12),
                     borderRadiusAll: 4,
                     onPressed: () {
-                      Navigator.pop(context);
-                            Utils.navigate_to(
-                                AppConfig.GardenProductionRecordScreen, context,
-                                data: {
-                                  'id': m.garden_production_record_id,
-                                });
-                          },
-                    child: FxText.b1(
-                      "VIEW ACTIVITY REPORT",
-                            color: Colors.white,
-                            fontSize: 18,
-                            letterSpacing: 0.5,
-                            fontWeight: 700,
-                          ),
-                    backgroundColor: CustomTheme.primary,
-                  )),
-                ):
-                Container(
-                  width: double.infinity,
-                  child: Expanded(
-                      child: FxButton(
-                        elevation: 0,
-                        padding: FxSpacing.y(12),
-                        borderRadiusAll: 4,
-                        onPressed: () {
-                          Navigator.pop(context);
-                          Utils.navigate_to(AppConfig.SubmitActivityScreen, context,
-                              data: {
-                                'activity_id': m.id.toString(),
-                                'garden_id': id,
-                                'activity_text': m.name,
-                                'enterprise_text': '${gardenModel.name}',
-                              });
-                        },
-                        child: FxText.b1(
-                          "SUBMIT ACTIVITY REPORT",
-                            color: Colors.white,
-                            fontSize: 18,
-                            letterSpacing: 0.5,
-                            fontWeight: 700,
-                          ),
-                        backgroundColor: CustomTheme.primary,
-                      )),
-                ),
-
-                (!m.is_done)? Container(
-                  margin: EdgeInsets.only(top: 10),
-                  width: double.infinity,
-                  child: Expanded(
-                      child: FxButton.outlined(
-                    borderRadiusAll: 5,
-                    borderColor: CustomTheme.accent,
-                    splashColor: CustomTheme.primary.withAlpha(40),
-                    padding: FxSpacing.y(12),
-                    onPressed: () {
-                      Navigator.pop(context);
-                      Utils.navigate_to(AppConfig.SubmitActivityScreen, context,
+                      /*Navigator.pop(context);
+                      Utils.navigate_to(
+                          AppConfig.GardenProductionRecordScreen, context,
                           data: {
-                            'activity_id': m.id.toString(),
-                            'garden_id': id,
-                            'activity_text': m.name,
-                            'enterprise_text': 'Enterprice #${m.garden_id}',
-                          });
+                            'id': m.amount.toString(),
+                          });*/
                     },
                     child: FxText.b1(
-                      "DELETE ACTIVITY",
-                      color: Colors.red.shade700,
+                      "DELETE TRANSACTION",
+                      color: Colors.white,
+                      fontSize: 18,
                       letterSpacing: 0.5,
                       fontWeight: 700,
                     ),
+                    backgroundColor: Colors.red.shade700,
                   )),
-                ):SizedBox(),
+                )
               ],
             ),
           ),
@@ -300,7 +244,7 @@ class GardenActivitiesScreenState extends State<GardenActivitiesScreen> {
     );
   }
 
-  Widget _widget_garden_activity_ui(GardenActivityModel m) {
+  Widget _widget_garden_activity_ui(FinancialRecordModel m) {
     return InkWell(
       onTap: () => {_show_details_bottom_sheet(context, m)},
       child: FxContainer(
@@ -312,19 +256,19 @@ class GardenActivitiesScreenState extends State<GardenActivitiesScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Container(
-                      width: (Utils.screen_width(context) / 1.5),
+                      width: (Utils.screen_width(context) / 1.8),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           FxText(
-                            m.name,
+                            m.description,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             color: Colors.black,
                             fontWeight: 800,
                           ),
                           FxText(
-                            "Submit before: ${Utils.to_date_1(m.due_date.toString())}",
+                            "${m.created_at.toString()}",
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                           ),
@@ -362,76 +306,30 @@ class GardenActivitiesScreenState extends State<GardenActivitiesScreen> {
     );
   }
 
-  activity_status_widget(GardenActivityModel m) {
-    int status = m.get_status();
-
-    return (status == 5)
-        ? Row(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              FxText(
-                'Done',
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                color: Colors.green.shade600,
-                fontWeight: 800,
-              ),
-              Icon(
-                Icons.check,
-                color: Colors.green.shade600,
-              ),
-            ],
-          )
-        : (status == 4)
-            ? Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  FxText(
-                    'Missed',
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    color: Colors.red.shade600,
-                    fontWeight: 800,
-                  ),
-                  Icon(
-                    Icons.close,
-                    color: Colors.red.shade600,
-                  ),
-                ],
-              )
-            : (status == 2)
-                ? Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      FxText(
-                        'Missing',
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        color: Colors.red.shade600,
-                        fontWeight: 800,
-                      ),
-                      Icon(
-                        Icons.warning,
-                        color: Colors.red.shade600,
-                      ),
-                    ],
-                  )
-                : Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      FxText(
-                        'Pending',
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        color: Colors.grey.shade600,
-                        fontWeight: 800,
-                      ),
-                      Icon(
-                        Icons.alarm_outlined,
-                        color: Colors.grey.shade600,
-                      ),
-                    ],
-                  );
+  activity_status_widget(FinancialRecordModel m) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.end,
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        FxText(
+          '${m.amount}',
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          textAlign: TextAlign.end,
+          color: (m.amount < 0) ? Colors.red.shade800 : Colors.green.shade800,
+          fontWeight: 800,
+        ),
+        FxText(
+          'UGX',
+          maxLines: 1,
+          fontSize: 14,
+          textAlign: TextAlign.end,
+          overflow: TextOverflow.ellipsis,
+          color: Colors.grey.shade400,
+          fontWeight: 600,
+        ),
+      ],
+    );
   }
 
   Widget _widget_overview() {
@@ -440,46 +338,38 @@ class GardenActivitiesScreenState extends State<GardenActivitiesScreen> {
         color: CustomTheme.primary,
         child: Column(
           children: [
-
-
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                        margin: EdgeInsets.only(bottom: 20),
-                        child: FxText(
-                          gardenModel.name,
-                          color: Colors.white,
-                          fontSize: 45,
-                          fontWeight: 400,
-                        )),
-                  ],
-                ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    FxText(
-                      '${gardenModel.get_percebtage_done()}%',
-                      fontWeight: 800,
-                      fontSize: 40,
-                      height: .8,
-                      color: Colors.white,
-                    ),
-                    FxText(
-                      'Completed',
-                      height: .8,
-                      fontWeight: 400,
-                      fontSize: 16.5,
-                      color: Colors.white,
-                    ),
-                  ],
-                ),
-              ],
-            ),
+            Container(
+                margin: EdgeInsets.only(bottom: 20),
+                child: FxText(
+                  gardenModel.name,
+                  color: Colors.white,
+                  fontSize: 45,
+                  fontWeight: 400,
+                )),
+            Container(
+              width: double.infinity,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  FxText(
+                    'UGX ${profit_loss}',
+                    fontWeight: 800,
+                    fontSize: 40,
+                    height: .8,
+                    textAlign: TextAlign.end,
+                    color: Colors.white,
+                  ),
+                  FxText(
+                    'Profit/Loss',
+                    height: .8,
+                    fontWeight: 400,
+                    fontSize: 16.5,
+                    color: Colors.white,
+                  ),
+                ],
+              ),
+            )
           ],
           crossAxisAlignment: CrossAxisAlignment.start,
         ));

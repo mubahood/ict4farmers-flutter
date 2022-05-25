@@ -212,6 +212,7 @@ class GardenScreenState extends State<GardenScreen> {
       item.all_text = "UGX 25";
       item.done = "INCOME";
       item.done_text = "10";
+      item.screen = AppConfig.FinancialRecordsScreen;
       item.complete = "PROFIT/LOSS";
       item.complete_text = " 11";
     } else if (index == 2) {
