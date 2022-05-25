@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutx/flutx.dart';
 import 'package:flutx/utils/spacing.dart';
 import 'package:flutx/widgets/container/container.dart';
 import 'package:flutx/widgets/text/text.dart';
@@ -35,11 +36,14 @@ class DashboardState extends State<Dashboard> {
   List<MenuItemModel> main_menu_items = [
 //    new MenuItemModel('HRM', "1.png", AppConfig.WorkersScreen, true),
     new MenuItemModel(
-        'Garden management', "1.png", AppConfig.GardensScreen, true),
+        'Enterprise Management', "1.png", AppConfig.GardensScreen, true),
+    new MenuItemModel('Pests & Diseases', "4.png", AppConfig.PestsScreen, true),
+    new MenuItemModel('Market Place', "3.png", AppConfig.MarketPlace1, false),
+    new MenuItemModel('Resource Sharing', "2.png", AppConfig.ComingSoon, true),
     new MenuItemModel(
-        'Pest & disease control', "4.png", AppConfig.PestsScreen, true),
-    new MenuItemModel('Market place', "3.png", AppConfig.MarketPlace1, false),
-    new MenuItemModel('Resource sharing', "2.png", AppConfig.ComingSoon, true),
+        'Extension Services', "6.png", AppConfig.ComingSoon, true),
+    new MenuItemModel(
+        'Ask the Expert', "5.png", AppConfig.QuestionsScreen, true),
   ];
 
   DashboardState(this._context);
@@ -73,13 +77,29 @@ class DashboardState extends State<Dashboard> {
 
   @override
   Widget build(BuildContext context) {
-    List<MenuItemModel> sub_menu_items = [
-      new MenuItemModel('My farmer calender', "1.png",
-          AppConfig.GardenActivitiesScreen, true),
-      new MenuItemModel('My workers', "1.png", AppConfig.ComingSoon, true),
-      new MenuItemModel('My farm records', "1.png", AppConfig.ComingSoon, true),
-      new MenuItemModel(
-          'My products & services', "1.png", AppConfig.MyProductsScreen, true),
+    List<MenuItemModel> sub_menu_items = [];
+    MenuItemModel i1 = new MenuItemModel(
+        'My Acivities', "1.png", AppConfig.GardenActivitiesScreen, true);
+    i1.icon = Icons.agriculture;
+    sub_menu_items.add(i1);
+
+    MenuItemModel i2 = new MenuItemModel(
+        'My Records', "1.png", AppConfig.GardenActivitiesScreen, true);
+    i2.icon = Icons.assignment;
+    sub_menu_items.add(i2);
+
+    MenuItemModel i3 = new MenuItemModel(
+        'My Products', "1.png", AppConfig.MyProductsScreen, true);
+    i3.icon = Icons.inventory;
+    sub_menu_items.add(i3);
+
+    MenuItemModel i4 =
+        new MenuItemModel('My Chats', "1.png", AppConfig.ComingSoon, true);
+    i4.icon = Icons.forum;
+    sub_menu_items.add(i4);
+
+    /*
+
       new MenuItemModel('My orders', "1.png", AppConfig.ComingSoon, true),
       new MenuItemModel(
           'Production guides', "1.png", AppConfig.ComingSoon, true),
@@ -95,11 +115,11 @@ class DashboardState extends State<Dashboard> {
           'Our privacy policy', "1.png", AppConfig.PrivacyPolicy, true),
       new MenuItemModel('Help & Support', "1.png", AppConfig.ComingSoon, true),
       new MenuItemModel('Toll free', "1.png", AppConfig.ComingSoon, true),
-    ];
+     */
 
     return SafeArea(
       child: Scaffold(
-        backgroundColor: CustomTheme.primary,
+        backgroundColor: CustomTheme.primary_bg,
         floatingActionButton: FloatingActionButton.extended(
             backgroundColor: CustomTheme.primary,
             elevation: 20,
@@ -109,12 +129,12 @@ class DashboardState extends State<Dashboard> {
             label: Row(
               children: [
                 Icon(
-                  MdiIcons.plus,
+                  Icons.person,
                   size: 18,
                 ),
                 Container(
                   child: Text(
-                    "MORE",
+                    "My Account",
                   ),
                 ),
               ],
@@ -129,17 +149,17 @@ class DashboardState extends State<Dashboard> {
                     titleSpacing: 0,
                     elevation: 0,
                     pinned: true,
-                    toolbarHeight: (Utils.screen_height(context) / 3.5),
+                    toolbarHeight: (Utils.screen_height(context) / 3.0),
                     title: Stack(
                       children: [
                         ClipRRect(
                           borderRadius: BorderRadius.only(
-                            bottomLeft: Radius.circular(80),
-                            bottomRight: Radius.circular(80),
+                            bottomLeft: Radius.circular(50),
+                            bottomRight: Radius.circular(50),
                           ),
                           child: Image(
                             width: double.infinity,
-                            height: (Utils.screen_height(context) / 3.5),
+                            height: (Utils.screen_height(context) / 3.0),
                             fit: BoxFit.cover,
                             image: AssetImage("assets/project/farm_doodle.jpg"),
                           ),
@@ -156,71 +176,17 @@ class DashboardState extends State<Dashboard> {
                           },
                           child: Container(
                             margin: EdgeInsets.only(
-                              left: 20,
-                              right: 20,
-                              top: (MediaQuery.of(context).size.height / 7),
+                              left: 0,
+                              right: 0,
+                              top: (MediaQuery.of(context).size.height / 6.5),
                             ),
                             child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
-                                FxContainer.rounded(
-                                  paddingAll: 0,
-                                  color: CustomTheme.primary,
-                                  child: is_logged_in
-                                      ? CachedNetworkImage(
-                                          width: 70,
-                                          height: 70,
-                                          fit: BoxFit.cover,
-                                          imageUrl: loggedUser.avatar,
-                                          placeholder: (context, url) =>
-                                              ShimmerLoadingWidget(
-                                            height: 70,
-                                            width: 70,
-                                          ),
-                                          errorWidget: (context, url, error) =>
-                                              Image(
-                                            image: AssetImage(
-                                                './assets/project/user.png'),
-                                            height: 80,
-                                            width: 80,
-                                            fit: BoxFit.cover,
-                                          ),
-                                        )
-                                      : Image(
-                                          width: 60,
-                                          height: 60,
-                                          image: AssetImage(
-                                              "./assets/project/user.png"),
-                                        ),
-                                ),
-                                Container(
-                                  margin: EdgeInsets.only(left: 10),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      FxText.h1(
-                                        (is_logged_in)
-                                            ? loggedUser.name
-                                            : "Join ${AppConfig.AppName}",
-                                        fontWeight: 700,
-                                        fontSize: 20,
-                                        color: Colors.black,
-                                      ),
-                                      FxText.caption(
-                                        (is_logged_in)
-                                            ? loggedUser.email
-                                            : "To access all features of ${AppConfig.AppName}!",
-                                        fontWeight: 500,
-                                        fontSize: 14,
-                                        color: Colors.grey.shade700,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                /* Container(
-                            child:
-                            FxText.h2("Bob Tusiime"),
-                          )*/
+                                sub_menu_widget(sub_menu_items[0]),
+                                sub_menu_widget(sub_menu_items[1]),
+                                sub_menu_widget(sub_menu_items[2]),
+                                sub_menu_widget(sub_menu_items[3]),
                               ],
                             ),
                           ),
@@ -243,14 +209,17 @@ class DashboardState extends State<Dashboard> {
                                     children: [
                                       FxContainer.rounded(
                                         bordered: true,
+                                        width: 60,
+                                        height: 60,
                                         border: Border.all(
                                             color: CustomTheme.primary),
                                         paddingAll: 10,
                                         splashColor: CustomTheme.primary,
-                                        color: Colors.green.shade50,
+                                        color: CustomTheme.primary,
                                         child: Icon(
                                           CupertinoIcons.phone,
-                                          size: 25,
+                                          size: 35,
+                                          color: Colors.white,
                                         ),
                                       ),
                                       FxContainer(
@@ -262,8 +231,9 @@ class DashboardState extends State<Dashboard> {
                                         splashColor: CustomTheme.primary,
                                         color: Colors.white,
                                         child: FxText(
-                                          "Toll free",
+                                          "Toll Free: ${AppConfig.TOLL_FREE_PHONE_NUMBER}",
                                           fontWeight: 800,
+                                          fontSize: 16,
                                           color: CustomTheme.primary,
                                         ),
                                       ),
@@ -272,36 +242,34 @@ class DashboardState extends State<Dashboard> {
                                 ),
                               ),
                               Spacer(),
-                              InkWell(
-                                onTap: () => {},
-                                child: FxContainer.rounded(
-                                  bordered: true,
-                                  border:
-                                      Border.all(color: CustomTheme.primary),
-                                  paddingAll: 10,
-                                  splashColor: CustomTheme.primary,
-                                  color: Colors.green.shade50,
-                                  child: Icon(
-                                    CupertinoIcons.shopping_cart,
-                                    size: 25,
-                                  ),
-                                ),
-                              ),
-                              InkWell(
-                                onTap: () => {test_function()},
-                                child: FxContainer.rounded(
-                                  bordered: true,
-                                  border:
-                                      Border.all(color: CustomTheme.primary),
-                                  margin: EdgeInsets.only(left: 10),
-                                  paddingAll: 11,
-                                  splashColor: CustomTheme.primary,
-                                  color: Colors.green.shade50,
-                                  child: Icon(
-                                    CupertinoIcons.bell,
-                                    size: 25,
-                                  ),
-                                ),
+                              FxContainer.rounded(
+                                paddingAll: 0,
+                                child: is_logged_in
+                                    ? CachedNetworkImage(
+                                        width: 60,
+                                        height: 60,
+                                        fit: BoxFit.cover,
+                                        imageUrl: loggedUser.avatar,
+                                        placeholder: (context, url) =>
+                                            ShimmerLoadingWidget(
+                                          height: 60,
+                                          width: 60,
+                                        ),
+                                        errorWidget: (context, url, error) =>
+                                            Image(
+                                          image: AssetImage(
+                                              './assets/project/user.png'),
+                                          height: 60,
+                                          width: 60,
+                                          fit: BoxFit.cover,
+                                        ),
+                                      )
+                                    : Image(
+                                        width: 60,
+                                        height: 60,
+                                        image: AssetImage(
+                                            "./assets/project/user.png"),
+                                      ),
                               ),
                               /* Container(
                           child:
@@ -313,14 +281,24 @@ class DashboardState extends State<Dashboard> {
                       ],
                     ),
                     floating: false,
-                    backgroundColor: CustomTheme.primary),
+                    backgroundColor: CustomTheme.primary_bg),
+                SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                    (BuildContext context, int index) {
+                      return SizedBox(
+                        height: 15,
+                      );
+                    },
+                    childCount: 1,
+                  ),
+                ),
                 SliverGrid(
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
+                      crossAxisCount: 3,
                       mainAxisSpacing: 0,
                       crossAxisSpacing: 0,
                       childAspectRatio: 1,
-                      mainAxisExtent: (160)),
+                      mainAxisExtent: (140)),
                   delegate: SliverChildBuilderDelegate(
                     (context, index) {
                       return _single_item(main_menu_items[index]);
@@ -331,16 +309,8 @@ class DashboardState extends State<Dashboard> {
                 SliverList(
                   delegate: SliverChildBuilderDelegate(
                     (BuildContext context, int index) {
-                      return _list_item(sub_menu_items[index]);
-                    },
-                    childCount: sub_menu_items.length, // 1000 list items
-                  ),
-                ),
-                SliverList(
-                  delegate: SliverChildBuilderDelegate(
-                    (BuildContext context, int index) {
-                      return Container(
-                        margin: EdgeInsets.only(top: 10),
+                      return FxCard(
+                        margin: EdgeInsets.only(top: 20, left: 10, right: 10),
                         padding: EdgeInsets.only(top: 15),
                         color: Colors.white,
                         child: Column(
@@ -464,7 +434,6 @@ class DashboardState extends State<Dashboard> {
     return InkWell(
       onTap: () => {Utils.navigate_to(menu_item.screen, context)},
       child: Container(
-        color: CustomTheme.primary,
         child: FxContainer(
           margin: EdgeInsets.only(left: 10, top: 10, bottom: 0, right: 10),
           padding: FxSpacing.all(20),
@@ -530,8 +499,39 @@ class DashboardState extends State<Dashboard> {
                 : show_not_account_bottom_sheet(context)
             : Utils.navigate_to(item.screen, context)
       },
-      child: Container(
-        color: CustomTheme.primary,
+      child: FxCard(
+        paddingAll: 5,
+        color: Colors.white,
+        borderRadiusAll: 10,
+        margin: EdgeInsets.only(left: 5, right: 5, top: 10),
+        child: Column(
+          children: [
+            Container(
+              height: 80,
+              child: Image(
+                fit: BoxFit.fill,
+                image: AssetImage("assets/project/${item.photo}"),
+              ),
+            ),
+            Spacer(),
+            FxText(
+              "${item.title}",
+              textAlign: TextAlign.center,
+              color: CustomTheme.primaryDark,
+              fontWeight: 800,
+              height: 1,
+              maxLines: 2,
+              fontSize: 14,
+            ),
+            Spacer(),
+          ],
+        ),
+      ),
+    );
+  }
+
+  /*
+  Container(
         padding: EdgeInsets.only(left: 10, top: 20, right: 10),
         child: FxContainer(
           paddingAll: 0,
@@ -568,9 +568,8 @@ class DashboardState extends State<Dashboard> {
           ),
           color: Colors.white,
         ),
-      ),
-    );
-  }
+      )
+   */
 
   Widget singleOption(_context, theme,
       {IconData? iconData,
@@ -677,5 +676,39 @@ class DashboardState extends State<Dashboard> {
         print(result);
       }
     }
+  }
+
+  Widget sub_menu_widget(MenuItemModel sub_menu_item) {
+    return InkWell(
+      onTap: () => {},
+      child: Column(
+        children: [
+          FxContainer.rounded(
+            bordered: true,
+            border: Border.all(color: CustomTheme.primary),
+            paddingAll: 10,
+            splashColor: CustomTheme.primary,
+            color: CustomTheme.primary_bg,
+            child: Icon(
+              sub_menu_item.icon,
+              size: 35,
+              color: CustomTheme.primaryDark,
+            ),
+          ),
+          FxCard(
+            padding: EdgeInsets.only(left: 3, right: 3, top: 5, bottom: 5),
+            marginAll: 0,
+            child: FxText(
+              "${sub_menu_item.title}",
+              color: CustomTheme.primaryDark,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              fontSize: 13,
+              fontWeight: 800,
+            ),
+          )
+        ],
+      ),
+    );
   }
 }

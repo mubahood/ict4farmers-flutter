@@ -65,6 +65,8 @@ import '../pages/product_add_form/product_add_form.dart';
 import '../pages/products/product_details.dart';
 import '../pages/products/product_listting.dart';
 import '../pages/products/view_full_images_screen.dart';
+import '../pages/questions/questions_create_screen.dart';
+import '../pages/questions/questions_screen.dart';
 import '../pages/search/search_screen.dart';
 import 'AppConfig.dart';
 
@@ -304,6 +306,27 @@ class Utils {
           context,
           PageRouteBuilder(
             pageBuilder: (context, animation1, animation2) => WorkersScreen(),
+            transitionDuration: Duration.zero,
+          ),
+        );
+        break;
+
+
+        case AppConfig.QuestionsCreateScreen:
+        Navigator.push(
+          context,
+          PageRouteBuilder(
+            pageBuilder: (context, animation1, animation2) => QuestionsCreateScreen(),
+            transitionDuration: Duration.zero,
+          ),
+        );
+        break;
+
+        case AppConfig.QuestionsScreen:
+        Navigator.push(
+          context,
+          PageRouteBuilder(
+            pageBuilder: (context, animation1, animation2) => QuestionsScreen(),
             transitionDuration: Duration.zero,
           ),
         );
@@ -846,6 +869,7 @@ class Utils {
 
 
   static void ini_theme() {
+
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       statusBarColor: CustomTheme.primary,
       statusBarIconBrightness: Brightness.light,

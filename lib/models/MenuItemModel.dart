@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:ict4farmers/utils/AppConfig.dart';
@@ -11,6 +13,7 @@ class MenuItemModel  {
   String photo = "";
   String screen = "";
   bool is_protected = false;
+  IconData icon = Icons.edit;
 
   MenuItemModel(this.title, this.photo, this.screen,this.is_protected);
 }

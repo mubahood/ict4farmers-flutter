@@ -16,6 +16,8 @@ class AppConfig {
   static const String SubmitActivityScreen = "SubmitActivityScreen";
   static const String FinancialRecordsCreateScreen = "FinancialRecordsCreateScreen";
   static const String FinancialRecordsScreen = "FinancialRecordsScreen";
+  static const String QuestionsScreen = "QuestionsScreen";
+  static const String QuestionsCreateScreen = "QuestionsCreateScreen";
 
   static String BASE_URL = "https://app2.unffeict4farmers.org";
   static const String HomePage = "HomePage";
