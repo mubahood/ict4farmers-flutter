@@ -15,6 +15,7 @@ class PestModel {
   String image = "";
   String video = "";
 
+
   static Future<List<PestModel>> get_items() async {
     List<DynamicTable> items = [];
     List<PestModel> _items = [];
@@ -52,7 +53,7 @@ class PestModel {
   }
 
   String get_image() {
-    return 'https://images.unsplash.com/photo-1570042707108-66761758315a?crop=entropy&cs=tinysrgb&fm=jpg&ixlib=rb-1.2.1&q=80&raw_url=true&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770';
+    //return 'https://images.unsplash.com/photo-1570042707108-66761758315a?crop=entropy&cs=tinysrgb&fm=jpg&ixlib=rb-1.2.1&q=80&raw_url=true&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770';
     return '${AppConfig.BASE_URL}/${image}';
   }
 }

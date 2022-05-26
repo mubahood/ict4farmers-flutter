@@ -194,7 +194,13 @@ class UserModel extends HiveObject {
   @HiveField(34)
   String logged_in_user = "0";
 
-
+  bool is_a_worker() {
+    if (this.linkedin == "worker") {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
   static UserModel fromMap(data) {
     UserModel u = new UserModel();

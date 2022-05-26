@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:flutx/flutx.dart';
 import 'package:flutx/utils/spacing.dart';
 import 'package:flutx/widgets/button/button.dart';
@@ -51,6 +52,34 @@ extension HexString on String {
   );
 }*/
 
+FloatingActionButton extended_floating_button( context, {
+  required String title,
+  required String screen,
+  IconData icon: Icons.add,
+  dynamic data : null,
+}) {
+  return FloatingActionButton.extended(
+      backgroundColor: CustomTheme.primary,
+      elevation: 20,
+      onPressed: () {
+        Utils.navigate_to(screen,context, data:data);
+      },
+      label: Row(
+        children: [
+          Icon(
+            icon,
+            size: 18,
+          ),
+          Container(
+            child: Text(
+              "${title}",
+            ),
+          ),
+        ],
+      ));
+}
+
+
 Widget widget_grid_item(context, {
   required String title,
   required String caption,
@@ -60,7 +89,7 @@ Widget widget_grid_item(context, {
 }) {
   return InkWell(
     onTap: () => {Utils.navigate_to(screen, context, data: {'id': id})},
-    child: FxContainer(
+    child: FxCard(
       paddingAll: 10,
       marginAll: 10,
       color: (bg_color.isEmpty)

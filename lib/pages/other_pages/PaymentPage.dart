@@ -110,7 +110,7 @@ class _PaymentPage extends State<PaymentPage> {
     Position p = await Utils.get_device_location();
     if (p != null) {
       if (p.latitude != null && p.longitude != null) {
-        Navigator.pushNamedAndRemoveUntil(context, "/HomeScreen", (r) => false);
+        Navigator.pushNamedAndRemoveUntil(context, "/HomesScreen", (r) => false);
       }
     }
   }

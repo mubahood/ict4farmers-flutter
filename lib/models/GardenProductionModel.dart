@@ -45,7 +45,7 @@ class GardenProductionModel {
         }
       }
     });
-    _items.sort((a, b) => a.created_at.compareTo(b.created_at));
+    _items.sort((b, a) => a.id.compareTo(b.id));
     return _items;
   }
 

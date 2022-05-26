@@ -2,7 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutx/flutx.dart';
 import 'package:flutx/widgets/text/text.dart';
+import 'package:ict4farmers/models/FinancialRecordModel.dart';
 import 'package:ict4farmers/models/GardenModel.dart';
+import 'package:ict4farmers/models/GardenProductionModel.dart';
 import 'package:ict4farmers/utils/AppConfig.dart';
 
 import '../../models/GardenActivityModel.dart';
@@ -35,11 +37,16 @@ class GardenScreenState extends State<GardenScreen> {
 
   GardenModel item = new GardenModel();
   String id = "";
+  int count_activities_all = 0;
+  int finainancial_expence = 0;
+  int finainancial_income = 0;
+  int count_activities_remaining = 0;
+  int count_activities_submitted = 0;
+  List<int> done_finacnces = [];
+  List<int> done_productions = [];
+  List<GardenProductionModel> garden_records = [];
 
   Future<void> my_init() async {
-
-
-
     is_logged_in = true;
     setState(() {});
 
@@ -71,9 +78,47 @@ class GardenScreenState extends State<GardenScreen> {
     List<GardenActivityModel> all_activities =
         await GardenActivityModel.get_items();
 
-    all_activities.forEach((element) {
-      if (element.garden_id.toString() == item.id.toString()) {
-        ///
+    garden_records =
+        await GardenProductionModel.get_items();
+
+    List<FinancialRecordModel> all_fines =
+        await FinancialRecordModel.get_items();
+
+    finainancial_expence = 0;
+    finainancial_income = 0;
+    done_finacnces.clear();
+    done_finacnces = [];
+    all_fines.forEach((xx) {
+      if (!done_finacnces.contains(xx.id)) {
+        done_finacnces.add(xx.id);
+        if (xx.garden_id.toString() == item.id.toString()) {
+          if (xx.amount.isNegative) {
+            finainancial_expence += ((-1) * (xx.amount));
+          } else {
+            finainancial_income += ((xx.amount));
+          }
+        }
+      }
+    });
+
+    count_activities_all = 0;
+    count_activities_remaining = 0;
+    count_activities_submitted = 0;
+
+    done_productions.clear();
+    done_productions = [];
+
+    all_activities.forEach((e) {
+      if (!done_productions.contains(e.id)) {
+        done_productions.add(e.id);
+        if (e.garden_id.toString() == item.id.toString()) {
+          count_activities_all++;
+          if (e.is_done) {
+            count_activities_submitted++;
+          } else {
+            count_activities_remaining++;
+          }
+        }
       }
     });
 
@@ -200,37 +245,40 @@ class GardenScreenState extends State<GardenScreen> {
     if (index == 0) {
       item.title = "Garden activities";
       item.all = "ALL";
-      item.all_text = g.production_activities_all.toString();
+      item.all_text = "${count_activities_all}";
       item.done = "SUBMITTED";
-      item.done_text = g.production_activities_done.toString();
+      item.done_text = '${count_activities_submitted}';
       item.complete = "REMAINING";
-      item.complete_text = g.production_activities_remaining.toString();
+      item.complete_text = count_activities_remaining.toString();
       item.screen = AppConfig.GardenActivitiesScreen;
     } else if (index == 1) {
       item.title = "Financial records";
       item.all = "EXPENSE";
-      item.all_text = "UGX 25";
+      item.all_text = "UGX ${Utils.number_short(finainancial_expence)}";
       item.done = "INCOME";
-      item.done_text = "10";
+      item.done_text = "UGX ${Utils.number_short(finainancial_income)}";
       item.screen = AppConfig.FinancialRecordsScreen;
       item.complete = "PROFIT/LOSS";
-      item.complete_text = " 11";
+      item.complete_text =
+          " ${Utils.number_short(finainancial_income - finainancial_expence)}";
     } else if (index == 2) {
-      item.title = "Garden records";
+      item.title = "Enterprize's records";
       item.all = "All records";
-      item.all_text = "25";
+      item.all_text = "${garden_records.length.toString()}";
       item.done = "INCOME";
       item.done_text = "10";
       item.complete = "PROFIT/LOSS";
       item.complete_text = " 11";
+      item.screen = AppConfig.GardenProductionRecordsScreen;
     } else if (index == 3) {
-      item.title = "Garden's gallery";
-      item.all = "All albums";
-      item.all_text = "8";
+      item.title = "Enterprize's gallery";
+      item.all = "Albums";
+      item.all_text = "${garden_records.length.toString()}";
       item.done = "INCOME";
       item.done_text = "10";
       item.complete = "PROFIT/LOSS";
       item.complete_text = " 11";
+      item.screen = AppConfig.GardenProductionRecordsScreen;
     }
 
     return InkWell(
@@ -240,7 +288,7 @@ class GardenScreenState extends State<GardenScreen> {
       },
       child: Container(
         color: CustomTheme.primary,
-        child: FxContainer(
+        child: FxCard(
           paddingAll: 10,
           marginAll: 10,
           color: Colors.white,

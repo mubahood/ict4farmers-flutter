@@ -10,8 +10,9 @@ import 'package:flutx/flutx.dart';
 import 'package:flutx/utils/spacing.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:ict4farmers/models/GardenModel.dart';
+import 'package:ict4farmers/models/CropCategory.dart';
 import 'package:ict4farmers/models/PestModel.dart';
+import 'package:ict4farmers/pages/account/logged_in_screen.dart';
 import 'package:ict4farmers/pages/option_pickers/single_option_picker.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
@@ -26,14 +27,14 @@ import '../../utils/AppConfig.dart';
 import '../../utils/Utils.dart';
 import '../location_picker/location_main.dart';
 
-class WorkerCreateScreen extends StatefulWidget {
+class MyAccountScreen extends StatefulWidget {
   @override
-  State<WorkerCreateScreen> createState() => WorkerCreateScreenState();
+  State<MyAccountScreen> createState() => MyAccountScreenState();
 }
 
 late CustomTheme customTheme;
 
-class WorkerCreateScreenState extends State<WorkerCreateScreen> {
+class MyAccountScreenState extends State<MyAccountScreen> {
   String nature_of_off = "";
   double latitude = 0.0;
   double longitude = 0.0;
@@ -52,8 +53,7 @@ class WorkerCreateScreenState extends State<WorkerCreateScreen> {
 
   @override
   Widget build(BuildContext context) {
-
-    String _title = "Adding new worker";
+    String _title = "My Account";
     return Consumer<AppNotifier>(
         builder: (BuildContext context, AppNotifier value, Widget? child) {
       return Scaffold(
@@ -107,178 +107,7 @@ class WorkerCreateScreenState extends State<WorkerCreateScreen> {
         ),
         body: FormBuilder(
           key: _formKey,
-          child: CustomScrollView(
-            slivers: [
-              SliverList(
-                delegate: SliverChildBuilderDelegate(
-                  (BuildContext context, int index) {
-                    return Container(
-                      padding: EdgeInsets.only(left: 15, right: 15),
-                      child: Column(
-                        children: [
-                          FormBuilderTextField(
-                              name: "name",
-                              textInputAction: TextInputAction.next,
-                              keyboardType: TextInputType.name,
-                              validator: FormBuilderValidators.compose([
-                                FormBuilderValidators.required(
-                                  context,
-                                  errorText: "Name is required.",
-                                ),
-                                FormBuilderValidators.minLength(
-                                  context,
-                                  2,
-                                  errorText: "Name too short.",
-                                ),
-                                FormBuilderValidators.maxLength(
-                                  context,
-                                  45,
-                                  errorText: "Name too long.",
-                                ),
-                              ]),
-                              decoration: customTheme.input_decoration_2(
-                                  labelText: "Full name",
-                                  hintText:
-                                      "What is the name of this employee?")),
-                          FxDashedDivider(
-                            color: Colors.grey.shade300,
-                          ),
-                          FormBuilderTextField(
-                              name: "phone",
-                              textInputAction: TextInputAction.next,
-                              keyboardType: TextInputType.phone,
-                              validator: FormBuilderValidators.compose([
-                                FormBuilderValidators.required(
-                                  context,
-                                  errorText: "Phone number is required.",
-                                ),
-                              ]),
-                              decoration: customTheme.input_decoration_2(
-                                  labelText: "Phone number",
-                                  hintText:
-                                      "What is the Phone number of this employee?")),
-                          FxDashedDivider(
-                            color: Colors.grey.shade300,
-                          ),
-                          FormBuilderTextField(
-                              name: "password",
-                              textInputAction: TextInputAction.next,
-                              keyboardType: TextInputType.name,
-                              validator: FormBuilderValidators.compose([
-                                FormBuilderValidators.required(
-                                  context,
-                                  errorText: "Password is required.",
-                                ),
-                              ]),
-                              decoration: customTheme.input_decoration_2(
-                                  labelText: "Password",
-                                  hintText:
-                                      "Password the employee will use to login ")),
-                          FxDashedDivider(
-                            color: Colors.grey.shade300,
-                          ),
-                          Container(
-                            padding: EdgeInsets.only(
-                              left: 0,
-                              top: 5,
-                              right: 0,
-                            ),
-                            child: Column(
-                              children: [
-                                FormBuilderTextField(
-                                    name: "description",
-                                    minLines: 5,
-                                    maxLines: 6,
-                                    textInputAction: TextInputAction.newline,
-                                    keyboardType: TextInputType.multiline,
-                                    validator: FormBuilderValidators.compose([
-                                      FormBuilderValidators.required(
-                                        context,
-                                        errorText:
-                                            "about the employee is required.",
-                                      ),
-                                      FormBuilderValidators.minLength(
-                                        context,
-                                        5,
-                                        errorText: "About too short.",
-                                      ),
-                                    ]),
-                                    decoration: customTheme.input_decoration_2(
-                                        labelText: "Worker's details",
-                                        hintText:
-                                            "Write something about this worker")),
-                              ],
-                            ),
-                          ),
-                          FxDashedDivider(
-                            color: Colors.grey.shade300,
-                          ),
-                          Container(
-                            padding: EdgeInsets.only(top: 10, bottom: 10),
-                            color: Colors.white,
-                            child: Text("Add photo of this worker."),
-                          ),
-                        ],
-                      ),
-                    );
-                  },
-                  childCount: 1, // 1000 list items
-                ),
-              ),
-              SliverGrid(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3,
-                  mainAxisSpacing: 0,
-                  crossAxisSpacing: 0,
-                  childAspectRatio: 1,
-                ),
-                delegate: SliverChildBuilderDelegate(
-                  (context, index) {
-                    return single_image_picker(
-                        index, photos_picked[index].toString(), context);
-                  },
-                  childCount: photos_picked.length,
-                ),
-              ),
-              SliverList(
-                delegate: SliverChildBuilderDelegate(
-                  (BuildContext context, int index) {
-                    return Container(
-                      padding: EdgeInsets.only(bottom: 20),
-                      child: Column(
-                        children: [
-                          Container(
-                            padding: EdgeInsets.only(
-                              left: 20,
-                              top: 20,
-                              right: 20,
-                            ),
-                            child: (is_uploading)
-                                ? CircularProgressIndicator(
-                                    color: CustomTheme.primary,
-                                    strokeWidth: 2,
-                                  )
-                                : FxButton.block(
-                                    borderRadiusAll: 8,
-                                    onPressed: () {
-                                      do_upload_process();
-                                    },
-                                    backgroundColor: CustomTheme.primary,
-                                    child: FxText.l1(
-                                      "SUBMIT",
-                                      fontSize: 20,
-                                      color: customTheme.cookifyOnPrimary,
-                                    )),
-                          ),
-                        ],
-                      ),
-                    );
-                  },
-                  childCount: 1, // 1000 list items
-                ),
-              ),
-            ],
-          ),
+          child:  LoggedInScreen(),
         ),
       );
     });
@@ -293,7 +122,7 @@ class WorkerCreateScreenState extends State<WorkerCreateScreen> {
         ? InkWell(
             onTap: () => {_show_bottom_sheet_photo(context)},
             child: Container(
-                margin: EdgeInsets.only(left: 20),
+                margin: EdgeInsets.all(5),
                 decoration: BoxDecoration(
                   border: Border.all(
                       color: CustomTheme.primary,
@@ -352,8 +181,8 @@ class WorkerCreateScreenState extends State<WorkerCreateScreen> {
 
   List<FormItemModel> form_data_to_upload = [];
 
-  String garden_id = "";
-  String garden_text = "";
+  String category_text = "";
+  String category_id = "";
   String location_sub_name = "";
   String location_id = "";
   bool is_uploading = false;
@@ -374,16 +203,13 @@ class WorkerCreateScreenState extends State<WorkerCreateScreen> {
     }
   }
 
-  String pest_id = "";
-  String pest_text = "";
-
   List<PestModel> pests = [];
 
-  Future<void> pick_a_pest() async {
-    if (pests.isEmpty) {
-      pests = await PestModel.get_items();
+  Future<void> pick_category() async {
+    if (categories.isEmpty) {
+      categories = await CropCategory.get_items();
     }
-    if (pests.isEmpty) {
+    if (categories.isEmpty) {
       Utils.showSnackBar(
           "Please connect to internet and try again.", context, Colors.white,
           background_color: Colors.red);
@@ -392,62 +218,27 @@ class WorkerCreateScreenState extends State<WorkerCreateScreen> {
 
     List<OptionPickerModel> local_items = [];
 
-    pests.forEach((element) {
-      OptionPickerModel item = new OptionPickerModel();
-      item.parent_id = "1";
-      item.id = element.id.toString();
-      item.name = element.name.toString();
-      local_items.add(item);
-    });
-
-    final result = await Navigator.push(
-      context,
-      MaterialPageRoute(
-          builder: (context) =>
-              SingleOptionPicker("Select a pest", local_items)),
-    );
-
-    if (result != null) {
-      if ((result['id'] != null) && (result['text'] != null)) {
-        pest_id = result['id'];
-        pest_text = result['text'];
-        setState(() {});
+    categories.forEach((element) {
+      if (element.parent < 1) {
+        OptionPickerModel item = new OptionPickerModel();
+        item.parent_id = "1";
+        item.id = element.id.toString();
+        item.name = element.name.toString();
+        local_items.add(item);
       }
-    }
-  }
-
-  Future<void> pick_a_garden() async {
-    if (gardens.isEmpty) {
-      gardens = await GardenModel.get_items();
-    }
-    if (gardens.isEmpty) {
-      Utils.showSnackBar(
-          "Please connect to internet and try again.", context, Colors.white,
-          background_color: Colors.red);
-      return;
-    }
-
-    List<OptionPickerModel> local_items = [];
-
-    gardens.forEach((element) {
-      OptionPickerModel item = new OptionPickerModel();
-      item.parent_id = "1";
-      item.id = element.id.toString();
-      item.name = element.name.toString();
-      local_items.add(item);
     });
 
     final result = await Navigator.push(
       context,
       MaterialPageRoute(
           builder: (context) =>
-              SingleOptionPicker("Select a farm", local_items)),
+              SingleOptionPicker("Select a category", local_items)),
     );
 
     if (result != null) {
       if ((result['id'] != null) && (result['text'] != null)) {
-        garden_id = result['id'];
-        garden_text = result['text'];
+        category_id = result['id'];
+        category_text = result['text'];
         setState(() {});
       }
     }
@@ -464,8 +255,6 @@ class WorkerCreateScreenState extends State<WorkerCreateScreen> {
       return;
     }
 
-
-
     Map<String, dynamic> form_data_map = {};
     form_data_to_upload.clear();
     form_data_to_upload = await FormItemModel.get_all();
@@ -477,25 +266,43 @@ class WorkerCreateScreenState extends State<WorkerCreateScreen> {
       return;
     }
 
-    form_data_map['owner_id'] = userModel.id;
-
-    form_data_map["about"] =
+    form_data_map['user_id'] = userModel.id;
+    form_data_map["question"] =
         _formKey.currentState?.fields['description']?.value;
 
-    form_data_map["phone_number"] =
-        _formKey.currentState?.fields['phone']?.value;
+    if (category_id.isEmpty) {
+      Utils.showSnackBar("Please pick a garden.", context, Colors.white,
+          background_color: Colors.red);
+      return;
+    }
 
-    form_data_map["password"] =
-        _formKey.currentState?.fields['password']?.value;
+    if (photos_picked.isEmpty) {
+      Utils.showSnackBar("Add at least one photo.", context, Colors.white,
+          background_color: Colors.red);
+      return;
+    }
 
-    form_data_map["name"] =
-        _formKey.currentState?.fields['name']?.value;
+    form_data_map['category_id'] = category_id;
 
+    bool first_found = false;
 
+    if (!photos_picked.isEmpty) {
+      for (int __counter = 0; __counter < photos_picked.length; __counter++) {
+        if (first_found) {
+          try {
+            var img = await MultipartFile.fromFile(photos_picked[__counter],
+                filename: 'image_${__counter}');
+            if (img != null) {
+              form_data_map['image_${__counter}'] =
+                  await MultipartFile.fromFile(photos_picked[__counter],
+                      filename: photos_picked[__counter].toString());
+            } else {}
+          } catch (e) {}
+        }
+        first_found = true;
+      }
+    }
 
-    setState(() {
-      is_uploading = true;
-    });
     var formData = FormData.fromMap(form_data_map);
     var dio = Dio();
     (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
@@ -505,9 +312,12 @@ class WorkerCreateScreenState extends State<WorkerCreateScreen> {
       return client;
     };
 
+    setState(() {
+      is_uploading = true;
+    });
 
     var response =
-        await dio.post('${AppConfig.BASE_URL}/api/workers', data: formData);
+        await dio.post('${AppConfig.BASE_URL}/api/questions', data: formData);
 
     setState(() {
       is_uploading = false;
@@ -535,6 +345,7 @@ class WorkerCreateScreenState extends State<WorkerCreateScreen> {
           response.data['message'].toString(), context, Colors.white,
           background_color: Colors.green.shade700);
     }
+
     Navigator.pop(context, {"task": 'success'});
   }
 
@@ -580,7 +391,7 @@ class WorkerCreateScreenState extends State<WorkerCreateScreen> {
 
   do_pick_image_from_camera() async {
     Navigator.pop(context);
-    if (photos_picked.length > 2) {
+    if (photos_picked.length > 15) {
       Utils.showSnackBar('Too many photos.', context, Colors.red.shade700);
       return;
     }
@@ -590,7 +401,7 @@ class WorkerCreateScreenState extends State<WorkerCreateScreen> {
         await _picker.pickImage(source: ImageSource.camera, imageQuality: 100);
 
     if (pic != null) {
-      if (photos_picked.length < 2) {
+      if (photos_picked.length < 16) {
         photos_picked.add(pic.path);
       }
     }
@@ -606,7 +417,7 @@ class WorkerCreateScreenState extends State<WorkerCreateScreen> {
       if (element.path == null) {
         return;
       }
-      if (photos_picked.length < 2) {
+      if (photos_picked.length < 16) {
         photos_picked.add(element.path);
       }
       // /data/user/0/jotrace.com/cache/image_picker3734385312125071389.jpg
@@ -628,10 +439,11 @@ class WorkerCreateScreenState extends State<WorkerCreateScreen> {
     }
   }
 
-  List<GardenModel> gardens = [];
+  List<CropCategory> categories = [];
 
   void my_init() async {
-    gardens = await GardenModel.get_items();
+
+    categories = await CropCategory.get_items();
     pests = await PestModel.get_items();
   }
 }

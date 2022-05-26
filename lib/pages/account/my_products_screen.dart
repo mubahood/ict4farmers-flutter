@@ -95,14 +95,19 @@ class MyProductsScreenState extends State<MyProductsScreen> {
                   elevation: 5,
                 ),
           appBar: AppBar(
+            iconTheme: IconThemeData(
+              color: Colors.white, // <= You can change your color here.
+            ),
+            backgroundColor: CustomTheme.primary,
             systemOverlayStyle: SystemUiOverlayStyle(
-              statusBarColor: Colors.white,
-              statusBarIconBrightness: Brightness.dark,
+              statusBarColor: CustomTheme.primary,
+              statusBarIconBrightness: Brightness.light,
               // For Android (dark icons)
               statusBarBrightness: Brightness.light, // For iOS (dark icons)
             ),
             elevation: 1,
             title: Row(
+
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
@@ -112,7 +117,7 @@ class MyProductsScreenState extends State<MyProductsScreen> {
                     children: [
                       Text(
                         title,
-                        style: TextStyle(color: Colors.black),
+                        style: TextStyle(color: Colors.white),
                       ),
                     ],
                   ),
@@ -160,8 +165,11 @@ class MyProductsScreenState extends State<MyProductsScreen> {
   }
 
   Future<Null> _do_refresh() async {
+    Utils.ini_theme();
     return await _onRefresh(context);
   }
+
+
 
   open_add_product(BuildContext context) async {
     final result = await Navigator.push(
@@ -212,14 +220,14 @@ class MyProductsScreenState extends State<MyProductsScreen> {
                   children: [
                     FxText(
                       item.name,
-                      maxLines: 1,
+                      maxLines: 2,
                       fontSize: 18,
                       textAlign: TextAlign.start,
                       color: Colors.black,
                       overflow: TextOverflow.ellipsis,
                     ),
                     FxText(
-                      "Seen by 42",
+                      "Price: UGX ${item.price}",
                       maxLines: 1,
                       fontSize: 14,
                       color: Colors.grey.shade600,
@@ -227,21 +235,14 @@ class MyProductsScreenState extends State<MyProductsScreen> {
                       overflow: TextOverflow.ellipsis,
                     ),
                     FxText(
-                      "Liked by 42",
+                      "Posted: UGX ${item.created_at}",
                       maxLines: 1,
                       fontSize: 14,
                       color: Colors.grey.shade600,
                       textAlign: TextAlign.start,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    FxText(
-                      "Posted by ${item.created_at}",
-                      maxLines: 1,
-                      fontSize: 14,
-                      color: Colors.grey.shade600,
-                      textAlign: TextAlign.start,
-                      overflow: TextOverflow.ellipsis,
-                    ),
+
                   ],
                 ),
               ),

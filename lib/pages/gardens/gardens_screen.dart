@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:ict4farmers/models/GardenModel.dart';
 
 import '../../models/UserModel.dart';
@@ -17,7 +18,7 @@ class GardensScreen extends StatefulWidget {
 
 class GardensScreenState extends State<GardensScreen> {
   late ThemeData theme;
-  String title = "My gardens";
+  String title = "My enterprises";
 
   GardensScreenState();
 
@@ -77,6 +78,13 @@ class GardensScreenState extends State<GardensScreen> {
               SliverAppBar(
                   iconTheme: IconThemeData(
                     color: Colors.white, // <= You can change your color here.
+                  ),
+                  systemOverlayStyle: SystemUiOverlayStyle(
+                    statusBarColor: CustomTheme.primary,
+                    statusBarIconBrightness: Brightness.light,
+                    // For Android (dark icons)
+                    statusBarBrightness:
+                        Brightness.light, // For iOS (dark icons)
                   ),
                   titleSpacing: 0,
                   elevation: 0,

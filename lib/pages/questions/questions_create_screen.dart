@@ -586,6 +586,7 @@ class QuestionsCreateScreenState extends State<QuestionsCreateScreen> {
   List<CropCategory> categories = [];
 
   void my_init() async {
+
     categories = await CropCategory.get_items();
     pests = await PestModel.get_items();
   }

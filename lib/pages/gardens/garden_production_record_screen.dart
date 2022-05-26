@@ -105,7 +105,7 @@ class GardenProductionRecordScreenState
               SliverList(
                 delegate: SliverChildBuilderDelegate(
                   (BuildContext context, int index) {
-                    return _widget_overview();
+                    return _widget_garden_activity_ui(gardenProductionModel);
                   },
                   childCount: 1, // 1000 list items
                 ),
@@ -176,81 +176,101 @@ class GardenProductionRecordScreenState
     );
   }
 
-  Widget _widget_garden_activity_ui(GardenActivityModel m) {
-    return FxContainer(
-        color: Colors.white,
-        padding: EdgeInsets.only(top: 0, left: 15, right: 10),
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                    width: (Utils.screen_width(context) / 1.5),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        FxText(
-                          m.name,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          color: Colors.black,
-                          fontWeight: 800,
-                        ),
-                        FxText(
-                          m.due_date,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ],
-                    )),
-                Container(child: activity_status_widget(m)),
-              ],
-            ),
-            Divider(
-              height: 20,
-              thickness: 1,
-            ),
-          ],
-        ));
-  }
 
-  Widget _widget_overview() {
-    return FxContainer(
-        borderRadiusAll: 0,
-        color: CustomTheme.primary,
-        child: Column(
-          children: [
-            Container(
-                margin: EdgeInsets.only(bottom: 20),
-                child: FxText(
-                  gardenProductionModel.garden_name,
-                  color: Colors.white,
-                  fontSize: 45,
-                  fontWeight: 400,
-                )),
-            RichText(
-              text: TextSpan(
-                style: TextStyle(
-                  height: 1.2,
-                  fontSize: 16,
-                ),
-                children: <TextSpan>[
-                  TextSpan(
-                      text: 'Description\n',
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 25)),
-                  TextSpan(
-                    text: '${gardenProductionModel.description}, ',
-                    style:
-                        TextStyle(fontWeight: FontWeight.normal, fontSize: 18),
+
+  Widget _widget_garden_activity_ui(GardenProductionModel m) {
+    return InkWell(
+      onTap: () => {
+        Utils.navigate_to(AppConfig.GardenProductionRecordScreen, context,
+            data: {
+              'id': m.id.toString(),
+            })
+      },
+      child: FxCard(
+          color: Colors.white,
+          padding: EdgeInsets.only(top: 10, left: 10, right: 10, bottom: 10),
+          margin: EdgeInsets.only(top: 10, left: 10, right: 10),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  FxText(
+                    "${Utils.to_date_1(m.created_at.toString())}",
+                    maxLines: 1,
+                    fontSize: 14,
+                    fontWeight: 700,
+                    color: Colors.black,
+                    textAlign: TextAlign.right,
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ],
               ),
-            ),
-          ],
-          crossAxisAlignment: CrossAxisAlignment.start,
-        ));
+              SizedBox(
+                height: 5,
+              ),
+              FxText(
+                m.description,
+                height: 1.2,
+                maxLines: 50,
+                overflow: TextOverflow.ellipsis,
+              ),
+              SizedBox(
+                height: 2,
+              ),
+              Divider(),
+              SizedBox(
+                height: 2,
+              ),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.person,
+                          size: 18,
+                        ),
+                        FxText(
+                          "${m.garden_name.toString()}",
+                          maxLines: 1,
+                          fontSize: 14,
+                          fontWeight: 700,
+                          color: Colors.grey.shade700,
+                          textAlign: TextAlign.right,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.category_outlined,
+                          size: 18,
+                        ),
+                        FxText(
+                          "${m.garden_name.toString()}",
+                          maxLines: 1,
+                          fontSize: 14,
+                          fontWeight: 700,
+                          color: Colors.grey.shade700,
+                          textAlign: TextAlign.right,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          )),
+    );
   }
 
   Widget my_rich_text(String t, String s, Color c) {

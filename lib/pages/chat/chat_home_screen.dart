@@ -70,9 +70,13 @@ class _ChatHomeScreenState extends State<ChatHomeScreen> {
           theme: theme,
           home: Scaffold(
             appBar: AppBar(
+              iconTheme: IconThemeData(
+                color: Colors.white, // <= You can change your color here.
+              ),
+              backgroundColor: CustomTheme.primary,
               systemOverlayStyle: SystemUiOverlayStyle(
-                statusBarColor: Colors.white,
-                statusBarIconBrightness: Brightness.dark,
+                statusBarColor: CustomTheme.primary,
+                statusBarIconBrightness: Brightness.light,
                 // For Android (dark icons)
                 statusBarBrightness: Brightness.light, // For iOS (dark icons)
               ),
@@ -84,7 +88,7 @@ class _ChatHomeScreenState extends State<ChatHomeScreen> {
                   Container(
                     child: Text(
                       "My Chats",
-                      style: TextStyle(color: Colors.black),
+                      style: TextStyle(color: Colors.white),
                     ),
                   ),
                   InkWell(

@@ -57,15 +57,19 @@ class _ItemPickerScreen extends State<ItemPickerScreen> {
         builder: (BuildContext context, AppNotifier value, Widget? child) {
       return Scaffold(
         appBar: AppBar(
+          backgroundColor: CustomTheme.primary,
+          iconTheme: IconThemeData(
+            color: Colors.white, // <= You can change your color here.
+          ),
           systemOverlayStyle: SystemUiOverlayStyle(
-            statusBarColor: Colors.white,
-            statusBarIconBrightness: Brightness.dark,
+            statusBarColor: CustomTheme.primary,
+            statusBarIconBrightness: Brightness.light,
             statusBarBrightness: Brightness.light, // For iOS (dark icons)
           ),
           elevation: .5,
           title: Text(
             title,
-            style: TextStyle(color: Colors.black),
+            style: TextStyle(color: Colors.white),
           ),
         ),
         body: SafeArea(

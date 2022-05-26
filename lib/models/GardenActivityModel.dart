@@ -102,10 +102,10 @@ class GardenActivityModel {
   int get_status() {
     int status = 0;
     if (this.is_done) {
-      if (this.done_status.toString() == "1") {
-        status = 4;
-      } else {
+      if (this.done_status) {
         status = 5;
+      } else {
+        status = 4;
       }
     } else {
       if (this.is_missing()) {

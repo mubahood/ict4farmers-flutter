@@ -50,11 +50,12 @@ class ProductAddFormState extends State<ProductAddForm> {
         builder: (BuildContext context, AppNotifier value, Widget? child) {
           return Scaffold(
             appBar: AppBar(
+              backgroundColor: CustomTheme.primary,
               automaticallyImplyLeading: false,
               // remove back button in appbar.
               systemOverlayStyle: SystemUiOverlayStyle(
-                statusBarColor: Colors.white,
-                statusBarIconBrightness: Brightness.dark,
+                statusBarColor: CustomTheme.primary,
+                statusBarIconBrightness: Brightness.light,
                 // For Android (dark icons)
                 statusBarBrightness: Brightness.light, // For iOS (dark icons)
               ),
@@ -71,6 +72,7 @@ class ProductAddFormState extends State<ProductAddForm> {
                         padding: FxSpacing.x(0),
                         child: Icon(
                           CupertinoIcons.clear,
+                          color: Colors.white,
                           size: 30,
                         )),
                   ),
@@ -81,7 +83,7 @@ class ProductAddFormState extends State<ProductAddForm> {
                       children: [
                         FxText(
                           'Sell an item',
-                          color: Colors.black,
+                          color: Colors.white,
                           fontSize: 24,
                           fontWeight: 500,
                         ),

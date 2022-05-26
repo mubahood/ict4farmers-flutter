@@ -4,30 +4,34 @@ import 'package:flutx/flutx.dart';
 import 'package:flutx/widgets/text/text.dart';
 import 'package:ict4farmers/widget/loading_widget.dart';
 
-import '../../models/GardenActivityModel.dart';
 import '../../models/GardenModel.dart';
+import '../../models/GardenProductionModel.dart';
 import '../../models/UserModel.dart';
+import '../../models/option_picker_model.dart';
 import '../../theme/app_theme.dart';
 import '../../utils/AppConfig.dart';
 import '../../utils/Utils.dart';
+import '../option_pickers/single_option_picker.dart';
 
-class GardenActivitiesScreen extends StatefulWidget {
+class GardenProductionRecordsScreen extends StatefulWidget {
   dynamic params;
 
-  GardenActivitiesScreen(this.params);
+  GardenProductionRecordsScreen(this.params);
 
   @override
-  GardenActivitiesScreenState createState() => GardenActivitiesScreenState();
+  GardenProductionRecordsScreenState createState() =>
+      GardenProductionRecordsScreenState();
 }
 
-class GardenActivitiesScreenState extends State<GardenActivitiesScreen> {
+class GardenProductionRecordsScreenState
+    extends State<GardenProductionRecordsScreen> {
   late ThemeData theme;
   int id = 0;
   bool is_filtered = false;
   bool is_loading = true;
   GardenModel gardenModel = new GardenModel();
 
-  GardenActivitiesScreenState();
+  GardenProductionRecordsScreenState();
 
   @override
   void initState() {
@@ -37,7 +41,7 @@ class GardenActivitiesScreenState extends State<GardenActivitiesScreen> {
     my_init();
   }
 
-  List<GardenActivityModel> activities = [];
+  List<GardenProductionModel> activities = [];
   List<int> loaded_items = [];
 
   Future<void> my_init() async {
@@ -56,13 +60,19 @@ class GardenActivitiesScreenState extends State<GardenActivitiesScreen> {
       return;
     }
 
-    if (widget.params != null) {
-      if (widget.params['id'] != null) {
-        id = Utils.int_parse(widget.params['id'].toString());
+    if (id < 1) {
+      if (widget.params != null) {
+        if (widget.params['id'] != null) {
+          id = Utils.int_parse(widget.params['id'].toString());
+        }
       }
     }
+
     if (id < 1) {
       is_filtered = false;
+      setState(() {});
+    }else{
+      is_filtered = true;
       setState(() {});
     }
 
@@ -71,7 +81,8 @@ class GardenActivitiesScreenState extends State<GardenActivitiesScreen> {
       gardenModel = e;
     });
 
-    List<GardenActivityModel> temp_acts = await GardenActivityModel.get_items();
+    List<GardenProductionModel> temp_acts =
+        await GardenProductionModel.get_items();
 
     temp_acts.forEach((element) {
       if (!loaded_items.contains(element.id)) {
@@ -89,6 +100,7 @@ class GardenActivitiesScreenState extends State<GardenActivitiesScreen> {
 
     is_loading = false;
     is_logged_in = true;
+    gardens = await GardenModel.get_items();
     setState(() {});
   }
 
@@ -105,8 +117,9 @@ class GardenActivitiesScreenState extends State<GardenActivitiesScreen> {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Utils.navigate_to(AppConfig.GardenActivityCreateScreen, context,
-              data: {'garden_id': id});
+
+          Utils.navigate_to(AppConfig.GardenProductionRecordCreateScreen, context,
+              data: {'id': id});
         },
         backgroundColor: CustomTheme.primary,
         child: Icon(Icons.add),
@@ -125,7 +138,7 @@ class GardenActivitiesScreenState extends State<GardenActivitiesScreen> {
                   titleSpacing: 0,
                   elevation: 0,
                   title: FxText(
-                    'Production Activities',
+                    'Production records',
                     color: Colors.white,
                     fontSize: 22,
                     fontWeight: 500,
@@ -174,7 +187,7 @@ class GardenActivitiesScreenState extends State<GardenActivitiesScreen> {
     );
   }
 
-  void _show_details_bottom_sheet(context, GardenActivityModel m) {
+  void _show_details_bottom_sheet(context, GardenProductionModel m) {
     showModalBottomSheet(
         isScrollControlled: true,
         context: context,
@@ -193,7 +206,7 @@ class GardenActivitiesScreenState extends State<GardenActivitiesScreen> {
   }
 
   Widget _details_bottom_sheet_content(
-      BuildContext context, GardenActivityModel m) {
+      BuildContext context, GardenProductionModel m) {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -206,15 +219,15 @@ class GardenActivitiesScreenState extends State<GardenActivitiesScreen> {
             color: Colors.black,
           ),
           FxText(
-            "${m.name}",
+            "${m.description}",
             maxLines: 5,
             textAlign: TextAlign.start,
           ),
           Divider(),
           _widget_single_item('Enterprise', gardenModel.name),
-          _widget_single_item('Assigned to', m.person_responsible_name),
+          _widget_single_item('Assigned to', m.description),
           _widget_single_item(
-              'Due date', '${Utils.to_date_1(m.due_date.toString())}'),
+              'Due date', '${Utils.to_date_1(m.created_at.toString())}'),
           Container(
             padding: EdgeInsets.only(left: 0, right: 0, bottom: 5),
             child: Row(
@@ -242,9 +255,9 @@ class GardenActivitiesScreenState extends State<GardenActivitiesScreen> {
             ),
             child: Column(
               children: [
-
-                (m.is_done)? Container(
-                  width: double.infinity,
+                (false)
+                    ? Container(
+                        width: double.infinity,
                         child: Expanded(
                             child: FxButton(
                           elevation: 0,
@@ -255,7 +268,7 @@ class GardenActivitiesScreenState extends State<GardenActivitiesScreen> {
                             Utils.navigate_to(
                                 AppConfig.GardenProductionRecordScreen, context,
                                 data: {
-                                  'id': m.garden_production_record_id,
+                                  'id': m.id,
                                 });
                           },
                           child: FxText.b1(
@@ -282,7 +295,7 @@ class GardenActivitiesScreenState extends State<GardenActivitiesScreen> {
                                 data: {
                                   'activity_id': m.id.toString(),
                                   'garden_id': m.garden_id.toString(),
-                                  'activity_text': m.name,
+                                  'activity_text': m.id,
                                   'enterprise_text': '${gardenModel.name}',
                                 });
                           },
@@ -296,7 +309,7 @@ class GardenActivitiesScreenState extends State<GardenActivitiesScreen> {
                           backgroundColor: CustomTheme.primary,
                         )),
                       ),
-                (!m.is_done)
+                (false)
                     ? Container(
                         margin: EdgeInsets.only(top: 10),
                         width: double.infinity,
@@ -329,39 +342,94 @@ class GardenActivitiesScreenState extends State<GardenActivitiesScreen> {
     );
   }
 
-  Widget _widget_garden_activity_ui(GardenActivityModel m) {
+  Widget _widget_garden_activity_ui(GardenProductionModel m) {
     return InkWell(
-      onTap: () => {_show_details_bottom_sheet(context, m)},
+      onTap: () => {
+        Utils.navigate_to(AppConfig.GardenProductionRecordScreen, context,
+            data: {
+              'id': m.id.toString(),
+            })
+      },
       child: FxCard(
           color: Colors.white,
           padding: EdgeInsets.only(top: 10, left: 10, right: 10, bottom: 10),
           margin: EdgeInsets.only(top: 10, left: 10, right: 10),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  FxText(
+                    "${Utils.to_date_1(m.created_at.toString())}",
+                    maxLines: 1,
+                    fontSize: 14,
+                    fontWeight: 700,
+                    color: Colors.black,
+                    textAlign: TextAlign.right,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 5,
+              ),
+              FxText(
+                m.description,
+                maxLines: 3,
+                height: 1.2,
+                overflow: TextOverflow.ellipsis,
+              ),
+              SizedBox(
+                height: 2,
+              ),
+              Divider(),
+              SizedBox(
+                height: 2,
+              ),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Container(
-                      width: (Utils.screen_width(context) / 1.6),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          FxText(
-                            m.name,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            color: Colors.black,
-                            fontWeight: 800,
-                          ),
-                          FxText(
-                            "Submit before: ${Utils.to_date_1(m.due_date.toString())}",
-                            maxLines: 1,
-                            fontSize: 14,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ],
-                      )),
-                  Container(child: activity_status_widget(m)),
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.person,
+                          size: 18,
+                        ),
+                        FxText(
+                          "${m.garden_name.toString()}",
+                          maxLines: 1,
+                          fontSize: 14,
+                          fontWeight: 700,
+                          color: Colors.grey.shade700,
+                          textAlign: TextAlign.right,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.category_outlined,
+                          size: 18,
+                        ),
+                        FxText(
+                          "${m.garden_name.toString()}",
+                          maxLines: 1,
+                          fontSize: 14,
+                          fontWeight: 700,
+                          color: Colors.grey.shade700,
+                          textAlign: TextAlign.right,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ],
+                    ),
+                  ),
                 ],
               ),
             ],
@@ -389,8 +457,8 @@ class GardenActivitiesScreenState extends State<GardenActivitiesScreen> {
     );
   }
 
-  activity_status_widget(GardenActivityModel m) {
-    int status = m.get_status();
+  activity_status_widget(GardenProductionModel m) {
+    int status = 1;
 
     return (status == 5)
         ? Column(
@@ -467,8 +535,6 @@ class GardenActivitiesScreenState extends State<GardenActivitiesScreen> {
         color: CustomTheme.primary,
         child: Column(
           children: [
-
-
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -478,11 +544,12 @@ class GardenActivitiesScreenState extends State<GardenActivitiesScreen> {
                     Container(
                         margin: EdgeInsets.only(bottom: 20),
                         child: FxText(
-                          (is_filtered) ? gardenModel.name : "All activities",
+                          (is_filtered) ? gardenModel.name : "All records",
                           color: Colors.white,
                           fontSize: 45,
                           fontWeight: 400,
                         )),
+
                   ],
                 ),
                 (is_filtered)
@@ -509,6 +576,34 @@ class GardenActivitiesScreenState extends State<GardenActivitiesScreen> {
                     : SizedBox(),
               ],
             ),
+
+            InkWell(
+              onTap: () => {pick_a_garden()},
+              child: FxCard(
+                  width: 120,
+                  padding: EdgeInsets.only(
+                      left: 15, top: 10, bottom: 10, right: 15),
+                  color: Colors.white,
+                  splashColor: CustomTheme.primary.withAlpha(40),
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.filter_alt,
+                        size: 20,
+                        color: CustomTheme.accent,
+                      ),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      FxText("Filter",
+                          fontSize: 16,
+                          fontWeight: 800,
+                          textAlign: TextAlign.center,
+                          color: CustomTheme.primaryDark),
+                    ],
+                  )),
+            ),
+
           ],
           crossAxisAlignment: CrossAxisAlignment.start,
         ));
@@ -538,19 +633,60 @@ class GardenActivitiesScreenState extends State<GardenActivitiesScreen> {
     );
   }
 
-  void do_delete(GardenActivityModel m) async {
-    if (m.is_generated) {
+  void do_delete(GardenProductionModel m) async {
+    if (true) {
       Utils.showSnackBar(
           "You cannot delete a generated activity.", context, Colors.white);
       return;
     }
     Utils.showSnackBar("Deleting...", context, Colors.white,
         background_color: Colors.red.shade800);
-    String data = await Utils.http_delete('api/garden-activities', {'id': m.id.toString()});
+    String data = await Utils.http_delete(
+        'api/garden-activities', {'id': m.id.toString()});
     print(data);
-    await GardenActivityModel.get_items();
+    await GardenProductionModel.get_items();
     Utils.showSnackBar("Deleted", context, Colors.white);
     my_init();
+  }
+
+  List<GardenModel> gardens = [];
+
+  Future<void> pick_a_garden() async {
+    if (gardens.isEmpty) {
+      gardens = await GardenModel.get_items();
+    }
+    if (gardens.isEmpty) {
+      Utils.showSnackBar(
+          "Please connect to internet and try again.", context, Colors.white,
+          background_color: Colors.red);
+      return;
+    }
+
+    List<OptionPickerModel> local_items = [];
+
+    gardens.forEach((element) {
+      OptionPickerModel item = new OptionPickerModel();
+      item.parent_id = "1";
+      item.id = element.id.toString();
+      item.name = element.name.toString();
+      local_items.add(item);
+    });
+
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) =>
+              SingleOptionPicker("Select an enterprise", local_items)),
+    );
+
+    if (result != null) {
+      if ((result['id'] != null) && (result['text'] != null)) {
+        id = Utils.int_parse(result['id']);
+        widget.params = {id: id.toString()};
+        my_init();
+        setState(() {});
+      }
+    }
   }
 }
 

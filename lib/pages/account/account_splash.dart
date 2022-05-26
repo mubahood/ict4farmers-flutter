@@ -59,7 +59,7 @@ class AaccountSplashState extends State<AccountSplash> {
           body: (is_loading)
               ? ShimmerListLoadingWidget()
               : (is_logged_in)
-                  ? LoggedInScreen(theme, context)
+                  ? LoggedInScreen()
                   : not_logged_screen(context),
         ),
       );

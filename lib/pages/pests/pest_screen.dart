@@ -8,6 +8,7 @@ import 'package:ict4farmers/models/PestModel.dart';
 import '../../theme/app_theme.dart';
 import '../../utils/AppConfig.dart';
 import '../../utils/Utils.dart';
+import '../../widget/my_widgets.dart';
 import '../../widget/shimmer_loading_widget.dart';
 
 class PestScreen extends StatefulWidget {
@@ -67,15 +68,7 @@ class PestScreenState extends State<PestScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Utils.navigate_to(AppConfig.PestCaseCreateScreen, context);
-        },
-        backgroundColor: CustomTheme.primary,
-        tooltip: 'Report a case',
-        child: Icon(Icons.add),
-        elevation: 5,
-      ),
+      floatingActionButton: extended_floating_button(context,title: 'Report a pest case',screen: AppConfig.PestCaseCreateScreen ),
       body: RefreshIndicator(
           color: CustomTheme.primary,
           backgroundColor: Colors.white,

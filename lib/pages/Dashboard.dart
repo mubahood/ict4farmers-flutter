@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutx/flutx.dart';
 import 'package:flutx/utils/spacing.dart';
 import 'package:flutx/widgets/container/container.dart';
@@ -57,12 +58,13 @@ class DashboardState extends State<Dashboard> {
   }
 
   Future<void> my_init() async {
-
     loggedUser = await Utils.get_logged_in();
     if (loggedUser.id < 1) {
-      return;
+      is_logged_in = false;
+    } else {
+      is_logged_in = true;
     }
-    is_logged_in = true;
+
     setState(() {});
     Utils.ini_theme();
   }
@@ -84,7 +86,7 @@ class DashboardState extends State<Dashboard> {
     sub_menu_items.add(i1);
 
     MenuItemModel i2 = new MenuItemModel(
-        'My Records', "1.png", AppConfig.GardenActivitiesScreen, true);
+        'My Records', "1.png", AppConfig.GardenProductionRecordsScreen, true);
     i2.icon = Icons.assignment;
     sub_menu_items.add(i2);
 
@@ -94,7 +96,7 @@ class DashboardState extends State<Dashboard> {
     sub_menu_items.add(i3);
 
     MenuItemModel i4 =
-        new MenuItemModel('My Chats', "1.png", AppConfig.ComingSoon, true);
+        new MenuItemModel('My Chats', "1.png", AppConfig.ChatHomeScreen, true);
     i4.icon = Icons.forum;
     sub_menu_items.add(i4);
 
@@ -124,7 +126,11 @@ class DashboardState extends State<Dashboard> {
             backgroundColor: CustomTheme.primary,
             elevation: 20,
             onPressed: () {
-              Utils.navigate_to(AppConfig.MoreMenuScreen, context);
+              if (is_logged_in) {
+                Utils.navigate_to(AppConfig.MyAccountScreen, context);
+              } else {
+                show_not_account_bottom_sheet(context);
+              }
             },
             label: Row(
               children: [
@@ -147,6 +153,13 @@ class DashboardState extends State<Dashboard> {
               slivers: [
                 SliverAppBar(
                     titleSpacing: 0,
+                    systemOverlayStyle: SystemUiOverlayStyle(
+                      statusBarColor: CustomTheme.primary,
+                      statusBarIconBrightness: Brightness.light,
+                      // For Android (dark icons)
+                      statusBarBrightness:
+                          Brightness.light, // For iOS (dark icons)
+                    ),
                     elevation: 0,
                     pinned: true,
                     toolbarHeight: (Utils.screen_height(context) / 3.0),
@@ -233,7 +246,7 @@ class DashboardState extends State<Dashboard> {
                                         child: FxText(
                                           "Toll Free: ${AppConfig.TOLL_FREE_PHONE_NUMBER}",
                                           fontWeight: 800,
-                                          fontSize: 16,
+                                          fontSize: 15,
                                           color: CustomTheme.primary,
                                         ),
                                       ),
@@ -245,30 +258,42 @@ class DashboardState extends State<Dashboard> {
                               FxContainer.rounded(
                                 paddingAll: 0,
                                 child: is_logged_in
-                                    ? CachedNetworkImage(
-                                        width: 60,
-                                        height: 60,
-                                        fit: BoxFit.cover,
-                                        imageUrl: loggedUser.avatar,
-                                        placeholder: (context, url) =>
-                                            ShimmerLoadingWidget(
-                                          height: 60,
+                                    ? InkWell(
+                                        onTap: () => {
+                                          Utils.navigate_to(
+                                              AppConfig.MyAccountScreen,
+                                              context)
+                                        },
+                                        child: CachedNetworkImage(
                                           width: 60,
-                                        ),
-                                        errorWidget: (context, url, error) =>
-                                            Image(
-                                          image: AssetImage(
-                                              './assets/project/user.png'),
                                           height: 60,
-                                          width: 60,
                                           fit: BoxFit.cover,
+                                          imageUrl: loggedUser.avatar,
+                                          placeholder: (context, url) =>
+                                              ShimmerLoadingWidget(
+                                            height: 60,
+                                            width: 60,
+                                          ),
+                                          errorWidget: (context, url, error) =>
+                                              Image(
+                                            image: AssetImage(
+                                                './assets/project/user.png'),
+                                            height: 60,
+                                            width: 60,
+                                            fit: BoxFit.cover,
+                                          ),
                                         ),
                                       )
-                                    : Image(
-                                        width: 60,
-                                        height: 60,
-                                        image: AssetImage(
-                                            "./assets/project/user.png"),
+                                    : InkWell(
+                                        onTap: () => {
+                                          show_not_account_bottom_sheet(context)
+                                        },
+                                        child: Image(
+                                          width: 60,
+                                          height: 60,
+                                          image: AssetImage(
+                                              "./assets/project/user.png"),
+                                        ),
                                       ),
                               ),
                               /* Container(
@@ -680,7 +705,15 @@ class DashboardState extends State<Dashboard> {
 
   Widget sub_menu_widget(MenuItemModel sub_menu_item) {
     return InkWell(
-      onTap: () => {},
+      onTap: () => {
+        if (sub_menu_item.is_protected)
+          {
+            if (!is_logged_in)
+              {show_not_account_bottom_sheet(context)}
+            else
+              {Utils.navigate_to(sub_menu_item.screen, context)}
+          }
+      },
       child: Column(
         children: [
           FxContainer.rounded(

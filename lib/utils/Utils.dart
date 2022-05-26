@@ -36,13 +36,16 @@ import '../models/FormItemModel.dart';
 import '../models/LocationModel.dart';
 import '../models/PestModel.dart';
 import '../models/PostModel.dart';
+import '../models/QuestionModel.dart';
 import '../pages/account/account_details.dart';
 import '../pages/account/account_edit.dart';
 import '../pages/account/account_login.dart';
+import '../pages/account/my_account_screen.dart';
 import '../pages/account/my_products_screen.dart';
 import '../pages/account/onboarding_widget.dart';
 import '../pages/chat/chat_home_screen.dart';
 import '../pages/forum/create_post_screen.dart';
+import '../pages/gardens/GardenProductionRecordsScreen.dart';
 import '../pages/gardens/financial_records_create_screen.dart';
 import '../pages/gardens/financial_records_screen.dart';
 import '../pages/gardens/garden_activities_screen.dart';
@@ -56,6 +59,7 @@ import '../pages/homes/homes_screen.dart';
 import '../pages/other_pages/MoreMenuScreen1.dart';
 import '../pages/other_pages/PaymentPage.dart';
 import '../pages/other_pages/SuccessPaymentPage.dart';
+import '../pages/other_pages/about_us_screen.dart';
 import '../pages/other_pages/privacy_policy.dart';
 import '../pages/other_pages/sell_fast.dart';
 import '../pages/pests/pest_case_create_screen.dart';
@@ -65,10 +69,12 @@ import '../pages/product_add_form/product_add_form.dart';
 import '../pages/products/product_details.dart';
 import '../pages/products/product_listting.dart';
 import '../pages/products/view_full_images_screen.dart';
+import '../pages/questions/question_screen.dart';
 import '../pages/questions/questions_create_screen.dart';
 import '../pages/questions/questions_screen.dart';
 import '../pages/search/search_screen.dart';
 import 'AppConfig.dart';
+import 'SubmitActivityScreen.dart';
 
 class Utils {
   static void boot_system() async {
@@ -76,6 +82,7 @@ class Utils {
     await GardenModel.get_items();
     await GardenActivityModel.get_items();
     await PestModel.get_items();
+    await QuestionModel.get_items();
   }
 
   static void launchURL(String _url) async {
@@ -170,6 +177,7 @@ class Utils {
     return MediaQuery.of(context).size.width;
   }
 
+
   static Future<String> http_post(
       String path, Map<String, dynamic> body) async {
     bool is_online = await Utils.is_connected();
@@ -191,6 +199,41 @@ class Utils {
     try {
       response = await dio.post(AppConfig.BASE_URL + "/${path}",
           data: da,
+          options: Options(headers: <String, String>{
+            //"user": "${u.id}",
+            "Content-Type": "application/json",
+            "accept": "application/json",
+          }));
+      return jsonEncode(response.data);
+    } catch (e) {
+      print(e);
+      return "";
+    }
+
+    return "";
+  }
+
+  static Future<String> http_delete(
+      String path, Map<String, dynamic> body) async {
+    bool is_online = await Utils.is_connected();
+    if (!is_online) {
+      return "";
+    }
+    Response response;
+    var dio = Dio();
+    (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
+        (HttpClient client) {
+      client.badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
+      return client;
+    };
+
+/*    UserModel u = new UserModel();
+    u = await Utils.get_logged_user();*/
+    var da = FormData.fromMap(body);
+    try {
+      response = await dio.delete(AppConfig.BASE_URL + "/${path}",
+          data: body,
           options: Options(headers: <String, String>{
             //"user": "${u.id}",
             "Content-Type": "application/json",
@@ -311,12 +354,32 @@ class Utils {
         );
         break;
 
-
-        case AppConfig.QuestionsCreateScreen:
+      case AppConfig.AboutUsScreen:
         Navigator.push(
           context,
           PageRouteBuilder(
-            pageBuilder: (context, animation1, animation2) => QuestionsCreateScreen(),
+            pageBuilder: (context, animation1, animation2) => AboutUsScreen(),
+            transitionDuration: Duration.zero,
+          ),
+        );
+        break;
+
+      case AppConfig.MyAccountScreen:
+        Navigator.push(
+          context,
+          PageRouteBuilder(
+            pageBuilder: (context, animation1, animation2) => MyAccountScreen(),
+            transitionDuration: Duration.zero,
+          ),
+        );
+        break;
+
+      case AppConfig.QuestionsCreateScreen:
+        Navigator.push(
+          context,
+          PageRouteBuilder(
+            pageBuilder: (context, animation1, animation2) =>
+                QuestionsCreateScreen(),
             transitionDuration: Duration.zero,
           ),
         );
@@ -332,12 +395,45 @@ class Utils {
         );
         break;
 
+      case AppConfig.GardenProductionRecordsScreen:
+        Navigator.push(
+          context,
+          PageRouteBuilder(
+            pageBuilder: (context, animation1, animation2) =>
+                GardenProductionRecordsScreen(data),
+            transitionDuration: Duration.zero,
+          ),
+        );
+        break;
+
+      case AppConfig.GardenProductionRecordCreateScreen:
+        Navigator.push(
+          context,
+          PageRouteBuilder(
+            pageBuilder: (context, animation1, animation2) =>
+                GardenProductionRecordCreateScreen(data),
+            transitionDuration: Duration.zero,
+          ),
+        );
+        break;
+
       case AppConfig.FinancialRecordsCreateScreen:
         Navigator.push(
           context,
           PageRouteBuilder(
             pageBuilder: (context, animation1, animation2) =>
                 FinancialRecordsCreateScreen(data),
+            transitionDuration: Duration.zero,
+          ),
+        );
+        break;
+
+      case AppConfig.QuestionScreen:
+        Navigator.push(
+          context,
+          PageRouteBuilder(
+            pageBuilder: (context, animation1, animation2) =>
+                QuestionScreen(data),
             transitionDuration: Duration.zero,
           ),
         );
@@ -873,7 +969,26 @@ class Utils {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       statusBarColor: CustomTheme.primary,
       statusBarIconBrightness: Brightness.light,
+      systemNavigationBarColor: CustomTheme.primary
     ));
+  }
+
+  static String number_short(int num) {
+    String num_1= num.toString();
+    String ans = num_1;
+    if(num_1.length<7 ){
+      double x = (num/1000);
+      x.ceil();
+      ans = x.toString();
+      ans = ans+"K";
+    }  else {
+      double x = (num/1000000);
+      x.ceil();
+      ans = x.toString();
+      ans = ans+"M";
+    }
+
+    return ans;
   }
 
 }

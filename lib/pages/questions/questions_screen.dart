@@ -1,14 +1,14 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutx/flutx.dart';
 import 'package:flutx/widgets/text/text.dart';
-import 'package:ict4farmers/models/PestModel.dart';
+import 'package:ict4farmers/models/QuestionModel.dart';
 
+import '../../models/QuestionModel.dart';
 import '../../theme/app_theme.dart';
 import '../../utils/AppConfig.dart';
 import '../../utils/Utils.dart';
-import '../../widget/shimmer_loading_widget.dart';
+import '../../widget/my_widgets.dart';
 
 class QuestionsScreen extends StatefulWidget {
   @override
@@ -28,12 +28,12 @@ class QuestionsScreenState extends State<QuestionsScreen> {
     my_init();
   }
 
-  List<PestModel> items = [];
+  List<QuestionModel> items = [];
 
   Future<void> my_init() async {
     setState(() {});
 
-    items = await PestModel.get_items();
+    items = await QuestionModel.get_items();
 
     setState(() {});
   }
@@ -46,15 +46,8 @@ class QuestionsScreenState extends State<QuestionsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Utils.navigate_to(AppConfig.QuestionsCreateScreen, context);
-        },
-        backgroundColor: CustomTheme.primary,
-        tooltip: 'Ask new case',
-        child: Icon(Icons.add),
-        elevation: 5,
-      ),
+      floatingActionButton: extended_floating_button(context,
+          title: 'Ask a new question', screen: AppConfig.QuestionsCreateScreen),
       body: RefreshIndicator(
           color: CustomTheme.primary,
           backgroundColor: Colors.white,
@@ -68,9 +61,10 @@ class QuestionsScreenState extends State<QuestionsScreen> {
                   titleSpacing: 0,
                   elevation: 0,
                   title: FxText(
-                    'Questions Screen',
+                    'Browse Questions & Answers',
                     color: Colors.white,
-                    fontSize: 22,
+                    maxLines: 1,
+                    fontSize: 20,
                     fontWeight: 500,
                   ),
                   floating: false,
@@ -89,75 +83,113 @@ class QuestionsScreenState extends State<QuestionsScreen> {
     );
   }
 
-  Widget _widget_garden_activity_ui(PestModel m) {
+  Widget _widget_garden_activity_ui(QuestionModel m) {
     return InkWell(
       onTap: () => {
-        Utils.navigate_to(AppConfig.PestScreen, context,
+        Utils.navigate_to(AppConfig.QuestionScreen, context,
             data: {'id': m.id.toString()})
       },
-      child: FxContainer(
+      child: FxCard(
+          margin: EdgeInsets.only(left: 15, right: 15, top: 10),
+          padding: EdgeInsets.only(top: 10, left: 15, right: 15, bottom: 15),
           color: Colors.white,
-          padding: EdgeInsets.only(top: 15, left: 15, right: 15),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                      width: (Utils.screen_width(context) / 1.8),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          FxText(
-                            m.name,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            color: Colors.black,
-                            fontWeight: 800,
-                          ),
-                          FxText(
-                            'NEW CASES: 10',
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          FxText(
-                            'SOLUTIONS: 15',
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          FxText(
-                            'TOO MUCH IN: Lira',
-                            maxLines: 1,
-                            fontSize:
-                                ('TOO MUCH IN: Lira'.length > 21) ? 12 : 16,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ],
-                      )),
-                  ClipRRect(
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
-                      child: CachedNetworkImage(
-                        height: (Utils.screen_width(context) / 3.8),
-                        width: (Utils.screen_width(context) / 2.8),
-                        fit: BoxFit.cover,
-                        imageUrl: m.get_image(),
-                        placeholder: (context, url) => ShimmerLoadingWidget(
-                          height: (Utils.screen_width(context) / 3.8),
-                        ),
-                        errorWidget: (context, url, error) => Image(
-                            image: AssetImage(
-                              './assets/project/no_image.jpg',
-                            ),
-                            fit: BoxFit.cover,
-                            height: (Utils.screen_width(context) / 3.8),
-                            width: (Utils.screen_width(context) / 2.8)),
-                      )),
-                ],
+              Container(
+                padding: EdgeInsets.only(top: 5, bottom: 5),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    FxText.b1(
+                      'Muhindo Mubaraka',
+                      color: Colors.black,
+                      maxLines: 1,
+                      fontWeight: 700,
+                    ),
+                    FxText.b1(
+                      'Open',
+                      color: Colors.green.shade800,
+                      fontWeight: 700,
+                      maxLines: 1,
+                    ),
+                  ],
+                ),
               ),
+              FxText(
+                AppConfig.Lorem1,
+                overflow: TextOverflow.ellipsis,
+                maxLines: 4,
+                height: 1.2,
+                color: Colors.grey.shade600,
+              ),
+              Container(
+                padding: EdgeInsets.only(top: 10, bottom: 5),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    RichText(
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      text: TextSpan(
+                        style: TextStyle(fontSize: 16),
+                        children: <TextSpan>[
+                          TextSpan(
+                              text: 'Category\n',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black)),
+                          TextSpan(
+                              text: 'Computers',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.normal,
+                                  color: Colors.grey.shade600)),
+                        ],
+                      ),
+                    ),
+                    RichText(
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      text: TextSpan(
+                        style: TextStyle(fontSize: 16),
+                        children: <TextSpan>[
+                          TextSpan(
+                              text: 'Replies\n',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black)),
+                          TextSpan(
+                              text: '13',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.normal,
+                                  color: Colors.grey.shade600)),
+                        ],
+                      ),
+                    ),
+                    RichText(
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      text: TextSpan(
+                        style: TextStyle(fontSize: 16),
+                        children: <TextSpan>[
+                          TextSpan(
+                              text: 'Posted\n',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black)),
+                          TextSpan(
+                              text: '13 Minutes ago',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.normal,
+                                  color: Colors.grey.shade600)),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              )
             ],
           )),
     );

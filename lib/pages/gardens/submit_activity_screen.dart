@@ -9,13 +9,12 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutx/flutx.dart';
 import 'package:flutx/utils/spacing.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:ict4farmers/models/PestModel.dart';
 import 'package:ict4farmers/pages/option_pickers/single_option_picker.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 import '../../models/FormItemModel.dart';
+import '../../models/GardenModel.dart';
 import '../../models/UserModel.dart';
 import '../../models/option_picker_model.dart';
 import '../../theme/app_notifier.dart';
@@ -25,26 +24,23 @@ import '../../utils/AppConfig.dart';
 import '../../utils/Utils.dart';
 import '../location_picker/location_main.dart';
 
-class SubmitActivityScreen extends StatefulWidget {
-
+class GardenProductionRecordCreateScreen extends StatefulWidget {
   dynamic params;
 
-  SubmitActivityScreen(this.params);
+  GardenProductionRecordCreateScreen(this.params);
 
   @override
-  State<SubmitActivityScreen> createState() => SubmitActivityScreenState();
+  State<GardenProductionRecordCreateScreen> createState() =>
+      GardenProductionRecordCreateScreenState();
 }
 
 late CustomTheme customTheme;
 
-class SubmitActivityScreenState extends State<SubmitActivityScreen> {
-  String nature_of_off = "";
+class GardenProductionRecordCreateScreenState
+    extends State<GardenProductionRecordCreateScreen> {
   String enterprise_text = "";
-  String activity_id = "";
   String activity_text = "";
   String garden_id = "";
-  double latitude = 0.0;
-  double longitude = 0.0;
 
   @override
   void initState() {
@@ -60,8 +56,7 @@ class SubmitActivityScreenState extends State<SubmitActivityScreen> {
 
   @override
   Widget build(BuildContext context) {
-
-    String _title = "Submitting activity report";
+    String _title = "Creating production record";
     return Consumer<AppNotifier>(
         builder: (BuildContext context, AppNotifier value, Widget? child) {
       return Scaffold(
@@ -124,77 +119,7 @@ class SubmitActivityScreenState extends State<SubmitActivityScreen> {
                       padding: EdgeInsets.all(0),
                       child: Column(
                         children: [
-
-                          Container(
-                            padding: FxSpacing.all(20),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: <Widget>[
-                                FxSpacing.width(16),
-                                Expanded(
-                                  child: FxText.b1(
-                                    'Enterprise',
-                                    fontSize: 18,
-                                    fontWeight: 500,
-                                    color: Colors.grey.shade900,
-                                  ),
-                                ),
-                                Container(
-                                  child: Row(
-                                    children: [
-                                      FxText(
-                                        enterprise_text,
-                                        color: Colors.grey.shade500,
-                                      ),
-                                      Icon(CupertinoIcons.right_chevron,
-                                          size: 22,
-                                          color: Colors.grey.shade600),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          FxDashedDivider(
-                            color: Colors.grey.shade300,
-                          ),
-
-                          Container(
-                            padding: FxSpacing.all(20),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: <Widget>[
-                                FxSpacing.width(16),
-                                Expanded(
-                                  child: FxText.b1(
-                                    'Activity',
-                                    fontSize: 18,
-                                    fontWeight: 500,
-                                    color: Colors.grey.shade900,
-                                  ),
-                                ),
-                                Container(
-                                  child: Row(
-                                    children: [
-                                      FxText(
-                                        activity_text,
-                                        color: Colors.grey.shade500,
-                                      ),
-                                      Icon(CupertinoIcons.right_chevron,
-                                          size: 22,
-                                          color: Colors.grey.shade600),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          FxDashedDivider(
-                            color: Colors.grey.shade300,
-                          ),
-
                           InkWell(
-                            onTap: () => {pick_activity_status()},
                             child: Container(
                               padding: FxSpacing.all(20),
                               child: Row(
@@ -203,7 +128,7 @@ class SubmitActivityScreenState extends State<SubmitActivityScreen> {
                                   FxSpacing.width(16),
                                   Expanded(
                                     child: FxText.b1(
-                                      'Activity  status',
+                                      'Enterprise',
                                       fontSize: 18,
                                       fontWeight: 500,
                                       color: Colors.grey.shade900,
@@ -213,7 +138,7 @@ class SubmitActivityScreenState extends State<SubmitActivityScreen> {
                                     child: Row(
                                       children: [
                                         FxText(
-                                          status_text,
+                                          enterprise_text,
                                           color: Colors.grey.shade500,
                                         ),
                                         Icon(CupertinoIcons.right_chevron,
@@ -225,6 +150,7 @@ class SubmitActivityScreenState extends State<SubmitActivityScreen> {
                                 ],
                               ),
                             ),
+                            onTap: () => {pick_a_garden()},
                           ),
                           FxDashedDivider(
                             color: Colors.grey.shade300,
@@ -483,19 +409,17 @@ class SubmitActivityScreenState extends State<SubmitActivityScreen> {
       return;
     }
 
-    form_data_map['activity_id'] = activity_id;
-    form_data_map['created_by_id'] = userModel.id;
+    if (garden_id.isEmpty) {
+      Utils.showSnackBar(
+          "Login before  you proceed.", context, CustomTheme.onPrimary);
+      return;
+    }
+
     form_data_map['administrator_id'] = userModel.id;
-    form_data_map['done_status'] = status_id;
+    form_data_map['created_by_id'] = userModel.id;
     form_data_map['garden_id'] = garden_id;
     form_data_map["description"] =
         _formKey.currentState?.fields['description']?.value;
-
-    if (status_id.isEmpty) {
-      Utils.showSnackBar("Please pick activity status.", context, Colors.white,
-          background_color: Colors.red);
-      return;
-    }
 
     bool first_found = false;
 
@@ -642,24 +566,58 @@ class SubmitActivityScreenState extends State<SubmitActivityScreen> {
     setState(() {});
   }
 
-  Future<void> pick_gps() async {
-    Position p = await Utils.get_device_location();
-    if (p != null) {
-      latitude = p.latitude;
-      longitude = p.longitude;
-      setState(() {});
-    }
-  }
-
+  List<GardenModel> gardens = [];
 
   void my_init() async {
+    gardens = await GardenModel.get_items();
 
-
-    enterprise_text = widget.params['enterprise_text'].toString();
     print(enterprise_text);
     activity_text = widget.params['activity_text'].toString();
-    garden_id = widget.params['garden_id'].toString();
-    activity_id = widget.params['activity_id'].toString();
+    garden_id = widget.params['id'].toString();
+
+    gardens.forEach((element) {
+      if (element.id.toString() == garden_id.toString()) {
+        enterprise_text = element.name.toString();
+      }
+    });
     setState(() {});
+  }
+
+  Future<void> pick_a_garden() async {
+    if (gardens.isEmpty) {
+      gardens = await GardenModel.get_items();
+    }
+    if (gardens.isEmpty) {
+      Utils.showSnackBar(
+          "Please connect to internet and try again.", context, Colors.white,
+          background_color: Colors.red);
+      return;
+    }
+
+    List<OptionPickerModel> local_items = [];
+
+    gardens.forEach((element) {
+      OptionPickerModel item = new OptionPickerModel();
+      item.parent_id = "1";
+      item.id = element.id.toString();
+      item.name = element.name.toString();
+      local_items.add(item);
+    });
+
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) =>
+              SingleOptionPicker("Select an enterprise", local_items)),
+    );
+
+    if (result != null) {
+      if ((result['id'] != null) && (result['text'] != null)) {
+        garden_id = result['id'].toString();
+        enterprise_text = result['text'].toString();
+        my_init();
+        setState(() {});
+      }
+    }
   }
 }

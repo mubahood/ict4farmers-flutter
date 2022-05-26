@@ -18,7 +18,14 @@ class AppConfig {
   static const String FinancialRecordsScreen = "FinancialRecordsScreen";
   static const String QuestionsScreen = "QuestionsScreen";
   static const String QuestionsCreateScreen = "QuestionsCreateScreen";
+  static const String QuestionScreen = "QuestionScreen";
+  static const String MyAccountScreen = "MyAccountScreen";
+  static const String GardenProductionRecordsScreen = "GardenProductionRecordsScreen";
+  static const String AboutUsScreen = "AboutUsScreen";
+  static const String GardenProductionRecordCreateScreen = "GardenProductionRecordCreateScreen";
 
+  static String Lorem1 = "Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto consequatur temporibus laboriosam atque aperiam dolorem, esse, velit exercitationem expedita sit optio possimus. Ipsam repellat corporis temporibus incidunt sunt obcaecati aperiam. Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto consequatur temporibus laboriosam atque aperiam dolorem, esse, velit exercitationem expedita sit optio possimus. Ipsam repellat corporis temporibus incidunt sunt obcaecati aperiam.";
+  static String Lorem2 = "Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto consequatur temporibus laboriosam atque aperiam dolorem, esse, velit exercitationem expedita sit optio possimus. Ipsam repellat corporis temporibus incidunt sunt obcaecati aperiam.";
   static String BASE_URL = "https://app2.unffeict4farmers.org";
   static const String HomePage = "HomePage";
   static const String MyProductsScreen = "MyProductsScreen";

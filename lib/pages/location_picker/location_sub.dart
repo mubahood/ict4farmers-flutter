@@ -86,15 +86,19 @@ class _LocationSub extends State<LocationSub> {
         builder: (BuildContext context, AppNotifier value, Widget? child) {
       return Scaffold(
         appBar: AppBar(
+          iconTheme: IconThemeData(
+            color: Colors.white, // <= You can change your color here.
+          ),
+          backgroundColor: CustomTheme.primary,
           systemOverlayStyle: SystemUiOverlayStyle(
-            statusBarColor: Colors.white,
-            statusBarIconBrightness: Brightness.dark,
+            statusBarColor: CustomTheme.primary,
+            statusBarIconBrightness: Brightness.light,
             statusBarBrightness: Brightness.light, // For iOS (dark icons)
           ),
           elevation: .5,
           title: Text(
             title,
-            style: TextStyle(color: Colors.black),
+            style: TextStyle(color: Colors.white),
           ),
         ),
         body: SafeArea(
