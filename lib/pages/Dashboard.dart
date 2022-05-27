@@ -1,9 +1,7 @@
 import 'dart:convert';
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutx/flutx.dart';
 import 'package:flutx/utils/spacing.dart';
 import 'package:flutx/widgets/container/container.dart';
@@ -18,8 +16,8 @@ import '../../utils/AppConfig.dart';
 import '../../utils/Utils.dart';
 import '../models/FarmersGroup.dart';
 import '../models/MenuItemModel.dart';
+import '../utils/SizeConfig.dart';
 import '../widget/my_widgets.dart';
-import '../widget/shimmer_loading_widget.dart';
 
 class Dashboard extends StatefulWidget {
   BuildContext _context;
@@ -31,7 +29,7 @@ class Dashboard extends StatefulWidget {
 }
 
 class DashboardState extends State<Dashboard> {
-  late ThemeData theme;
+  late ThemeData themeData;
   BuildContext _context;
 
   List<MenuItemModel> main_menu_items = [
@@ -53,7 +51,7 @@ class DashboardState extends State<Dashboard> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    theme = AppTheme.theme;
+    themeData = AppTheme.theme;
     my_init();
   }
 
@@ -71,6 +69,8 @@ class DashboardState extends State<Dashboard> {
 
   bool is_logged_in = false;
   UserModel loggedUser = new UserModel();
+  int pending_activities_number = 0;
+  int missing_activities_number = 0;
 
   Future<Null> _onRefresh() async {
     await my_init();
@@ -100,356 +100,174 @@ class DashboardState extends State<Dashboard> {
     i4.icon = Icons.forum;
     sub_menu_items.add(i4);
 
-    /*
 
-      new MenuItemModel('My orders', "1.png", AppConfig.ComingSoon, true),
-      new MenuItemModel(
-          'Production guides', "1.png", AppConfig.ComingSoon, true),
-      new MenuItemModel('Resources', "1.png", AppConfig.ComingSoon, true),
-      new MenuItemModel('Browse farmers', "1.png", AppConfig.ComingSoon, true),
-      new MenuItemModel(
-          'Extension services', "1.png", AppConfig.ComingSoon, true),
-      new MenuItemModel(
-          'Products pricing', "1.png", AppConfig.ComingSoon, true),
-      new MenuItemModel('Ask an expert', "1.png", AppConfig.ComingSoon, true),
-      new MenuItemModel('About this App', "1.png", AppConfig.ComingSoon, true),
-      new MenuItemModel(
-          'Our privacy policy', "1.png", AppConfig.PrivacyPolicy, true),
-      new MenuItemModel('Help & Support', "1.png", AppConfig.ComingSoon, true),
-      new MenuItemModel('Toll free', "1.png", AppConfig.ComingSoon, true),
-     */
 
     return SafeArea(
       child: Scaffold(
         backgroundColor: CustomTheme.primary_bg,
-        floatingActionButton: FloatingActionButton.extended(
-            backgroundColor: CustomTheme.primary,
-            elevation: 20,
-            onPressed: () {
-              if (is_logged_in) {
-                Utils.navigate_to(AppConfig.MyAccountScreen, context);
-              } else {
-                show_not_account_bottom_sheet(context);
-              }
-            },
-            label: Row(
-              children: [
-                Icon(
-                  Icons.person,
-                  size: 18,
-                ),
-                Container(
-                  child: Text(
-                    "My Account",
-                  ),
-                ),
-              ],
-            )),
         body: RefreshIndicator(
-            color: CustomTheme.primary,
-            backgroundColor: Colors.white,
-            onRefresh: _onRefresh,
-            child: CustomScrollView(
-              slivers: [
-                SliverAppBar(
-                    titleSpacing: 0,
-                    systemOverlayStyle: SystemUiOverlayStyle(
-                      statusBarColor: CustomTheme.primary,
-                      statusBarIconBrightness: Brightness.light,
-                      // For Android (dark icons)
-                      statusBarBrightness:
-                          Brightness.light, // For iOS (dark icons)
-                    ),
-                    elevation: 0,
-                    pinned: true,
-                    toolbarHeight: (Utils.screen_height(context) / 3.0),
-                    title: Stack(
-                      children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.only(
-                            bottomLeft: Radius.circular(50),
-                            bottomRight: Radius.circular(50),
-                          ),
-                          child: Image(
-                            width: double.infinity,
-                            height: (Utils.screen_height(context) / 3.0),
-                            fit: BoxFit.cover,
-                            image: AssetImage("assets/project/farm_doodle.jpg"),
-                          ),
-                        ),
-                        InkWell(
-                          onTap: () => {
-                            if (!is_logged_in)
-                              {show_not_account_bottom_sheet(context)}
-                            else
-                              {
-                                Utils.navigate_to(
-                                    AppConfig.AccountEdit, context)
-                              }
-                          },
-                          child: Container(
-                            margin: EdgeInsets.only(
-                              left: 0,
-                              right: 0,
-                              top: (MediaQuery.of(context).size.height / 6.5),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                sub_menu_widget(sub_menu_items[0]),
-                                sub_menu_widget(sub_menu_items[1]),
-                                sub_menu_widget(sub_menu_items[2]),
-                                sub_menu_widget(sub_menu_items[3]),
-                              ],
-                            ),
-                          ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(
-                            left: 20,
-                            right: 20,
-                            top: 20,
-                          ),
-                          child: Row(
-                            children: [
-                              InkWell(
-                                onTap: () => {
-                                  Utils.launchPhone(
-                                      AppConfig.TOLL_FREE_PHONE_NUMBER)
-                                },
-                                child: Container(
-                                  child: Row(
-                                    children: [
-                                      FxContainer.rounded(
-                                        bordered: true,
-                                        width: 60,
-                                        height: 60,
-                                        border: Border.all(
-                                            color: CustomTheme.primary),
-                                        paddingAll: 10,
-                                        splashColor: CustomTheme.primary,
-                                        color: CustomTheme.primary,
-                                        child: Icon(
-                                          CupertinoIcons.phone,
-                                          size: 35,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                      FxContainer(
-                                        padding: EdgeInsets.only(
-                                            top: 3,
-                                            bottom: 3,
-                                            left: 10,
-                                            right: 10),
-                                        splashColor: CustomTheme.primary,
-                                        color: Colors.white,
-                                        child: FxText(
-                                          "Toll Free: ${AppConfig.TOLL_FREE_PHONE_NUMBER}",
-                                          fontWeight: 800,
-                                          fontSize: 15,
-                                          color: CustomTheme.primary,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              Spacer(),
-                              FxContainer.rounded(
-                                paddingAll: 0,
-                                child: is_logged_in
-                                    ? InkWell(
-                                        onTap: () => {
-                                          Utils.navigate_to(
-                                              AppConfig.MyAccountScreen,
-                                              context)
-                                        },
-                                        child: CachedNetworkImage(
-                                          width: 60,
-                                          height: 60,
-                                          fit: BoxFit.cover,
-                                          imageUrl: loggedUser.avatar,
-                                          placeholder: (context, url) =>
-                                              ShimmerLoadingWidget(
-                                            height: 60,
-                                            width: 60,
-                                          ),
-                                          errorWidget: (context, url, error) =>
-                                              Image(
-                                            image: AssetImage(
-                                                './assets/project/user.png'),
-                                            height: 60,
-                                            width: 60,
-                                            fit: BoxFit.cover,
-                                          ),
-                                        ),
-                                      )
-                                    : InkWell(
-                                        onTap: () => {
-                                          show_not_account_bottom_sheet(context)
-                                        },
-                                        child: Image(
-                                          width: 60,
-                                          height: 60,
-                                          image: AssetImage(
-                                              "./assets/project/user.png"),
-                                        ),
-                                      ),
-                              ),
-                              /* Container(
-                          child:
-                          FxText.h2("Bob Tusiime"),
-                        )*/
-                            ],
+          onRefresh: _onRefresh,
+          color: CustomTheme.primary,
+          backgroundColor: Colors.white,
+          child: Container(
+            color: Colors.grey.shade100,
+            child: ListView(
+              padding: Spacing.top(20),
+              children: [
+                Container(
+                  padding: Spacing.only(left: 15, right: 15),
+                  child: RichText(
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    text: TextSpan(
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 30,
+                      ),
+                      children: <TextSpan>[
+                        TextSpan(
+                            text: 'Hello ',
+                            style: TextStyle(fontWeight: FontWeight.w200)),
+                        TextSpan(
+                          text: 'Muhindo Mubaraka Mutheke',
+                          style: TextStyle(
+                            fontWeight: FontWeight.normal,
                           ),
                         ),
                       ],
                     ),
-                    floating: false,
-                    backgroundColor: CustomTheme.primary_bg),
-                SliverList(
-                  delegate: SliverChildBuilderDelegate(
-                    (BuildContext context, int index) {
-                      return SizedBox(
-                        height: 15,
-                      );
-                    },
-                    childCount: 1,
                   ),
                 ),
-                SliverGrid(
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 3,
-                      mainAxisSpacing: 0,
-                      crossAxisSpacing: 0,
-                      childAspectRatio: 1,
-                      mainAxisExtent: (140)),
-                  delegate: SliverChildBuilderDelegate(
-                    (context, index) {
-                      return _single_item(main_menu_items[index]);
-                    },
-                    childCount: main_menu_items.length,
-                  ),
-                ),
-                SliverList(
-                  delegate: SliverChildBuilderDelegate(
-                    (BuildContext context, int index) {
-                      return FxCard(
-                        margin: EdgeInsets.only(top: 20, left: 10, right: 10),
-                        padding: EdgeInsets.only(top: 15),
-                        color: Colors.white,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(left: 15),
-                              child: FxText.caption("FOLLOW US"),
-                            ),
-                            Container(
-                              margin:
-                                  EdgeInsets.only(top: 5, left: 15, right: 10),
-                              child: Row(
-                                children: <Widget>[
-                                  InkWell(
-                                    onTap: () => {
-                                      Utils.launchOuLink(AppConfig.OurWhatsApp)
-                                    },
-                                    child: Container(
-                                      margin: EdgeInsets.only(left: 0),
-                                      padding: EdgeInsets.all(3),
-                                      child: Icon(
-                                        Icons.whatsapp,
-                                        size: 30,
-                                        color: Colors.green.shade600,
-                                      ),
-                                      decoration: BoxDecoration(
-                                          border: Border.all(
-                                              color: Colors.grey.shade500,
-                                              width: 1),
-                                          color: AppTheme
-                                              .lightTheme.backgroundColor,
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(11))),
-                                    ),
-                                  ),
-                                  InkWell(
-                                    onTap: () => {
-                                      Utils.launchOuLink(
-                                          AppConfig.OUR_FACEBOOK_LINK)
-                                    },
-                                    child: Container(
-                                      margin: EdgeInsets.only(left: 16),
-                                      padding: EdgeInsets.all(3),
-                                      child: Icon(
-                                        Icons.facebook,
-                                        size: 30,
-                                        color: Colors.blue.shade800,
-                                      ),
-                                      decoration: BoxDecoration(
-                                          border: Border.all(
-                                              color: Colors.grey.shade500,
-                                              width: 1),
-                                          color: AppTheme
-                                              .lightTheme.backgroundColor,
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(11))),
-                                    ),
-                                  ),
-                                  InkWell(
-                                    onTap: () => {
-                                      Utils.launchOuLink(
-                                          AppConfig.OUR_TWITTER_LINK)
-                                    },
-                                    child: Container(
-                                      margin: EdgeInsets.only(left: 16),
-                                      padding: EdgeInsets.all(3),
-                                      child: Icon(
-                                        MdiIcons.twitter,
-                                        size: 30,
-                                        color: Colors.blue.shade500,
-                                      ),
-                                      decoration: BoxDecoration(
-                                          border: Border.all(
-                                              color: Colors.grey.shade500,
-                                              width: 1),
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(11))),
-                                    ),
-                                  ),
-                                  InkWell(
-                                    onTap: () => {
-                                      Utils.launchOuLink(
-                                          AppConfig.OUR_INSTAGRAM_LINK)
-                                    },
-                                    child: Container(
-                                      margin: EdgeInsets.only(left: 16),
-                                      padding: EdgeInsets.all(3),
-                                      child: Icon(
-                                        MdiIcons.instagram,
-                                        size: 30,
-                                        color: Colors.purple.shade300,
-                                      ),
-                                      decoration: BoxDecoration(
-                                          border: Border.all(
-                                              color: Colors.grey.shade500,
-                                              width: 1),
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(11))),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            FxSpacing.height(22),
-                          ],
+                Container(
+                  margin: Spacing.fromLTRB(10, 10, 10, 0),
+                  padding: Spacing.all(15),
+                  decoration: BoxDecoration(
+                      color: (missing_activities_number > 0)
+                          ? Colors.red.shade700
+                          : (pending_activities_number > 0)
+                              ? Colors.yellow.shade800
+                              : CustomTheme.primary,
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(20),
+                        topRight: Radius.circular(20),
+                      )),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          FxText(
+                            (missing_activities_number > 0)
+                                ? "Attention!"
+                                : (pending_activities_number > 0)
+                                    ? "Heads Up!"
+                                    : "You are Good!",
+                            color: Colors.white,
+                            fontWeight: 700,
+                            fontSize: 25,
+                          ),
+                          singleHorizontalpWidget(
+                              screen: "",
+                              iconData: Icons.arrow_right,
+                              color: (missing_activities_number > 0)
+                                  ? Colors.red.shade700
+                                  : (pending_activities_number > 0)
+                                      ? Colors.yellow.shade800
+                                      : CustomTheme.primary,
+                              title: (missing_activities_number > 0)
+                                  ? "Do Action!"
+                                  : (pending_activities_number > 0)
+                                      ? "Do Action!"
+                                      : "My Activities"),
+                        ],
+                      ),
+                      Container(
+                        margin: Spacing.top(10),
+                        child: FxText(
+                          (missing_activities_number > 0)
+                              ? "You currently have ${missing_activities_number} MISSED activitie(s) that require your attention!"
+                              : (pending_activities_number > 0)
+                                  ? "You currently have ${pending_activities_number} PENDING activitie(s) that require your attention!"
+                                  : "You currently have NO activity that requires your attention.",
+                          color: Colors.white,
+                          fontSize: 16,
+                          letterSpacing: .1,
+                          fontWeight: 500,
+                          height: 1.2,
                         ),
-                      );
-                    },
-                    childCount: 1,
+                      ),
+                    ],
                   ),
                 ),
+                Container(
+                  margin: Spacing.fromLTRB(10, 0, 10, 0),
+                  padding: Spacing.fromLTRB(0, 15, 0, 20),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(20),
+                      bottomRight: Radius.circular(20),
+                    ),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          header_widget(AppConfig.GardenCreateScreen,
+                              "Create Garden", Icons.add_circle_outline),
+                          header_widget(AppConfig.SubmitActivityScreen,
+                              "My Activities", Icons.date_range),
+                          header_widget('sell', "Sell Something", Icons.sell),
+                          header_widget("ContactUs", "Contact Us", Icons.phone),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  margin: Spacing.fromLTRB(10, 10, 10, 10),
+                  child: GridView.count(
+                    crossAxisCount: 2,
+                    shrinkWrap: true,
+                    physics: ClampingScrollPhysics(),
+                    childAspectRatio: 1.3,
+                    crossAxisSpacing: 10,
+                    mainAxisSpacing: 10,
+                    children: [
+                      singleService(
+                          icon: Icons.add,
+                          title: "Production Guides",
+                          screen: AppConfig.GardenCreateScreen),
+                      singleService(
+                          icon: Icons.add,
+                          title: "Production Guides",
+                          screen: AppConfig.GardenCreateScreen),
+                      singleService(
+                          icon: Icons.add,
+                          title: "Production Guides",
+                          screen: AppConfig.GardenCreateScreen),
+                      singleService(
+                          icon: Icons.add,
+                          title: "Production Guides",
+                          screen: AppConfig.GardenCreateScreen),
+                      singleService(
+                          icon: Icons.add,
+                          title: "Production Guides",
+                          screen: AppConfig.GardenCreateScreen),
+                      singleService(
+                          icon: Icons.add,
+                          title: "Production Guides",
+                          screen: AppConfig.GardenCreateScreen),
+                    ],
+                  ),
+                )
               ],
-            )),
+            ),
+          ),
+        ),
       ),
     );
   }
@@ -473,7 +291,6 @@ class DashboardState extends State<Dashboard> {
                   child: Icon(
                     Icons.access_alarms,
                     size: 22,
-                    color: theme.colorScheme.onBackground,
                   ),
                 ),
                 FxSpacing.width(16),
@@ -502,8 +319,10 @@ class DashboardState extends State<Dashboard> {
                                 badge.toString(),
                                 color: Colors.white,
                               )),
-                      Icon(MdiIcons.chevronRight,
-                          size: 22, color: theme.colorScheme.onBackground),
+                      Icon(
+                        MdiIcons.chevronRight,
+                        size: 22,
+                      ),
                     ],
                   ),
                 ),
@@ -742,6 +561,138 @@ class DashboardState extends State<Dashboard> {
           )
         ],
       ),
+    );
+  }
+
+  Widget singleHorizontalpWidget(
+      {IconData? iconData,
+      required String title,
+      Color? color,
+      required String screen}) {
+    return GestureDetector(
+      onTap: () {
+        Utils.navigate_to(AppConfig.SubmitActivityScreen, context);
+        //Utils.navigate_to(screen, context);
+      },
+      child: FxCard(
+        padding: Spacing.fromLTRB(5, 5, 5, 5),
+        color: Colors.white,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Icon(
+              iconData,
+              color: color == null ? themeData.colorScheme.primary : color,
+              size: 16,
+            ),
+            Container(
+              margin: EdgeInsets.only(left: 5),
+              child: Text(
+                title,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  letterSpacing: 0,
+                  fontSize: 14,
+                  color: (missing_activities_number > 0)
+                      ? Colors.red.shade700
+                      : (pending_activities_number > 0)
+                          ? Colors.yellow.shade800
+                          : CustomTheme.primary,
+                ),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget singleHelpWidget(
+      {IconData? iconData,
+      required String title,
+      Color? color,
+      required String screen}) {
+    return GestureDetector(
+      onTap: () {
+        Utils.navigate_to(screen, context);
+      },
+      child: Container(
+        padding: Spacing.fromLTRB(0, 20, 0, 20),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(20)),
+            border: Border.all(
+                color: CustomTheme.primary, width: 1, style: BorderStyle.solid),
+            boxShadow: [BoxShadow(blurRadius: 50, offset: Offset(0, 50))]),
+        child: Column(
+          children: [
+            Icon(
+              iconData,
+              color: color == null ? themeData.colorScheme.primary : color,
+              size: 50,
+            ),
+            Container(
+              margin: Spacing.top(8),
+              child: Text(
+                title,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  letterSpacing: 0,
+                  fontSize: 18,
+                  color: themeData.colorScheme.onBackground,
+                ),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  header_widget(String screen, title, IconData iconData) {
+    return InkWell(
+      onTap: () => {
+        if (screen == 'ContactUs')
+          {Utils.launchPhone(AppConfig.OUR_PHONE_NUMBER)}
+        else if (screen == 'sell')
+          {}
+        else
+          {Utils.navigate_to(screen, context)}
+      },
+      child: Column(
+        children: [
+          Icon(
+            iconData,
+            color: CustomTheme.primary,
+            size: 40,
+          ),
+          SizedBox(
+            height: 5,
+          ),
+          Text(
+            title,
+            style: TextStyle(
+                fontSize: 12,
+                color: CustomTheme.primary,
+                fontWeight: FontWeight.w600),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget singleService(
+      {required IconData icon, required String title, required String screen}) {
+    return FxCard(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(Icons.wallpaper_rounded),
+          Text("Romina"),
+        ],
+      ),
+      border: Border.all(color: CustomTheme.primary),
+      bordered: true,
+      color: Colors.white,
     );
   }
 }
