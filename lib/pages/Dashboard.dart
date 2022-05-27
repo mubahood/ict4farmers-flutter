@@ -165,7 +165,7 @@ class DashboardState extends State<Dashboard> {
                                     : "You are Good!",
                             color: Colors.white,
                             fontWeight: 700,
-                            fontSize: 25,
+                            fontSize: 20,
                           ),
                           singleHorizontalpWidget(
                               screen: "",
@@ -191,7 +191,7 @@ class DashboardState extends State<Dashboard> {
                                   ? "You currently have ${pending_activities_number} PENDING activitie(s) that require your attention!"
                                   : "You currently have NO activity that requires your attention.",
                           color: Colors.white,
-                          fontSize: 16,
+                          fontSize: 14,
                           letterSpacing: .1,
                           fontWeight: 500,
                           height: 1.2,
@@ -238,9 +238,9 @@ class DashboardState extends State<Dashboard> {
                     mainAxisSpacing: 10,
                     children: [
                       singleService(
-                          icon: Icons.add,
+                          icon: Icons.agriculture,
                           title: "Production Guides",
-                          screen: AppConfig.GardenCreateScreen),
+                          screen: AppConfig.PestsScreen),
                       singleService(
                           icon: Icons.add,
                           title: "Production Guides",
@@ -682,17 +682,37 @@ class DashboardState extends State<Dashboard> {
 
   Widget singleService(
       {required IconData icon, required String title, required String screen}) {
-    return FxCard(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(Icons.wallpaper_rounded),
-          Text("Romina"),
-        ],
+    return InkWell(
+      onTap: () => {
+        Utils.navigate_to(screen, context)
+      },
+      child: FxCard(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              icon,
+              color: CustomTheme.primary,
+              size: 45,
+            ),
+            SizedBox(
+              height: 5,
+            ),
+            FxText(
+              "${title}",
+              fontSize: 16,
+              fontWeight: 800,
+              height: 1,
+              maxLines: 2,
+              textAlign: TextAlign.center,
+              color: Colors.grey.shade800,
+            ),
+          ],
+        ),
+        border: Border.all(color: CustomTheme.primary),
+        bordered: true,
+        color: Colors.white,
       ),
-      border: Border.all(color: CustomTheme.primary),
-      bordered: true,
-      color: Colors.white,
     );
   }
 }
