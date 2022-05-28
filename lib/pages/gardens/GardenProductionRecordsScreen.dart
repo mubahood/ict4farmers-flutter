@@ -683,7 +683,6 @@ class GardenProductionRecordsScreenState
       if ((result['id'] != null) && (result['text'] != null)) {
         id = Utils.int_parse(result['id']);
         widget.params = {id: id.toString()};
-        my_init();
         setState(() {});
       }
     }

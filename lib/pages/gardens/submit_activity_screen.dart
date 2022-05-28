@@ -398,6 +398,14 @@ class GardenProductionRecordCreateScreenState
       return;
     }
 
+    if(Utils.int_parse(garden_id) < 1){
+      Utils.showSnackBar(
+          "Select an enterprise before you submit..", context, Colors.white,
+          background_color: Colors.red);
+      return;
+    }
+
+
     Map<String, dynamic> form_data_map = {};
     form_data_to_upload.clear();
     form_data_to_upload = await FormItemModel.get_all();
@@ -409,11 +417,10 @@ class GardenProductionRecordCreateScreenState
       return;
     }
 
-    if (garden_id.isEmpty) {
-      Utils.showSnackBar(
-          "Login before  you proceed.", context, CustomTheme.onPrimary);
-      return;
-    }
+
+
+
+
 
     form_data_map['administrator_id'] = userModel.id;
     form_data_map['created_by_id'] = userModel.id;
@@ -571,7 +578,7 @@ class GardenProductionRecordCreateScreenState
   void my_init() async {
     gardens = await GardenModel.get_items();
 
-    print(enterprise_text);
+
     activity_text = widget.params['activity_text'].toString();
     garden_id = widget.params['id'].toString();
 
@@ -615,7 +622,6 @@ class GardenProductionRecordCreateScreenState
       if ((result['id'] != null) && (result['text'] != null)) {
         garden_id = result['id'].toString();
         enterprise_text = result['text'].toString();
-        my_init();
         setState(() {});
       }
     }

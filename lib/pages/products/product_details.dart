@@ -448,9 +448,9 @@ class ProductDetailsState extends State<ProductDetails> {
                                           show_not_account_bottom_sheet(
                                               context);
                                         } else {
-                                          Utils.navigate_to(
-                                              AppConfig.PaymentPage, context);
-                                          //start_chat();
+                                          /*Utils.navigate_to(
+                                              AppConfig.PaymentPage, context);*/
+                                          start_chat();
                                         }
                                       },
                                       padding: FxSpacing.all(12),
@@ -459,12 +459,12 @@ class ProductDetailsState extends State<ProductDetails> {
                                             MainAxisAlignment.center,
                                         children: <Widget>[
                                           Icon(
-                                            MdiIcons.cart,
+                                            MdiIcons.forum,
                                             color: Colors.grey.shade100,
                                             size: 22,
                                           ),
                                           FxSpacing.width(8),
-                                          FxText.sh2("Buy Now",
+                                          FxText.sh2("Chat",
                                               color: Colors.white,
                                               fontWeight: 600,
                                               letterSpacing: 0)
