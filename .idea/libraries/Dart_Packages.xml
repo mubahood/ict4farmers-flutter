@@ -453,14 +453,14 @@
         <entry key="google_maps_flutter">
           <value>
             <list>
-              <option value="$USER_HOME$/src/flutter/.pub-cache/hosted/pub.dartlang.org/google_maps_flutter-2.1.4/lib" />
+              <option value="$USER_HOME$/src/flutter/.pub-cache/hosted/pub.dartlang.org/google_maps_flutter-2.1.6/lib" />
             </list>
           </value>
         </entry>
         <entry key="google_maps_flutter_platform_interface">
           <value>
             <list>
-              <option value="$USER_HOME$/src/flutter/.pub-cache/hosted/pub.dartlang.org/google_maps_flutter_platform_interface-2.1.5/lib" />
+              <option value="$USER_HOME$/src/flutter/.pub-cache/hosted/pub.dartlang.org/google_maps_flutter_platform_interface-2.1.7/lib" />
             </list>
           </value>
         </entry>
@@ -1185,8 +1185,8 @@
       <root url="file://$USER_HOME$/src/flutter/.pub-cache/hosted/pub.dartlang.org/geolocator_windows-0.1.1/lib" />
       <root url="file://$USER_HOME$/src/flutter/.pub-cache/hosted/pub.dartlang.org/glob-2.0.2/lib" />
       <root url="file://$USER_HOME$/src/flutter/.pub-cache/hosted/pub.dartlang.org/google_fonts-2.2.0/lib" />
-      <root url="file://$USER_HOME$/src/flutter/.pub-cache/hosted/pub.dartlang.org/google_maps_flutter-2.1.4/lib" />
-      <root url="file://$USER_HOME$/src/flutter/.pub-cache/hosted/pub.dartlang.org/google_maps_flutter_platform_interface-2.1.5/lib" />
+      <root url="file://$USER_HOME$/src/flutter/.pub-cache/hosted/pub.dartlang.org/google_maps_flutter-2.1.6/lib" />
+      <root url="file://$USER_HOME$/src/flutter/.pub-cache/hosted/pub.dartlang.org/google_maps_flutter_platform_interface-2.1.7/lib" />
       <root url="file://$USER_HOME$/src/flutter/.pub-cache/hosted/pub.dartlang.org/graphs-2.1.0/lib" />
       <root url="file://$USER_HOME$/src/flutter/.pub-cache/hosted/pub.dartlang.org/hive-2.1.0/lib" />
       <root url="file://$USER_HOME$/src/flutter/.pub-cache/hosted/pub.dartlang.org/hive_flutter-1.1.0/lib" />
