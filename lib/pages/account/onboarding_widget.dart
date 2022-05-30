@@ -53,10 +53,10 @@ class _OnBoardingWidget2State extends State<OnBoardingWidget2> {
                   Center(
                     child: Container(
                       margin: EdgeInsets.only(
-                          top: ((MediaQuery.of(context).size.height / 2) - 100)),
+                          top: ((MediaQuery.of(context).size.height / 2) - 200)),
                       child: Image.asset(
                         Images.logo_1,
-                        height: 70,
+                        height: 150,
                       ),
                     ),
                   ),
