@@ -8,7 +8,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutx/flutx.dart';
 import 'package:flutx/utils/spacing.dart';
-import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:ict4farmers/models/CropCategory.dart';
 import 'package:ict4farmers/models/PestModel.dart';
@@ -441,7 +440,21 @@ class MyAccountScreenState extends State<MyAccountScreen> {
 
   List<CropCategory> categories = [];
 
+  UserModel loggedUser = new UserModel();
+
   void my_init() async {
+    loggedUser = await Utils.get_logged_in();
+    loggedUser.init();
+    if (loggedUser.id < 1) {
+      Utils.showSnackBar("Login before you proceed.", context, Colors.red);
+      Navigator.pop(context);
+      return;
+    }
+
+    if (!loggedUser.profile_is_complete) {
+      Utils.navigate_to(AppConfig.AccountEdit, context);
+      return;
+    }
 
     categories = await CropCategory.get_items();
     pests = await PestModel.get_items();

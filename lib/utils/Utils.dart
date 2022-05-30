@@ -843,6 +843,8 @@ class Utils {
     return true;
   }
 
+
+
   static Future<bool> is_login() async {
     UserModel u = await get_logged_in();
     if (u == null) {
@@ -878,6 +880,7 @@ class Utils {
         }
       }
     });
+    u.init();
     return u;
   }
 

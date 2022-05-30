@@ -142,20 +142,16 @@ class _AccountRegisterState extends State<AccountRegister> {
                   FxSpacing.height(24),
                   FormBuilderTextField(
                       name: "email",
-                      keyboardType: TextInputType.emailAddress,
+                      keyboardType: TextInputType.phone,
                       validator: FormBuilderValidators.compose([
                         FormBuilderValidators.required(
                           context,
-                          errorText: "Email address required.",
-                        ),
-                        FormBuilderValidators.email(
-                          context,
-                          errorText: "Enter valid email address.",
+                          errorText: "Phone number required.",
                         ),
                       ]),
                       decoration: customTheme.input_decoration(
-                          labelText: "Email address",
-                          icon: Icons.alternate_email)),
+                          labelText: "Phone number",
+                          icon: Icons.phone)),
                   FxSpacing.height(24),
                   FormBuilderTextField(
                     name: "password_1",
@@ -257,7 +253,7 @@ class _AccountRegisterState extends State<AccountRegister> {
                         Utils.navigate_to(AppConfig.AccountLogin, context);
                       },
                       splashColor: CustomTheme.primary.withAlpha(40),
-                      child: FxText.l2("I have already an account",
+                      child: FxText.l2("I already have an account",
                           fontSize: 14,
 
                           color: CustomTheme.accent)),

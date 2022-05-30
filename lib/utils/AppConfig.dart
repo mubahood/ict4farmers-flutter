@@ -61,9 +61,12 @@ class AppConfig {
   static const String OurWhatsApp = "OurWhatsApp";
   static const String OUR_PHONE_NUMBER = "0414230705";
   static const String TOLL_FREE_PHONE_NUMBER = "0800209003";
-  static const String OUR_WHATSAPP_NUMBER = "+8801632257609";
-  static const String OUR_FACEBOOK_LINK = "https://ugnews24.info";
-  static const String OUR_TWITTER_LINK = "https://twitter.com/ugnews24";
-  static const String OUR_YOUTUBE_LINK = "https://twitter.com/ugnews24";
-  static const String OUR_INSTAGRAM_LINK = "https://www.youtube.com/ugnews24/";
+  static const String OUR_WHATSAPP_NUMBER = "+256780602550";
+
+  static const String OUR_FACEBOOK_LINK = "https://www.facebook.com/ict4farmers";
+  static const String OUR_TWITTER_LINK = "https://twitter.com/ict4farmers";
+  static const String OUR_INSTAGRAM_LINK = "https://www.instagram.com/ict4farmers/";
+  static const String OUR_YOUTUBE_LINK = "https://www.youtube.com/channel/UCMqE0SeSuidm2LpYrypEKOQ";
+  static const String OUR_WEBSITE_LINK = "https://app2.unffeict4farmers.org";
+
 }

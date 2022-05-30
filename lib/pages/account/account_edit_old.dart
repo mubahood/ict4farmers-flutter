@@ -3,7 +3,6 @@ import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
@@ -15,6 +14,7 @@ import 'package:ict4farmers/theme/app_theme.dart';
 import 'package:ict4farmers/utils/AppConfig.dart';
 import 'package:ict4farmers/utils/Utils.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 import '../../models/FarmersGroup.dart';
 import '../../models/UserModel.dart';
@@ -22,12 +22,12 @@ import '../../widget/shimmer_loading_widget.dart';
 import '../location_picker/product_category_picker.dart';
 import '../location_picker/single_item_picker.dart';
 
-class AccountEdit extends StatefulWidget {
+class AccountEditOld extends StatefulWidget {
   @override
-  _AccountEditState createState() => _AccountEditState();
+  _AccountEditOldState createState() => _AccountEditOldState();
 }
 
-class _AccountEditState extends State<AccountEdit> {
+class _AccountEditOldState extends State<AccountEditOld> {
   final _formKey = GlobalKey<FormBuilderState>();
 
   late CustomTheme customTheme;
@@ -367,294 +367,208 @@ password
                           errorText: "Name too long.",
                         ),
                       ]),
-                      decoration: customTheme.input_decoration_2(
-                          labelText: "Full name",
-                          hintText: "What is your name?")),
-                  FxDashedDivider(
-                    color: Colors.grey.shade300,
-                  ),
+                      decoration: customTheme.input_decoration(
+                          labelText: "Name", icon: Icons.person)),
+                  FxSpacing.height(10),
                   FormBuilderTextField(
                       name: "email",
                       textInputAction: TextInputAction.next,
-                      keyboardType: TextInputType.name,
+                      keyboardType: TextInputType.emailAddress,
                       validator: FormBuilderValidators.compose([
                         FormBuilderValidators.required(
                           context,
-                          errorText: "Phone number is required.",
+                          errorText: "Email address required.",
                         ),
-                        FormBuilderValidators.minLength(
+                        FormBuilderValidators.email(
                           context,
-                          8,
-                          errorText: "Phone number too short.",
-                        ),
-                        FormBuilderValidators.maxLength(
-                          context,
-                          18,
-                          errorText: "Phone number too long.",
+                          errorText: "Enter valid email address.",
                         ),
                       ]),
-                      decoration: customTheme.input_decoration_2(
-                          labelText: "Phone number",
-                          hintText: "What is your name?")),
-                  FxDashedDivider(
-                    color: Colors.grey.shade300,
-                  ),
-                  FormBuilderDropdown(
-                    dropdownColor: Colors.white,
-                    name: 'gender',
-                    decoration: customTheme.input_decoration_2(
-                      labelText: "Gender",
-                    ),
-                    validator: FormBuilderValidators.compose([
-                      FormBuilderValidators.required(
-                        context,
-                        errorText: "Phone number is required.",
-                      )
-                    ]),
-                    items: [
-                      'Male',
-                      'Female',
-                    ]
-                        .map((tyepe) => DropdownMenuItem(
-                              value: tyepe,
-                              child: Text('$tyepe'),
-                            ))
-                        .toList(),
-                  ),
-                  FxDashedDivider(
-                    color: Colors.grey.shade300,
-                  ),
-                  FormBuilderDropdown(
-                    dropdownColor: Colors.white,
-                    name: 'marital_status',
-                    decoration: customTheme.input_decoration_2(
-                      labelText: "Marital status",
-                    ),
-                    validator: FormBuilderValidators.compose([
-                      FormBuilderValidators.required(
-                        context,
-                        errorText: "Phone number is required.",
-                      )
-                    ]),
-                    items: [
-                      'Single',
-                      'Married',
-                    ]
-                        .map((tyepe) => DropdownMenuItem(
-                              value: tyepe,
-                              child: Text('$tyepe'),
-                            ))
-                        .toList(),
-                  ),
-                  FxDashedDivider(
-                    color: Colors.grey.shade300,
-                  ),
+                      decoration: customTheme.input_decoration(
+                          labelText: "Email address (Username)",
+                          icon: Icons.alternate_email)),
+                  FxSpacing.height(10),
                   FormBuilderTextField(
-                      name: "date_of_birth",
+                      name: "phone_number",
+                      textCapitalization: TextCapitalization.sentences,
                       textInputAction: TextInputAction.next,
-                      keyboardType: TextInputType.number,
+                      keyboardType: TextInputType.phone,
                       validator: FormBuilderValidators.compose([
                         FormBuilderValidators.required(
                           context,
-                          errorText: "Age is required.",
+                          errorText: "Phone number required.",
                         ),
                       ]),
-                      decoration: customTheme.input_decoration_2(
-                          labelText: "Age", hintText: "Hoe old are you?")),
-                  FxDashedDivider(
-                    color: Colors.grey.shade300,
-                  ),
+                      decoration: customTheme.input_decoration(
+                          labelText: "Phone number", icon: Icons.phone)),
+                  FxSpacing.height(10),
                   FormBuilderTextField(
-                      name: "number_of_dependants",
+                      name: "farm_group_text",
+                      readOnly: true,
+                      onTap: () => {prick_farmer_group()},
+                      textCapitalization: TextCapitalization.sentences,
                       textInputAction: TextInputAction.next,
-                      keyboardType: TextInputType.number,
                       validator: FormBuilderValidators.compose([
                         FormBuilderValidators.required(
                           context,
-                          errorText: "Number of dependants is required.",
+                          errorText: "Farm group required.",
                         ),
                       ]),
-                      decoration: customTheme.input_decoration_2(
-                          labelText: "Number of dependants",
-                          hintText: "How many people on you?")),
-                  FxDashedDivider(
-                    color: Colors.grey.shade300,
-                  ),
-                  FormBuilderDropdown(
-                    dropdownColor: Colors.white,
-                    name: 'user_role',
-                    decoration: customTheme.input_decoration_2(
-                      labelText: "User role",
-                    ),
-                    onChanged: (c) => {OnUserTypeChange(c.toString())},
-                    validator: FormBuilderValidators.compose([
-                      FormBuilderValidators.required(
-                        context,
-                        errorText: "User type is required.",
-                      )
-                    ]),
-                    items: [
-                      'Basic user',
-                      'Farmer',
-                      'Service provider',
-                    ]
-                        .map((tyepe) => DropdownMenuItem(
-                              value: tyepe,
-                              child: Text('$tyepe'),
-                            ))
-                        .toList(),
-                  ),
-                  FxDashedDivider(
-                    color: Colors.grey.shade300,
-                  ),
-                  (user_role == "Farmer")
-                      ? InkWell(
-                          onTap: () => {prick_farmer_group()},
-                          child: Container(
-                            padding: FxSpacing.only(
-                                top: 20, bottom: 20, right: 15, left: 15),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: <Widget>[
-                                FxSpacing.width(0),
-                                Expanded(
-                                  child: FxText.b1(
-                                    'Select farmer group',
-                                    fontSize: 18,
-                                    fontWeight: 500,
-                                    color: Colors.grey.shade900,
-                                  ),
-                                ),
-                                Container(
-                                  child: Row(
-                                    children: [
-                                      FxText(
-                                        group_text,
-                                        maxLines: 2,
-                                        color: Colors.grey.shade500,
-                                      ),
-                                      Icon(CupertinoIcons.right_chevron,
-                                          size: 22,
-                                          color: Colors.grey.shade600),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        )
-                      : SizedBox(),
-                  FxDashedDivider(
-                    color: Colors.grey.shade300,
-                  ),
-                  (user_role == "Farmer")
-                      ? FormBuilderDropdown(
-                          dropdownColor: Colors.white,
-                          name: 'sector',
-                          decoration: customTheme.input_decoration_2(
-                            labelText: "Sector",
-                          ),
-                          validator: FormBuilderValidators.compose([
-                            FormBuilderValidators.required(
-                              context,
-                              errorText: "sector is required.",
-                            )
-                          ]),
-                          items: [
-                            'Crop farming',
-                            'Livestock farming',
-                            'Fisheries',
-                          ]
-                              .map((tyepe) => DropdownMenuItem(
-                                    value: tyepe,
-                                    child: Text('$tyepe'),
-                                  ))
-                              .toList(),
-                        )
-                      : SizedBox(),
-                  FxDashedDivider(
-                    color: Colors.grey.shade300,
-                  ),
-
-                  (user_role == "Farmer")
-                      ? FormBuilderTextField(
-                          name: "experience",
-                          textInputAction: TextInputAction.next,
-                          keyboardType: TextInputType.number,
-                          validator: FormBuilderValidators.compose([
-                            FormBuilderValidators.required(
-                              context,
-                              errorText: "Experience is required.",
-                            ),
-                          ]),
-                          decoration: customTheme.input_decoration_2(
-                              labelText: "Years of Experience", hintText: "... selected selector"))
-                      : SizedBox(),
-
-                  FxDashedDivider(
-                    color: Colors.grey.shade300,
-                  ),
-
-                  (user_role == "Farmer")
-                      ?  FormBuilderDropdown(
-                    dropdownColor: Colors.white,
-                    name: 'production_scale',
-                    decoration: customTheme.input_decoration_2(
-                      labelText: "Production scale",
-                    ),
-                    validator: FormBuilderValidators.compose([
-                      FormBuilderValidators.required(
-                        context,
-                        errorText: "Production scale is required.",
-                      )
-                    ]),
-                    items: [
-                      'Small scale',
-                      'Medium scale',
-                      'Large scale',
-                    ]
-                        .map((tyepe) => DropdownMenuItem(
-                      value: tyepe,
-                      child: Text('$tyepe'),
-                    ))
-                        .toList(),
-                  ):SizedBox(),
-
-
-                  FxDashedDivider(
-                    color: Colors.grey.shade300,
-                  ),
-
-                  (user_role == "Farmer")
-                      ?  FormBuilderDropdown(
-                    dropdownColor: Colors.white,
-                    name: 'access_to_credit',
-                    decoration: customTheme.input_decoration_2(
-                      labelText: "Do you have access to credit?",
-                    ),
-                    validator: FormBuilderValidators.compose([
-                      FormBuilderValidators.required(
-                        context,
-                        errorText: "Production scale is required.",
-                      )
-                    ]),
-                    items: [
-                      'Yes',
-                      'No',
-                    ]
-                        .map((tyepe) => DropdownMenuItem(
-                      value: tyepe,
-                      child: Text('$tyepe'),
-                    ))
-                        .toList(),
-                  ):SizedBox(),
-
-                  FxDashedDivider(
-                    color: Colors.grey.shade300,
-                  ),
-
+                      decoration: customTheme.input_decoration(
+                          labelText: "Select farm group", icon: Icons.group)),
+                  FxSpacing.height(10),
+                  FormBuilderTextField(
+                      name: "company_name",
+                      textCapitalization: TextCapitalization.sentences,
+                      textInputAction: TextInputAction.next,
+                      keyboardType: TextInputType.text,
+                      validator: FormBuilderValidators.compose([
+                        FormBuilderValidators.required(
+                          context,
+                          errorText: "Company name required.",
+                        ),
+                      ]),
+                      decoration: customTheme.input_decoration(
+                          labelText: "Farm/Enterprise name",
+                          icon: Icons.business)),
+                  FxSpacing.height(10),
+                  FormBuilderTextField(
+                      name: "district",
+                      readOnly: true,
+                      onTap: () => {pick_location()},
+                      textCapitalization: TextCapitalization.sentences,
+                      textInputAction: TextInputAction.next,
+                      keyboardType: TextInputType.phone,
+                      validator: FormBuilderValidators.compose([
+                        FormBuilderValidators.required(
+                          context,
+                          errorText: "Location is required.",
+                        ),
+                      ]),
+                      decoration: customTheme.input_decoration(
+                          labelText: "Farm/Enterprise location",
+                          icon: Icons.place)),
+                  FxSpacing.height(10),
+                  FormBuilderTextField(
+                      name: "gps",
+                      textCapitalization: TextCapitalization.sentences,
+                      readOnly: true,
+                      onTap: () => {get_location()},
+                      validator: FormBuilderValidators.compose([
+                        FormBuilderValidators.required(
+                          context,
+                          errorText: "Location on map (GPS) is needed.",
+                        ),
+                      ]),
+                      decoration: customTheme.input_decoration(
+                          labelText: "Location on map (GPS)",
+                          icon: Icons.gps_fixed)),
+                  FxSpacing.height(10),
+                  FxSpacing.height(10),
+                  FormBuilderTextField(
+                      name: "address",
+                      textCapitalization: TextCapitalization.sentences,
+                      textInputAction: TextInputAction.next,
+                      keyboardType: TextInputType.text,
+                      validator: FormBuilderValidators.compose([
+                        FormBuilderValidators.required(
+                          context,
+                          errorText: "Address required.",
+                        ),
+                      ]),
+                      decoration: customTheme.input_decoration(
+                          labelText: "Farm/Enterprise street address",
+                          icon: Icons.map_outlined)),
+                  FxSpacing.height(10),
+                  FormBuilderTextField(
+                      name: "division",
+                      readOnly: true,
+                      onTap: () => {pick_category()},
+                      textCapitalization: TextCapitalization.sentences,
+                      textInputAction: TextInputAction.next,
+                      validator: FormBuilderValidators.compose([
+                        FormBuilderValidators.required(
+                          context,
+                          errorText: "Your main category is required.",
+                        ),
+                      ]),
+                      decoration: customTheme.input_decoration(
+                          labelText: "Dealers in?",
+                          icon: Icons.category_outlined)),
+                  FxSpacing.height(10),
+                  FormBuilderTextField(
+                      name: "services",
+                      textCapitalization: TextCapitalization.sentences,
+                      maxLines: 4,
+                      minLines: 4,
+                      validator: FormBuilderValidators.compose([
+                        FormBuilderValidators.required(
+                          context,
+                          errorText: "Services required",
+                        ),
+                      ]),
+                      decoration: customTheme.input_decoration(
+                          labelText: "Services offered",
+                          icon: Icons.volunteer_activism)),
+                  FxSpacing.height(10),
+                  FormBuilderTextField(
+                      name: "about",
+                      textCapitalization: TextCapitalization.sentences,
+                      maxLines: 8,
+                      minLines: 4,
+                      validator: FormBuilderValidators.compose([
+                        FormBuilderValidators.required(
+                          context,
+                          errorText: "About is required",
+                        ),
+                      ]),
+                      decoration: customTheme.input_decoration(
+                          labelText: "About Company/Business",
+                          icon: Icons.info)),
+                  FxSpacing.height(10),
+                  FxSpacing.height(10),
+                  FormBuilderTextField(
+                      name: "facebook",
+                      textInputAction: TextInputAction.next,
+                      keyboardType: TextInputType.url,
+                      validator: FormBuilderValidators.compose([
+                        FormBuilderValidators.url(
+                          context,
+                          errorText: "Enter valid url.",
+                        ),
+                      ]),
+                      decoration: customTheme.input_decoration(
+                          labelText: "Facebook link", icon: Icons.facebook)),
+                  FxSpacing.height(10),
+                  FormBuilderTextField(
+                      name: "twitter",
+                      textInputAction: TextInputAction.next,
+                      keyboardType: TextInputType.url,
+                      validator: FormBuilderValidators.compose([
+                        FormBuilderValidators.url(
+                          context,
+                          errorText: "Enter valid url.",
+                        ),
+                      ]),
+                      decoration: customTheme.input_decoration(
+                          labelText: "Twitter link", icon: MdiIcons.twitter)),
+                  FxSpacing.height(10),
+                  FormBuilderTextField(
+                      name: "whatsapp",
+                      textInputAction: TextInputAction.next,
+                      keyboardType: TextInputType.url,
+                      decoration: customTheme.input_decoration(
+                          labelText: "Whatsapp number", icon: Icons.whatsapp)),
+                  FxSpacing.height(10),
+                  FormBuilderTextField(
+                      name: "instagram",
+                      textInputAction: TextInputAction.next,
+                      keyboardType: TextInputType.url,
+                      decoration: customTheme.input_decoration(
+                          labelText: "Instagram link",
+                          icon: MdiIcons.instagram)),
+                  FxSpacing.height(10),
                   Container(
-                    margin: EdgeInsets.only(top: 10),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(10)),
                       color: Colors.red.shade50,
@@ -666,11 +580,11 @@ password
                           )
                         : Container(
                             padding: EdgeInsets.all(12),
-                      child: Text(
-                        error_message,
-                        style: TextStyle(color: Colors.red.shade800),
-                      ),
-                    ),
+                            child: Text(
+                              error_message,
+                              style: TextStyle(color: Colors.red.shade800),
+                            ),
+                          ),
                   ),
                   FxSpacing.height(10),
                   onLoading
@@ -821,9 +735,6 @@ password
     setState(() {});
   }
 
-  String group_text = "";
-  String group_id = "";
-
   prick_farmer_group() async {
     farmers_groups = await FarmersGroup.get_items();
     final result = await Navigator.push(
@@ -838,17 +749,11 @@ password
     );
     if (result != null) {
       if (result['id'] != null && result['name'] != null) {
-        group_id = result['id'].toString();
-        group_text = result['name'].toString();
-        setState(() {});
+        item.region = result['id'].toString();
+        _formKey.currentState!.patchValue({
+          'farm_group_text': result['name'].toString(),
+        });
       }
     }
-  }
-
-  String user_role = "";
-
-  OnUserTypeChange(String c) {
-    user_role = c.toString();
-    setState(() {});
   }
 }

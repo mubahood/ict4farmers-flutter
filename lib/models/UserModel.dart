@@ -251,4 +251,46 @@ class UserModel extends HiveObject {
     u.logged_in_user = data['logged_in_user'].toString();
     return u;
   }
+
+  String date_of_birth = "";
+  String marital_status = "";
+  String gender = "";
+  String group_id = "";
+  String group_text = "";
+  String sector = "";
+  String production_scale = "";
+  String number_of_dependants = "";
+  String initial_toal_capitial = "";
+  String experience = "";
+  String access_to_credit = "";
+  String user_role = "";
+  bool profile_is_complete = false;
+
+  void init() {
+    if (!this.facebook.isEmpty) {
+      if (this.facebook.length > 15) {
+        Map<dynamic, dynamic> map = json.decode(this.facebook);
+        if (map != null) {
+          if (map['id'] != null) {
+            int id = Utils.int_parse(map['id']);
+            if (id > 0) {
+              this.date_of_birth = map['date_of_birth'].toString();
+              this.marital_status = map['marital_status'].toString();
+              this.gender = map['gender'].toString();
+              this.group_id = map['group_id'].toString();
+              this.group_text = map['group_text'].toString();
+              this.sector = map['sector'].toString();
+              this.production_scale = map['production_scale'].toString();
+              this.number_of_dependants = map['number_of_dependants'].toString();
+              this.initial_toal_capitial = map['initial_toal_capitial'].toString();
+              this.access_to_credit = map['access_to_credit'].toString();
+              this.user_role = map['user_role'].toString();
+              this.experience = map['experience'].toString();
+              this.profile_is_complete =  Utils.bool_parse(map['profile_is_complete']);
+            }
+          }
+        }
+      }
+    }
+  }
 }

@@ -1,6 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart';
 import 'package:flutx/flutx.dart';
 import 'package:flutx/utils/spacing.dart';
 import 'package:flutx/widgets/button/button.dart';
@@ -314,10 +313,10 @@ void show_not_account_bottom_sheet(context) {
 }
 
 Widget NoAccountWidget(BuildContext context,
-    {String body: "You are not logged in yet.\n\n"
-        "Create your ${AppConfig.AppName} account today! and share farming experience with thousands of farmers in Uganda.",
+    {String body: "You are not logged in yet."
+        "",
     String action_text:
-        "Sell your farm products, Chat with experts, Compare farm products prices, Manage your farms and much more...",
+        "Create your ${AppConfig.AppName} account today! & Sell your farm products, Chat with experts, Compare farm products prices, Manage your farms and much more...",
     String empty_image: ""}) {
   String _empty_image = './assets/project/no_account.png';
   if (!empty_image.isEmpty) {

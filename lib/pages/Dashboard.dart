@@ -62,6 +62,7 @@ class DashboardState extends State<Dashboard> {
     if (loggedUser.id < 1) {
       is_logged_in = false;
     } else {
+      loggedUser.init();
       is_logged_in = true;
     }
 
@@ -122,29 +123,56 @@ class DashboardState extends State<Dashboard> {
     return SafeArea(
       child: Scaffold(
         backgroundColor: CustomTheme.primary_bg,
-        floatingActionButton: FloatingActionButton.extended(
-            backgroundColor: CustomTheme.primary,
-            elevation: 20,
-            onPressed: () {
-              if (is_logged_in) {
-                Utils.navigate_to(AppConfig.MyAccountScreen, context);
-              } else {
-                show_not_account_bottom_sheet(context);
-              }
-            },
-            label: Row(
-              children: [
-                Icon(
-                  Icons.person,
-                  size: 18,
-                ),
-                Container(
-                  child: Text(
-                    "My Account",
-                  ),
-                ),
-              ],
-            )),
+        floatingActionButton:
+            (is_logged_in && (!loggedUser.profile_is_complete))
+                ? FloatingActionButton.extended(
+                    backgroundColor: Colors.red.shade800,
+                    elevation: 20,
+                    onPressed: () {
+                      if (is_logged_in) {
+                        Utils.navigate_to(AppConfig.AccountEdit, context);
+                      } else {
+                        show_not_account_bottom_sheet(context);
+                      }
+                    },
+                    label: Row(
+                      children: [
+                        Icon(
+                          Icons.edit,
+                          size: 18,
+                        ),
+                        Container(
+                          padding: EdgeInsets.only(left: 10),
+                          child: FxText(
+                            "Complete Profile",
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
+                    ))
+                : FloatingActionButton.extended(
+                    backgroundColor: CustomTheme.primary,
+                    elevation: 20,
+                    onPressed: () {
+                      if (is_logged_in) {
+                        Utils.navigate_to(AppConfig.MyAccountScreen, context);
+                      } else {
+                        show_not_account_bottom_sheet(context);
+                      }
+                    },
+                    label: Row(
+                      children: [
+                        Icon(
+                          Icons.person,
+                          size: 18,
+                        ),
+                        Container(
+                          child: Text(
+                            is_logged_in ? "My Account" : " Register | Login ",
+                          ),
+                        ),
+                      ],
+                    )),
         body: RefreshIndicator(
             color: CustomTheme.primary,
             backgroundColor: Colors.white,
@@ -260,9 +288,18 @@ class DashboardState extends State<Dashboard> {
                                 child: is_logged_in
                                     ? InkWell(
                                         onTap: () => {
-                                          Utils.navigate_to(
-                                              AppConfig.MyAccountScreen,
-                                              context)
+                                          if (loggedUser.profile_is_complete)
+                                            {
+                                              Utils.navigate_to(
+                                                  AppConfig.MyAccountScreen,
+                                                  context)
+                                            }
+                                          else
+                                            {
+                                              Utils.navigate_to(
+                                                  AppConfig.AccountEdit,
+                                                  context)
+                                            }
                                         },
                                         child: CachedNetworkImage(
                                           width: 60,
@@ -427,7 +464,70 @@ class DashboardState extends State<Dashboard> {
                                       child: Icon(
                                         MdiIcons.instagram,
                                         size: 30,
-                                        color: Colors.purple.shade300,
+                                        color: Colors.red.shade700,
+                                      ),
+                                      decoration: BoxDecoration(
+                                          border: Border.all(
+                                              color: Colors.grey.shade500,
+                                              width: 1),
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(11))),
+                                    ),
+                                  ),
+                                  InkWell(
+                                    onTap: () => {
+                                      Utils.launchOuLink(
+                                          AppConfig.OUR_YOUTUBE_LINK)
+                                    },
+                                    child: Container(
+                                      margin: EdgeInsets.only(left: 16),
+                                      padding: EdgeInsets.all(3),
+                                      child: Icon(
+                                        MdiIcons.youtube,
+                                        size: 30,
+                                        color: Colors.red.shade500,
+                                      ),
+                                      decoration: BoxDecoration(
+                                          border: Border.all(
+                                              color: Colors.grey.shade500,
+                                              width: 1),
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(11))),
+                                    ),
+                                  ),
+                                  InkWell(
+                                    onTap: () => {
+                                      Utils.launchOuLink(
+                                          AppConfig.OUR_WEBSITE_LINK)
+                                    },
+                                    child: Container(
+                                      margin: EdgeInsets.only(left: 16),
+                                      padding: EdgeInsets.all(3),
+                                      child: Icon(
+                                        MdiIcons.web,
+                                        size: 30,
+                                        color: Colors.grey.shade900,
+                                      ),
+                                      decoration: BoxDecoration(
+                                          border: Border.all(
+                                              color: Colors.grey.shade500,
+                                              width: 1),
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(11))),
+                                    ),
+                                  ),
+                                  InkWell(
+                                    onTap: () => {
+                                      Utils.launchPhone(
+                                          AppConfig.OUR_PHONE_NUMBER)
+                                    },
+                                    child: Container(
+                                      margin: EdgeInsets.only(left: 16),
+                                      padding: EdgeInsets.all(3),
+                                      child: Icon(
+                                        MdiIcons.phone,
+                                        size: 30,
+                                        color: CustomTheme.primary,
                                       ),
                                       decoration: BoxDecoration(
                                           border: Border.all(

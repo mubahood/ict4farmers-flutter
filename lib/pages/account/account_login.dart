@@ -93,7 +93,7 @@ class _AccountLogin extends State<AccountLogin> {
                   Container(
                     child: Image.asset(
                       Images.logo_1,
-                      height: 70,
+                      height: 100,
                     ),
                   ),
                   FxSpacing.height(16),
@@ -110,12 +110,12 @@ class _AccountLogin extends State<AccountLogin> {
                       validator: FormBuilderValidators.compose([
                         FormBuilderValidators.required(
                           context,
-                          errorText: "Email address required.",
+                          errorText: "Phone number required.",
                         ),
                       ]),
                       decoration: customTheme.input_decoration(
-                          labelText: "Email address / Username ",
-                          icon: Icons.alternate_email)),
+                          labelText: "Phone number or Username",
+                          icon: Icons.phone)),
                   FxSpacing.height(24),
                   FormBuilderTextField(
                     name: "password_1",
@@ -141,17 +141,18 @@ class _AccountLogin extends State<AccountLogin> {
                   ),
                   FxSpacing.height(24),
                   Container(
+                    margin: EdgeInsets.only(bottom: 20),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(10)),
                       color: Colors.red.shade50,
                     ),
                     child: error_message.isEmpty
                         ? SizedBox(
-                      height: 0,
-                      width: 0,
-                    )
+                            height: 0,
+                            width: 0,
+                          )
                         : Container(
-                      padding: EdgeInsets.all(12),
+                            padding: EdgeInsets.all(12),
                       child: Text(
                         error_message,
                         style: TextStyle(color: Colors.red.shade800),
