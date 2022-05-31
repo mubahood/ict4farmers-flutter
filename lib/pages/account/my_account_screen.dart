@@ -250,7 +250,6 @@ class MyAccountScreenState extends State<MyAccountScreen> {
       Utils.showSnackBar("Please Check errors in the form and fix them first.",
           context, Colors.white,
           background_color: Colors.red);
-
       return;
     }
 

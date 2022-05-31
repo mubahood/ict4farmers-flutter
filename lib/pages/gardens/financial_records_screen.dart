@@ -62,6 +62,7 @@ class FinancialRecordsScreenState extends State<FinancialRecordsScreen> {
         await FinancialRecordModel.get_items();
 
     activities.clear();
+    profit_loss = 0;
     temp_finances.forEach((element) {
       if (element.garden_id.toString() == id.toString()) {
         activities.add(element);
@@ -195,7 +196,7 @@ class FinancialRecordsScreenState extends State<FinancialRecordsScreen> {
               ],
             ),
           ),
-          _widget_single_item('Enterprize', gardenModel.name),
+          _widget_single_item('Enterprise', gardenModel.name),
           _widget_single_item('Created by', m.created_by_name.toString()),
           _widget_single_item(
               'DATE', '${Utils.to_date_1(m.created_at.toString())}'),

@@ -40,6 +40,7 @@ class GardenScreenState extends State<GardenScreen> {
   int count_activities_all = 0;
   int finainancial_expence = 0;
   int finainancial_income = 0;
+  int profit_loss = 0;
   int count_activities_remaining = 0;
   int count_activities_submitted = 0;
   List<int> done_finacnces = [];
@@ -86,10 +87,12 @@ class GardenScreenState extends State<GardenScreen> {
 
     finainancial_expence = 0;
     finainancial_income = 0;
+    profit_loss = 0;
     done_finacnces.clear();
     done_finacnces = [];
     all_fines.forEach((xx) {
       if (!done_finacnces.contains(xx.id)) {
+        profit_loss += xx.amount;
         done_finacnces.add(xx.id);
         if (xx.garden_id.toString() == item.id.toString()) {
           if (xx.amount.isNegative) {
@@ -100,6 +103,8 @@ class GardenScreenState extends State<GardenScreen> {
         }
       }
     });
+
+
 
     count_activities_all = 0;
     count_activities_remaining = 0;
@@ -260,9 +265,9 @@ class GardenScreenState extends State<GardenScreen> {
       item.screen = AppConfig.FinancialRecordsScreen;
       item.complete = "PROFIT/LOSS";
       item.complete_text =
-          " ${Utils.number_short(finainancial_income - finainancial_expence)}";
+          " ${Utils.number_short(profit_loss)}";
     } else if (index == 2) {
-      item.title = "Enterprize's records";
+      item.title = "Enterprise's records";
       item.all = "All records";
       item.all_text = "${garden_records.length.toString()}";
       item.done = "INCOME";
@@ -271,7 +276,7 @@ class GardenScreenState extends State<GardenScreen> {
       item.complete_text = " 11";
       item.screen = AppConfig.GardenProductionRecordsScreen;
     } else if (index == 3) {
-      item.title = "Enterprize's gallery";
+      item.title = "Enterprise's gallery";
       item.all = "Albums";
       item.all_text = "${garden_records.length.toString()}";
       item.done = "INCOME";

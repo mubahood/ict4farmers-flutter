@@ -2,23 +2,23 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutx/flutx.dart';
 import 'package:flutx/widgets/text/text.dart';
-import 'package:ict4farmers/models/WorkerModel.dart';
+import 'package:ict4farmers/models/FarmModel.dart';
 
-import '../../models/WorkerModel.dart';
+import '../../models/FarmModel.dart';
 import '../../theme/app_theme.dart';
 import '../../utils/AppConfig.dart';
 import '../../utils/Utils.dart';
 import '../../widget/my_widgets.dart';
 
-class WorkersScreen extends StatefulWidget {
+class FarmsScreen extends StatefulWidget {
   @override
-  WorkersScreenState createState() => WorkersScreenState();
+  FarmsScreenState createState() => FarmsScreenState();
 }
 
-class WorkersScreenState extends State<WorkersScreen> {
+class FarmsScreenState extends State<FarmsScreen> {
   late ThemeData theme;
 
-  WorkersScreenState();
+  FarmsScreenState();
 
   @override
   void initState() {
@@ -28,17 +28,17 @@ class WorkersScreenState extends State<WorkersScreen> {
     my_init();
   }
 
-  List<WorkerModel> items = [];
+  List<FarmModel> items = [];
   List<int> loaded = [];
 
   Future<void> my_init() async {
-    WorkerModel.get_items();
+    FarmModel.get_items();
 
     setState(() {});
 
     items.clear();
     loaded.clear();
-    List<WorkerModel> temp_items = await WorkerModel.get_items();
+    List<FarmModel> temp_items = await FarmModel.get_items();
 
     temp_items.forEach((element) {
       if (!loaded.contains(element.id)) {
@@ -58,10 +58,8 @@ class WorkersScreenState extends State<WorkersScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       floatingActionButton: extended_floating_button(context,
-          title: 'Add new worker', screen: AppConfig.WorkerCreateScreen),
-
+          title: 'Add new farm', screen: AppConfig.FarmCreateScreen),
       body: RefreshIndicator(
           color: CustomTheme.primary,
           backgroundColor: Colors.white,
@@ -75,7 +73,7 @@ class WorkersScreenState extends State<WorkersScreen> {
                   titleSpacing: 0,
                   elevation: 0,
                   title: FxText(
-                    'My Workers',
+                    'My Farms',
                     color: Colors.white,
                     fontSize: 22,
                     fontWeight: 500,
@@ -96,11 +94,11 @@ class WorkersScreenState extends State<WorkersScreen> {
     );
   }
 
-  Widget _widget_garden_activity_ui(WorkerModel m) {
+  Widget _widget_garden_activity_ui(FarmModel m) {
     return InkWell(
       onTap: () => {
         Utils.showSnackBar(
-            "Go to web dashboard to manage your workers.", context, Colors.white)
+            "Go to web dashboard to manage your farms.", context, Colors.white)
       },
       child: FxCard(
           color: Colors.white,
@@ -137,9 +135,10 @@ class WorkersScreenState extends State<WorkersScreen> {
                         overflow: TextOverflow.ellipsis,
                         color: Colors.black,
                         fontWeight: 800,
+                        fontSize: 18,
                       ),
                       FxText(
-                        '${m.phone_number}',
+                        '${m.details}',
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),

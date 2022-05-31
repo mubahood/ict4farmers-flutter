@@ -46,7 +46,6 @@ class GardensScreenState extends State<GardensScreen> {
 
     gardens = await GardenModel.get_items();
 
-
     is_logged_in = false;
     setState(() {});
   }
@@ -62,13 +61,10 @@ class GardensScreenState extends State<GardensScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () =>
-            {Utils.navigate_to(AppConfig.GardenCreateScreen, context)},
-        tooltip: 'Create new garden.',
-        backgroundColor: CustomTheme.primary,
-        child: const Icon(Icons.add),
-      ),
+
+      floatingActionButton: extended_floating_button(context,
+          title: 'Create new enterprise', screen: AppConfig.GardenCreateScreen),
+
       body: RefreshIndicator(
           color: CustomTheme.primary,
           backgroundColor: Colors.white,

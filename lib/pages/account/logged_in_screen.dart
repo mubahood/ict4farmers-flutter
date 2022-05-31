@@ -120,6 +120,12 @@ class LoggedInScreenState extends State<LoggedInScreen> {
 
               Divider(),
               singleOption(context,
+                  iconData: Icons.agriculture,
+                  option: "My farms",
+                  navigation: AppConfig.FarmsScreen),
+
+              Divider(),
+              singleOption(context,
                   iconData: Icons.sell,
                   option: "How to sell fast",
                   navigation: AppConfig.SellFast),

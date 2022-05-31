@@ -23,6 +23,8 @@ class AppConfig {
   static const String GardenProductionRecordsScreen = "GardenProductionRecordsScreen";
   static const String AboutUsScreen = "AboutUsScreen";
   static const String GardenProductionRecordCreateScreen = "GardenProductionRecordCreateScreen";
+  static const String FarmCreateScreen = "FarmCreateScreen";
+  static const String FarmsScreen = "FarmsScreen";
 
   static String Lorem1 = "Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto consequatur temporibus laboriosam atque aperiam dolorem, esse, velit exercitationem expedita sit optio possimus. Ipsam repellat corporis temporibus incidunt sunt obcaecati aperiam. Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto consequatur temporibus laboriosam atque aperiam dolorem, esse, velit exercitationem expedita sit optio possimus. Ipsam repellat corporis temporibus incidunt sunt obcaecati aperiam.";
   static String Lorem2 = "Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto consequatur temporibus laboriosam atque aperiam dolorem, esse, velit exercitationem expedita sit optio possimus. Ipsam repellat corporis temporibus incidunt sunt obcaecati aperiam.";

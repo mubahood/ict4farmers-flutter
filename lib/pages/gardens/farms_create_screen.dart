@@ -11,8 +11,6 @@ import 'package:flutx/utils/spacing.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:ict4farmers/models/CropCategory.dart';
-import 'package:ict4farmers/models/FarmModel.dart';
-import 'package:ict4farmers/pages/option_pickers/single_option_picker.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
@@ -27,14 +25,14 @@ import '../../utils/Utils.dart';
 import '../location_picker/location_main.dart';
 import '../option_pickers/multiple_option_picker.dart';
 
-class GardenCreateScreen extends StatefulWidget {
+class FarmCreateScreen extends StatefulWidget {
   @override
-  State<GardenCreateScreen> createState() => GardenCreateScreenState();
+  State<FarmCreateScreen> createState() => FarmCreateScreenState();
 }
 
 late CustomTheme customTheme;
 
-class GardenCreateScreenState extends State<GardenCreateScreen> {
+class FarmCreateScreenState extends State<FarmCreateScreen> {
   String nature_of_off = "";
   double latitude = 0.0;
   double longitude = 0.0;
@@ -53,7 +51,7 @@ class GardenCreateScreenState extends State<GardenCreateScreen> {
 
   @override
   Widget build(BuildContext context) {
-    String _title = "Creating new enterprise";
+    String _title = "Creating new farm";
     return Consumer<AppNotifier>(
         builder: (BuildContext context, AppNotifier value, Widget? child) {
       return Scaffold(
@@ -125,43 +123,7 @@ class GardenCreateScreenState extends State<GardenCreateScreen> {
                             child: Column(
                               children: [
                                 FormBuilderTextField(
-                                    name: 'category_text',
-                                    readOnly: true,
-                                    onTap: () => {pick_crop()},
-                                    textInputAction: TextInputAction.next,
-                                    keyboardType: TextInputType.name,
-                                    validator: FormBuilderValidators.compose([
-                                      FormBuilderValidators.required(
-                                        context,
-                                        errorText: "Category is required.",
-                                      ),
-                                    ]),
-                                    decoration: customTheme.input_decoration_2(
-                                      labelText: "Enterprise sector",
-                                    )),
-                                FxDashedDivider(
-                                  color: Colors.grey.shade300,
-                                ),
-                                FormBuilderTextField(
-                                    name: 'farm_text',
-                                    readOnly: true,
-                                    onTap: () => {pick_farm()},
-                                    textInputAction: TextInputAction.next,
-                                    keyboardType: TextInputType.name,
-                                    validator: FormBuilderValidators.compose([
-                                      FormBuilderValidators.required(
-                                        context,
-                                        errorText: "farm is required.",
-                                      ),
-                                    ]),
-                                    decoration: customTheme.input_decoration_2(
-                                      labelText: "Select farm",
-                                    )),
-                                FxDashedDivider(
-                                  color: Colors.grey.shade300,
-                                ),
-                                FormBuilderTextField(
-                                    name: "name",
+                                    name: "_name",
                                     textInputAction: TextInputAction.next,
                                     keyboardType: TextInputType.name,
                                     validator: FormBuilderValidators.compose([
@@ -181,44 +143,9 @@ class GardenCreateScreenState extends State<GardenCreateScreen> {
                                       ),
                                     ]),
                                     decoration: customTheme.input_decoration_2(
-                                        labelText: "Enterprise name",
+                                        labelText: "Farm name",
                                         hintText:
-                                            "What is the name of this item?")),
-                                FxDashedDivider(
-                                  color: Colors.grey.shade300,
-                                ),
-                                FormBuilderTextField(
-                                    name: "size",
-                                    textInputAction: TextInputAction.next,
-                                    keyboardType: TextInputType.number,
-                                    validator: FormBuilderValidators.compose([
-                                      FormBuilderValidators.required(
-                                        context,
-                                        errorText:
-                                            "Enterprise size is required",
-                                      ),
-                                    ]),
-                                    decoration: customTheme.input_decoration_2(
-                                        labelText: "Enterprise size (in Acres)",
-                                        hintText:
-                                            "How much is big is the land?")),
-                                FxDashedDivider(
-                                  color: Colors.grey.shade300,
-                                ),
-                                FormBuilderDateTimePicker(
-                                    name: "plant_date",
-                                    textInputAction: TextInputAction.next,
-                                    inputType: InputType.date,
-                                    validator: FormBuilderValidators.compose([
-                                      FormBuilderValidators.required(
-                                        context,
-                                        errorText: "Date when the enterprise started required",
-                                      ),
-                                    ]),
-                                    decoration: customTheme.input_decoration_2(
-                                        labelText: "Date when the enterprise started",
-                                        hintText:
-                                            "When did you start this enterprise?")),
+                                            "What is the name of this farm?")),
                                 FxDashedDivider(
                                   color: Colors.grey.shade300,
                                 ),
@@ -240,9 +167,9 @@ class GardenCreateScreenState extends State<GardenCreateScreen> {
                                       ),
                                     ]),
                                     decoration: customTheme.input_decoration_2(
-                                        labelText: "Enterprise description",
+                                        labelText: "Farm description",
                                         hintText:
-                                            "Write something about this Enterprise")),
+                                            "Write something about this Farm")),
                               ],
                             ),
                           ),
@@ -301,7 +228,7 @@ class GardenCreateScreenState extends State<GardenCreateScreen> {
                                   FxSpacing.width(16),
                                   Expanded(
                                     child: FxText.b1(
-                                      'Enterprise GPS',
+                                      'Farm\'s GPS',
                                       fontSize: 18,
                                       fontWeight: 500,
                                       color: Colors.grey.shade900,
@@ -328,36 +255,11 @@ class GardenCreateScreenState extends State<GardenCreateScreen> {
                             color: Colors.grey.shade200,
                             height: 1,
                           ),
-                          Container(
-                            color: Colors.grey.shade100,
-                            height: 25,
-                          ),
-                          Container(
-                            padding: EdgeInsets.only(top: 10, bottom: 10),
-                            color: Colors.white,
-                            child: Text(
-                                "Add Enterprise's photos. Not more than 15 photos."),
-                          ),
                         ],
                       ),
                     );
                   },
                   childCount: 1, // 1000 list items
-                ),
-              ),
-              SliverGrid(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3,
-                  mainAxisSpacing: 0,
-                  crossAxisSpacing: 0,
-                  childAspectRatio: 1,
-                ),
-                delegate: SliverChildBuilderDelegate(
-                  (context, index) {
-                    return single_image_picker(
-                        index, photos_picked[index].toString(), context);
-                  },
-                  childCount: photos_picked.length,
                 ),
               ),
               SliverList(
@@ -473,7 +375,6 @@ class GardenCreateScreenState extends State<GardenCreateScreen> {
   List<FormItemModel> form_data_to_upload = [];
 
   String crop_category_id = "";
-  String farm_id = "";
   String category_text = "";
   String location_sub_name = "";
   String location_id = "";
@@ -490,46 +391,6 @@ class GardenCreateScreenState extends State<GardenCreateScreen> {
           (result['location_sub_name'] != null)) {
         location_sub_name = result['location_sub_name'];
         location_id = result['location_sub_id'];
-        setState(() {});
-      }
-    }
-  }
-
-  Future<void> pick_farm() async {
-    if (my_farms.isEmpty) {
-      my_farms = await FarmModel.get_items();
-    }
-    if (my_farms.isEmpty) {
-      Utils.showSnackBar(
-          "Please add at least one farm in your farms.", context, Colors.white,
-          background_color: Colors.red);
-      return;
-    }
-
-    List<OptionPickerModel> local_items = [];
-
-    my_farms.forEach((element) {
-      OptionPickerModel item = new OptionPickerModel();
-      item.parent_id = '0';
-      item.id = element.id.toString();
-      item.name = element.name.toString();
-      local_items.add(item);
-    });
-
-    final result = await Navigator.push(
-      context,
-      MaterialPageRoute(
-          builder: (context) =>
-              SingleOptionPicker("Pick a farm",  local_items)),
-    );
-
-    if (result != null) {
-      if ((result['id'] != null) && (result['text'] != null)) {
-        farm_id = result['id'].toString();
-        _formKey.currentState!.patchValue({
-          'farm_text': result['text'].toString(),
-        });
-
         setState(() {});
       }
     }
@@ -579,13 +440,6 @@ class GardenCreateScreenState extends State<GardenCreateScreen> {
   void do_upload_process() async {
     error_message = "";
     setState(() {});
-
-    if (farm_id.isEmpty) {
-      Utils.showSnackBar("Please pick a farm where this enterprise belong.",
-          context, CustomTheme.onPrimary);
-      return;
-    }
-
     if (!_formKey.currentState!.validate()) {
       print("First fix shit");
       Utils.showSnackBar("Please Check errors in the form and fix them first.",
@@ -608,27 +462,10 @@ class GardenCreateScreenState extends State<GardenCreateScreen> {
 
     bool first_found = false;
     form_data_map['administrator_id'] = userModel.id;
-    form_data_map['farm_id'] = farm_id.toString();
 
-    form_data_map["name"] =
-        _formKey.currentState?.fields['name']?.value;
+    form_data_map["name"] = _formKey.currentState?.fields['_name']?.value;
 
-    form_data_map["plant_date"] =
-        _formKey.currentState?.fields['plant_date']?.value;
-
-
-
-    form_data_map['size'] =
-        _formKey.currentState?.fields['size']?.value;
-    form_data_map['details']  =
-        _formKey.currentState?.fields['details']?.value;
-
-    if (crop_category_id.isEmpty) {
-      Utils.showSnackBar(
-          "Please pick crop planted in this Enterprise.", context, Colors.white,
-          background_color: Colors.red);
-      return;
-    }
+    form_data_map['details'] = _formKey.currentState?.fields['details']?.value;
 
     if (location_id.isEmpty) {
       Utils.showSnackBar("Please pick item location", context, Colors.white,
@@ -637,37 +474,15 @@ class GardenCreateScreenState extends State<GardenCreateScreen> {
     }
 
     if (latitude == 0.00 || longitude == 0.0) {
-      Utils.showSnackBar(
-          "Please collect Enterprise's GPS", context, Colors.white,
+      Utils.showSnackBar("Please collect Farm's GPS", context, Colors.white,
           background_color: Colors.red);
       return;
     }
 
-    if (photos_picked.length < 2) {
-      Utils.showSnackBar("Please add at least one photo", context, Colors.white,
-          background_color: Colors.red);
-      return;
-    }
+    form_data_map["latitude"] = latitude.toString();
+    form_data_map["longitude"] = longitude.toString();
 
-    form_data_map['crop_category_id'] = crop_category_id;
     form_data_map['location_id'] = location_id;
-
-    if (!photos_picked.isEmpty) {
-      for (int __counter = 0; __counter < photos_picked.length; __counter++) {
-        if (first_found) {
-          try {
-            var img = await MultipartFile.fromFile(photos_picked[__counter],
-                filename: 'image_${__counter}');
-            if (img != null) {
-              form_data_map['image_${__counter}'] =
-                  await MultipartFile.fromFile(photos_picked[__counter],
-                      filename: photos_picked[__counter].toString());
-            } else {}
-          } catch (e) {}
-        }
-        first_found = true;
-      }
-    }
 
     var formData = FormData.fromMap(form_data_map);
     var dio = Dio();
@@ -683,15 +498,21 @@ class GardenCreateScreenState extends State<GardenCreateScreen> {
     });
 
     var response =
-        await dio.post('${AppConfig.BASE_URL}/api/gardens', data: formData);
+        await dio.post('${AppConfig.BASE_URL}/api/farms', data: formData);
 
     setState(() {
       is_uploading = false;
     });
 
+
     if (response == null) {
       Utils.showSnackBar("Failed to upload product. Please try again.", context,
           Colors.red.shade700);
+      return;
+    } else {
+      Utils.showSnackBar('Farm created successfully!', context, Colors.white,
+          background_color: CustomTheme.primary);
+      Navigator.pop(context);
       return;
     }
 
@@ -711,7 +532,7 @@ class GardenCreateScreenState extends State<GardenCreateScreen> {
         response.data['message'].toString(), context, Colors.white,
         background_color: CustomTheme.primary);
 
-    Navigator.pop(context, {"task": 'success'});
+    //longitudeNavigator.pop(context, {"task": 'success'});
   }
 
   do_pick_image() async {
@@ -745,11 +566,9 @@ class GardenCreateScreenState extends State<GardenCreateScreen> {
   }
 
   List<CropCategory> crop_categories = [];
-  List<FarmModel> my_farms = [];
 
   void my_init() async {
     crop_categories = await CropCategory.get_items();
-    my_farms = await FarmModel.get_items();
   }
 }
 /*

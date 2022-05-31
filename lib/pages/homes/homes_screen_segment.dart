@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutx/widgets/container/container.dart';
 import 'package:ict4farmers/models/ProductModel.dart';
 import 'package:ict4farmers/pages/TestPage1.dart';
 import 'package:ict4farmers/theme/app_notifier.dart';
@@ -65,19 +66,38 @@ class _HomesScreenSegmentState extends State<HomesScreenSegment>
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Container(
-                  child: Image(
-                    image: AssetImage(Images.logo_1),
-                    width: 120,
-                    color: null,
-                    fit: BoxFit.scaleDown,
-                    alignment: Alignment.center,
+                InkWell(
+                  onTap: () => {Navigator.pop(context)},
+                  child: FxContainer.rounded(
+                    bordered: true,
+                    border: Border.all(color: CustomTheme.primary),
+                    paddingAll: 5,
+                    splashColor: CustomTheme.primary,
+                    color: CustomTheme.primary_bg,
+                    child: Icon(
+                      Icons.arrow_back,
+                      size: 35,
+                      color: CustomTheme.primaryDark,
+                    ),
                   ),
                 ),
                 InkWell(
-                  onTap: () => {Utils.navigate_to(AppConfig.SearchScreen, context)},
+                  onTap: () => {Navigator.pop(context)},
                   child: Container(
-                    margin: EdgeInsets.only( top: 10),
+                    child: Image(
+                      image: AssetImage(Images.logo_1),
+                      width: 60,
+                      color: null,
+                      fit: BoxFit.scaleDown,
+                      alignment: Alignment.center,
+                    ),
+                  ),
+                ),
+                InkWell(
+                  onTap: () =>
+                      {Utils.navigate_to(AppConfig.SearchScreen, context)},
+                  child: Container(
+                    margin: EdgeInsets.only(top: 10),
                     padding: EdgeInsets.only(left: 10, top: 7, bottom: 7),
                     decoration: BoxDecoration(
                       color: Colors.grey.shade200,

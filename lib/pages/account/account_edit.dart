@@ -60,79 +60,75 @@ class _AccountEditState extends State<AccountEdit> {
       return;
     }
 
-    if (item.email == "null") {
-      item.email = "";
-    }
-    if (item.company_name == "null") {
-      item.company_name = "";
-    }
-    if (item.phone_number == "null") {
-      item.phone_number = "";
-    }
-    if (item.address == "null") {
-      item.address = "";
-    }
-    if (item.services == "null") {
-      item.services = "";
-    }
-    if (item.about == "null") {
-      item.about = "";
-    }
-
-    if (item.about == "null") {
-      item.district = "";
-    }
-
-    if (item.division == "null") {
-      item.division = "";
-    }
-
-    if (item.district == "null") {
-      item.district = "";
-    }
-
-    if (item.facebook == "null") {
-      item.facebook = "";
-    }
-
-    if (item.twitter == "null") {
-      item.twitter = "";
-    }
-
-    if (item.instagram == "null") {
-      item.instagram = "";
-    }
-
-    if (item.whatsapp == "null") {
-      item.whatsapp = "";
-    }
-
     if (item.latitude == "null" ||
         item.longitude == "null" ||
         item.latitude.isEmpty ||
         item.longitude.isEmpty) {
-      get_location();
+      //get_location();
     }
 
-    get_location();
+    if ((item.gender != "Male") && (item.gender != "Female")) {
+      item.gender = "";
+    }
 
-    item.email = item.username;
+    if ((item.marital_status == "Single") ||
+        (item.marital_status == "Married")) {
+      _formKey.currentState!.patchValue({
+        'marital_status': item.marital_status,
+      });
+    }
 
     _formKey.currentState!.patchValue({
       'name': item.name,
-      'email': item.username,
-      'company_name': item.company_name,
-      'phone_number': item.phone_number,
-      'address': item.address,
-      'services': item.services,
-      'about': item.about,
+      'email': item.email,
+      'gender': item.gender,
+      'date_of_birth': item.date_of_birth,
+      'number_of_dependants': item.number_of_dependants,
       'district': item.district,
-      'facebook': item.facebook,
-      'twitter': item.twitter,
-      'whatsapp': item.whatsapp,
-      'instagram': item.instagram,
-      'district': item.district,
+      'experience': item.experience,
     });
+
+    if ([
+      'Basic user',
+      'Farmer',
+      'Service provider',
+    ].contains(item.user_role)) {
+      _formKey.currentState!.patchValue({
+        'user_role': item.user_role,
+      });
+    }
+
+    if ([
+      'No any access',
+      'SACCO',
+      'Bank',
+      'VSLA',
+      'Family',
+    ].contains(item.access_to_credit)) {
+      _formKey.currentState!.patchValue({
+        'access_to_credit': item.access_to_credit,
+      });
+    }
+
+    if ([
+      'Small scale',
+      'Medium scale',
+      'Large scale',
+    ].contains(item.production_scale)) {
+      _formKey.currentState!.patchValue({
+        'production_scale': item.production_scale,
+      });
+    }
+
+    if ([
+      'Crop farming',
+      'Livestock farming',
+      'Fisheries',
+    ].contains(item.sector)) {
+      _formKey.currentState!.patchValue({
+        'sector': item.sector,
+      });
+    }
 
     farmers_groups = await FarmersGroup.get_items();
     farmers_groups.forEach((element) {
@@ -177,20 +173,22 @@ class _AccountEditState extends State<AccountEdit> {
 
       form_data_map = {
         'name': _formKey.currentState?.fields['name']?.value,
-        'user_id': item.id.toString(),
-        'region': item.region.toString(),
-        'company_name': _formKey.currentState?.fields['company_name']?.value,
         'email': _formKey.currentState?.fields['email']?.value,
-        'phone_number': _formKey.currentState?.fields['phone_number']?.value,
-        'address': _formKey.currentState?.fields['address']?.value,
-        'services': _formKey.currentState?.fields['services']?.value,
-        'about': _formKey.currentState?.fields['about']?.value,
+        'user_id': item.id.toString(),
+        'gender': _formKey.currentState?.fields['gender']?.value,
+        'marital_status':
+            _formKey.currentState?.fields['marital_status']?.value,
+        'date_of_birth': _formKey.currentState?.fields['date_of_birth']?.value,
+        'number_of_dependants':
+            _formKey.currentState?.fields['number_of_dependants']?.value,
+        'user_role': _formKey.currentState?.fields['user_role']?.value,
+        'experience': _formKey.currentState?.fields['experience']?.value,
+        'production_scale':
+            _formKey.currentState?.fields['production_scale']?.value,
+        'access_to_credit':
+            _formKey.currentState?.fields['access_to_credit']?.value,
         'district': _formKey.currentState?.fields['district']?.value,
-        'division': _formKey.currentState?.fields['division']?.value,
-        'facebook': _formKey.currentState?.fields['facebook']?.value,
-        'twitter': _formKey.currentState?.fields['twitter']?.value,
-        'whatsapp': _formKey.currentState?.fields['whatsapp']?.value,
-        'instagram': _formKey.currentState?.fields['instagram']?.value,
+        'sector': _formKey.currentState?.fields['sector']?.value,
       };
 
       if ((new_dp != null) && new_dp.length > 4) {
@@ -206,7 +204,6 @@ class _AccountEditState extends State<AccountEdit> {
       onLoading = true;
       setState(() {});
       String _resp = await Utils.http_post('api/users-update', form_data_map);
-      onLoading = false;
       setState(() {});
 
       if (_resp == null || _resp.isEmpty) {
@@ -226,6 +223,9 @@ class _AccountEditState extends State<AccountEdit> {
         setState(() {});
         return;
       }
+
+      onLoading = false;
+      setState(() {});
 
       UserModel u = UserModel.fromMap(resp_obg['data']);
 
@@ -265,9 +265,13 @@ password
               .copyWith(secondary: CustomTheme.primary.withAlpha(40))),
       child: Scaffold(
         appBar: AppBar(
+          iconTheme: IconThemeData(
+            color: Colors.white, // <= You can change your color here.
+          ),
+          backgroundColor: CustomTheme.primary,
           systemOverlayStyle: SystemUiOverlayStyle(
-            statusBarColor: Colors.white,
-            statusBarIconBrightness: Brightness.dark,
+            statusBarColor: CustomTheme.primary,
+            statusBarIconBrightness: Brightness.light,
             // For Android (dark icons)
             statusBarBrightness: Brightness.light, // For iOS (dark icons)
           ),
@@ -279,7 +283,7 @@ password
               Container(
                 child: Text(
                   "My Profile",
-                  style: TextStyle(color: Colors.black),
+                  style: TextStyle(color: Colors.white),
                 ),
               ),
               InkWell(
@@ -288,7 +292,12 @@ password
                 },
                 child: Container(
                     padding: FxSpacing.x(0),
-                    child: onLoading ? Text("Loading...") : Icon(Icons.done)),
+                    child: onLoading
+                        ? Text("Loading...")
+                        : Icon(
+                            Icons.done,
+                            color: Colors.white,
+                          )),
               ),
             ],
           ),
@@ -412,6 +421,7 @@ password
                       )
                     ]),
                     items: [
+                      '',
                       'Male',
                       'Female',
                     ]
@@ -460,7 +470,7 @@ password
                         ),
                       ]),
                       decoration: customTheme.input_decoration_2(
-                          labelText: "Age", hintText: "Hoe old are you?")),
+                          labelText: "Age", hintText: "How old are you?")),
                   FxDashedDivider(
                     color: Colors.grey.shade300,
                   ),
@@ -477,6 +487,25 @@ password
                       decoration: customTheme.input_decoration_2(
                           labelText: "Number of dependants",
                           hintText: "How many people on you?")),
+                  FxDashedDivider(
+                    color: Colors.grey.shade300,
+                  ),
+                  FormBuilderTextField(
+                      name: "district",
+                      textInputAction: TextInputAction.next,
+                      readOnly: true,
+                      onTap: () => {pick_location()},
+                      keyboardType: TextInputType.text,
+                      textCapitalization: TextCapitalization.sentences,
+                      validator: FormBuilderValidators.compose([
+                        FormBuilderValidators.required(
+                          context,
+                          errorText: "Location is required.",
+                        ),
+                      ]),
+                      decoration: customTheme.input_decoration_2(
+                          labelText: "Location",
+                          hintText: "Where do you mainly live?")),
                   FxDashedDivider(
                     color: Colors.grey.shade300,
                   ),
@@ -626,33 +655,35 @@ password
                   ),
 
                   (user_role == "Farmer")
-                      ?  FormBuilderDropdown(
-                    dropdownColor: Colors.white,
-                    name: 'access_to_credit',
-                    decoration: customTheme.input_decoration_2(
-                      labelText: "Do you have access to credit?",
-                    ),
-                    validator: FormBuilderValidators.compose([
-                      FormBuilderValidators.required(
-                        context,
-                        errorText: "Production scale is required.",
-                      )
-                    ]),
+                      ? FormBuilderDropdown(
+                          dropdownColor: Colors.white,
+                          name: 'access_to_credit',
+                          decoration: customTheme.input_decoration_2(
+                            labelText: "Do you have access to credit?",
+                          ),
+                          validator: FormBuilderValidators.compose([
+                            FormBuilderValidators.required(
+                              context,
+                              errorText: "This field is required.",
+                            )
+                          ]),
                     items: [
-                      'Yes',
-                      'No',
-                    ]
-                        .map((tyepe) => DropdownMenuItem(
-                      value: tyepe,
-                      child: Text('$tyepe'),
-                    ))
-                        .toList(),
-                  ):SizedBox(),
-
+                            'No any access',
+                            'SACCO',
+                            'Bank',
+                            'VSLA',
+                            'Family',
+                          ]
+                              .map((tyepe) => DropdownMenuItem(
+                                    value: tyepe,
+                                    child: Text('$tyepe'),
+                                  ))
+                              .toList(),
+                        )
+                      : SizedBox(),
                   FxDashedDivider(
                     color: Colors.grey.shade300,
                   ),
-
                   Container(
                     margin: EdgeInsets.only(top: 10),
                     decoration: BoxDecoration(

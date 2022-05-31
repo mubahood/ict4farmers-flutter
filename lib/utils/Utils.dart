@@ -46,6 +46,8 @@ import '../pages/account/onboarding_widget.dart';
 import '../pages/chat/chat_home_screen.dart';
 import '../pages/forum/create_post_screen.dart';
 import '../pages/gardens/GardenProductionRecordsScreen.dart';
+import '../pages/gardens/farms_create_screen.dart';
+import '../pages/gardens/farms_screen.dart';
 import '../pages/gardens/financial_records_create_screen.dart';
 import '../pages/gardens/financial_records_screen.dart';
 import '../pages/gardens/garden_activities_screen.dart';
@@ -349,6 +351,27 @@ class Utils {
           context,
           PageRouteBuilder(
             pageBuilder: (context, animation1, animation2) => WorkersScreen(),
+            transitionDuration: Duration.zero,
+          ),
+        );
+        break;
+
+      case AppConfig.FarmCreateScreen:
+        Navigator.push(
+          context,
+          PageRouteBuilder(
+            pageBuilder: (context, animation1, animation2) =>
+                FarmCreateScreen(),
+            transitionDuration: Duration.zero,
+          ),
+        );
+        break;
+
+      case AppConfig.FarmsScreen:
+        Navigator.push(
+          context,
+          PageRouteBuilder(
+            pageBuilder: (context, animation1, animation2) => FarmsScreen(),
             transitionDuration: Duration.zero,
           ),
         );
