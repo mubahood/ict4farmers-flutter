@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:html';
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -10,6 +11,7 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutx/flutx.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:ict4farmers/models/LocationModel.dart';
 import 'package:ict4farmers/pages/location_picker/location_main.dart';
 import 'package:ict4farmers/theme/app_theme.dart';
 import 'package:ict4farmers/utils/AppConfig.dart';
@@ -762,7 +764,13 @@ password
     }
   }
 
+  List<LocationModel> locations = [];
   Future<void> pick_location() async {
+    print("GETING....");
+    locations = await LocationModel.get_items();
+    print("GOT ===> ${locations.length} <===....");
+
+    return;
     final result = await Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => LocationMain()),
