@@ -8,7 +8,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutx/flutx.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:ict4farmers/pages/location_picker/location_main.dart';
 import 'package:ict4farmers/theme/app_theme.dart';
 import 'package:ict4farmers/utils/AppConfig.dart';
@@ -36,18 +35,6 @@ class _AccountEditState extends State<AccountEdit> {
 
   UserModel item = new UserModel();
 
-  Future<void> get_location() async {
-    Position p = await Utils.get_device_location();
-    if (p != null) {
-      if (p.latitude != null && p.longitude != null) {
-        item.longitude = p.latitude.toString();
-        item.longitude = p.longitude.toString();
-        _formKey.currentState!.patchValue({
-          'gps': "${item.longitude},${item.longitude}",
-        });
-      }
-    }
-  }
 
   Future<void> my_init() async {
     item = await Utils.get_logged_in();
@@ -104,14 +91,9 @@ class _AccountEditState extends State<AccountEdit> {
       item.whatsapp = "";
     }
 
-    if (item.latitude == "null" ||
-        item.longitude == "null" ||
-        item.latitude.isEmpty ||
-        item.longitude.isEmpty) {
-      get_location();
-    }
+    item.longitude = "0.00";
+    item.latitude = "0.00";
 
-    get_location();
 
     item.email = item.username;
 
@@ -420,22 +402,7 @@ password
                           labelText: "Enterprise location",
                           icon: Icons.place)),
                   FxSpacing.height(10),
-                  FormBuilderTextField(
-                      name: "gps",
-                      textCapitalization: TextCapitalization.sentences,
-                      readOnly: true,
-                      onTap: () => {get_location()},
-                      validator: FormBuilderValidators.compose([
-                        FormBuilderValidators.required(
-                          context,
-                          errorText: "Location on map (GPS) is needed.",
-                        ),
-                      ]),
-                      decoration: customTheme.input_decoration(
-                          labelText: "Location on map (GPS)",
-                          icon: Icons.gps_fixed)),
-                  FxSpacing.height(10),
-                  FxSpacing.height(10),
+
                   FormBuilderTextField(
                       name: "address",
                       textCapitalization: TextCapitalization.sentences,

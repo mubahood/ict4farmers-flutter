@@ -1,5 +1,4 @@
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:ict4farmers/models/ProductModel.dart';
+ import 'package:ict4farmers/models/ProductModel.dart';
 import 'package:ict4farmers/models/UserModel.dart';
 
 class MapItem {
@@ -13,23 +12,7 @@ class MapItem {
   UserModel user = new UserModel();
   ProductModel product = new ProductModel();
 
-  LatLng get_lat_log() {
-    double lati = 0.364607;
-    double long = 32.604781;
 
-    try {
-      lati = double.parse(this.lati.toString());
-      long = double.parse(this.longi.toString());
-    } catch (e) {
-      lati = 0.364607;
-      long = 32.604781;
-    }
-    LatLng point = new LatLng(lati, long);
-
-    return point;
-
-
-  }
 }
 
 class MyLatiLong{

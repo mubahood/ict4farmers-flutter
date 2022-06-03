@@ -4,26 +4,17 @@ import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutx/flutx.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../../../models/map_item.dart';
 import '../../../theme/app_theme.dart';
 
 class SearchController extends FxController {
-  final LatLng center = const LatLng(45.521563, -122.677433);
   bool showLoading = false, uiLoading = false;
-  late GoogleMapController mapController;
   List<MapItem> map_items = [];
   final PageController pageController =
       PageController(initialPage: 0, viewportFraction: 0.85);
   int currentPage = 0;
 
-  final Set<Marker> marker = {};
-
-  void onMapCreated(GoogleMapController controller) {
-    mapController = controller;
-    setMapTheme();
-  }
 
   @override
   void initState() {
@@ -32,11 +23,6 @@ class SearchController extends FxController {
   }
 
   Future<void> setMapTheme() async {
-    if (AppTheme.theme == AppTheme.darkTheme) {
-      String mapStyle = await rootBundle
-          .loadString('assets/images/apps/estate/map-dark-style.txt');
-      mapController.setMapStyle(mapStyle);
-    }
   }
 
   @override
@@ -82,25 +68,12 @@ class SearchController extends FxController {
       lati = 0.364607;
       long = 32.604781;
     }
-    LatLng point = new LatLng(lati, long);
-
-    marker.add(
-      Marker(
-          icon: BitmapDescriptor.fromBytes(
-              await getBytesFromAsset('assets/project/marker.png', 70)),
-          markerId: MarkerId("${item.type}-${item.id}"),
-          position: point,
-          onTap: () {
-            onMarkerTap(item);
-          }),
-    );
   }
 
   addMarkers(List<MapItem> items) async {
     if (items.isEmpty) {
       return;
     }
-    marker.clear();
     map_items.clear();
     for (int x = 0; x < items.length; x++) {
       map_items.add(items[x]);

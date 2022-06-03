@@ -4,7 +4,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutx/flutx.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:ict4farmers/models/ProductModel.dart';
 import 'package:ict4farmers/models/UserModel.dart';
 import 'package:ict4farmers/pages/homes/on_map/search_controller.dart';
@@ -114,21 +113,6 @@ class _OnMapScreenState extends State<OnMapScreen> {
       ),*/
       return Stack(
         children: [
-          GoogleMap(
-            markers: controller.marker,
-            onMapCreated: controller.onMapCreated,
-            mapToolbarEnabled: false,
-            zoomControlsEnabled: false,
-            gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>[
-              new Factory<OneSequenceGestureRecognizer>(
-                () => new EagerGestureRecognizer(),
-              ),
-            ].toSet(),
-            initialCameraPosition: CameraPosition(
-              target: controller.center,
-              zoom: 7.0,
-            ),
-          ),
           Positioned(
             bottom: 120,
             right: 20,
@@ -161,7 +145,7 @@ class _OnMapScreenState extends State<OnMapScreen> {
                 pageSnapping: true,
                 physics: ClampingScrollPhysics(),
                 controller: controller.pageController,
-                onPageChanged: (index) => {onPageChange(index)},
+                onPageChanged: (index) => { },
                 children: _buildMapItems(),
               ),
             ),
@@ -171,10 +155,6 @@ class _OnMapScreenState extends State<OnMapScreen> {
     }
   }
 
-  onPageChange(int position) {
-    controller.mapController.animateCamera(CameraUpdate.newCameraPosition(
-        CameraPosition(target: map_items[position].get_lat_log(), zoom: 15.5)));
-  }
 
   void _init_state() {
     show_products();
@@ -234,7 +214,6 @@ class _OnMapScreenState extends State<OnMapScreen> {
     controller.uiLoading = false;
     controller.update();
 
-    onPageChange(0);
   }
 
   Future<void> show_farmers() async {
@@ -292,7 +271,6 @@ class _OnMapScreenState extends State<OnMapScreen> {
     controller.uiLoading = false;
     controller.update();
 
-    onPageChange(0);
   }
 
   MapFilterItem _mapFilterItem = new MapFilterItem();

@@ -6,7 +6,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutx/widgets/text/text.dart';
-import 'package:geolocator/geolocator.dart';
 
 import '../../theme/app_theme.dart';
 import '../../utils/Utils.dart';
@@ -78,14 +77,6 @@ class _SuccessPaymentPage extends State<SuccessPaymentPage> {
         )));
   }
 
-  Future<void> get_location() async {
-    Position p = await Utils.get_device_location();
-    if (p != null) {
-      if (p.latitude != null && p.longitude != null) {
-        Navigator.pushNamedAndRemoveUntil(context, "/HomeScreen", (r) => false);
-      }
-    }
-  }
 
   pay_online() {
     Navigator.pushNamedAndRemoveUntil(context, "/HomesScreen", (r) => false);

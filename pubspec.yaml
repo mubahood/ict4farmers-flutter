@@ -27,19 +27,20 @@ dependencies:
   hive: ^2.0.6
   hive_flutter: ^1.1.0
   shimmer: ^2.0.0
-  google_maps_flutter: ^2.0.3
+  #google_maps_flutter: ^2.0.3
   image_picker: ^0.8.4+11
-  geolocator: ^8.0.3
+  #geolocator: ^8.0.3
   url_launcher: ^6.0.20
   flutter_native_splash: ^2.1.6
   change_app_package_name: ^1.0.0
 
 
   #(Syncfusion Flutter packages - Charts, Calendar, ETC.)
-  syncfusion_flutter_charts: ^19.4.38
+  #syncfusion_flutter_charts: ^19.4.38
   #flutter_sound: ^8.3.9
   #sumayahswaibk@gmial.com
   #assets_audio_player: ^3.0.3+3
+  #flutter pub run change_app_package_name:main goprint.ug
 
 
 dev_dependencies:

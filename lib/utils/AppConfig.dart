@@ -10,7 +10,7 @@ class AppConfig {
 
   static const String HomePage = "HomePage";
   static const String MyProductsScreen = "MyProductsScreen";
-  static const String AppName = "PET-SHOP";
+  static const String AppName = "Go-print";
   static const String AccountRegister = "AccountRegister";
   static const String AccountSplash = "AccountSplash";
   static const String ProductDetails = "ProductDetails";

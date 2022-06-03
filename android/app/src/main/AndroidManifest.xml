@@ -1,8 +1,24 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="goprint.ug">
 
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <!--
+        PASSWORD: sumayahswaibk@gmail.com
+        FIRST NAME: Sumaya
+        ORGANIZATION UNIT: Developer
+        NAME OF ORGANIZAATION: goprint
+        NAME OF CITY: Kampala
+        NAME OF STATE: Kampala
+        country : UG
+        SUMMARY" Is CN=Sumaya, OU=Developer, O=goprint, L=Kampala, ST=Kampala, C=UG correct?
+
+        The JKS keystore uses a proprietary format.
+        It is recommended to migrate to PKCS12 which is an industry standard format using
+        "keytool -importkeystore -srckeystore /Users/mac/upload-keystore.jks -destkeystore /Users/mac/upload-keystore.jks -deststoretype pkcs12".
+
+        /Users/mac/upload-keystore.jks
+
+    -->
+
     <uses-permission android:name="android.permission.INTERNET" />
 
     <queries>
@@ -36,10 +52,6 @@
        android:label="GO-Print"
        android:allowBackup="true"
        >
-
-       <!-- Place your Google Map API KEY here at value -->
-       <meta-data android:name="com.google.android.geo.API_KEY"
-           android:value="AIzaSyAcctJQgkbQQI37Ae_2rAeck-l6nyDRQj0"/>
 
         <activity
             android:name=".MainActivity"

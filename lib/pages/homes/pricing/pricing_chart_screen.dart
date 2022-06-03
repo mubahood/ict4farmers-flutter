@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutx/flutx.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
 
 import '../../../theme/app_theme.dart';
 import '../../../theme/custom_theme.dart';
@@ -19,14 +18,11 @@ class _EstateSplashScreenState extends State<EstateSplashScreen> {
 
   late SplashController controller;
 
-  late TooltipBehavior _tooltipBehavior;
 
   @override
   initState() {
     super.initState();
 
-    _tooltipBehavior =
-        TooltipBehavior(enable: true, header: '', canShowMarker: false);
 
     FxControllerStore.resetStore();
     theme = AppTheme.theme;
@@ -88,7 +84,7 @@ class _EstateSplashScreenState extends State<EstateSplashScreen> {
                             height: 320,
                             padding: EdgeInsets.all(0),
                             margin: EdgeInsets.all(0),
-                            child: _buildDefaultRangeColumnChart())),
+                             )),
                   ),
                   Positioned(
                     top: 468,
@@ -123,46 +119,8 @@ class _EstateSplashScreenState extends State<EstateSplashScreen> {
     );
   }
 
-  SfCartesianChart _buildDefaultRangeColumnChart() {
-    return SfCartesianChart(
-      plotAreaBorderWidth: 0,
-      title: ChartTitle(textStyle: FxTextStyle.caption()),
-      primaryXAxis: CategoryAxis(
-        majorGridLines: MajorGridLines(width: 0),
-      ),
-      primaryYAxis: NumericAxis(
-          axisLine: AxisLine(width: 0),
-          interval: 5,
-          labelFormat: '{value}',
-          majorTickLines: MajorTickLines(size: 8, color: Colors.transparent)),
-      series: _getDefaultRangeColumnSeries(),
-      tooltipBehavior: _tooltipBehavior,
-    );
-  }
 
-  List<RangeColumnSeries<ChartSampleData, String>>
-      _getDefaultRangeColumnSeries() {
-    final List<ChartSampleData> chartData = <ChartSampleData>[
-      ChartSampleData(x: 'Jinja', y: 1000, yValue: 1300),
-      ChartSampleData(x: 'Busia', y: 1200, yValue: 1500),
-      ChartSampleData(x: 'Kasese', y: 800, yValue: 1300),
-      ChartSampleData(x: 'Mbale', y: 700, yValue: 1000),
-      ChartSampleData(x: 'Gulu', y: 900, yValue: 1500),
-      ChartSampleData(x: 'Arua', y: 600, yValue: 1200),
-    ];
-    return <RangeColumnSeries<ChartSampleData, String>>[
-      RangeColumnSeries<ChartSampleData, String>(
-        dataSource: chartData,
-        xValueMapper: (ChartSampleData sales, _) => sales.x as String,
-        lowValueMapper: (ChartSampleData sales, _) => sales.y,
-        highValueMapper: (ChartSampleData sales, _) => sales.yValue,
-        dataLabelSettings: DataLabelSettings(
-            isVisible: true,
-            labelAlignment: ChartDataLabelAlignment.top,
-            textStyle: TextStyle(fontSize: 10)),
-      )
-    ];
-  }
+
 }
 
 class SplashController extends FxController {
