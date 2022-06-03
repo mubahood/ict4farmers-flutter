@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:flutx/utils/spacing.dart';
 import 'package:flutx/widgets/container/container.dart';
 import 'package:flutx/widgets/text/text.dart';
-import 'package:ict4farmers/pages/location_picker/single_item_picker.dart';
 import 'package:ict4farmers/pages/product_add_form/product_add_form.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
@@ -14,7 +13,6 @@ import '../../models/UserModel.dart';
 import '../../theme/app_theme.dart';
 import '../../utils/AppConfig.dart';
 import '../../utils/Utils.dart';
-import '../models/FarmersGroup.dart';
 import '../widget/my_widgets.dart';
 import '../widget/shimmer_loading_widget.dart';
 
@@ -114,13 +112,7 @@ class DashboardState extends State<Dashboard> {
                                   top: 30, left: 20, right: 20, bottom: 0),
                               child: Row(
                                 children: [
-                                  widget_dashboard_item(context,
-                                      title: "Market place",
-                                      asset_image: "2.png"),
-                                  Spacer(),
-                                  widget_dashboard_item(context,
-                                      title: "Farm management",
-                                      asset_image: "1.png"),
+
                                 ],
                               ),
                             ),
@@ -129,13 +121,7 @@ class DashboardState extends State<Dashboard> {
                                   top: 15, left: 20, right: 20, bottom: 15),
                               child: Row(
                                 children: [
-                                  widget_dashboard_item(context,
-                                      title: "Pest & Disease control",
-                                      asset_image: "4.png"),
-                                  Spacer(),
-                                  widget_dashboard_item(context,
-                                      title: "Farmers forum",
-                                      asset_image: "3.png"),
+
                                 ],
                               ),
                             ),
@@ -383,7 +369,7 @@ class DashboardState extends State<Dashboard> {
                   children: [
                     InkWell(
                       onTap: () =>
-                      {Utils.launchPhone(AppConfig.TOLL_FREE_PHONE_NUMBER)},
+                      {Utils.launchPhone(AppConfig.OUR_PHONE_NUMBER)},
                       child: Container(
                         child: Row(
                           children: [
@@ -429,7 +415,7 @@ class DashboardState extends State<Dashboard> {
                       ),
                     ),
                     InkWell(
-                      onTap: () => {test_function()},
+                      onTap: () => {},
                       child: FxContainer.rounded(
                         bordered: true,
                         border: Border.all(color: CustomTheme.primary),
@@ -586,21 +572,4 @@ class DashboardState extends State<Dashboard> {
     }
   }
 
-  List<FarmersGroup> farmers_groups = [];
-
-  test_function() async {
-    farmers_groups = await FarmersGroup.get_items();
-
-    final result = await Navigator.push(
-      context,
-      MaterialPageRoute(
-          builder: (context) => SingleItemPicker(
-              "Pick farmer group", jsonEncode(farmers_groups), "0")),
-    );
-    if (result != null) {
-      if (result['id'] != null && result['name'] != null) {
-        print(result);
-      }
-    }
-  }
 }
