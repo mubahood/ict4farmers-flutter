@@ -85,6 +85,7 @@ class Utils {
     await GardenActivityModel.get_items();
     await PestModel.get_items();
     await QuestionModel.get_items();
+    await LocationModel.get_items();
   }
 
   static void launchURL(String _url) async {
@@ -319,9 +320,7 @@ class Utils {
     if (!Hive.isAdapterRegistered(51)) {
       Hive.registerAdapter(CategoryModelAdapter());
     }
-    if (!Hive.isAdapterRegistered(52)) {
-      Hive.registerAdapter(LocationModelAdapter());
-    }
+
 
     if (!Hive.isAdapterRegistered(53)) {
       Hive.registerAdapter(PostModelAdapter());

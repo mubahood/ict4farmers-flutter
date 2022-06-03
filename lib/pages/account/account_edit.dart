@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:html';
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -11,7 +10,6 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutx/flutx.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:ict4farmers/models/LocationModel.dart';
 import 'package:ict4farmers/pages/location_picker/location_main.dart';
 import 'package:ict4farmers/theme/app_theme.dart';
 import 'package:ict4farmers/utils/AppConfig.dart';
@@ -113,9 +111,9 @@ class _AccountEditState extends State<AccountEdit> {
     }
 
     if ([
-      'Small scale',
-      'Medium scale',
-      'Large scale',
+      'Subsistence production',
+      'Small Commercial Production',
+      'Large Commercial Production',
     ].contains(item.production_scale)) {
       _formKey.currentState!.patchValue({
         'production_scale': item.production_scale,
@@ -391,11 +389,11 @@ password
                       validator: FormBuilderValidators.compose([
                         FormBuilderValidators.required(
                           context,
-                          errorText: "Phone number is required.",
+                          errorText: "Email or Phone number is required.",
                         ),
                         FormBuilderValidators.minLength(
                           context,
-                          8,
+                          5,
                           errorText: "Phone number too short.",
                         ),
                         FormBuilderValidators.maxLength(
@@ -405,8 +403,8 @@ password
                         ),
                       ]),
                       decoration: customTheme.input_decoration_2(
-                          labelText: "Phone number",
-                          hintText: "What is your name?")),
+                          labelText: "Email or Phone number",
+                          hintText: "You will use this to login")),
                   FxDashedDivider(
                     color: Colors.grey.shade300,
                   ),
@@ -419,7 +417,7 @@ password
                     validator: FormBuilderValidators.compose([
                       FormBuilderValidators.required(
                         context,
-                        errorText: "Phone number is required.",
+                        errorText: "Gender is required.",
                       )
                     ]),
                     items: [
@@ -445,7 +443,7 @@ password
                     validator: FormBuilderValidators.compose([
                       FormBuilderValidators.required(
                         context,
-                        errorText: "Phone number is required.",
+                        errorText: "Marital status is required.",
                       )
                     ]),
                     items: [
@@ -619,43 +617,40 @@ password
                             ),
                           ]),
                           decoration: customTheme.input_decoration_2(
-                              labelText: "Years of Experience", hintText: "... selected selector"))
+                              labelText: "Years of Experience",
+                              hintText: "How long have you spent the selector"))
                       : SizedBox(),
-
                   FxDashedDivider(
                     color: Colors.grey.shade300,
                   ),
-
                   (user_role == "Farmer")
-                      ?  FormBuilderDropdown(
-                    dropdownColor: Colors.white,
-                    name: 'production_scale',
-                    decoration: customTheme.input_decoration_2(
-                      labelText: "Production scale",
-                    ),
-                    validator: FormBuilderValidators.compose([
-                      FormBuilderValidators.required(
-                        context,
-                        errorText: "Production scale is required.",
-                      )
-                    ]),
-                    items: [
-                      'Small scale',
-                      'Medium scale',
-                      'Large scale',
-                    ]
-                        .map((tyepe) => DropdownMenuItem(
-                      value: tyepe,
-                      child: Text('$tyepe'),
-                    ))
-                        .toList(),
-                  ):SizedBox(),
-
-
+                      ? FormBuilderDropdown(
+                          dropdownColor: Colors.white,
+                          name: 'production_scale',
+                          decoration: customTheme.input_decoration_2(
+                            labelText: "Production scale",
+                          ),
+                          validator: FormBuilderValidators.compose([
+                            FormBuilderValidators.required(
+                              context,
+                              errorText: "Production scale is required.",
+                            )
+                          ]),
+                          items: [
+                            'Subsistence production',
+                            'Small Commercial Production',
+                            'Large Commercial Production',
+                          ]
+                              .map((tyepe) => DropdownMenuItem(
+                                    value: tyepe,
+                                    child: Text('$tyepe'),
+                                  ))
+                              .toList(),
+                        )
+                      : SizedBox(),
                   FxDashedDivider(
                     color: Colors.grey.shade300,
                   ),
-
                   (user_role == "Farmer")
                       ? FormBuilderDropdown(
                           dropdownColor: Colors.white,
@@ -764,13 +759,7 @@ password
     }
   }
 
-  List<LocationModel> locations = [];
   Future<void> pick_location() async {
-    print("GETING....");
-    locations = await LocationModel.get_items();
-    print("GOT ===> ${locations.length} <===....");
-
-    return;
     final result = await Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => LocationMain()),

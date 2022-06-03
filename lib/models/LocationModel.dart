@@ -7,8 +7,8 @@ import 'DynamicTable.dart';
 class LocationModel {
   static String end_point = "locations";
   int id = 0;
+  int parent = 0;
   String name = "";
-  String details = "";
 
   static Future<List<LocationModel>> get_items() async {
     List<DynamicTable> items = [];
@@ -23,8 +23,8 @@ class LocationModel {
           LocationModel item = new LocationModel();
           item.id = Utils.int_parse(map['id']);
           if (item.id > 0) {
-            item.details = map['details'].toString();
             item.name = map['name'].toString();
+            item.parent = Utils.int_parse(map['parent'].toString());
             _items.add(item);
           }
         }
@@ -37,7 +37,7 @@ class LocationModel {
     return {
       'id': this.id,
       'name': this.name,
-      'details': this.details,
+      'parent': this.parent,
     };
   }
 }

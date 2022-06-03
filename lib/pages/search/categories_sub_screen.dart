@@ -64,10 +64,10 @@ class ScategorieSsuSscreen extends State<SategoriesSubScreen> {
   Future<Null> _onRefresh(BuildContext _context) async {
     is_loading = true;
     setState(() {});
-    List<LocationModel> _items = await LocationModel.get_all();
+    List<LocationModel> _items = await LocationModel.get_items();
     items.clear();
     _items.forEach((element) {
-      if (element.parent_id.toString() == initial_data['parent_id']) {
+      if (element.parent.toString() == initial_data['parent_id']) {
         items.add(element);
       }
     });
