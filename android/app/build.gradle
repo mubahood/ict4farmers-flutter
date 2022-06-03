@@ -54,7 +54,7 @@ android {
         release {
             storeFile file("/Users/mac/Desktop/github/ict4farmers-flutter/goprint-key.jks")
             storePassword "sumayahswaibk@gmail.com"
-            keyAlias "goprint"
+            keyAlias "upload"
             keyPassword "sumayahswaibk@gmail.com"
         }
     }

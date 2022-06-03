@@ -17,6 +17,9 @@
 
         /Users/mac/upload-keystore.jks
 
+        mac:ict4farmers-flutter juniorbendera$ keytool -genkey -v -keystore ~/upload-keystore.jks -keyalg RSA -keysize 2048 -validity 10000 -alias upload
+
+
     -->
 
     <uses-permission android:name="android.permission.INTERNET" />
