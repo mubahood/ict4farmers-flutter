@@ -50,6 +50,15 @@ android {
         versionName flutterVersionName
     }
 
+    signingConfigs {
+        release {
+            storeFile file("/Users/mac/Desktop/github/ict4farmers-flutter/goprint-key.jks")
+            storePassword "sumayahswaibk@gmail.com"
+            keyAlias "goprint"
+            keyPassword "sumayahswaibk@gmail.com"
+        }
+    }
+
     buildTypes {
         release {
             // TODO: Add your own signing config for the release build.
