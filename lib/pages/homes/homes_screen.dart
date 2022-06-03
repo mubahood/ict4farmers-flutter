@@ -46,14 +46,14 @@ class _HomesScreenState extends State<HomesScreen>
 
     tabController = TabController(
         //       animationDuration: Duration.zero,
-        length: 5,
+        length: 4,
         vsync: this,
         initialIndex: 0);
 
     navItems = [
       NavItem('Home', CupertinoIcons.home, HomesScreenSegment()),
-      NavItem('Categories', CupertinoIcons.search, CategoriesMainScreen()),
-      NavItem('Sell Now', CupertinoIcons.plus_circle, MyProductsScreen()),
+      NavItem('Categories', CupertinoIcons.search, CategoriesMainScreen()),/*
+      NavItem('Sell Now', CupertinoIcons.plus_circle, MyProductsScreen()),*/
       NavItem('Chats', CupertinoIcons.envelope_badge, ChatHomeScreen()),
       NavItem('Account', CupertinoIcons.person, AccountSplash()),
     ];
@@ -72,6 +72,7 @@ class _HomesScreenState extends State<HomesScreen>
       } else if (aniValue - currentIndex < -0.5) {
         currentIndex--;
       }
+
 
       setState(() {});
     });
