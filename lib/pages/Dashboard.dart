@@ -444,7 +444,7 @@ class DashboardState extends State<Dashboard> {
   }
 
   void _show_bottom_sheet_sell_or_buy(context) {
-    
+
     showModalBottomSheet(
         context: context,
         builder: (BuildContext buildContext) {
