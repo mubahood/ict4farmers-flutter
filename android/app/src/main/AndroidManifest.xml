@@ -5,6 +5,28 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <!--
+     PASSWORD: sumayahswaibk@gmail.com
+     FIRST NAME: Sumaya
+     ORGANIZATION UNIT: Developer
+     NAME OF ORGANIZAATION: goprint
+     NAME OF CITY: Kampala
+     NAME OF STATE: Kampala
+     country : UG
+     SUMMARY" Is CN=Sumaya, OU=Developer, O=goprint, L=Kampala, ST=Kampala, C=UG correct?
+
+     The JKS keystore uses a proprietary format.
+     It is recommended to migrate to PKCS12 which is an industry standard format using
+     "keytool -importkeystore -srckeystore /Users/mac/upload-keystore.jks -destkeystore /Users/mac/upload-keystore.jks -deststoretype pkcs12".
+
+     /Users/mac/upload-keystore.jks
+
+     mac:ict4farmers-flutter juniorbendera$ keytool -genkey -v -keystore ~/upload-keystore.jks -keyalg RSA -keysize 2048 -validity 10000 -alias upload
+
+
+    keytool -importkeystore -srckeystore /Users/mac/ict4farmers.jks -destkeystore /Users/mac/upload-keystore.jks -deststoretype pkcs12
+ -->
+
 <!--  ict4farmers.jks  -->
 
 
