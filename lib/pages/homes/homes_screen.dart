@@ -14,7 +14,9 @@ import '../chat/chat_home_screen.dart';
 import '../search/categories_main_screen.dart';
 
 class HomesScreen extends StatefulWidget {
-  HomesScreen({Key? key}) : super(key: key);
+
+  dynamic params;
+  HomesScreen(this.params);
 
   @override
   _HomesScreenState createState() => _HomesScreenState();
@@ -46,7 +48,7 @@ class _HomesScreenState extends State<HomesScreen>
         initialIndex: 0);
 
     navItems = [
-      NavItem('Home', CupertinoIcons.home, HomesScreenSegment()),
+      NavItem('Home', CupertinoIcons.home, HomesScreenSegment(widget.params)),
       NavItem('Categories', CupertinoIcons.search, CategoriesMainScreen()),
       NavItem('Sell Now', CupertinoIcons.plus_circle, MyProductsScreen()),
       NavItem('Chats', CupertinoIcons.envelope_badge, ChatHomeScreen()),

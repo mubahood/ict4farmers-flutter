@@ -37,14 +37,17 @@ class DashboardState extends State<Dashboard> {
   List<MenuItemModel> main_menu_items = [
 //    new MenuItemModel('HRM', "1.png", AppConfig.WorkersScreen, true),
     new MenuItemModel(
-        'Enterprise Management', "1.png", AppConfig.GardensScreen, true),
-    new MenuItemModel('Pests & Diseases', "4.png", AppConfig.PestsScreen, true),
-    new MenuItemModel('Market Place', "3.png", AppConfig.MarketPlace1, false),
-    new MenuItemModel('Resource Sharing', "2.png", AppConfig.ComingSoon, true),
+        'Enterprise Management', "1.png", AppConfig.GardensScreen, true, null),
     new MenuItemModel(
-        'Extension Services', "6.png", AppConfig.ComingSoon, true),
+        'Pests & Diseases', "4.png", AppConfig.PestsScreen, true, null),
     new MenuItemModel(
-        'Ask the Expert', "5.png", AppConfig.QuestionsScreen, true),
+        'Market Place', "3.png", AppConfig.MarketPlace1, false, null),
+    new MenuItemModel('Resource Sharing', "2.png", AppConfig.MarketPlace1, true,
+        {'task': 'resource'}),
+    new MenuItemModel(
+        'Extension Services', "6.png", AppConfig.ComingSoon, true, null),
+    new MenuItemModel(
+        'Ask the Expert', "5.png", AppConfig.QuestionsScreen, true, null),
   ];
 
   DashboardState(this._context);
@@ -82,22 +85,22 @@ class DashboardState extends State<Dashboard> {
   Widget build(BuildContext context) {
     List<MenuItemModel> sub_menu_items = [];
     MenuItemModel i1 = new MenuItemModel(
-        'My Acivities', "1.png", AppConfig.GardenActivitiesScreen, true);
+        'My Acivities', "1.png", AppConfig.GardenActivitiesScreen, true,null);
     i1.icon = Icons.agriculture;
     sub_menu_items.add(i1);
 
     MenuItemModel i2 = new MenuItemModel(
-        'My Records', "1.png", AppConfig.GardenProductionRecordsScreen, true);
+        'My Records', "1.png", AppConfig.GardenProductionRecordsScreen, true,null);
     i2.icon = Icons.assignment;
     sub_menu_items.add(i2);
 
     MenuItemModel i3 = new MenuItemModel(
-        'My Products', "1.png", AppConfig.MyProductsScreen, true);
+        'My Products', "1.png", AppConfig.MyProductsScreen, true,null);
     i3.icon = Icons.inventory;
     sub_menu_items.add(i3);
 
     MenuItemModel i4 =
-        new MenuItemModel('My Chats', "1.png", AppConfig.ChatHomeScreen, true);
+        new MenuItemModel('My Chats', "1.png", AppConfig.ChatHomeScreen, true,null);
     i4.icon = Icons.forum;
     sub_menu_items.add(i4);
 
@@ -620,9 +623,9 @@ class DashboardState extends State<Dashboard> {
       onTap: () => {
         item.is_protected
             ? (loggedUser.id > 0)
-                ? Utils.navigate_to(item.screen, context)
+                ? Utils.navigate_to(item.screen, context,data: item.data)
                 : show_not_account_bottom_sheet(context)
-            : Utils.navigate_to(item.screen, context)
+            : Utils.navigate_to(item.screen, context,data: item.data)
       },
       child: FxCard(
         paddingAll: 5,

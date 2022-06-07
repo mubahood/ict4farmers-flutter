@@ -13,7 +13,9 @@ import 'package:provider/provider.dart';
 import '../../utils/AppConfig.dart';
 
 class HomesScreenSegment extends StatefulWidget {
-  HomesScreenSegment({Key? key}) : super(key: key);
+
+  dynamic params;
+  HomesScreenSegment(this.params);
 
   @override
   _HomesScreenSegmentState createState() => _HomesScreenSegmentState();
@@ -140,7 +142,7 @@ class _HomesScreenSegmentState extends State<HomesScreenSegment>
               ],
             ),
           ),
-          body: TestPage1(1),
+          body: TestPage1(widget.params),
 /*          drawer: _buildDrawer(),*/
         );
       },

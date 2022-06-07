@@ -16,13 +16,13 @@ import '../widget/product_item_ui.dart';
 import '../widget/shimmer_loading_widget.dart';
 
 class TestPage1 extends StatefulWidget {
-  int page_num;
+  dynamic params;
 
   //const TestPage1({Key? key}) : super(key: key, this.page);
-  TestPage1(this.page_num);
+  TestPage1(this.params);
 
   @override
-  State<TestPage1> createState() => _TestPage1State(this.page_num);
+  State<TestPage1> createState() => _TestPage1State(params);
 }
 
 List<BannerModel> banners = [];
@@ -34,13 +34,14 @@ BannerModel horizontal_banner_3 = BannerModel();
 List<ProductModel> _trending_products = [];
 
 class _TestPage1State extends State<TestPage1> {
-  int page_num;
+  dynamic params;
 
-  _TestPage1State(this.page_num);
+  _TestPage1State(this.params);
 
   bool is_logged_in = true;
   bool complete_profile = true;
   UserModel logged_in_user = new UserModel();
+  int page_num = 1;
 
   Future<void> _init_databse() async {
     is_logged_in = await Utils.is_login();
@@ -71,6 +72,14 @@ class _TestPage1State extends State<TestPage1> {
     _gridBannersItems2.clear();
     banners.forEach((element) {
       i++;
+
+      if(widget.params != null){
+        if(widget.params['task'] != null){
+          if(widget.params['task'] == 'resource'){
+            page_num = 2;
+          }
+        }
+      }
 
       if (page_num == 1 && i == 1) {
         horizontal_banner_1 = element;
@@ -190,6 +199,10 @@ class _TestPage1State extends State<TestPage1> {
                         ),
                         FxButton.text(
                             onPressed: () {
+                              print(widget.params);
+                              print("===> romina");
+                              return;
+
                               if (!is_logged_in) {
                                 show_not_account_bottom_sheet(context);
                               } else if (!complete_profile) {

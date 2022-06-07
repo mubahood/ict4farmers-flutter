@@ -14,7 +14,8 @@ class MenuItemModel  {
   String screen = "";
   bool is_protected = false;
   IconData icon = Icons.edit;
+  dynamic data;
 
-  MenuItemModel(this.title, this.photo, this.screen,this.is_protected);
+  MenuItemModel(this.title, this.photo, this.screen,this.is_protected,this.data);
 }
 
