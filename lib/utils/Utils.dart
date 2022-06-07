@@ -86,6 +86,8 @@ class Utils {
     await PestModel.get_items();
     await QuestionModel.get_items();
     await LocationModel.get_items();
+    await CategoryModel.get_all();
+    await ProductModel.get_online_items({});
   }
 
   static void launchURL(String _url) async {

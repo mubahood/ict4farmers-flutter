@@ -1,16 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutx/widgets/button/button.dart';
 import 'package:flutx/widgets/text/text.dart';
 import 'package:ict4farmers/models/UserModel.dart';
 import 'package:ict4farmers/pages/products/product_details.dart';
 import 'package:ict4farmers/utils/AppConfig.dart';
-import 'package:ict4farmers/widget/my_widgets.dart';
 
 import '../models/BannerModel.dart';
 import '../models/ProductModel.dart';
-import '../theme/custom_theme.dart';
 import '../utils/Utils.dart';
 import '../widget/product_item_ui.dart';
 import '../widget/shimmer_loading_widget.dart';
@@ -44,6 +41,15 @@ class _TestPage1State extends State<TestPage1> {
   int page_num = 1;
 
   Future<void> _init_databse() async {
+
+    if(widget.params != null){
+      if(widget.params['task'] != null){
+        if(widget.params['task'] == 'resource'){
+          page_num = 2;
+        }
+      }
+    }
+
     is_logged_in = await Utils.is_login();
     if (is_logged_in) {
       logged_in_user = await Utils.get_logged_in();
@@ -61,7 +67,17 @@ class _TestPage1State extends State<TestPage1> {
     _trending_products.clear();
     List<ProductModel> _trending_get = await ProductModel.get_trending();
     _trending_get.forEach((element) {
-      _trending_products.add(element);
+      if (page_num == 1) {
+        if (element.status == "product") {
+          _trending_products.add(element);
+        }
+      }
+
+      if (page_num == 2) {
+        if (element.status != "product") {
+          _trending_products.add(element);
+        }
+      }
     });
 
     banners = await BannerModel.get();
@@ -175,7 +191,7 @@ class _TestPage1State extends State<TestPage1> {
         onRefresh: _onRefresh,
         child: CustomScrollView(
           slivers: [
-            (is_logged_in && complete_profile)
+            /*(is_logged_in && complete_profile)
                 ? SliverList(
               delegate: SliverChildBuilderDelegate(
                     (BuildContext context, int index) {
@@ -199,9 +215,6 @@ class _TestPage1State extends State<TestPage1> {
                         ),
                         FxButton.text(
                             onPressed: () {
-                              print(widget.params);
-                              print("===> romina");
-                              return;
 
                               if (!is_logged_in) {
                                 show_not_account_bottom_sheet(context);
@@ -219,7 +232,7 @@ class _TestPage1State extends State<TestPage1> {
                     ),
                     floating: true,
                     backgroundColor: Colors.red.shade700,
-                  ),
+                  ),*/
             SliverList(
               delegate: SliverChildBuilderDelegate(
                     (BuildContext context, int index) {
@@ -347,8 +360,13 @@ class _TestPage1State extends State<TestPage1> {
                     (BuildContext context, int index) {
                   return Container(
                     margin: EdgeInsets.only(top: 20, left: 18, bottom: 10),
-                    child: FxText.h4("Just In",
-                        fontSize: 20, fontWeight: 800, color: Colors.black),
+                    child: FxText.h4(
+                        page_num == 1
+                            ? "Recently posted products"
+                            : "Recently shared Resources",
+                        fontSize: 20,
+                        fontWeight: 800,
+                        color: Colors.black),
                   );
                 },
                 childCount: 1, // 1000 list items

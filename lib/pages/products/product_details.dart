@@ -112,8 +112,8 @@ class ProductDetailsState extends State<ProductDetails> {
         return Scaffold(
             appBar: AppBar(
               systemOverlayStyle: SystemUiOverlayStyle(
-                statusBarColor: Colors.white,
-                statusBarIconBrightness: Brightness.dark,
+                statusBarColor: CustomTheme.primary,
+                statusBarIconBrightness: Brightness.light,
                 // For Android (dark icons)
                 statusBarBrightness: Brightness.light, // For iOS (dark icons)
               ),
@@ -136,7 +136,7 @@ class ProductDetailsState extends State<ProductDetails> {
                           width: MediaQuery.of(context).size.width - 120,
                         ),
                         Text(
-                          productModel.price,
+                          'UGX ' + productModel.price,
                           style: TextStyle(
                               color: CustomTheme.primary,
                               fontSize: 14,
@@ -188,7 +188,7 @@ class ProductDetailsState extends State<ProductDetails> {
                                                   CrossAxisAlignment.start,
                                               children: [
                                                 Text(
-                                                  "${productModel.price}",
+                                                  "UGX ${productModel.price}",
                                                   style: TextStyle(
                                                       color:
                                                           CustomTheme.primary,

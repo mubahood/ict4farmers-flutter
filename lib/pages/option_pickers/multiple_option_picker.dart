@@ -122,8 +122,9 @@ class MultipleOptionPickerState extends State<MultipleOptionPicker> {
   Future<void> pick_location(OptionPickerModel item) async {
     List<OptionPickerModel> next_items = [];
     widget.original_items.forEach((element) {
-      next_items.add(element);
-      if (item.parent_id == element.id) {}
+      if (item.id.toString() == element.parent_id.toString()) {
+        next_items.add(element);
+      }
     });
 
     if (next_items.isEmpty) {

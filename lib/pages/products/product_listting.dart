@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutx/utils/spacing.dart';
+import 'package:ict4farmers/theme/app_theme.dart';
 import 'package:provider/provider.dart';
 
 import '../../models/BannerModel.dart';
@@ -80,8 +81,8 @@ class _ProductListtingState extends State<ProductListting> {
         return Scaffold(
             appBar: AppBar(
               systemOverlayStyle: SystemUiOverlayStyle(
-                statusBarColor: Colors.white,
-                statusBarIconBrightness: Brightness.dark,
+                statusBarColor: CustomTheme.primary,
+                statusBarIconBrightness: Brightness.light,
                 // For Android (dark icons)
                 statusBarBrightness: Brightness.light, // For iOS (dark icons)
               ),
