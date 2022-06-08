@@ -1,9 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:ict4farmers/models/ProductModel.dart';
 import 'package:ict4farmers/widget/shimmer_loading_widget.dart';
 
+import '../models/ProductModel.dart';
 import '../pages/products/product_details.dart';
 import '../theme/custom_theme.dart';
 

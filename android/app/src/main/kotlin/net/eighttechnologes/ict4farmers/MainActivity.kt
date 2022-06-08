@@ -1,4 +1,4 @@
-package eighttechnologies.net.ict4farmers
+package net.eighttechnologes.ict4farmers
 
 import io.flutter.embedding.android.FlutterActivity
 
