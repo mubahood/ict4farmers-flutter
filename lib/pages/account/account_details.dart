@@ -97,7 +97,7 @@ class AccountDetailsState extends State<AccountDetails> {
                       children: [
                         Container(
                           child: FxText.h1(
-                            'Farmer profile',
+                            'Seller\'s profile',
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(color: Colors.black, fontSize: 24),
@@ -161,13 +161,13 @@ class AccountDetailsState extends State<AccountDetails> {
                                       contentPadding: EdgeInsets.only(
                                           top: 16, left: 20, right: 20),
                                       dense: true,
-                                      title: Text(userModel.company_name,
+                                      title: Text(userModel.name,
                                           style: TextStyle(
                                               fontSize: 30,
                                               fontWeight: FontWeight.bold)),
-                                      subtitle: Text(userModel.about),
+                                      subtitle: (userModel.about == 'null')?SizedBox() : Text(userModel.about),
                                     ),
-                                    ListTile(
+                                    (userModel.address == 'null')?SizedBox() : ListTile(
                                       leading: Icon(
                                         Icons.map_outlined,
                                         color: CustomTheme.primary,
@@ -183,7 +183,7 @@ class AccountDetailsState extends State<AccountDetails> {
                                           )),
                                       subtitle: FxText.b1(userModel.address),
                                     ),
-                                    ListTile(
+                                    (userModel.phone_number == 'null')?SizedBox() : ListTile(
                                       leading: Icon(
                                         Icons.call,
                                         color: CustomTheme.primary,

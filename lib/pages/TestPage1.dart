@@ -46,9 +46,9 @@ class _TestPage1State extends State<TestPage1> {
     is_logged_in = await Utils.is_login();
     if (is_logged_in) {
       logged_in_user = await Utils.get_logged_in();
-      if (logged_in_user.address == "null" ||
-          logged_in_user.address.isEmpty ||
-          (logged_in_user.address.length < 3)) {
+      if (logged_in_user.phone_number == "null" ||
+          logged_in_user.phone_number.isEmpty ||
+          (logged_in_user.phone_number.length < 3)) {
         complete_profile = false;
       } else {
         complete_profile = true;

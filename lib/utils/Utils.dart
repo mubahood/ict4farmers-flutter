@@ -61,7 +61,7 @@ class Utils {
       Utils.launchPhone(AppConfig.OUR_PHONE_NUMBER);
     } else if (link == AppConfig.OurWhatsApp) {
       Utils.launchURL(
-          'https://wa.me/${AppConfig.OUR_WHATSAPP_NUMBER}?text=Hi, I am contacting you from go ${AppConfig.AppName}.\n\n');
+          'https://wa.me/${AppConfig.OUR_WHATSAPP_NUMBER}?text=Hi, I am contacting you from ${AppConfig.AppName} Mobile App. \n\n');
     } else {
       Utils.launchURL(link);
     }
@@ -139,6 +139,7 @@ class Utils {
     u = await Utils.get_logged_user();*/
     var da = FormData.fromMap(body);
     try {
+      print(body);
       response = await dio.post(AppConfig.BASE_URL + "/${path}",
           data: da,
           options: Options(headers: <String, String>{
@@ -146,9 +147,11 @@ class Utils {
             "Content-Type": "application/json",
             "accept": "application/json",
           }));
+      print("SUCCESS");
       return jsonEncode(response.data);
     } catch (e) {
-      print(e);
+      print("FAILED");
+      print(e.toString());
       return "";
     }
 

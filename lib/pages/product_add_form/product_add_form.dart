@@ -19,6 +19,7 @@ import '../../theme/app_theme.dart';
 import '../../theme/custom_theme.dart';
 import '../../utils/AppConfig.dart';
 import '../../utils/Utils.dart';
+import '../../widget/my_widgets.dart';
 import '../location_picker/location_main.dart';
 import '../location_picker/product_category_picker.dart';
 import 'item_picker_screen.dart';
@@ -37,6 +38,26 @@ class ProductAddFormState extends State<ProductAddForm> {
   void initState() {
     super.initState();
     customTheme = AppTheme.customTheme;
+    check_login();
+  }
+
+  UserModel userModel = new UserModel();
+
+  bool main_loading = true;
+  bool incomplete_profile = false;
+
+  Future<void> check_login() async {
+    userModel = await Utils.get_logged_in();
+    if (userModel.phone_number.length < 5) {
+      incomplete_profile = true;
+      main_loading = false;
+      setState(() {});
+      //Utils.navigate_to(AppConfig.AccountEdit, context);
+      //Navigator.pop(context);
+      return;
+    }
+    main_loading = false;
+    setState(() {});
   }
 
   @override
@@ -48,40 +69,40 @@ class ProductAddFormState extends State<ProductAddForm> {
   Widget build(BuildContext context) {
     return Consumer<AppNotifier>(
         builder: (BuildContext context, AppNotifier value, Widget? child) {
-          return Scaffold(
-            appBar: AppBar(
-              automaticallyImplyLeading: false,
-              // remove back button in appbar.
-              systemOverlayStyle: SystemUiOverlayStyle(
-                statusBarColor: Colors.white,
-                statusBarIconBrightness: Brightness.dark,
-                // For Android (dark icons)
-                statusBarBrightness: Brightness.light, // For iOS (dark icons)
+      return Scaffold(
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          // remove back button in appbar.
+          systemOverlayStyle: SystemUiOverlayStyle(
+            statusBarColor: Colors.white,
+            statusBarIconBrightness: Brightness.dark,
+            // For Android (dark icons)
+            statusBarBrightness: Brightness.light, // For iOS (dark icons)
+          ),
+          elevation: 1,
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              InkWell(
+                onTap: () {
+                  Navigator.pop(context);
+                },
+                child: Container(
+                    padding: FxSpacing.x(0),
+                    child: Icon(
+                      CupertinoIcons.clear,
+                      size: 30,
+                    )),
               ),
-              elevation: 1,
-              title: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  InkWell(
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                    child: Container(
-                        padding: FxSpacing.x(0),
-                        child: Icon(
-                          CupertinoIcons.clear,
-                          size: 30,
-                        )),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(left: 15),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        FxText(
-                          'Sell an item',
-                          color: Colors.black,
+              Container(
+                margin: EdgeInsets.only(left: 15),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    FxText(
+                      'Sell an item',
+                      color: Colors.black,
                           fontSize: 24,
                           fontWeight: 500,
                         ),
@@ -91,7 +112,11 @@ class ProductAddFormState extends State<ProductAddForm> {
                 ],
               ),
             ),
-            body: FormBuilder(
+            body: main_loading
+                ? Text("Loading...")
+                : incomplete_profile ?
+            IncopleteAccountWidget(context)
+                : FormBuilder(
               key: _formKey,
               child: CustomScrollView(
                 slivers: [

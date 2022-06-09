@@ -252,8 +252,8 @@ class _ChatScreenState extends State<ChatScreen> {
                     width: 52,
                     fit: BoxFit.cover,
                     imageUrl: show_receiver
-                        ? chatThread.sender_pic
-                        : chatThread.receiver_pic,
+                        ? chatThread.product_pic
+                        : chatThread.product_pic,
                     placeholder: (context, url) => ShimmerLoadingWidget(
                       height: 52,
                       width: 52,

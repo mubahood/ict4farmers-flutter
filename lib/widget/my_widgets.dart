@@ -5,11 +5,11 @@ import 'package:flutx/widgets/button/button.dart';
 import 'package:flutx/widgets/text/text.dart';
 import 'package:ict4farmers/utils/AppConfig.dart';
 import 'package:ict4farmers/widget/shimmer_loading_widget.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 import '../theme/app_theme.dart';
 import '../theme/custom_theme.dart';
 import '../utils/Utils.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 Widget myNetworkImage(String url,double _height,double _width,double radiusAll){
   return ClipRRect(
@@ -142,11 +142,75 @@ void show_not_account_bottom_sheet(context) {
       });
 }
 
+Widget IncopleteAccountWidget(
+  BuildContext context,
+) {
+  return Padding(
+    padding: const EdgeInsets.all(20.0),
+    child: Center(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          Container(
+            alignment: Alignment.center,
+            margin: EdgeInsets.all(10),
+            padding: EdgeInsets.only(left: 30, right: 30),
+            child: Column(
+              children: [
+                FxText(
+                  'You need to complete your profile in order to post a new product.',
+                  textAlign: TextAlign.center,
+                  fontSize: 25,
+                  color: Colors.grey.shade700,
+                ),
+                FxSpacing.height(20),
+              ],
+            ),
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          Divider(height: 10, color: CustomTheme.primary.withAlpha(40)),
+          SizedBox(
+            height: 20,
+          ),
+          Container(
+            padding: EdgeInsets.only(
+              left: 40,
+              right: 20,
+            ),
+            child: Expanded(
+                child: FxButton.rounded(
+              borderRadiusAll: 10,
+              borderColor: CustomTheme.accent,
+              splashColor: CustomTheme.primary.withAlpha(40),
+              padding:
+                  EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 10),
+              onPressed: () {
+                Utils.navigate_to(AppConfig.AccountEdit, context);
+              },
+              child: FxText.h6(
+                "COMPLETE MY PROFILE",
+                color: Colors.white,
+                letterSpacing: 0.5,
+                fontSize: 20,
+              ),
+            )),
+          ),
+          SizedBox(
+            height: 30,
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
 Widget NoAccountWidget(BuildContext context,
     {String body: "You are not logged in yet.\n\n"
         "Create your ${AppConfig.AppName} account today!",
     String action_text:
-    "Buy and sell your products through a smart and secure online connection ${AppConfig.AppName}",
+        "Buy and sell your products through a smart and secure online connection ${AppConfig.AppName}",
     String empty_image: ""}) {
   String _empty_image = './assets/project/no_account.png';
   if (!empty_image.isEmpty) {

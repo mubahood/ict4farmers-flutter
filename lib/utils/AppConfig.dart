@@ -32,8 +32,8 @@ class AppConfig {
   static const String OurWhatsApp = "OurWhatsApp";
   static const String OUR_PHONE_NUMBER = "+905538651740";
   static const String OUR_WHATSAPP_NUMBER = "+905538651740";
-  static const String OUR_FACEBOOK_LINK = "https://ugnews24.info";
-  static const String OUR_TWITTER_LINK = "https://twitter.com/jotrace365";
-  static const String OUR_YOUTUBE_LINK = "https://twitter.com/ugnews24";
-  static const String OUR_INSTAGRAM_LINK = "https://www.youtube.com/ugnews24/";
+  static const String OUR_FACEBOOK_LINK = "https://www.facebook.com/Factual-media-Group-103369372400394/";
+  static const String OUR_TWITTER_LINK = "https://twitter.com/factual_group?t=fvyiDsAfEh3e9ad5gsPcQQ&s=09";
+  static const String OUR_YOUTUBE_LINK = "https://www.instagram.com/invites/contact/?i=rlebksa8msj5&utm_content=czdywfw4";
+  static const String OUR_INSTAGRAM_LINK = "https://www.instagram.com/invites/contact/?i=rlebksa8msj5&utm_content=czdywfw";
 }

@@ -505,7 +505,7 @@ class ProductDetailsState extends State<ProductDetails> {
     chatThread.receiver_name = '';
     chatThread.sender_name = logged_in_user.name;
     chatThread.product_name = productModel.name;
-    chatThread.product_pic = '';
+    chatThread.product_pic = productModel.get_thumbnail();
     chatThread.sender_pic = logged_in_user.avatar;
     chatThread.unread_count = 0;
 

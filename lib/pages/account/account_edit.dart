@@ -13,7 +13,6 @@ import 'package:ict4farmers/theme/app_theme.dart';
 import 'package:ict4farmers/utils/AppConfig.dart';
 import 'package:ict4farmers/utils/Utils.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 import '../../models/UserModel.dart';
 import '../../widget/shimmer_loading_widget.dart';
@@ -64,29 +63,6 @@ class _AccountEditState extends State<AccountEdit> {
       item.about = "";
     }
 
-    if (item.about == "null") {
-      item.district = "";
-    }
-
-    if (item.division == "null") {
-      item.division = "";
-    }
-
-    if (item.district == "null") {
-      item.district = "";
-    }
-
-    if (item.facebook == "null") {
-      item.facebook = "";
-    }
-
-    if (item.twitter == "null") {
-      item.twitter = "";
-    }
-
-    if (item.instagram == "null") {
-      item.instagram = "";
-    }
 
     if (item.whatsapp == "null") {
       item.whatsapp = "";
@@ -110,13 +86,9 @@ class _AccountEditState extends State<AccountEdit> {
       'address': item.address,
       'services': item.services,
       'about': item.about,
-      'district': item.district,
-      'division': item.division,
-      'facebook': item.facebook,
-      'twitter': item.twitter,
+      'facebook': '',
       'whatsapp': item.whatsapp,
-      'instagram': item.instagram,
-      'district': item.district,
+      'district': '',
     });
 
     setState(() {});
@@ -158,12 +130,11 @@ class _AccountEditState extends State<AccountEdit> {
         'address': _formKey.currentState?.fields['address']?.value,
         'services': _formKey.currentState?.fields['services']?.value,
         'about': _formKey.currentState?.fields['about']?.value,
-        'district': _formKey.currentState?.fields['district']?.value,
-        'division': _formKey.currentState?.fields['division']?.value,
-        'facebook': _formKey.currentState?.fields['facebook']?.value,
-        'twitter': _formKey.currentState?.fields['twitter']?.value,
+        'district': '',
+        'division': '',
+        'twitter': '',
         'whatsapp': _formKey.currentState?.fields['whatsapp']?.value,
-        'instagram': _formKey.currentState?.fields['instagram']?.value,
+        'instagram': '',
       };
 
       if ((new_dp != null) && new_dp.length > 4) {
@@ -176,20 +147,24 @@ class _AccountEditState extends State<AccountEdit> {
         } catch (e) {}
       }
 
-      onLoading = true;
+       onLoading = true;
       setState(() {});
-      String _resp = await Utils.http_post('api/users-update', form_data_map);
+
+      var formData = FormData.fromMap(form_data_map);
+      var dio = Dio();
+      var response =
+      await dio.post('${AppConfig.BASE_URL}/api/users-update', data: formData);
+
       onLoading = false;
       setState(() {});
 
-      if (_resp == null || _resp.isEmpty) {
-        setState(() {
-          error_message =
-              "Failed to connect to internet. Please check your network and try again.";
-        });
+      if (response == null) {
+        Utils.showSnackBar("Failed to upload product. Please try again.", context,
+            Colors.red.shade700);
         return;
       }
-      dynamic resp_obg = jsonDecode(_resp);
+
+      Map<String, dynamic> resp_obg = response.data;
       if (resp_obg['status'].toString() != "1") {
         error_message = resp_obg['message'];
 
@@ -220,10 +195,7 @@ class _AccountEditState extends State<AccountEdit> {
 
     /*
 
-    facebook
-    twitter
     whatsapp
-    instagram
 
 ----
 cover_photo
@@ -391,23 +363,6 @@ password
                           icon: Icons.business)),
                   FxSpacing.height(10),
                   FormBuilderTextField(
-                      name: "district",
-                      readOnly: true,
-                      onTap: () => {pick_location()},
-                      textCapitalization: TextCapitalization.sentences,
-                      textInputAction: TextInputAction.next,
-                      keyboardType: TextInputType.phone,
-                      validator: FormBuilderValidators.compose([
-                        FormBuilderValidators.required(
-                          context,
-                          errorText: "Location is required.",
-                        ),
-                      ]),
-                      decoration: customTheme.input_decoration(
-                          labelText: "products location",
-                          icon: Icons.place)),
-                  FxSpacing.height(10),
-                  FormBuilderTextField(
                       name: "address",
                       textCapitalization: TextCapitalization.sentences,
                       textInputAction: TextInputAction.next,
@@ -421,23 +376,6 @@ password
                       decoration: customTheme.input_decoration(
                           labelText: "Farm/Enterprise street address",
                           icon: Icons.map_outlined)),
-                  FxSpacing.height(10),
-                  FormBuilderTextField(
-                      name: "division",
-                      readOnly: true,
-                      onTap: () => {pick_category()},
-                      textCapitalization: TextCapitalization.sentences,
-                      textInputAction: TextInputAction.next,
-                      keyboardType: TextInputType.phone,
-                      validator: FormBuilderValidators.compose([
-                        FormBuilderValidators.required(
-                          context,
-                          errorText: "Your main category is required.",
-                        ),
-                      ]),
-                      decoration: customTheme.input_decoration(
-                          labelText: "Dealers in?",
-                          icon: Icons.category_outlined)),
                   FxSpacing.height(10),
                   FormBuilderTextField(
                       name: "services",
@@ -469,47 +407,12 @@ password
                           labelText: "About Company/Business",
                           icon: Icons.info)),
                   FxSpacing.height(10),
-                  FxSpacing.height(10),
-                  FormBuilderTextField(
-                      name: "facebook",
-                      textInputAction: TextInputAction.next,
-                      keyboardType: TextInputType.url,
-                      validator: FormBuilderValidators.compose([
-                        FormBuilderValidators.url(
-                          context,
-                          errorText: "Enter valid url.",
-                        ),
-                      ]),
-                      decoration: customTheme.input_decoration(
-                          labelText: "Facebook link", icon: Icons.facebook)),
-                  FxSpacing.height(10),
-                  FormBuilderTextField(
-                      name: "twitter",
-                      textInputAction: TextInputAction.next,
-                      keyboardType: TextInputType.url,
-                      validator: FormBuilderValidators.compose([
-                        FormBuilderValidators.url(
-                          context,
-                          errorText: "Enter valid url.",
-                        ),
-                      ]),
-                      decoration: customTheme.input_decoration(
-                          labelText: "Twitter link", icon: MdiIcons.twitter)),
-                  FxSpacing.height(10),
                   FormBuilderTextField(
                       name: "whatsapp",
                       textInputAction: TextInputAction.next,
                       keyboardType: TextInputType.url,
                       decoration: customTheme.input_decoration(
                           labelText: "Whatsapp number", icon: Icons.whatsapp)),
-                  FxSpacing.height(10),
-                  FormBuilderTextField(
-                      name: "instagram",
-                      textInputAction: TextInputAction.next,
-                      keyboardType: TextInputType.url,
-                      decoration: customTheme.input_decoration(
-                          labelText: "Instagram link",
-                          icon: MdiIcons.instagram)),
                   FxSpacing.height(10),
                   Container(
                     decoration: BoxDecoration(
@@ -660,6 +563,7 @@ password
           source: ImageSource.camera, imageQuality: 100);
       if (pic != null) {
         temp_images?.add(pic);
+        new_dp = pic.path;
       }
     } else {
       final XFile? pic = await _picker.pickImage(source: ImageSource.gallery);
