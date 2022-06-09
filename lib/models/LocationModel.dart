@@ -56,6 +56,8 @@ class LocationModel extends HiveObject {
 
     String resp = await Utils.http_get('api/locations', data);
 
+    print(resp);
+
     if (resp != null && !resp.isEmpty) {
       json.decode(resp).map((element) {
         LocationModel item = new LocationModel();
@@ -78,7 +80,7 @@ class LocationModel extends HiveObject {
       }
     }
 
-    item.parent_id = int.parse(data['parent_id'].toString());
+    item.parent_id = int.parse(data['parent'].toString());
     item.type = data['type'].toString();
     item.listed = data['listed'].toString();
     item.image = data['image'].toString();

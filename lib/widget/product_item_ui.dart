@@ -56,7 +56,7 @@ Widget ProductItemUi(int index, ProductModel productModel, context) {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  productModel.price,
+                  '\$'+productModel.price,
                   style: TextStyle(
                       fontWeight: FontWeight.bold, color: Colors.black),
                 ),

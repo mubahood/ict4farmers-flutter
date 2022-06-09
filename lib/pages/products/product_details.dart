@@ -136,7 +136,7 @@ class ProductDetailsState extends State<ProductDetails> {
                           width: MediaQuery.of(context).size.width - 120,
                         ),
                         Text(
-                          productModel.price,
+                          '\$'+productModel.price,
                           style: TextStyle(
                               color: CustomTheme.primary,
                               fontSize: 14,
@@ -188,7 +188,7 @@ class ProductDetailsState extends State<ProductDetails> {
                                                   CrossAxisAlignment.start,
                                               children: [
                                                 Text(
-                                                  "${productModel.price}",
+                                                  '\$'+"${productModel.price}",
                                                   style: TextStyle(
                                                       color:
                                                           CustomTheme.primary,
