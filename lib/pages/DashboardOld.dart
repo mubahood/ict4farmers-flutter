@@ -450,7 +450,7 @@ class DashboardState extends State<Dashboard> {
     );
     if (result != null) {
       if (result['id'] != null && result['name'] != null) {
-        print(result);
+
       }
     }
   }

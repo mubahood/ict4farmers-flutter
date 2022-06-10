@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +6,7 @@ import 'package:flutx/utils/spacing.dart';
 import 'package:flutx/widgets/container/container.dart';
 import 'package:flutx/widgets/text/text.dart';
 import 'package:flutx/widgets/widgets.dart';
+import 'package:ict4farmers/models/RespondModel.dart';
 import 'package:ict4farmers/models/UserModel.dart';
 import 'package:ict4farmers/theme/app_theme.dart';
 import 'package:ict4farmers/utils/AppConfig.dart';
@@ -191,7 +190,7 @@ class MyProductsScreenState extends State<MyProductsScreen> {
 
     double height = 100;
     return InkWell(
-      onTap: () => {_show_bottom_sheet_product_actions(context)},
+      onTap: () => {_show_bottom_sheet_product_actions(context, item)},
       child: Container(
         child: Row(
           children: [
@@ -253,7 +252,7 @@ class MyProductsScreenState extends State<MyProductsScreen> {
     );
   }
 
-  void _show_bottom_sheet_product_actions(context) {
+  void _show_bottom_sheet_product_actions(context, ProductModel item) {
     showModalBottomSheet(
         context: context,
         builder: (BuildContext buildContext) {
@@ -302,9 +301,7 @@ class MyProductsScreenState extends State<MyProductsScreen> {
                     ListTile(
                         dense: false,
                         onTap: () => {
-                              Utils.showSnackBar(
-                                  "Deleting....", context, CustomTheme.orange)
-                            },
+                          _showDialog(item)},
                         leading: Icon(Icons.delete,
                             color: theme.colorScheme.onBackground),
                         title: FxText.b1("Delete", fontWeight: 600)),
@@ -314,5 +311,61 @@ class MyProductsScreenState extends State<MyProductsScreen> {
             ),
           );
         });
+  }
+
+  _showDialog(ProductModel item) {
+    Navigator.pop(context);
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return CupertinoAlertDialog(
+          title: FxText.sh1('Are you sure you need to delete this product?',
+              height: 1.2, fontWeight: 600),
+          content: Container(
+            margin: EdgeInsets.only(top: 16),
+            child: FxText.b2(
+                'Once you delete a product, you can not reverse the retrieve it back.',
+                height: 1.2,
+                fontWeight: 400),
+          ),
+          actions: <Widget>[
+            CupertinoDialogAction(
+              child: FxText.sh1('Cancel',
+                  color: theme.colorScheme.primary,
+                  fontWeight: 600,
+                  letterSpacing: 0.3),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            CupertinoDialogAction(
+              child: FxText.sh1('Delete',
+                  color: theme.colorScheme.primary,
+                  fontWeight: 600,
+                  letterSpacing: 0.3),
+              onPressed: () {
+                Navigator.of(context).pop();
+                do_delete_action(item);
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> do_delete_action(ProductModel item) async {
+    Utils.showSnackBar("Deleting...", context, Colors.white);
+    String resp = await Utils.http_post('api/delete-product', {'id': item.id});
+    RespondModel r = new RespondModel(resp);
+    if (r.code != 1) {
+      Utils.showSnackBar(r.message, context, Colors.white,
+          background_color: Colors.red);
+    } else {
+      Utils.showSnackBar(r.message, context, Colors.white);
+      await ProductModel.get_online_items({});
+      _do_refresh();
+    }
   }
 }

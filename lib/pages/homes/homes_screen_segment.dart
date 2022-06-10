@@ -97,7 +97,10 @@ class _HomesScreenSegmentState extends State<HomesScreenSegment>
                 ),
                 InkWell(
                   onTap: () =>
-                      {Utils.navigate_to(AppConfig.SearchScreen, context)},
+                      {
+                        Utils.navigate_to(AppConfig.ProductDetails, context)
+                        //Utils.navigate_to(AppConfig.SearchScreen, context)
+                      },
                   child: Container(
                     margin: EdgeInsets.only(top: 10),
                     padding: EdgeInsets.only(left: 10, top: 7, bottom: 7),

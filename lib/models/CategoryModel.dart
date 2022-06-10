@@ -54,9 +54,8 @@ class CategoryModel extends HiveObject {
       Map<String, dynamic> data) async {
     List<CategoryModel> items = [];
 
-    print("getting");
+
     String resp = await Utils.http_get('api/categories', data);
-    print(resp);
 
     if (resp != null && !resp.isEmpty) {
       json.decode(resp).map((element) {

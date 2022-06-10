@@ -26,12 +26,14 @@ import '../../widget/shimmer_loading_widget.dart';
 import '../chat/chat_screen.dart';
 
 class ProductDetails extends StatefulWidget {
-  ProductModel productModel;
+  ProductModel productModel = new ProductModel();
+  dynamic raw;
+  int id = 0;
 
-  ProductDetails(this.productModel);
+  ProductDetails(this.raw);
 
   @override
-  State<ProductDetails> createState() => ProductDetailsState(this.productModel);
+  State<ProductDetails> createState() => ProductDetailsState();
 }
 
 List<BannerModel> banners = [];
@@ -41,9 +43,9 @@ bool initilized = false;
 bool store_initilized = false;
 
 class ProductDetailsState extends State<ProductDetails> {
-  ProductModel productModel;
+  ProductModel productModel = new ProductModel();
 
-  ProductDetailsState(this.productModel);
+  ProductDetailsState();
 
   final PageController pageController =
       PageController(initialPage: 0, viewportFraction: 0.85);
@@ -58,11 +60,22 @@ class ProductDetailsState extends State<ProductDetails> {
 
   List<ProductModel> _products = [];
   int i = 0;
+  int id = 0;
 
   UserModel logged_in_user = new UserModel();
   UserModel productOwner = new UserModel();
 
   Future<Null> _onRefresh() async {
+    productModel = widget.productModel;
+    if (widget.raw != null) {
+      if (widget.raw['id'] != null) {
+        id = Utils.int_parse(widget.raw['id']);
+        if (id > 0) {}
+      }
+    }
+
+    return;
+
     logged_in_user = await Utils.get_logged_in();
 
     get_owner(productModel.user_id, false);
@@ -72,13 +85,11 @@ class ProductDetailsState extends State<ProductDetails> {
     List<dynamic> raw_list = jsonDecode(this.productModel.images);
     if (raw_list != null) {
       raw_list.forEach((element) {
-
         if (element != null) {
           if (element['thumbnail'] != null) {
             thumbnails.add(
                 "${AppConfig.BASE_URL}/storage/${element['thumbnail'].toString()}");
             images.add("${AppConfig.BASE_URL}/storage/${element['src'].toString()}");
-
           }
         }
       });

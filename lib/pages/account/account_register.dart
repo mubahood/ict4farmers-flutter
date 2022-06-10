@@ -63,8 +63,6 @@ class _AccountRegisterState extends State<AccountRegister> {
       onLoading = false;
       setState(() {});
 
-      print("DONE");
-      print(_resp);
 
 
       if (_resp == null || _resp.isEmpty) {
