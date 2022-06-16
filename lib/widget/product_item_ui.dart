@@ -1,6 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:ict4farmers/utils/AppConfig.dart';
+import 'package:ict4farmers/utils/Utils.dart';
 import 'package:ict4farmers/widget/shimmer_loading_widget.dart';
 
 import '../models/ProductModel.dart';
@@ -8,10 +10,11 @@ import '../pages/products/product_details.dart';
 import '../theme/custom_theme.dart';
 
 Widget ProductItemUi(int index, ProductModel productModel, context) {
-
-
   return InkWell(
     onTap: () {
+      Utils.navigate_to(AppConfig.ProductDetails, context,
+          data: {'id': productModel.id});
+      return;
       Navigator.push(
         context,
         PageRouteBuilder(

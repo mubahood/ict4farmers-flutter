@@ -43,8 +43,6 @@ bool initilized = false;
 bool store_initilized = false;
 
 class ProductDetailsState extends State<ProductDetails> {
-  ProductModel productModel = new ProductModel();
-
   ProductDetailsState();
 
   final PageController pageController =
@@ -64,15 +62,26 @@ class ProductDetailsState extends State<ProductDetails> {
 
   UserModel logged_in_user = new UserModel();
   UserModel productOwner = new UserModel();
+  ProductModel productModel = new ProductModel();
 
   Future<Null> _onRefresh() async {
-    productModel = widget.productModel;
+
     if (widget.raw != null) {
-      if (widget.raw['id'] != null) {
-        id = Utils.int_parse(widget.raw['id']);
-        if (id > 0) {}
+      if (widget.raw is Map) {
+        if (widget.raw['id'] != null) {
+          id = Utils.int_parse(widget.raw['id']);
+          if (id > 0) {
+            print("GOOD TO GO WTH ==> $id ROMINA <===");
+          }
+        }
+      }else if(widget.raw is ProductModel){
+        productModel = widget.raw;
+        print("========> ${productModel.name} <=======");
       }
     }
+
+
+
 
     return;
 
@@ -561,7 +570,6 @@ List<Widget> _buildHouseList() {
   List<Widget> list = [];
 
   thumbnails.forEach((element) {
-    print("==========> ${element.toString()} <============");
     list.add(_SinglePosition(element.toString()));
   });
 
