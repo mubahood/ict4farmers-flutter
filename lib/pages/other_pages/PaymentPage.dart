@@ -30,7 +30,8 @@ class _PaymentPage extends State<PaymentPage> {
                 margin: EdgeInsets.only(top: 30),
                 child: Center(
                     child: FxText.h4(
-                  "How do you want to pay us?",
+                  "Congs! Your order was submitted successfully!\nHow do you want to pay us?",
+                  fontSize: 20,
                   textAlign: TextAlign.center,
                   height: 1,
                   color: CustomTheme.primary,

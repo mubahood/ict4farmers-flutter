@@ -26,10 +26,12 @@ import '../models/ChatModel.dart';
 import '../models/ChatThreadModel.dart';
 import '../models/FormItemModel.dart';
 import '../models/LocationModel.dart';
+import '../models/OrderModel.dart';
 import '../models/PostModel.dart';
 import '../pages/account/account_details.dart';
 import '../pages/account/account_edit.dart';
 import '../pages/account/account_login.dart';
+import '../pages/account/my_orders_screen.dart';
 import '../pages/account/my_products_screen.dart';
 import '../pages/account/onboarding_widget.dart';
 import '../pages/chat/chat_home_screen.dart';
@@ -232,6 +234,10 @@ class Utils {
       Hive.registerAdapter(ProductModelAdapter());
     }
 
+    if (!Hive.isAdapterRegistered(81)) {
+      Hive.registerAdapter(OrderModelAdapter());
+    }
+
     if (!Hive.isAdapterRegistered(40)) {
       Hive.registerAdapter(UserModelAdapter());
     }
@@ -283,6 +289,18 @@ class Utils {
           PageRouteBuilder(
             pageBuilder: (context, animation1, animation2) =>
                 SuccessPaymentPage(),
+            transitionDuration: Duration.zero,
+          ),
+        );
+        break;
+
+
+        case AppConfig.MyOrdersScreen:
+        Navigator.push(
+          context,
+          PageRouteBuilder(
+            pageBuilder: (context, animation1, animation2) =>
+                MyOrdersScreen(),
             transitionDuration: Duration.zero,
           ),
         );
@@ -480,7 +498,7 @@ class Utils {
         Navigator.push(
           context,
           PageRouteBuilder(
-            pageBuilder: (context, animation1, animation2) => AccountRegister(),
+            pageBuilder: (context, animation1, animation2) => AccountRegister(data),
             transitionDuration: Duration.zero,
           ),
         );

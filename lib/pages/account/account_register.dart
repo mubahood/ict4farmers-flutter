@@ -6,12 +6,15 @@ import 'package:flutx/flutx.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:ict4farmers/theme/app_theme.dart';
 import 'package:ict4farmers/utils/Utils.dart';
-import 'package:ict4farmers/widgets/images.dart';
 
 import '../../models/UserModel.dart';
 import '../../utils/AppConfig.dart';
 
 class AccountRegister extends StatefulWidget {
+  dynamic params;
+
+  AccountRegister(this.params);
+
   @override
   _AccountRegisterState createState() => _AccountRegisterState();
 }
@@ -29,66 +32,84 @@ class _AccountRegisterState extends State<AccountRegister> {
     super.initState();
     customTheme = AppTheme.customTheme;
     theme = AppTheme.theme;
+    if(widget.params == null){
+      Utils.showSnackBar("No allowed", context, Colors.white);
+      Navigator.pop(context);
+      return;
+    }
+    if(widget.params['msg'] == null){
+      Utils.showSnackBar("No allowed", context, Colors.white);
+      Navigator.pop(context);
+      return;
+    }
+    confirmation_text = widget.params['msg'].toString();
+    setState(() {});
   }
+
+  String product_id = "";
+  String confirmation_text = "";
 
   @override
   Widget build(BuildContext context) {
     //setState(() { onLoading = false;});
 
     Future<void> submit_form() async {
+      product_id = widget.params['id'].toString();
 
+      if (widget.params == null) {
+        if (widget.params['id'] == null) {
+          product_id = widget.params['id'].toString();
+        }
+      }
       error_message = "";
-      setState(() {});
-      if (!_formKey.currentState!.validate()) {
-        return;
+
+      UserModel logged = await Utils.get_logged_in();
+      if (logged.id < 1) {
+        await Utils.login_user(new UserModel());
+        logged = await Utils.get_logged_in();
       }
 
-      if (_formKey.currentState?.fields['password_2']?.value !=
-          _formKey.currentState?.fields['password_1']?.value) {
-        error_message = "Passwords don't match.";
-        setState(() {});
+      if (logged.id < 1) {
+        Utils.showSnackBar("Failed to login.", context, Colors.white);
+      }
+
+      if (!_formKey.currentState!.validate()) {
         return;
       }
 
       onLoading = true;
       setState(() {});
-      print("===starting===");
-      String _resp = await Utils.http_post('api/users', {
-        'password': _formKey.currentState?.fields['password_1']?.value,
-        'name': _formKey.currentState?.fields['name']?.value,
-        'email': _formKey.currentState?.fields['email']?.value,
+      String _resp = await Utils.http_post('api/orders', {
+        'product_id': product_id,
+        'product_price': widget.params['product_price'].toString(),
+        'product_photos': widget.params['product_photos'].toString(),
+        'product_name': widget.params['product_name'].toString(),
+        'customer_name': _formKey.currentState?.fields['name']?.value,
+        'customer_phone': _formKey.currentState?.fields['phone']?.value,
+        'customer_address': _formKey.currentState?.fields['address']?.value,
       });
 
       onLoading = false;
       setState(() {});
 
-      print("DONE");
-      print(_resp);
-
-
       if (_resp == null || _resp.isEmpty) {
-        setState(() {
-          error_message =
-              "Failed to connect to internet. Please check your network and try again.";
-        });
+        Utils.showSnackBar(
+            'Failed to connect to internet. Please check your network and try again.',
+            context,
+            CustomTheme.primary);
         return;
       }
       dynamic resp_obg = jsonDecode(_resp);
-      if (resp_obg['status'].toString() != "1") {
-        error_message = resp_obg['message'];
-        setState(() {});
+      if (resp_obg['status'].toString() != '1') {
+        Utils.showSnackBar(
+            resp_obg['message'].toString(), context, Colors.white,
+            background_color: Colors.red);
         return;
       }
 
-      UserModel u = UserModel.fromMap(resp_obg['data']);
+      Utils.showSnackBar(resp_obg['message'].toString(), context, Colors.white);
 
-      if (await Utils.login_user(u)) {
-        Navigator.pushNamedAndRemoveUntil(context, "/HomesScreen", (r) => false);
-      } else {
-        error_message =
-            "Account created but failed to login. Please try again.";
-        setState(() {});
-      }
+      Utils.navigate_to(AppConfig.PaymentPage, context);
     }
 
     return Theme(
@@ -103,23 +124,26 @@ class _AccountRegisterState extends State<AccountRegister> {
               key: _formKey,
               child: Column(
                 children: [
-                  Container(
-                    child: Image.asset(
-                      Images.logo_1,
-                      height: 70,
-                    ),
-                  ),
                   FxSpacing.height(16),
                   FxText.h3(
-                    "Create an Account",
+                    "Pet Order Confirmation Form",
                     color: CustomTheme.primary,
                     fontWeight: 800,
                     textAlign: TextAlign.center,
                   ),
+                  Container(
+                    margin: EdgeInsets.only(top: 25),
+                    child: FxText(
+                      confirmation_text,
+                      fontWeight: 600,
+                      fontSize: 18,
+                      textAlign: TextAlign.start,
+                    ),
+                  ),
                   FxSpacing.height(32),
                   FormBuilderTextField(
                       name: "name",
-                      keyboardType: TextInputType.name,
+                      keyboardType: TextInputType.text,
                       validator: FormBuilderValidators.compose([
                         FormBuilderValidators.required(
                           context,
@@ -136,82 +160,48 @@ class _AccountRegisterState extends State<AccountRegister> {
                           errorText: "Name too long.",
                         ),
                       ]),
+                      textInputAction: TextInputAction.next,
                       decoration: customTheme.input_decoration(
-                          labelText: "Your Full Name", icon: Icons.person)),
+                          labelText: "Your Full name", icon: Icons.person)),
                   FxSpacing.height(24),
                   FormBuilderTextField(
-                      name: "email",
-                      keyboardType: TextInputType.emailAddress,
+                      name: "phone",
+                      textInputAction: TextInputAction.next,
+                      keyboardType: TextInputType.phone,
                       validator: FormBuilderValidators.compose([
                         FormBuilderValidators.required(
                           context,
-                          errorText: "Email address required.",
-                        ),
-                        FormBuilderValidators.email(
-                          context,
-                          errorText: "Enter valid email address.",
+                          errorText: "Your Phone number",
                         ),
                       ]),
                       decoration: customTheme.input_decoration(
-                          labelText: "Email address",
-                          icon: Icons.alternate_email)),
+                          labelText: "Your Phone number", icon: Icons.call)),
                   FxSpacing.height(24),
                   FormBuilderTextField(
-                    name: "password_1",
-                    keyboardType: TextInputType.visiblePassword,
+                    name: "address",
+                    textInputAction: TextInputAction.done,
+                    keyboardType: TextInputType.text,
                     validator: FormBuilderValidators.compose([
                       FormBuilderValidators.required(
                         context,
-                        errorText: "Password is required.",
+                        errorText: "Enter Your Physical Address",
                       ),
                       FormBuilderValidators.minLength(
                         context,
                         2,
-                        errorText: "Password too short.",
+                        errorText: "Your Physical Address is required.",
                       ),
                       FormBuilderValidators.maxLength(
                         context,
-                        45,
-                        errorText: "Password too long.",
+                        200,
+                        errorText: "Your Physical Address too long.",
                       ),
                     ]),
                     decoration: customTheme.input_decoration(
-                        labelText: "Password", icon: Icons.lock_outline),
+                        labelText: "Your Physical Address",
+                        icon: Icons.location_on_rounded),
                   ),
-                  FxSpacing.height(24),
-                  FormBuilderTextField(
-                      name: "password_2",
-                      validator: FormBuilderValidators.compose([
-                        FormBuilderValidators.required(
-                          context,
-                          errorText: "Password is required.",
-                        ),
-                        FormBuilderValidators.minLength(
-                          context,
-                          2,
-                          errorText: "Password too short.",
-                        ),
-                        FormBuilderValidators.maxLength(
-                          context,
-                          45,
-                          errorText: "Password too long.",
-                        ),
-                      ]),
-                      decoration: customTheme.input_decoration(
-                          labelText: "Re-enter Password",
-                          icon: Icons.lock_outline)),
-                  FxSpacing.height(16),
-
-                  FxButton.text(
-                      onPressed: () {
-                        Utils.navigate_to(AppConfig.PrivacyPolicy, context);
-                      },
-                      splashColor: CustomTheme.primary.withAlpha(40),
-                      child: FxText.l2("I have read and agreed with Privacy Policy  of ${AppConfig.AppName}.",
-                          textAlign: TextAlign.center,
-                          decoration: TextDecoration.underline,
-                          color: CustomTheme.primary)),
-
+                  FxSpacing.height(10),
                   Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -230,7 +220,7 @@ class _AccountRegisterState extends State<AccountRegister> {
                             ),
                           ),
                   ),
-                  FxSpacing.height(16),
+                  FxSpacing.height(10),
                   onLoading
                       ? Padding(
                           padding: const EdgeInsets.all(6.0),
@@ -247,19 +237,10 @@ class _AccountRegisterState extends State<AccountRegister> {
                           },
                           backgroundColor: CustomTheme.primary,
                           child: FxText.l1(
-                            "Create an Account",
+                            "SUBMIT PET ORDER",
                             color: customTheme.cookifyOnPrimary,
+                            fontSize: 20,
                           )),
-                  FxSpacing.height(16),
-                  FxButton.text(
-                      onPressed: () {
-                        Utils.navigate_to(AppConfig.AccountLogin, context);
-                      },
-                      splashColor: CustomTheme.primary.withAlpha(40),
-                      child: FxText.l2("I have already an account",
-                          fontSize: 14,
-
-                          color: CustomTheme.accent)),
                   FxSpacing.height(16),
                 ],
               ),

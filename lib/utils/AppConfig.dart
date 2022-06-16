@@ -4,6 +4,7 @@ class AppConfig {
   static const String MyProductsScreen = "MyProductsScreen";
   static const String AppName = "PET-SHOP";
   static const String AccountRegister = "AccountRegister";
+  static const String MyOrdersScreen = "MyOrdersScreen";
   static const String AccountSplash = "AccountSplash";
   static const String ProductDetails = "ProductDetails";
   static const String ProductAddForm = "ProductAddForm";
@@ -32,10 +33,14 @@ class AppConfig {
   static const String AboutUs = "AboutUs";
   static const String CallUs = "CallUs";
   static const String OurWhatsApp = "OurWhatsApp";
-  static const String OUR_PHONE_NUMBER = "+256414230705";
-  static const String OUR_WHATSAPP_NUMBER = "+8801632257609";
-  static const String OUR_FACEBOOK_LINK = "https://ugnews24.info";
-  static const String OUR_TWITTER_LINK = "https://twitter.com/ugnews24";
-  static const String OUR_YOUTUBE_LINK = "https://twitter.com/ugnews24";
-  static const String OUR_INSTAGRAM_LINK = "https://www.youtube.com/ugnews24/";
+  static const String OUR_PHONE_NUMBER = "+256761529689";
+  static const String OUR_WHATSAPP_NUMBER = "+256761529689";
+  static const String OUR_FACEBOOK_LINK =
+      "https://pet-shop.jotrace.com/dashboard";
+  static const String OUR_TWITTER_LINK =
+      "https://pet-shop.jotrace.com/dashboard";
+  static const String OUR_YOUTUBE_LINK =
+      "https://pet-shop.jotrace.com/dashboard";
+  static const String OUR_INSTAGRAM_LINK =
+      "https://pet-shop.jotrace.com/dashboard";
 }

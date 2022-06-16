@@ -46,7 +46,7 @@ class _HomesScreenState extends State<HomesScreen>
 
     tabController = TabController(
         //       animationDuration: Duration.zero,
-        length: 4,
+        length: 3,
         vsync: this,
         initialIndex: 0);
 
@@ -54,7 +54,7 @@ class _HomesScreenState extends State<HomesScreen>
       NavItem('Home', CupertinoIcons.home, HomesScreenSegment()),
       NavItem('Categories', CupertinoIcons.search, CategoriesMainScreen()),/*
       NavItem('Sell Now', CupertinoIcons.plus_circle, MyProductsScreen()),*/
-      NavItem('Chats', CupertinoIcons.envelope_badge, ChatHomeScreen()),
+      /*NavItem('Chats', CupertinoIcons.envelope_badge, ChatHomeScreen()),*/
       NavItem('Account', CupertinoIcons.person, AccountSplash()),
     ];
 

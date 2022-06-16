@@ -38,25 +38,8 @@ Widget not_logged_screen(context) {
         ),
         Row(
           children: [
-            Expanded(
-                child: FxButton.outlined(
-              borderColor: CustomTheme.accent,
-              borderRadiusAll: 11,
-              splashColor: CustomTheme.primary.withAlpha(40),
-              padding: FxSpacing.y(10),
-              onPressed: () {
-                Utils.navigate_to(AppConfig.AccountRegister, context);
-              },
-              child: FxText.l1(
-                "Register",
-                fontSize: 20,
-                color: CustomTheme.accent,
-                letterSpacing: 0.5,
-              ),
-            )),
-            SizedBox(
-              width: 15,
-            ),
+
+
             Expanded(
                 child: FxButton(
               elevation: 0,
@@ -66,7 +49,7 @@ Widget not_logged_screen(context) {
                 Utils.navigate_to(AppConfig.AccountLogin, context);
               },
               child: FxText.l1(
-                "LOG IN",
+                "LOG IN AS ADMIN",
                 color: Colors.white,
                 letterSpacing: 0.5,
               ),
@@ -90,7 +73,7 @@ Widget not_logged_screen(context) {
               Divider(),
               singleOption(context, AppTheme.theme,
                   iconData: Icons.call,
-                  option: "Toll free",
+                  option: "Call us",
                   navigation: AppConfig.PrivacyPolicy),
               SizedBox(
                 height: 10,

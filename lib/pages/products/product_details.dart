@@ -417,7 +417,9 @@ class ProductDetailsState extends State<ProductDetails> {
                                     child: FxContainer(
                                       color: CustomTheme.accent,
                                       borderRadiusAll: 4,
-                                      onTap: () {},
+                                      onTap: () {
+                                        Utils.launchPhone(AppConfig.OUR_PHONE_NUMBER);
+                                      },
                                       margin: FxSpacing.x(4),
                                       padding: FxSpacing.all(12),
                                       child: Row(
@@ -444,6 +446,17 @@ class ProductDetailsState extends State<ProductDetails> {
                                       color: CustomTheme.primary,
                                       borderRadiusAll: 4,
                                       onTap: () {
+                                        Utils.navigate_to(
+                                            AppConfig.AccountRegister, context,
+                                            data: {
+                                        'id': productModel.id,
+                                        'product_price': productModel.price,
+                                        'product_photos': productModel.get_thumbnail(),
+                                        'product_name': productModel.name,
+                                        'msg': 'PET: ${productModel.name}\nPRICE: UGX ${productModel.price}',
+
+                                        });
+                                        return;
                                         if (logged_in_user.id < 1) {
                                           show_not_account_bottom_sheet(
                                               context);

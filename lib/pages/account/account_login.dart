@@ -98,7 +98,7 @@ class _AccountLogin extends State<AccountLogin> {
                   ),
                   FxSpacing.height(16),
                   FxText.h3(
-                    "Sign In",
+                    "Sign In As Admin",
                     color: CustomTheme.primary,
                     fontWeight: 800,
                     textAlign: TextAlign.center,
@@ -180,7 +180,7 @@ class _AccountLogin extends State<AccountLogin> {
                         color: customTheme.cookifyOnPrimary,
                       )),
                   FxSpacing.height(16),
-                  FxButton.text(
+               /*   FxButton.text(
                       onPressed: () {
                         Utils.navigate_to(AppConfig.AccountRegister, context);
 
@@ -189,7 +189,7 @@ class _AccountLogin extends State<AccountLogin> {
                       child: FxText.l2("I don't have account, create account",
                           fontSize: 16,
                           textAlign: TextAlign.center,
-                          color: CustomTheme.accent)),
+                          color: CustomTheme.accent)),*/
                   FxSpacing.height(16),
                 ],
               ),
