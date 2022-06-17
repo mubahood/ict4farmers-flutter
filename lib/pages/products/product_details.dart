@@ -9,8 +9,10 @@ import 'package:flutx/widgets/container/container.dart';
 import 'package:flutx/widgets/text/text.dart';
 import 'package:flutx/widgets/widgets.dart';
 import 'package:ict4farmers/models/UserModel.dart';
+import 'package:ict4farmers/pages/account/my_products_screen.dart';
 import 'package:ict4farmers/theme/app_theme.dart';
 import 'package:ict4farmers/utils/AppConfig.dart';
+import 'package:ict4farmers/widget/loading_widget.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 
@@ -65,25 +67,20 @@ class ProductDetailsState extends State<ProductDetails> {
   ProductModel productModel = new ProductModel();
 
   Future<Null> _onRefresh() async {
-
+    is_loading = true;
+    setState(() {});
     if (widget.raw != null) {
       if (widget.raw is Map) {
         if (widget.raw['id'] != null) {
           id = Utils.int_parse(widget.raw['id']);
           if (id > 0) {
-            print("GOOD TO GO WTH ==> $id ROMINA <===");
+            productModel = await ProductModel.get_single_item("$id");
           }
         }
-      }else if(widget.raw is ProductModel){
+      } else if (widget.raw is ProductModel) {
         productModel = widget.raw;
-        print("========> ${productModel.name} <=======");
       }
     }
-
-
-
-
-    return;
 
     logged_in_user = await Utils.get_logged_in();
 
@@ -118,6 +115,7 @@ class ProductDetailsState extends State<ProductDetails> {
       _products = _products.sublist(0, 8);
     }
 
+    is_loading = false;
     setState(() {});
     initilized = false;
     return null;
@@ -171,29 +169,33 @@ class ProductDetailsState extends State<ProductDetails> {
             body: SafeArea(
               child: RefreshIndicator(
                   onRefresh: _onRefresh,
-                  child: Stack(
-                    children: [
-                      CustomScrollView(
-                        slivers: [
-                          SliverList(
-                            delegate: SliverChildBuilderDelegate(
-                              (BuildContext context, int index) {
-                                return Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Container(
-                                      alignment: Alignment.center,
-                                      height: 420,
-                                      child: PageView(
-                                        pageSnapping: true,
-                                        controller: pageController,
-                                        physics: ClampingScrollPhysics(),
-                                        onPageChanged: (index) => {},
-                                        children: _buildHouseList(),
-                                      ),
-                                    ),
-                                    Container(
+                  child: is_loading
+                      ? LoadingWidget()
+                      : Stack(
+                          children: [
+                            CustomScrollView(
+                              slivers: [
+                                SliverList(
+                                  delegate: SliverChildBuilderDelegate(
+                                    (BuildContext context, int index) {
+                                      return Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Container(
+                                            alignment: Alignment.center,
+                                            height: 420,
+                                            child: PageView(
+                                              pageSnapping: true,
+                                              controller: pageController,
+                                              physics: ClampingScrollPhysics(),
+                                              onPageChanged: (index) => {},
+                                              children: _buildHouseList(),
+                                            ),
+                                          ),
+                                          Container(
                                       padding:
                                           EdgeInsets.only(left: 10, right: 10),
                                       child: Row(
@@ -436,27 +438,30 @@ class ProductDetailsState extends State<ProductDetails> {
                                   Expanded(
                                     child: FxContainer(
                                       color: CustomTheme.accent,
-                                      borderRadiusAll: 4,
-                                      onTap: () {},
-                                      margin: FxSpacing.x(4),
-                                      padding: FxSpacing.all(12),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: <Widget>[
-                                          Icon(
-                                            MdiIcons.phone,
-                                            color: Colors.grey.shade100,
-                                            size: 20,
+                                            borderRadiusAll: 4,
+                                            onTap: () {
+                                              Utils.launchPhone(
+                                                  productOwner.phone_number);
+                                            },
+                                            margin: FxSpacing.x(4),
+                                            padding: FxSpacing.all(12),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: <Widget>[
+                                                Icon(
+                                                  MdiIcons.phone,
+                                                  color: Colors.grey.shade100,
+                                                  size: 20,
+                                                ),
+                                                FxSpacing.width(8),
+                                                FxText.sh2("Call",
+                                                    color: Colors.grey.shade100,
+                                                    fontWeight: 600,
+                                                    letterSpacing: 0)
+                                              ],
+                                            ),
                                           ),
-                                          FxSpacing.width(8),
-                                          FxText.sh2("Call",
-                                              color: Colors.grey.shade100,
-                                              fontWeight: 600,
-                                              letterSpacing: 0)
-                                        ],
-                                      ),
-                                    ),
                                   ),
                                   FxSpacing.width(12),
                                   Expanded(

@@ -203,6 +203,28 @@ class ProductModel extends HiveObject {
     return items;
   }
 
+  static Future<ProductModel> get_single_item(String id) async {
+    List<ProductModel> items = await ProductModel.get_local_products();
+    ProductModel item = new ProductModel();
+    items.forEach((el) {
+      if (el.id.toString() == id.toString()) {
+        item = el;
+      }
+    });
+
+    if (item.id.toString() == id.toString()) {
+      return item;
+    }
+
+    String resp = await Utils.http_get('api/products/$id', {});
+
+    if (resp != null && !resp.isEmpty) {
+      item = ProductModel.fromJson(jsonDecode(resp));
+    }
+
+    return item;
+  }
+
   static ProductModel fromJson(data) {
     ProductModel item = new ProductModel();
     item.id = 0;
