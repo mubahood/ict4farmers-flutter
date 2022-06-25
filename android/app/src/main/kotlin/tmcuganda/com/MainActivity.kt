@@ -1,4 +1,4 @@
-package goprint.ug
+package tmcuganda.com
 
 import io.flutter.embedding.android.FlutterActivity
 
