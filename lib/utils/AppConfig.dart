@@ -1,5 +1,5 @@
 class AppConfig {
-  static String BASE_URL = "https://tmc.ugnews24.info";
+  static String BASE_URL = "https://tmcuganda.com";
   static const String OUR_PHONE_NUMBER = "+256755906818";
   static const String OUR_WHATSAPP_NUMBER = "+256755906818";
   static const String OUR_FACEBOOK_LINK =
