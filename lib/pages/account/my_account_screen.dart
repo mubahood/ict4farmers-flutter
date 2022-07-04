@@ -450,10 +450,10 @@ class MyAccountScreenState extends State<MyAccountScreen> {
       return;
     }
 
-    if (!loggedUser.profile_is_complete) {
+/*    if (!loggedUser.profile_is_complete()) {
       Utils.navigate_to(AppConfig.AccountEdit, context);
       return;
-    }
+    }*/
 
     categories = await CropCategory.get_items();
     pests = await PestModel.get_items();

@@ -29,7 +29,7 @@ class _OnBoardingWidget2State extends State<OnBoardingWidget2> {
 
   Future<void> my_delay() async{
 
-    return;
+    //return;
     ProductModel.get_trending();
     await Future.delayed(Duration(seconds: 5), () {
       Navigator.pushNamedAndRemoveUntil(

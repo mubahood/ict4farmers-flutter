@@ -127,7 +127,7 @@ class DashboardState extends State<Dashboard> {
       child: Scaffold(
         backgroundColor: CustomTheme.primary_bg,
         floatingActionButton:
-            (is_logged_in && (!loggedUser.profile_is_complete))
+            (is_logged_in && (!loggedUser.profile_is_complete()))
                 ? FloatingActionButton.extended(
                     backgroundColor: Colors.red.shade800,
                     elevation: 20,
@@ -157,6 +157,7 @@ class DashboardState extends State<Dashboard> {
                     backgroundColor: CustomTheme.primary,
                     elevation: 20,
                     onPressed: () {
+
                       if (is_logged_in) {
                         Utils.navigate_to(AppConfig.MyAccountScreen, context);
                       } else {
@@ -291,7 +292,7 @@ class DashboardState extends State<Dashboard> {
                                 child: is_logged_in
                                     ? InkWell(
                                         onTap: () => {
-                                          if (loggedUser.profile_is_complete)
+                                          if (loggedUser.profile_is_complete())
                                             {
                                               Utils.navigate_to(
                                                   AppConfig.MyAccountScreen,
