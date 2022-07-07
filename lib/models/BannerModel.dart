@@ -72,7 +72,8 @@ class BannerModel extends HiveObject {
   static Future<List<BannerModel>> get_online_items() async {
     List<BannerModel> items = [];
 
-    String resp = await Utils.http_get('api/banners', {});
+    String resp = await Utils.http_get(''
+        '', {});
 
     if (resp != null && !resp.isEmpty) {
       json.decode(resp).map((element) {
