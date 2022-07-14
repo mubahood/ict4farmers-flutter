@@ -131,6 +131,7 @@ class _HomesScreenSegmentState extends State<HomesScreenSegment>
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Container(
+                  padding: EdgeInsets.only(top: 15),
                   child: Image(
                     image: AssetImage(Images.logo_1),
                     width: 120,

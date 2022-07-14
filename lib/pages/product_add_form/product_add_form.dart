@@ -101,7 +101,7 @@ class ProductAddFormState extends State<ProductAddForm> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     FxText(
-                      'Sell an item',
+                      'Sell an item', 
                       color: Colors.black,
                           fontSize: 24,
                           fontWeight: 500,

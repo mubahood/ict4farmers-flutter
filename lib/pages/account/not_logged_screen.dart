@@ -95,67 +95,89 @@ Widget not_logged_screen(context) {
               SizedBox(
                 height: 10,
               ),
+
               Container(
                 margin: EdgeInsets.only(top: 5),
                 child: Row(
                   children: <Widget>[
-                    Container(
-                      margin: EdgeInsets.only(left: 0),
-                      padding: EdgeInsets.all(3),
-                      child: Icon(
-                        Icons.facebook,
-                        size: 30,
-                        color: Colors.blue.shade800,
+                    InkWell(
+                      onTap: () => {Utils.launchOuLink(AppConfig.OurWhatsApp)},
+                      child: Container(
+                        margin: EdgeInsets.only(left: 0),
+                        padding: EdgeInsets.all(3),
+                        child: Icon(
+                          Icons.whatsapp,
+                          size: 30,
+                          color: Colors.green.shade600,
+                        ),
+                        decoration: BoxDecoration(
+                            border: Border.all(
+                                color: Colors.grey.shade500, width: 1),
+                            color: AppTheme.lightTheme.backgroundColor,
+                            borderRadius:
+                            BorderRadius.all(Radius.circular(11))),
                       ),
-                      decoration: BoxDecoration(
-                          border:
-                              Border.all(color: Colors.grey.shade500, width: 1),
-                          color: AppTheme.lightTheme.backgroundColor,
-                          borderRadius: BorderRadius.all(Radius.circular(11))),
                     ),
-                    Container(
-                      margin: EdgeInsets.only(left: 16),
-                      padding: EdgeInsets.all(3),
-                      child: Icon(
-                        MdiIcons.twitter,
-                        size: 30,
-                        color: Colors.blue.shade500,
+                    InkWell(
+                      onTap: () =>
+                      {Utils.launchOuLink(AppConfig.OUR_FACEBOOK_LINK)},
+                      child: Container(
+                        margin: EdgeInsets.only(left: 16),
+                        padding: EdgeInsets.all(3),
+                        child: Icon(
+                          Icons.facebook,
+                          size: 30,
+                          color: Colors.blue.shade800,
+                        ),
+                        decoration: BoxDecoration(
+                            border: Border.all(
+                                color: Colors.grey.shade500, width: 1),
+                            color: AppTheme.lightTheme.backgroundColor,
+                            borderRadius:
+                            BorderRadius.all(Radius.circular(11))),
                       ),
-                      decoration: BoxDecoration(
-                          border:
-                              Border.all(color: Colors.grey.shade500, width: 1),
-                          borderRadius: BorderRadius.all(Radius.circular(11))),
                     ),
-                    Container(
-                      margin: EdgeInsets.only(left: 16),
-                      padding: EdgeInsets.all(3),
-                      child: Icon(
-                        MdiIcons.instagram,
-                        size: 30,
-                        color: Colors.purple.shade300,
+                    InkWell(
+                      onTap: () =>
+                      {Utils.launchOuLink(AppConfig.OUR_TWITTER_LINK)},
+                      child: Container(
+                        margin: EdgeInsets.only(left: 16),
+                        padding: EdgeInsets.all(3),
+                        child: Icon(
+                          MdiIcons.twitter,
+                          size: 30,
+                          color: Colors.blue.shade500,
+                        ),
+                        decoration: BoxDecoration(
+                            border: Border.all(
+                                color: Colors.grey.shade500, width: 1),
+                            borderRadius:
+                            BorderRadius.all(Radius.circular(11))),
                       ),
-                      decoration: BoxDecoration(
-                          border:
-                              Border.all(color: Colors.grey.shade500, width: 1),
-                          borderRadius: BorderRadius.all(Radius.circular(11))),
                     ),
-                    Container(
-                      margin: EdgeInsets.only(left: 16),
-                      padding: EdgeInsets.all(3),
-                      child: Icon(
-                        MdiIcons.youtube,
-                        size: 30,
-                        color: Colors.red.shade500,
+                    InkWell(
+                      onTap: () =>
+                      {Utils.launchOuLink(AppConfig.OUR_INSTAGRAM_LINK)},
+                      child: Container(
+                        margin: EdgeInsets.only(left: 16),
+                        padding: EdgeInsets.all(3),
+                        child: Icon(
+                          MdiIcons.instagram,
+                          size: 30,
+                          color: Colors.purple.shade300,
+                        ),
+                        decoration: BoxDecoration(
+                            border: Border.all(
+                                color: Colors.grey.shade500, width: 1),
+                            borderRadius:
+                            BorderRadius.all(Radius.circular(11))),
                       ),
-                      decoration: BoxDecoration(
-                          border:
-                              Border.all(color: Colors.grey.shade500, width: 1),
-                          color: AppTheme.lightTheme.backgroundColor,
-                          borderRadius: BorderRadius.all(Radius.circular(11))),
                     ),
+
                   ],
                 ),
               ),
+
               Container(
                 margin: EdgeInsets.only(top: 15),
                 width: double.infinity,

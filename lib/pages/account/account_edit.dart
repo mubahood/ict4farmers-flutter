@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -374,7 +373,7 @@ password
                         ),
                       ]),
                       decoration: customTheme.input_decoration(
-                          labelText: "Farm/Enterprise street address",
+                          labelText: "Business address",
                           icon: Icons.map_outlined)),
                   FxSpacing.height(10),
                   FormBuilderTextField(
