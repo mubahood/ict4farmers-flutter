@@ -11,17 +11,18 @@ import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
+import '../../models/CategoryModel.dart';
 import '../../models/FormItemModel.dart';
 import '../../models/ProductModel.dart';
 import '../../models/UserModel.dart';
+import '../../models/option_picker_model.dart';
 import '../../theme/app_notifier.dart';
 import '../../theme/app_theme.dart';
 import '../../theme/custom_theme.dart';
 import '../../utils/AppConfig.dart';
 import '../../utils/Utils.dart';
-import '../../widget/my_widgets.dart';
 import '../location_picker/location_main.dart';
-import '../location_picker/product_category_picker.dart';
+import '../option_pickers/multiple_option_picker.dart';
 import 'item_picker_screen.dart';
 
 class ProductAddForm extends StatefulWidget {
@@ -38,26 +39,7 @@ class ProductAddFormState extends State<ProductAddForm> {
   void initState() {
     super.initState();
     customTheme = AppTheme.customTheme;
-    check_login();
-  }
-
-  UserModel userModel = new UserModel();
-
-  bool main_loading = true;
-  bool incomplete_profile = false;
-
-  Future<void> check_login() async {
-    userModel = await Utils.get_logged_in();
-    if (userModel.phone_number.length < 5) {
-      incomplete_profile = true;
-      main_loading = false;
-      setState(() {});
-      //Utils.navigate_to(AppConfig.AccountEdit, context);
-      //Navigator.pop(context);
-      return;
-    }
-    main_loading = false;
-    setState(() {});
+    my_init();
   }
 
   @override
@@ -69,40 +51,42 @@ class ProductAddFormState extends State<ProductAddForm> {
   Widget build(BuildContext context) {
     return Consumer<AppNotifier>(
         builder: (BuildContext context, AppNotifier value, Widget? child) {
-      return Scaffold(
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          // remove back button in appbar.
-          systemOverlayStyle: SystemUiOverlayStyle(
-            statusBarColor: Colors.white,
-            statusBarIconBrightness: Brightness.dark,
-            // For Android (dark icons)
-            statusBarBrightness: Brightness.light, // For iOS (dark icons)
-          ),
-          elevation: 1,
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              InkWell(
-                onTap: () {
-                  Navigator.pop(context);
-                },
-                child: Container(
-                    padding: FxSpacing.x(0),
-                    child: Icon(
-                      CupertinoIcons.clear,
-                      size: 30,
-                    )),
+          return Scaffold(
+            appBar: AppBar(
+              backgroundColor: CustomTheme.primary,
+              automaticallyImplyLeading: false,
+              // remove back button in appbar.
+              systemOverlayStyle: SystemUiOverlayStyle(
+                statusBarColor: CustomTheme.primary,
+                statusBarIconBrightness: Brightness.light,
+                // For Android (dark icons)
+                statusBarBrightness: Brightness.light, // For iOS (dark icons)
               ),
-              Container(
-                margin: EdgeInsets.only(left: 15),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    FxText(
-                      'Sell an item', 
-                      color: Colors.black,
+              elevation: 1,
+              title: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  InkWell(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: Container(
+                        padding: FxSpacing.x(0),
+                        child: Icon(
+                          CupertinoIcons.clear,
+                          color: Colors.white,
+                          size: 30,
+                        )),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(left: 15),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        FxText(
+                          'Sell an item',
+                          color: Colors.white,
                           fontSize: 24,
                           fontWeight: 500,
                         ),
@@ -112,11 +96,7 @@ class ProductAddFormState extends State<ProductAddForm> {
                 ],
               ),
             ),
-            body: main_loading
-                ? Text("Loading...")
-                : incomplete_profile ?
-            IncopleteAccountWidget(context)
-                : FormBuilder(
+            body: FormBuilder(
               key: _formKey,
               child: CustomScrollView(
                 slivers: [
@@ -492,16 +472,39 @@ class ProductAddFormState extends State<ProductAddForm> {
   }
 
   Future<void> pick_category() async {
+    if (categories.isEmpty) {
+      categories = await CategoryModel.get_all();
+    }
+    if (categories.isEmpty) {
+      Utils.showSnackBar(
+          "Please connect to internet and try again.", context, Colors.white,
+          background_color: Colors.red);
+      return;
+    }
+
+    List<OptionPickerModel> local_items = [];
+
+    categories.forEach((element) {
+      OptionPickerModel item = new OptionPickerModel();
+      item.parent_id = element.parent.toString();
+
+      item.id = element.id.toString();
+      item.name = element.name.toString();
+      local_items.add(item);
+    });
+
     final result = await Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => ProductCategoryPicker()),
+      MaterialPageRoute(
+          builder: (context) => MultipleOptionPicker(
+              "Select main category", "Select sub crop", local_items)),
     );
 
     if (result != null) {
-      if ((result['category_id'] != null) &&
-          (result['category_text'] != null)) {
-        category_id = result['category_id'];
-        category_text = result['category_text'];
+      if ((result['id'] != null) && (result['text'] != null)) {
+        category_id = result['id'];
+        category_text = result['text'].toString();
+
         setState(() {});
       }
     }
@@ -657,5 +660,11 @@ class ProductAddFormState extends State<ProductAddForm> {
         setState(() {});
       }
     }
+  }
+
+  List<CategoryModel> categories = [];
+
+  Future<void> my_init() async {
+    categories = await CategoryModel.get_all();
   }
 }
