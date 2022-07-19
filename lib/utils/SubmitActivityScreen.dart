@@ -467,7 +467,7 @@ class SubmitActivityScreenState extends State<SubmitActivityScreen> {
     form_data_to_upload.clear();
     form_data_to_upload = await FormItemModel.get_all();
 
-    LoggedInLoggedInUserModel userModel = await Utils.get_logged_in();
+    LoggedInUserModel userModel = await Utils.get_logged_in();
     if (userModel.id < 1) {
       Utils.showSnackBar(
           "Login before  you proceed.", context, CustomTheme.onPrimary);
