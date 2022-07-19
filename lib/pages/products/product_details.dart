@@ -18,6 +18,7 @@ import 'package:provider/provider.dart';
 
 import '../../models/BannerModel.dart';
 import '../../models/ChatModel.dart';
+import '../../models/LoggedInUserModel.dart';
 import '../../models/ProductModel.dart';
 import '../../theme/app_notifier.dart';
 import '../../theme/material_theme.dart';
@@ -62,7 +63,7 @@ class ProductDetailsState extends State<ProductDetails> {
   int i = 0;
   int id = 0;
 
-  UserModel logged_in_user = new UserModel();
+  LoggedInUserModel logged_in_user = new LoggedInUserModel();
   UserModel productOwner = new UserModel();
   ProductModel productModel = new ProductModel();
 

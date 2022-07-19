@@ -11,6 +11,7 @@ import 'package:flutx/utils/spacing.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:ict4farmers/models/GardenModel.dart';
+import 'package:ict4farmers/models/LoggedInUserModel.dart';
 import 'package:ict4farmers/models/PestModel.dart';
 import 'package:ict4farmers/pages/option_pickers/single_option_picker.dart';
 import 'package:image_picker/image_picker.dart';
@@ -470,7 +471,7 @@ class WorkerCreateScreenState extends State<WorkerCreateScreen> {
     form_data_to_upload.clear();
     form_data_to_upload = await FormItemModel.get_all();
 
-    UserModel userModel = await Utils.get_logged_in();
+    LoggedInUserModel userModel = await Utils.get_logged_in();
     if (userModel.id < 1) {
       Utils.showSnackBar(
           "Login before  you proceed.", context, CustomTheme.onPrimary);

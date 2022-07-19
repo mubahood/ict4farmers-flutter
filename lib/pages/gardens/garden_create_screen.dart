@@ -750,6 +750,16 @@ class GardenCreateScreenState extends State<GardenCreateScreen> {
   void my_init() async {
     crop_categories = await CropCategory.get_items();
     my_farms = await FarmModel.get_items();
+    if (my_farms.isEmpty) {
+      my_farms = await FarmModel.get_items();
+    }
+
+    if (my_farms.isEmpty) {
+      Utils.showSnackBar(
+          "You need to create at least one farm.", context, Colors.white,
+          background_color: Colors.red);
+      Utils.navigate_to(AppConfig.FarmCreateScreen, context);
+    }
   }
 }
 /*

@@ -20,11 +20,14 @@ import 'package:ict4farmers/models/UserModel.dart';
 import 'package:ict4farmers/pages/HomPage.dart';
 import 'package:ict4farmers/pages/account/account_register.dart';
 import 'package:ict4farmers/pages/account/account_splash.dart';
+import 'package:ict4farmers/pages/account/account_verification_phone.dart';
+import 'package:ict4farmers/pages/account/account_verification_splash.dart';
 import 'package:ict4farmers/pages/gardens/garden_activity_create_screen.dart';
 import 'package:ict4farmers/pages/pests/pests_screen.dart';
 import 'package:ict4farmers/pages/workers/worker_create_screen.dart';
 import 'package:ict4farmers/pages/workers/workers_screen.dart';
 import 'package:ict4farmers/theme/app_theme.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../models/CategoryModel.dart';
@@ -32,10 +35,12 @@ import '../models/ChatModel.dart';
 import '../models/ChatThreadModel.dart';
 import '../models/CropCategory.dart';
 import '../models/DynamicTable.dart';
+import '../models/FarmModel.dart';
 import '../models/FormItemModel.dart';
 import '../models/GardenActivityModel.dart';
 import '../models/GardenModel.dart';
 import '../models/LocationModel.dart';
+import '../models/LoggedInUserModel.dart';
 import '../models/PestModel.dart';
 import '../models/PostModel.dart';
 import '../models/ProductModel.dart';
@@ -43,6 +48,7 @@ import '../models/QuestionModel.dart';
 import '../pages/account/account_details.dart';
 import '../pages/account/account_edit.dart';
 import '../pages/account/account_login.dart';
+import '../pages/account/account_verification_code.dart';
 import '../pages/account/my_account_screen.dart';
 import '../pages/account/my_products_screen.dart';
 import '../pages/account/onboarding_widget.dart';
@@ -83,6 +89,7 @@ import 'SubmitActivityScreen.dart';
 
 class Utils {
   static void boot_system() async {
+    await Utils.get_logged_in();
     await CropCategory.get_items();
     await GardenModel.get_items();
     await GardenActivityModel.get_items();
@@ -91,6 +98,7 @@ class Utils {
     await LocationModel.get_items();
     await CategoryModel.get_all();
     await ProductModel.get_online_items({});
+    await FarmModel.get_items();
   }
 
   static void launchURL(String _url) async {
@@ -157,7 +165,13 @@ class Utils {
     return temp;
   }
 
+  static String string_parse(dynamic x, String _default) {
+    if (x == null) {
+      return _default;
+    }
 
+    return x.toString();
+  }
 
   static bool bool_parse(dynamic x) {
     int temp = 0;
@@ -350,6 +364,39 @@ class Utils {
 
   static navigate_to(String screen, context, {dynamic data: null}) {
     switch (screen) {
+      case AppConfig.account_verification_code:
+        Navigator.push(
+          context,
+          PageRouteBuilder(
+            pageBuilder: (context, animation1, animation2) =>
+                account_verification_code(),
+            transitionDuration: Duration.zero,
+          ),
+        );
+        break;
+
+      case AppConfig.account_verification_phone:
+        Navigator.push(
+          context,
+          PageRouteBuilder(
+            pageBuilder: (context, animation1, animation2) =>
+                account_verification_phone(),
+            transitionDuration: Duration.zero,
+          ),
+        );
+        break;
+
+      case AppConfig.account_verification_splash:
+        Navigator.push(
+          context,
+          PageRouteBuilder(
+            pageBuilder: (context, animation1, animation2) =>
+                account_verification_splash(),
+            transitionDuration: Duration.zero,
+          ),
+        );
+        break;
+
       case AppConfig.WorkersScreen:
         Navigator.push(
           context,
@@ -847,33 +894,14 @@ class Utils {
     }
   }
 
-  static Future<bool> login_user(UserModel u) async {
-    if (await is_login()) {
-      await logged_out();
-    }
-
-    u.status = 'logged_in';
-    u.status_comment = u.id.toString();
-
-    var box = null;
-
-    if (Hive.isBoxOpen('UserModel')) {
-      box = await Hive.openBox<UserModel>("UserModel");
-    }
-
-    if (box == null) {
-      return false;
-    }
-
-    box.add(u);
+  static Future<bool> login_user(dynamic u) async {
+    await LoggedInUserModel.login_user(u);
 
     return true;
   }
 
-
-
   static Future<bool> is_login() async {
-    UserModel u = await get_logged_in();
+    LoggedInUserModel u = await get_logged_in();
     if (u == null) {
       return false;
     }
@@ -888,27 +916,8 @@ class Utils {
     return true;
   }
 
-  static Future<UserModel> get_logged_in() async {
-    UserModel u = new UserModel();
-    List<UserModel> users = [];
-    users = await get_local_users();
-    if (users == null || users.isEmpty) {
-      return u;
-    }
-    users.forEach((element) {
-      if (element != null) {
-        if (element.status == 'logged_in') {
-          try {
-            u.id = int.parse(element.status_comment);
-          } catch (e) {
-            u.id = 0;
-          }
-          u = element;
-        }
-      }
-    });
-    u.init();
-    return u;
+  static Future<LoggedInUserModel> get_logged_in() async {
+    return LoggedInUserModel.get_logged_in_user();
   }
 
   static Future<void> logged_out() async {
@@ -1004,21 +1013,28 @@ class Utils {
   }
 
   static String number_short(int num) {
-    String num_1= num.toString();
+    String num_1 = num.toString();
     String ans = num_1;
-    if(num_1.length<7 ){
-      double x = (num/1000);
+    if (num_1.length < 7) {
+      double x = (num / 1000);
       x.ceil();
       ans = x.toString();
-      ans = ans+"K";
-    }  else {
-      double x = (num/1000000);
+      ans = ans + "K";
+    } else {
+      double x = (num / 1000000);
       x.ceil();
       ans = x.toString();
-      ans = ans+"M";
+      ans = ans + "M";
     }
 
     return ans;
   }
 
+  static void init_one_signal() {
+    OneSignal.shared.setAppId(AppConfig.ONESIGNAL_APP_ID);
+    // The promptForPushNotificationsWithUserResponse function will show the iOS push notification prompt. We recommend removing the following code and instead using an In-App Message to prompt for notification permission
+    OneSignal.shared.promptUserForPushNotificationPermission().then((accepted) {
+      print("=========> Accepted permission: $accepted <=============");
+    });
+  }
 }

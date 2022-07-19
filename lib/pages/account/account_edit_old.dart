@@ -227,15 +227,12 @@ class _AccountEditOldState extends State<AccountEditOld> {
         return;
       }
 
-      UserModel u = UserModel.fromMap(resp_obg['data']);
-
       Utils.showSnackBar(
           "Profile updated successfully!.", context, Colors.white,
           background_color: CustomTheme.primary);
 
-      u.status = 'logged_in';
       //await Utils.login_user(u);
-      if (await Utils.login_user(u)) {
+      if (await Utils.login_user(resp_obg['data'])) {
         Navigator.pushNamedAndRemoveUntil(
             context, "/HomesScreen", (r) => false);
       } else {

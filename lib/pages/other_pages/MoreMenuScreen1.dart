@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutx/widgets/text/text.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
+import '../../models/LoggedInUserModel.dart';
 import '../../models/UserModel.dart';
 import '../../theme/app_theme.dart';
 import '../../utils/AppConfig.dart';
@@ -47,7 +48,7 @@ class MoreMenuScreen1State extends State<MoreMenuScreen1> {
   }
 
   bool is_logged_in = false;
-  UserModel loggedUser = new UserModel();
+  LoggedInUserModel loggedUser = new LoggedInUserModel();
 
   @override
   Widget build(BuildContext context) {

@@ -15,6 +15,7 @@ import '../../theme/app_theme.dart';
 import '../../utils/AppConfig.dart';
 import '../../utils/Utils.dart';
 import '../models/FarmersGroup.dart';
+import '../models/LoggedInUserModel.dart';
 import '../widget/my_widgets.dart';
 import '../widget/shimmer_loading_widget.dart';
 
@@ -57,7 +58,7 @@ class DashboardState extends State<Dashboard> {
   }
 
   bool is_logged_in = false;
-  UserModel loggedUser = new UserModel();
+  LoggedInUserModel loggedUser = new LoggedInUserModel();
 
   @override
   Widget build(BuildContext context) {

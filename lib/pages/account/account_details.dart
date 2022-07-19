@@ -11,6 +11,7 @@ import 'package:ict4farmers/theme/app_theme.dart';
 import 'package:provider/provider.dart';
 
 import '../../models/BannerModel.dart';
+import '../../models/LoggedInUserModel.dart';
 import '../../models/ProductModel.dart';
 import '../../theme/app_notifier.dart';
 import '../../theme/material_theme.dart';
@@ -54,7 +55,7 @@ class AccountDetailsState extends State<AccountDetails> {
   List<ProductModel> _products = [];
   int i = 0;
 
-  UserModel logged_in_user = new UserModel();
+  LoggedInUserModel logged_in_user = new LoggedInUserModel();
 
   Future<Null> _onRefresh() async {
     logged_in_user = await Utils.get_logged_in();

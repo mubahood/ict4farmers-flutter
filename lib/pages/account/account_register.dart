@@ -79,9 +79,8 @@ class _AccountRegisterState extends State<AccountRegister> {
         return;
       }
 
-      UserModel u = UserModel.fromMap(resp_obg['data']);
 
-      if (await Utils.login_user(u)) {
+      if (await Utils.login_user(resp_obg['data'])) {
         Navigator.pushNamedAndRemoveUntil(context, "/HomesScreen", (r) => false);
       } else {
         error_message =

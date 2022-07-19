@@ -7,6 +7,7 @@ import 'package:ict4farmers/pages/products/product_details.dart';
 import 'package:ict4farmers/utils/AppConfig.dart';
 
 import '../models/BannerModel.dart';
+import '../models/LoggedInUserModel.dart';
 import '../models/ProductModel.dart';
 import '../utils/Utils.dart';
 import '../widget/product_item_ui.dart';
@@ -37,7 +38,7 @@ class _TestPage1State extends State<TestPage1> {
 
   bool is_logged_in = true;
   bool complete_profile = true;
-  UserModel logged_in_user = new UserModel();
+  LoggedInUserModel logged_in_user = new LoggedInUserModel();
   int page_num = 1;
 
   Future<void> _init_databse() async {

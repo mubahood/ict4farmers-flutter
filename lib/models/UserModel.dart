@@ -264,22 +264,7 @@ class UserModel extends HiveObject {
   String experience = "";
   String access_to_credit = "";
   String user_role = "";
-
-  bool profile_is_complete() {
-    if (this.user_role == null) {
-      return false;
-    }
-
-    if (this.user_role.length < 5) {
-      return false;
-    }
-
-    if (this.user_role == 'null') {
-      return false;
-    } else {
-      return true;
-    }
-  }
+  String phone_number_verified = "";
 
   void init() {
     if (!this.facebook.isEmpty) {
@@ -301,6 +286,7 @@ class UserModel extends HiveObject {
               this.access_to_credit = map['access_to_credit'].toString();
               this.user_role = map['user_role'].toString();
               this.experience = map['experience'].toString();
+              this.phone_number_verified = map['phone_number_verified'].toString();
             }
           }
         }

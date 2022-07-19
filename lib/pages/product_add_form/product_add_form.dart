@@ -13,6 +13,7 @@ import 'package:provider/provider.dart';
 
 import '../../models/CategoryModel.dart';
 import '../../models/FormItemModel.dart';
+import '../../models/LoggedInUserModel.dart';
 import '../../models/ProductModel.dart';
 import '../../models/UserModel.dart';
 import '../../models/option_picker_model.dart';
@@ -526,7 +527,7 @@ class ProductAddFormState extends State<ProductAddForm> {
     form_data_to_upload.clear();
     form_data_to_upload = await FormItemModel.get_all();
 
-    UserModel userModel = await Utils.get_logged_in();
+    LoggedInUserModel userModel = await Utils.get_logged_in();
     if (userModel.id < 1) {
       Utils.showSnackBar(
           "Login before  you proceed.", context, CustomTheme.onPrimary);

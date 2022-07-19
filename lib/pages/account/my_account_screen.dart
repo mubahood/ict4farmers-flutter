@@ -259,6 +259,7 @@ class MyAccountScreenState extends State<MyAccountScreen> {
 
     UserModel userModel = await Utils.get_logged_in();
     if (userModel.id < 1) {
+
       Utils.showSnackBar(
           "Login before  you proceed.", context, CustomTheme.onPrimary);
       return;

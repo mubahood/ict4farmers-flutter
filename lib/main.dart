@@ -8,12 +8,20 @@ import 'package:ict4farmers/pages/account/onboarding_widget.dart';
 import 'package:ict4farmers/pages/homes/homes_screen.dart';
 import 'package:ict4farmers/theme/app_notifier.dart';
 import 'package:ict4farmers/theme/app_theme.dart';
+import 'package:ict4farmers/utils/AppConfig.dart';
 import 'package:ict4farmers/utils/Utils.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:provider/provider.dart';
 
 //I love romina
 //FROM DISK D
+
 void main() {
+
+
+  //Utils.init_one_signal();
+
+
   //You will need to initialize AppThemeNotifier class for theme changes.
   WidgetsFlutterBinding.ensureInitialized();
 

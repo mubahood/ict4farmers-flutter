@@ -7,6 +7,34 @@ part 'DynamicTable.g.dart';
 
 @HiveType(typeId: 60)
 class DynamicTable extends HiveObject {
+  static save_to_local_db({
+    required String end_point,
+    required bool clear_previous,
+    required List<int> new_ids,
+    required List<DynamicTable> items,
+  }) async {
+    List<DynamicTable> current_items = [];
+    current_items = await DynamicTable.get_local_items(endpoint: end_point);
+    Utils.init_databse();
+    await Hive.initFlutter();
+    var box = await Hive.openBox<DynamicTable>("DynamicTable");
+
+    for (int count = 0; count < current_items.length; count++) {
+      if (clear_previous) {
+        try {
+          await current_items[count].delete();
+        } catch (e) {}
+      } else {
+        if (new_ids.contains(current_items[count].own_id)) {
+          await current_items[count].delete();
+        }
+      }
+    }
+    for (int x = 0; x < items.length; x++) {
+      await box.add(items[x]);
+    }
+  }
+
   static Future<List<DynamicTable>> get_items({
     required String end_point,
     required bool clear_previous,
@@ -116,8 +144,7 @@ class DynamicTable extends HiveObject {
   @HiveField(4)
   String data = "";
 
-  static Future<List<DynamicTable>> get_local_items(
-      {required String endpoint}) async {
+  static Future<List<DynamicTable>> get_local_items({required String endpoint}) async {
     Utils.init_databse();
     await Hive.initFlutter();
     var box = await Hive.openBox<DynamicTable>("DynamicTable");

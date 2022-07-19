@@ -3,12 +3,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutx/widgets/button/button.dart';
 import 'package:flutx/widgets/text/text.dart';
-import 'package:ict4farmers/models/UserModel.dart';
 import 'package:ict4farmers/pages/products/product_details.dart';
 import 'package:ict4farmers/utils/AppConfig.dart';
 import 'package:ict4farmers/widget/my_widgets.dart';
 
 import '../../models/BannerModel.dart';
+import '../../models/LoggedInUserModel.dart';
 import '../../models/ProductModel.dart';
 import '../../theme/custom_theme.dart';
 import '../../utils/Utils.dart';
@@ -35,7 +35,7 @@ class _MarketPlace1State extends State<MarketPlace1> {
 
   bool is_logged_in = true;
   bool complete_profile = true;
-  UserModel logged_in_user = new UserModel();
+  LoggedInUserModel logged_in_user = new LoggedInUserModel();
 
   Future<void> _init_databse() async {
     is_logged_in = await Utils.is_login();

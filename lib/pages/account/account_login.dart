@@ -66,10 +66,8 @@ class _AccountLogin extends State<AccountLogin> {
         return;
       }
 
-      UserModel u = UserModel.fromMap(resp_obg['data']);
-      u.status = 'logged_in';
 
-      if (await Utils.login_user(u)) {
+      if (await Utils.login_user(resp_obg['data'])) {
         Navigator.pushNamedAndRemoveUntil(
             context, "/HomesScreen", (r) => false);
       } else {

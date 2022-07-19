@@ -5,6 +5,7 @@ import 'package:ict4farmers/utils/Utils.dart';
 
 import '../utils/AppConfig.dart';
 import 'DynamicTable.dart';
+import 'LoggedInUserModel.dart';
 
 class GardenProductionModel {
   static String end_point = "garden-production-record";
@@ -17,7 +18,7 @@ class GardenProductionModel {
   String images = "";
 
   static Future<List<GardenProductionModel>> get_items() async {
-    UserModel u = await Utils.get_logged_in();
+    LoggedInUserModel u = await Utils.get_logged_in();
     if (u.id < 1) {
       return [];
     }

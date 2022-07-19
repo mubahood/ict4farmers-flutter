@@ -4,6 +4,7 @@ import 'package:ict4farmers/utils/AppConfig.dart';
 import 'package:ict4farmers/utils/Utils.dart';
 
 import 'DynamicTable.dart';
+import 'LoggedInUserModel.dart';
 import 'UserModel.dart';
 
 class FarmModel {
@@ -13,7 +14,7 @@ class FarmModel {
   String details = "";
 
   static Future<List<FarmModel>> get_items() async {
-    UserModel u = await Utils.get_logged_in();
+    LoggedInUserModel u = await Utils.get_logged_in();
     if (u.id < 1) {
       return [];
     }

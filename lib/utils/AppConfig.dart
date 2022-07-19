@@ -1,9 +1,11 @@
 class AppConfig {
   static const String GardensScreen = "GardensScreen";
+  static const String ONESIGNAL_APP_ID = "51de22fc-e924-4731-a37f-f7a3276ab151";
   static const String GardenCreateScreen = "GardenCreateScreen";
   static const String GardenScreen = "GardenScreen";
   static const String GardenActivitiesScreen = "GardenActivitiesScreen";
-  static const String GardenProductionRecordScreen = "GardenProductionRecordScreen";
+  static const String GardenProductionRecordScreen =
+      "GardenProductionRecordScreen";
   static const String GardenActivityCreateScreen = "GardenActivityCreateScreen";
   static const String PestCaseCreateScreen = "PestCaseCreateScreen";
   static const String PestScreen = "PestScreen";
@@ -25,6 +27,7 @@ class AppConfig {
   static const String GardenProductionRecordCreateScreen = "GardenProductionRecordCreateScreen";
   static const String FarmCreateScreen = "FarmCreateScreen";
   static const String FarmsScreen = "FarmsScreen";
+  static const String account_verification_code = "account_verification_code";
 
   static String Lorem1 = "Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto consequatur temporibus laboriosam atque aperiam dolorem, esse, velit exercitationem expedita sit optio possimus. Ipsam repellat corporis temporibus incidunt sunt obcaecati aperiam. Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto consequatur temporibus laboriosam atque aperiam dolorem, esse, velit exercitationem expedita sit optio possimus. Ipsam repellat corporis temporibus incidunt sunt obcaecati aperiam.";
   static String Lorem2 = "Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto consequatur temporibus laboriosam atque aperiam dolorem, esse, velit exercitationem expedita sit optio possimus. Ipsam repellat corporis temporibus incidunt sunt obcaecati aperiam.";
@@ -64,6 +67,8 @@ class AppConfig {
   static const String OUR_PHONE_NUMBER = "0414230705";
   static const String TOLL_FREE_PHONE_NUMBER = "0800209003";
   static const String OUR_WHATSAPP_NUMBER = "+256780602550";
+  static const String account_verification_splash = "account_verification_splash";
+  static const String account_verification_phone = "account_verification_phone";
 
   static const String OUR_FACEBOOK_LINK = "https://www.facebook.com/ict4farmers";
   static const String OUR_TWITTER_LINK = "https://twitter.com/ict4farmers";

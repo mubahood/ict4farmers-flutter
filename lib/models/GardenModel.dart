@@ -4,6 +4,7 @@ import 'package:ict4farmers/models/UserModel.dart';
 import 'package:ict4farmers/utils/Utils.dart';
 
 import 'DynamicTable.dart';
+import 'LoggedInUserModel.dart';
 
 class GardenModel {
   static String end_point = "gardens";
@@ -30,7 +31,7 @@ class GardenModel {
   String color = "#542889";
 
   static Future<List<GardenModel>> get_items() async {
-    UserModel u = await Utils.get_logged_in();
+    LoggedInUserModel u = await Utils.get_logged_in();
     if (u.id < 1) {
       return [];
     }

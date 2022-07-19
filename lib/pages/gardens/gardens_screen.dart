@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:ict4farmers/models/GardenModel.dart';
+import 'package:ict4farmers/widget/loading_widget.dart';
 
 import '../../models/UserModel.dart';
 import '../../theme/app_theme.dart';
@@ -45,6 +46,15 @@ class GardensScreenState extends State<GardensScreen> {
     }
 
     gardens = await GardenModel.get_items();
+    if (gardens.isEmpty) {
+      gardens = await GardenModel.get_items();
+    }
+    if (gardens.isEmpty) {
+      Utils.showSnackBar(
+          "You need to create at least one farm.", context, Colors.white,
+          background_color: Colors.red);
+      Utils.navigate_to(AppConfig.FarmCreateScreen, context);
+    }
 
     is_logged_in = false;
     setState(() {});
@@ -69,29 +79,33 @@ class GardensScreenState extends State<GardensScreen> {
           color: CustomTheme.primary,
           backgroundColor: Colors.white,
           onRefresh: _onRefresh,
-          child: CustomScrollView(
-            slivers: [
-              SliverAppBar(
-                  iconTheme: IconThemeData(
-                    color: Colors.white, // <= You can change your color here.
-                  ),
-                  systemOverlayStyle: SystemUiOverlayStyle(
-                    statusBarColor: CustomTheme.primary,
-                    statusBarIconBrightness: Brightness.light,
-                    // For Android (dark icons)
-                    statusBarBrightness:
-                        Brightness.light, // For iOS (dark icons)
-                  ),
-                  titleSpacing: 0,
-                  elevation: 0,
-                  title: Text(title),
-                  floating: false,
-                  pinned: true,
-                  backgroundColor: CustomTheme.primary),
-              SliverGrid(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    mainAxisSpacing: 0,
+          child: (is_logged_in)
+              ? LoadingWidget()
+              : CustomScrollView(
+                  slivers: [
+                    SliverAppBar(
+                        iconTheme: IconThemeData(
+                          color: Colors
+                              .white, // <= You can change your color here.
+                        ),
+                        systemOverlayStyle: SystemUiOverlayStyle(
+                          statusBarColor: CustomTheme.primary,
+                          statusBarIconBrightness: Brightness.light,
+                          // For Android (dark icons)
+                          statusBarBrightness:
+                              Brightness.light, // For iOS (dark icons)
+                        ),
+                        titleSpacing: 0,
+                        elevation: 0,
+                        title: Text(title),
+                        floating: false,
+                        pinned: true,
+                        backgroundColor: CustomTheme.primary),
+                    SliverGrid(
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              mainAxisSpacing: 0,
                     crossAxisSpacing: 0,
                     childAspectRatio: 2,
                     mainAxisExtent: (160)),

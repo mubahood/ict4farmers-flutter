@@ -8,11 +8,11 @@ import 'package:flutx/flutx.dart';
 import 'package:flutx/utils/spacing.dart';
 import 'package:flutx/widgets/container/container.dart';
 import 'package:flutx/widgets/text/text.dart';
+import 'package:ict4farmers/models/LoggedInUserModel.dart';
 import 'package:ict4farmers/pages/location_picker/single_item_picker.dart';
 import 'package:ict4farmers/pages/product_add_form/product_add_form.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
-import '../../models/UserModel.dart';
 import '../../theme/app_theme.dart';
 import '../../utils/AppConfig.dart';
 import '../../utils/Utils.dart';
@@ -61,20 +61,27 @@ class DashboardState extends State<Dashboard> {
   }
 
   Future<void> my_init() async {
-    loggedUser = await Utils.get_logged_in();
+    loggedUser = await LoggedInUserModel.get_logged_in_user();
     if (loggedUser.id < 1) {
       is_logged_in = false;
     } else {
-      loggedUser.init();
       is_logged_in = true;
+      if (loggedUser.phone_number_verified != "1") {
+        Utils.navigate_to(AppConfig.account_verification_splash, context);
+      }
     }
 
     setState(() {});
     Utils.ini_theme();
+
+    return;
+    LoggedInUserModel.get_logged_in_user();
+
+    Utils.init_one_signal();
   }
 
   bool is_logged_in = false;
-  UserModel loggedUser = new UserModel();
+  LoggedInUserModel loggedUser = new LoggedInUserModel();
 
   Future<Null> _onRefresh() async {
     await my_init();
