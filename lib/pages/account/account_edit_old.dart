@@ -17,7 +17,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 import '../../models/FarmersGroup.dart';
-import '../../models/UserModel.dart';
+import '../../models/LoggedInUserModel.dart';
+import '../../models/LoggedInUserModel.dart';
 import '../../widget/shimmer_loading_widget.dart';
 import '../location_picker/product_category_picker.dart';
 import '../location_picker/single_item_picker.dart';
@@ -36,7 +37,7 @@ class _AccountEditOldState extends State<AccountEditOld> {
 
   bool onLoading = false;
 
-  UserModel item = new UserModel();
+  LoggedInUserModel item = new LoggedInUserModel();
 
   Future<void> get_location() async {
     Position p = await Utils.get_device_location();
@@ -66,7 +67,7 @@ class _AccountEditOldState extends State<AccountEditOld> {
     if (item.company_name == "null") {
       item.company_name = "";
     }
-    if (item.phone_number == "null") {
+    if (item.phone_number_2 == "null") {
       item.phone_number = "";
     }
     if (item.address == "null") {
@@ -95,9 +96,6 @@ class _AccountEditOldState extends State<AccountEditOld> {
       item.facebook = "";
     }
 
-    if (item.twitter == "null") {
-      item.twitter = "";
-    }
 
     if (item.instagram == "null") {
       item.instagram = "";
@@ -128,7 +126,6 @@ class _AccountEditOldState extends State<AccountEditOld> {
       'about': item.about,
       'district': item.district,
       'facebook': item.facebook,
-      'twitter': item.twitter,
       'whatsapp': item.whatsapp,
       'instagram': item.instagram,
       'district': item.district,

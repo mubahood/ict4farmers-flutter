@@ -6,6 +6,7 @@ import 'package:ict4farmers/widget/loading_widget.dart';
 
 import '../../models/GardenActivityModel.dart';
 import '../../models/GardenModel.dart';
+import '../../models/LoggedInUserModel.dart';
 import '../../models/UserModel.dart';
 import '../../theme/app_theme.dart';
 import '../../utils/AppConfig.dart';
@@ -93,7 +94,7 @@ class GardenActivitiesScreenState extends State<GardenActivitiesScreen> {
   }
 
   bool is_logged_in = false;
-  UserModel loggedUser = new UserModel();
+  LoggedInUserModel loggedUser = new LoggedInUserModel();
 
   Future<Null> _onRefresh() async {
     my_init();
@@ -300,7 +301,7 @@ class GardenActivitiesScreenState extends State<GardenActivitiesScreen> {
                     ? Container(
                         margin: EdgeInsets.only(top: 10),
                         width: double.infinity,
-                        child: (!loggedUser.is_a_worker())
+                        child: (false)
                             ? Expanded(
                                 child: FxButton.outlined(
                                 borderRadiusAll: 5,

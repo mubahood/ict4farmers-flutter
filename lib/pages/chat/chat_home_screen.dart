@@ -7,7 +7,8 @@ import 'package:provider/provider.dart';
 
 import '../../models/ChatModel.dart';
 import '../../models/ChatThreadModel.dart';
-import '../../models/UserModel.dart';
+import '../../models/LoggedInUserModel.dart';
+import '../../models/LoggedInUserModel.dart';
 import '../../theme/app_notifier.dart';
 import '../../theme/app_theme.dart';
 import '../../theme/custom_theme.dart';
@@ -27,7 +28,7 @@ class _ChatHomeScreenState extends State<ChatHomeScreen> {
   late ThemeData theme;
   bool is_logged_in = false;
   bool is_loading = true;
-  UserModel logged_in_user = new UserModel();
+  LoggedInUserModel logged_in_user = new LoggedInUserModel();
   List<ChatThreadModel> chat_threads = [];
 
   @override

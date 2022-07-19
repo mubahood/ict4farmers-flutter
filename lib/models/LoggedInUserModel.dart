@@ -9,6 +9,7 @@ class LoggedInUserModel {
   int id = 0;
   String name = "";
   String token = "";
+  String phone_number = "";
   String remember_token = "";
   String created_at = "";
   String first_name = "";
@@ -113,6 +114,7 @@ class LoggedInUserModel {
             item.first_name = Utils.string_parse(d['data']['first_name'], "");
             item.last_name = Utils.string_parse(d['data']['last_name'], "");
             item.email = Utils.string_parse(d['data']['email'], "");
+            item.phone_number = Utils.string_parse(d['data']['phone_number'], "");
             item.avatar = Utils.string_parse(d['data']['avatar'], "");
             item.status = Utils.string_parse(d['data']['status'], "");
             item.message = Utils.string_parse(d['data']['message'], "");
@@ -160,6 +162,8 @@ class LoggedInUserModel {
             item.user_role = Utils.string_parse(d['data']['user_role'], "");
             item.access_to_credit =
                 Utils.string_parse(d['data']['access_to_credit'], "");
+            item.phone_number =
+                Utils.string_parse(d['data']['phone_number'], "");
             item.experience = Utils.string_parse(d['data']['experience'], "");
             item.phone_number_2 =
                 Utils.string_parse(d['data']['phone_number_2'], "");

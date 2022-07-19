@@ -6,6 +6,7 @@ import 'package:flutx/flutx.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 import '../../models/ChatModel.dart';
+import '../../models/LoggedInUserModel.dart';
 import '../../models/UserModel.dart';
 import '../../theme/app_theme.dart';
 import '../../theme/custom_chat_theme.dart';
@@ -50,7 +51,7 @@ class _ChatScreenState extends State<ChatScreen> {
   List<Timer> _timers = [];
 
   bool isChatTextEmpty = true;
-  UserModel logged_in_user = new UserModel();
+  LoggedInUserModel logged_in_user = new LoggedInUserModel();
 
   Future<void> my_init_state() async {
     is_loading = true;

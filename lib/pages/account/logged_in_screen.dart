@@ -10,7 +10,8 @@ import 'package:ict4farmers/models/ChatModel.dart';
 import 'package:ict4farmers/models/FormItemModel.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
-import '../../models/UserModel.dart';
+import '../../models/LoggedInUserModel.dart';
+import '../../models/LoggedInUserModel.dart';
 import '../../theme/app_theme.dart';
 import '../../theme/custom_theme.dart';
 import '../../utils/AppConfig.dart';
@@ -26,7 +27,7 @@ class LoggedInScreen extends StatefulWidget {
 }
 
 class LoggedInScreenState extends State<LoggedInScreen> {
-  UserModel logged_in_user = new UserModel();
+  LoggedInUserModel logged_in_user = new LoggedInUserModel();
 
 
   @override

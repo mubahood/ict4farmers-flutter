@@ -8,7 +8,7 @@ import 'package:ict4farmers/theme/app_theme.dart';
 import 'package:ict4farmers/utils/Utils.dart';
 import 'package:ict4farmers/widgets/images.dart';
 
-import '../../models/UserModel.dart';
+import '../../models/LoggedInUserModel.dart';
 import '../../utils/AppConfig.dart';
 
 class AccountLogin extends StatefulWidget {

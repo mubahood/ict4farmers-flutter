@@ -18,6 +18,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 import '../../models/FormItemModel.dart';
+import '../../models/LoggedInUserModel.dart';
 import '../../models/UserModel.dart';
 import '../../models/option_picker_model.dart';
 import '../../theme/app_notifier.dart';
@@ -445,7 +446,7 @@ class GardenActivityCreateScreenState
     form_data_to_upload.clear();
     form_data_to_upload = await FormItemModel.get_all();
 
-    UserModel userModel = await Utils.get_logged_in();
+    LoggedInUserModel userModel = await Utils.get_logged_in();
     if (userModel.id < 1) {
       Utils.showSnackBar(
           "Login before  you proceed.", context, CustomTheme.onPrimary);
@@ -560,7 +561,7 @@ class GardenActivityCreateScreenState
 
   List<GardenModel> gardens = [];
   List<WorkerModel> workers = [];
-  UserModel logged_in_user = new UserModel();
+  LoggedInUserModel logged_in_user = new LoggedInUserModel();
 
   void my_init() async {
     logged_in_user = await Utils.get_logged_in();

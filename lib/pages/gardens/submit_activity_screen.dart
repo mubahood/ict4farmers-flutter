@@ -15,6 +15,7 @@ import 'package:provider/provider.dart';
 
 import '../../models/FormItemModel.dart';
 import '../../models/GardenModel.dart';
+import '../../models/LoggedInUserModel.dart';
 import '../../models/UserModel.dart';
 import '../../models/option_picker_model.dart';
 import '../../theme/app_notifier.dart';
@@ -410,7 +411,7 @@ class GardenProductionRecordCreateScreenState
     form_data_to_upload.clear();
     form_data_to_upload = await FormItemModel.get_all();
 
-    UserModel userModel = await Utils.get_logged_in();
+    LoggedInUserModel userModel = await Utils.get_logged_in();
     if (userModel.id < 1) {
       Utils.showSnackBar(
           "Login before  you proceed.", context, CustomTheme.onPrimary);

@@ -10,7 +10,7 @@ import 'package:ict4farmers/pages/location_picker/single_item_picker.dart';
 import 'package:ict4farmers/pages/product_add_form/product_add_form.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
-import '../../models/UserModel.dart';
+import '../../models/LoggedInUserModel.dart';
 import '../../theme/app_theme.dart';
 import '../../utils/AppConfig.dart';
 import '../../utils/Utils.dart';

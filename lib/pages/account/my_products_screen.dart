@@ -12,6 +12,7 @@ import 'package:ict4farmers/theme/app_theme.dart';
 import 'package:ict4farmers/utils/AppConfig.dart';
 import 'package:provider/provider.dart';
 
+import '../../models/LoggedInUserModel.dart';
 import '../../models/ProductModel.dart';
 import '../../theme/app_notifier.dart';
 import '../../utils/Utils.dart';
@@ -46,7 +47,7 @@ class MyProductsScreenState extends State<MyProductsScreen> {
     pageController.dispose();
   }
 
-  UserModel userModel = new UserModel();
+  LoggedInUserModel userModel = new LoggedInUserModel();
   List<ProductModel> items = [];
   bool is_logged_in = false;
 

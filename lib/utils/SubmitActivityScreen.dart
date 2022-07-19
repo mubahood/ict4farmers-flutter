@@ -15,7 +15,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 import '../../models/FormItemModel.dart';
-import '../../models/UserModel.dart';
+import '../../models/LoggedInUserModel.dart';
 import '../../models/option_picker_model.dart';
 import '../../theme/app_notifier.dart';
 import '../../theme/app_theme.dart';
@@ -467,7 +467,7 @@ class SubmitActivityScreenState extends State<SubmitActivityScreen> {
     form_data_to_upload.clear();
     form_data_to_upload = await FormItemModel.get_all();
 
-    LoggedInUserModel userModel = await Utils.get_logged_in();
+    LoggedInLoggedInUserModel userModel = await Utils.get_logged_in();
     if (userModel.id < 1) {
       Utils.showSnackBar(
           "Login before  you proceed.", context, CustomTheme.onPrimary);

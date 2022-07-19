@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:ict4farmers/models/GardenModel.dart';
 import 'package:ict4farmers/widget/loading_widget.dart';
 
+import '../../models/LoggedInUserModel.dart';
 import '../../models/UserModel.dart';
 import '../../theme/app_theme.dart';
 import '../../utils/AppConfig.dart';
@@ -61,7 +62,7 @@ class GardensScreenState extends State<GardensScreen> {
   }
 
   bool is_logged_in = false;
-  UserModel loggedUser = new UserModel();
+  LoggedInUserModel loggedUser = new LoggedInUserModel();
 
   Future<Null> _onRefresh() async {
     my_init();

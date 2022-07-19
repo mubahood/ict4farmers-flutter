@@ -5,6 +5,7 @@ import 'package:flutx/widgets/text/text.dart';
 
 import '../../models/FinancialRecordModel.dart';
 import '../../models/GardenModel.dart';
+import '../../models/LoggedInUserModel.dart';
 import '../../models/UserModel.dart';
 import '../../theme/app_theme.dart';
 import '../../utils/AppConfig.dart';
@@ -73,7 +74,7 @@ class FinancialRecordsScreenState extends State<FinancialRecordsScreen> {
     setState(() {});
   }
 
-  UserModel loggedUser = new UserModel();
+  LoggedInUserModel loggedUser = new LoggedInUserModel();
 
   Future<Null> _onRefresh() async {
     my_init();

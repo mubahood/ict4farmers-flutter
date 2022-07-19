@@ -6,6 +6,7 @@ import 'package:flutx/widgets/text/text.dart';
 
 import '../../models/GardenActivityModel.dart';
 import '../../models/GardenProductionModel.dart';
+import '../../models/LoggedInUserModel.dart';
 import '../../models/UserModel.dart';
 import '../../theme/app_theme.dart';
 import '../../utils/AppConfig.dart';
@@ -71,7 +72,7 @@ class GardenProductionRecordScreenState
   }
 
   bool is_logged_in = false;
-  UserModel loggedUser = new UserModel();
+  LoggedInUserModel loggedUser = new LoggedInUserModel();
 
   Future<Null> _onRefresh() async {
     my_init();

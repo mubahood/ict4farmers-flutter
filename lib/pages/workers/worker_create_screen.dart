@@ -18,7 +18,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 import '../../models/FormItemModel.dart';
-import '../../models/UserModel.dart';
+import '../../models/LoggedInUserModel.dart';
 import '../../models/option_picker_model.dart';
 import '../../theme/app_notifier.dart';
 import '../../theme/app_theme.dart';

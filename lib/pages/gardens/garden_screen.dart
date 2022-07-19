@@ -11,6 +11,7 @@ import '../../models/GardenActivityModel.dart';
 import '../../models/UserModel.dart';
 import '../../theme/app_theme.dart';
 import '../../utils/Utils.dart';
+import '../../models/LoggedInUserModel.dart';
 
 class GardenScreen extends StatefulWidget {
   GardenScreen(this.params);
@@ -132,7 +133,7 @@ class GardenScreenState extends State<GardenScreen> {
   }
 
   bool is_logged_in = false;
-  UserModel loggedUser = new UserModel();
+  LoggedInUserModel loggedUser = new LoggedInUserModel();
 
   Future<Null> _onRefresh() async {
     my_init();

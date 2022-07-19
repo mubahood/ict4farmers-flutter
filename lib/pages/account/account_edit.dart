@@ -17,7 +17,8 @@ import 'package:ict4farmers/utils/Utils.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../models/FarmersGroup.dart';
-import '../../models/UserModel.dart';
+import '../../models/LoggedInUserModel.dart';
+import '../../models/LoggedInUserModel.dart';
 import '../../widget/shimmer_loading_widget.dart';
 import '../location_picker/product_category_picker.dart';
 import '../location_picker/single_item_picker.dart';
@@ -36,7 +37,7 @@ class _AccountEditState extends State<AccountEdit> {
 
   bool onLoading = false;
 
-  UserModel item = new UserModel();
+  LoggedInUserModel item = new LoggedInUserModel();
 
   Future<void> get_location() async {
     Position p = await Utils.get_device_location();

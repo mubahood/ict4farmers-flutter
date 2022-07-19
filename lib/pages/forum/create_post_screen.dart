@@ -14,6 +14,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:path_provider/path_provider.dart';
 
+import '../../models/LoggedInUserModel.dart';
 import '../../models/UserModel.dart';
 import '../../utils/AppConfig.dart';
 
@@ -123,7 +124,7 @@ class CcreatPposSscreenState extends State<CreatePostScreen> {
   }
 
   Future<void> check_login() async {
-    UserModel userModel = await Utils.get_logged_in();
+    LoggedInUserModel userModel = await Utils.get_logged_in();
     if (userModel.id < 1) {
       Utils.showSnackBar(
           "Login before  you proceed.", context, CustomTheme.onPrimary,
@@ -138,7 +139,7 @@ class CcreatPposSscreenState extends State<CreatePostScreen> {
 
     Future<void> submit_form() async {
       await check_login();
-      UserModel userModel = await Utils.get_logged_in();
+      LoggedInUserModel userModel = await Utils.get_logged_in();
       if (userModel.id < 1) {
         Utils.showSnackBar(
             "Login before  you proceed.", context, CustomTheme.onPrimary,
