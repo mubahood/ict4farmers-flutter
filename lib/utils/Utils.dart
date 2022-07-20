@@ -362,6 +362,19 @@ class Utils {
     }
   }
 
+  static bool phone_number_is_valid(String phone_number) {
+    if (phone_number.length > 10) {
+      phone_number = phone_number.replaceFirst('+', "");
+      phone_number = phone_number.replaceFirst('256', "");
+    } else {
+      phone_number = phone_number.replaceFirst('0', "");
+    }
+
+    if (phone_number.length != 9) {
+       return false;
+    }
+    return true;
+  }
   static navigate_to(String screen, context, {dynamic data: null}) {
     switch (screen) {
       case AppConfig.account_verification_code:
@@ -921,16 +934,7 @@ class Utils {
   }
 
   static Future<void> logged_out() async {
-    List<UserModel> users = [];
-    users = await get_local_users();
-
-    users.forEach((element) {
-      if (element != null) {
-        if (element.status == 'logged_in') {
-          element.delete();
-        }
-      }
-    });
+    await LoggedInUserModel.delete_all_items();
   }
 
   static Future<List<UserModel>> get_local_users() async {

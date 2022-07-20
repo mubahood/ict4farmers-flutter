@@ -59,15 +59,8 @@ class _account_verification_phone extends State<account_verification_phone> {
       phone_number = _formKey.currentState?.fields['phone_number']?.value;
       error_message = "";
       setState(() {});
-      bool has_code = false;
-      bool has_plus = false;
-      if (phone_number.length > 10) {
-        phone_number = phone_number.replaceFirst('+', "");
-        phone_number = phone_number.replaceFirst('256', "");
-      } else {
-        phone_number = phone_number.replaceFirst('0', "");
-      }
-      if (phone_number.length != 9) {
+
+      if (!Utils.phone_number_is_valid(phone_number)) {
         setState(() {
           error_message =
               "Please enter a valid uganda phone number. eg. 0779 777 777 OR +256 779 777 777";
@@ -175,7 +168,6 @@ class _account_verification_phone extends State<account_verification_phone> {
                           errorText: "Phone number too short.",
                         ),
                       ]),
-                      initialValue: "0779755798",
                       decoration: customTheme.input_decoration(
                           labelText: "Phone number", icon: Icons.phone)),
                   FxSpacing.height(24),

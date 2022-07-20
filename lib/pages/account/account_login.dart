@@ -8,7 +8,6 @@ import 'package:ict4farmers/theme/app_theme.dart';
 import 'package:ict4farmers/utils/Utils.dart';
 import 'package:ict4farmers/widgets/images.dart';
 
-import '../../models/LoggedInUserModel.dart';
 import '../../utils/AppConfig.dart';
 
 class AccountLogin extends StatefulWidget {
@@ -31,6 +30,8 @@ class _AccountLogin extends State<AccountLogin> {
     theme = AppTheme.theme;
   }
 
+  String phone_number = "";
+
   @override
   Widget build(BuildContext context) {
     //setState(() { onLoading = false;});
@@ -42,11 +43,25 @@ class _AccountLogin extends State<AccountLogin> {
         return;
       }
 
+      phone_number = _formKey.currentState?.fields['email']?.value;
+      error_message = "";
+      setState(() {});
+
+      if (!Utils.phone_number_is_valid(phone_number)) {
+        setState(() {
+          error_message =
+              "Please enter a valid uganda phone number. eg. 0779 777 777 OR +256 779 777 777";
+        });
+        return;
+      }
+
+      phone_number = "+256" + phone_number;
+
       onLoading = true;
       setState(() {});
       String _resp = await Utils.http_post('api/users-login', {
         'password': _formKey.currentState?.fields['password_1']?.value,
-        'email': _formKey.currentState?.fields['email']?.value,
+        'email': phone_number,
       });
 
       onLoading = false;
@@ -104,16 +119,30 @@ class _AccountLogin extends State<AccountLogin> {
                   FxSpacing.height(32),
                   FormBuilderTextField(
                       name: "email",
-                      keyboardType: TextInputType.text,
+                      keyboardType: TextInputType.phone,
                       validator: FormBuilderValidators.compose([
                         FormBuilderValidators.required(
                           context,
                           errorText: "Phone number required.",
                         ),
+                        FormBuilderValidators.minLength(
+                          context,
+                          8,
+                          errorText: "Phone number too short.",
+                        ),
+                        FormBuilderValidators.minLength(
+                          context,
+                          8,
+                          errorText: "Phone number too short.",
+                        ),
+                        FormBuilderValidators.maxLength(
+                          context,
+                          15,
+                          errorText: "Phone number too short.",
+                        ),
                       ]),
                       decoration: customTheme.input_decoration(
-                          labelText: "Phone number or Username",
-                          icon: Icons.phone)),
+                          labelText: "Phone number", icon: Icons.phone)),
                   FxSpacing.height(24),
                   FormBuilderTextField(
                     name: "password_1",
