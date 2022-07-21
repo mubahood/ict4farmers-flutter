@@ -19,7 +19,13 @@ class _account_verification_phone extends State<account_verification_phone> {
   final _formKey = GlobalKey<FormBuilderState>();
 
   Future<void> check_verification() async {
+
     await LoggedInUserModel.update_local_user();
+
+    _formKey.currentState!.patchValue({
+      'phone_number': "${u.phone_number}",
+    });
+
     LoggedInUserModel _u = await LoggedInUserModel.get_logged_in_user();
     if (_u.phone_number_verified.toString() == "1") {
       Utils.showSnackBar(
@@ -96,7 +102,7 @@ class _account_verification_phone extends State<account_verification_phone> {
         return;
       }
 
-      if (await Utils.login_user(resp_obg['data'])) {
+      if (await Utils.login_user(_resp)) {
         Navigator.pushNamedAndRemoveUntil(
             context, "/HomesScreen", (r) => false);
       } else {
@@ -146,6 +152,7 @@ class _account_verification_phone extends State<account_verification_phone> {
                   FxSpacing.height(32),
                   FormBuilderTextField(
                       name: "phone_number",
+                      initialValue: u.phone_number,
                       keyboardType: TextInputType.phone,
                       validator: FormBuilderValidators.compose([
                         FormBuilderValidators.required(
@@ -262,8 +269,10 @@ class _account_verification_phone extends State<account_verification_phone> {
     );
   }
 
+  LoggedInUserModel u = new LoggedInUserModel();
+
   Future<void> do_verification() async {
-    LoggedInUserModel u = await LoggedInUserModel.get_logged_in_user();
+    u = await LoggedInUserModel.get_logged_in_user();
     if (onLoading) {
       return;
     }

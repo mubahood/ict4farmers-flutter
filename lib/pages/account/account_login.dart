@@ -82,7 +82,7 @@ class _AccountLogin extends State<AccountLogin> {
       }
 
 
-      if (await Utils.login_user(resp_obg['data'])) {
+      if (await Utils.login_user(_resp)) {
         Navigator.pushNamedAndRemoveUntil(
             context, "/HomesScreen", (r) => false);
       } else {
@@ -119,6 +119,7 @@ class _AccountLogin extends State<AccountLogin> {
                   FxSpacing.height(32),
                   FormBuilderTextField(
                       name: "email",
+                      textInputAction: TextInputAction.next,
                       keyboardType: TextInputType.phone,
                       validator: FormBuilderValidators.compose([
                         FormBuilderValidators.required(

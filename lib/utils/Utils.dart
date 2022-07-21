@@ -228,7 +228,7 @@ class Utils {
           }));
       return jsonEncode(response.data);
     } catch (e) {
-      print(e);
+
       return "";
     }
 
@@ -263,7 +263,7 @@ class Utils {
           }));
       return jsonEncode(response.data);
     } catch (e) {
-      print(e);
+
       return "";
     }
 
@@ -1038,7 +1038,7 @@ class Utils {
     OneSignal.shared.setAppId(AppConfig.ONESIGNAL_APP_ID);
     // The promptForPushNotificationsWithUserResponse function will show the iOS push notification prompt. We recommend removing the following code and instead using an In-App Message to prompt for notification permission
     OneSignal.shared.promptUserForPushNotificationPermission().then((accepted) {
-      print("=========> Accepted permission: $accepted <=============");
+
     });
   }
 }

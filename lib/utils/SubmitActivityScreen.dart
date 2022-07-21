@@ -645,7 +645,7 @@ class SubmitActivityScreenState extends State<SubmitActivityScreen> {
 
   void my_init() async {
     enterprise_text = widget.params['enterprise_text'].toString();
-    print(enterprise_text);
+
     activity_text = widget.params['activity_text'].toString();
     garden_id = widget.params['garden_id'].toString();
     activity_id = widget.params['activity_id'].toString();

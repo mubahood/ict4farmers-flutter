@@ -12,12 +12,10 @@ import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:ict4farmers/pages/location_picker/location_main.dart';
 import 'package:ict4farmers/theme/app_theme.dart';
-import 'package:ict4farmers/utils/AppConfig.dart';
 import 'package:ict4farmers/utils/Utils.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../models/FarmersGroup.dart';
-import '../../models/LoggedInUserModel.dart';
 import '../../models/LoggedInUserModel.dart';
 import '../../widget/shimmer_loading_widget.dart';
 import '../location_picker/product_category_picker.dart';
@@ -235,7 +233,7 @@ class _AccountEditState extends State<AccountEdit> {
           background_color: CustomTheme.primary);
 
       //await Utils.login_user(u);
-      if (await Utils.login_user(resp_obg['data'])) {
+      if (await Utils.login_user(_resp)) {
         Navigator.pushNamedAndRemoveUntil(
             context, "/HomesScreen", (r) => false);
       } else {
@@ -723,12 +721,12 @@ password
                   FxSpacing.height(16),
                   FxButton.text(
                       onPressed: () {
-                        Utils.navigate_to(AppConfig.PrivacyPolicy, context);
+                        logout();
                       },
                       splashColor: CustomTheme.primary.withAlpha(40),
                       child: FxText.l2(
-                          "I have read and accepted ${AppConfig.AppName} privacy policy.",
-                          decoration: TextDecoration.underline,
+                          "I will do this later. Log out.",
+                          fontSize: 14,
                           textAlign: TextAlign.center,
                           color: CustomTheme.accent)),
                   FxSpacing.height(16),
@@ -878,5 +876,10 @@ password
   OnUserTypeChange(String c) {
     user_role = c.toString();
     setState(() {});
+  }
+
+  Future<void> logout() async {
+    await Utils.logged_out();
+    Navigator.pushNamedAndRemoveUntil(context, "/HomesScreen", (r) => false);
   }
 }

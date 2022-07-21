@@ -741,7 +741,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
   }
 
   _do_filter() {
-    print("=========> ${mapFilterItem.type} <=======");
+
     Navigator.pop(context);
     do_filter(mapFilterItem);
   }

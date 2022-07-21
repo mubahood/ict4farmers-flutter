@@ -588,7 +588,7 @@ class GardenCreateScreenState extends State<GardenCreateScreen> {
     }
 
     if (!_formKey.currentState!.validate()) {
-      print("First fix shit");
+
       Utils.showSnackBar("Please Check errors in the form and fix them first.",
           context, Colors.white,
           background_color: Colors.red);

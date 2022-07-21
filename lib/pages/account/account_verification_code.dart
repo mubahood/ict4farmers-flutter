@@ -35,14 +35,18 @@ class _account_verification_code extends State<account_verification_code> {
     //setState(() { onLoading = false;});
 
     Future<void> submit_form() async {
+      check_verification();
       if (!_formKey.currentState!.validate()) {
         return;
       }
+
 
       setState(() {
         onLoading = true;
         error_message = "";
       });
+
+      check_verification();
       await LoggedInUserModel.update_local_user();
       LoggedInUserModel u = await LoggedInUserModel.get_logged_in_user();
 
@@ -75,9 +79,11 @@ class _account_verification_code extends State<account_verification_code> {
       setState(() {
         onLoading = false;
       });
+
       Navigator.pushNamedAndRemoveUntil(context, "/HomesScreen", (r) => false);
     }
 
+    //256758589326
     return Theme(
       data: theme.copyWith(
           colorScheme: theme.colorScheme

@@ -809,9 +809,9 @@ class CcreatPposSscreenState extends State<CreatePostScreen> {
       });
       //_recorderSubscription.cancel();
 
-      print("===============>recording<-===========");
+
     } else {
-      print("===============>NOT recording<-===========");
+
     }
 
     setState(() {

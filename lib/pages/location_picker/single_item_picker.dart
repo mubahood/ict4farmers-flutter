@@ -99,7 +99,6 @@ class SingleItemePickerState extends State<SingleItemPicker> {
   }
 
   SingleItemUI(dynamic item) {
-    print(item);
 
     return ListTile(
       dense: true,

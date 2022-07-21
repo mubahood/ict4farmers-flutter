@@ -65,7 +65,7 @@ class _account_verification_splash extends State<account_verification_splash> {
         return;
       }
 
-      if (await Utils.login_user(resp_obg['data'])) {
+      if (await Utils.login_user(_resp)) {
         Navigator.pushNamedAndRemoveUntil(
             context, "/HomesScreen", (r) => false);
       } else {
@@ -97,7 +97,7 @@ class _account_verification_splash extends State<account_verification_splash> {
                     "Account Verification",
                     color: CustomTheme.primary,
                     fontWeight: 800,
-                    textAlign: TextAlign.center,
+                    textAlign: TextAlign.start,
                   ),
                   FxSpacing.height(24),
                   FxText.h3(
@@ -105,7 +105,7 @@ class _account_verification_splash extends State<account_verification_splash> {
                     color: Colors.black,
                     fontWeight: 600,
                     fontSize: 16,
-                    textAlign: TextAlign.center,
+                    textAlign: TextAlign.start,
                   ),
                   FxSpacing.height(24),
                   Container(

@@ -44,7 +44,7 @@ class BannerModel extends HiveObject {
 
   String get_image()   {
     String img = "${AppConfig.BASE_URL}/storage/${image.toString().trim()}";;
-    print("==========> ${img} <============");
+
     return img;
   }
   static Future<List<BannerModel>> get() async {

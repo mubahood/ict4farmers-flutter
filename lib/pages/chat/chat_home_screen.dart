@@ -47,10 +47,10 @@ class _ChatHomeScreenState extends State<ChatHomeScreen> {
 
     if (logged_in_user.id < 1) {
       is_logged_in = false;
-      print("=======OUT=======");
+
       return;
     } else {
-      print("=======IN=======");
+
       is_logged_in = true;
     }
     chat_threads = await ChatThreadModel.get_threads(logged_in_user.id);

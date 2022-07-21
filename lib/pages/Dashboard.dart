@@ -18,6 +18,7 @@ import '../../utils/AppConfig.dart';
 import '../../utils/Utils.dart';
 import '../models/FarmersGroup.dart';
 import '../models/MenuItemModel.dart';
+import '../models/OneSignalModel.dart';
 import '../widget/my_widgets.dart';
 import '../widget/shimmer_loading_widget.dart';
 
@@ -139,6 +140,14 @@ class DashboardState extends State<Dashboard> {
                     backgroundColor: Colors.red.shade800,
                     elevation: 20,
                     onPressed: () {
+
+                   /*   if(mounted){
+                        OneSignalModel.set_player_id(context);
+                      }
+
+                      return;
+*/
+
                       if (is_logged_in) {
                         Utils.navigate_to(AppConfig.AccountEdit, context);
                       } else {
@@ -164,6 +173,7 @@ class DashboardState extends State<Dashboard> {
                     backgroundColor: CustomTheme.primary,
                     elevation: 20,
                     onPressed: () {
+
 
                       if (is_logged_in) {
                         Utils.navigate_to(AppConfig.MyAccountScreen, context);

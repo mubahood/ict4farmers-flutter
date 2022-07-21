@@ -195,7 +195,10 @@ class LoggedInUserModel {
     d.id = 1;
     d.own_id = 1;
     d.data_type = end_point;
+
     d.data = raw;
+
+
 
     await DynamicTable.save_to_local_db(
         end_point: end_point, clear_previous: true, new_ids: [1], items: [d]);

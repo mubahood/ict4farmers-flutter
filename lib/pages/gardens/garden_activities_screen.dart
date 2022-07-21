@@ -548,7 +548,7 @@ class GardenActivitiesScreenState extends State<GardenActivitiesScreen> {
     Utils.showSnackBar("Deleting...", context, Colors.white,
         background_color: Colors.red.shade800);
     String data = await Utils.http_delete('api/garden-activities', {'id': m.id.toString()});
-    print(data);
+
     await GardenActivityModel.get_items();
     Utils.showSnackBar("Deleted", context, Colors.white);
     my_init();

@@ -8,7 +8,6 @@ import 'package:ict4farmers/theme/app_theme.dart';
 import 'package:ict4farmers/utils/Utils.dart';
 import 'package:ict4farmers/widgets/images.dart';
 
-import '../../models/LoggedInUserModel.dart';
 import '../../utils/AppConfig.dart';
 
 class AccountRegister extends StatefulWidget {
@@ -22,6 +21,7 @@ class _AccountRegisterState extends State<AccountRegister> {
   late CustomTheme customTheme;
   late ThemeData theme;
   String error_message = "";
+  String phone_number = "";
   bool onLoading = false;
 
   @override
@@ -37,12 +37,24 @@ class _AccountRegisterState extends State<AccountRegister> {
     //setState(() { onLoading = false;});
 
     Future<void> submit_form() async {
-
       error_message = "";
       setState(() {});
       if (!_formKey.currentState!.validate()) {
         return;
       }
+
+      error_message = "";
+      setState(() {});
+
+      phone_number = _formKey.currentState?.fields['email']?.value;
+      if (!Utils.phone_number_is_valid(phone_number)) {
+        setState(() {
+          error_message =
+              "Please enter a valid uganda phone number. eg. 0779 777 777 OR +256 779 777 777";
+        });
+        return;
+      }
+      phone_number = "+256" + phone_number;
 
       if (_formKey.currentState?.fields['password_2']?.value !=
           _formKey.currentState?.fields['password_1']?.value) {
@@ -53,11 +65,10 @@ class _AccountRegisterState extends State<AccountRegister> {
 
       onLoading = true;
       setState(() {});
-      print("===starting===");
       String _resp = await Utils.http_post('api/users', {
         'password': _formKey.currentState?.fields['password_1']?.value,
         'name': _formKey.currentState?.fields['name']?.value,
-        'email': _formKey.currentState?.fields['email']?.value,
+        'email': phone_number,
       });
 
       onLoading = false;
@@ -79,14 +90,9 @@ class _AccountRegisterState extends State<AccountRegister> {
         return;
       }
 
-
-      if (await Utils.login_user(resp_obg['data'])) {
-        Navigator.pushNamedAndRemoveUntil(context, "/HomesScreen", (r) => false);
-      } else {
-        error_message =
-            "Account created but failed to login. Please try again.";
-        setState(() {});
-      }
+      Utils.showSnackBar("Account created successfully!. Logging you in...",
+          context, Colors.white);
+      await login_user();
     }
 
     return Theme(
@@ -118,6 +124,8 @@ class _AccountRegisterState extends State<AccountRegister> {
                   FormBuilderTextField(
                       name: "name",
                       keyboardType: TextInputType.name,
+                      textCapitalization: TextCapitalization.words,
+                      textInputAction: TextInputAction.next,
                       validator: FormBuilderValidators.compose([
                         FormBuilderValidators.required(
                           context,
@@ -139,20 +147,36 @@ class _AccountRegisterState extends State<AccountRegister> {
                   FxSpacing.height(24),
                   FormBuilderTextField(
                       name: "email",
+                      textInputAction: TextInputAction.next,
                       keyboardType: TextInputType.phone,
                       validator: FormBuilderValidators.compose([
                         FormBuilderValidators.required(
                           context,
                           errorText: "Phone number required.",
                         ),
+                        FormBuilderValidators.minLength(
+                          context,
+                          8,
+                          errorText: "Phone number too short.",
+                        ),
+                        FormBuilderValidators.minLength(
+                          context,
+                          8,
+                          errorText: "Phone number too short.",
+                        ),
+                        FormBuilderValidators.maxLength(
+                          context,
+                          15,
+                          errorText: "Phone number too short.",
+                        ),
                       ]),
                       decoration: customTheme.input_decoration(
-                          labelText: "Phone number",
-                          icon: Icons.phone)),
+                          labelText: "Phone number", icon: Icons.phone)),
                   FxSpacing.height(24),
                   FormBuilderTextField(
                     name: "password_1",
                     keyboardType: TextInputType.visiblePassword,
+                    textInputAction: TextInputAction.next,
                     validator: FormBuilderValidators.compose([
                       FormBuilderValidators.required(
                         context,
@@ -175,6 +199,7 @@ class _AccountRegisterState extends State<AccountRegister> {
                   FxSpacing.height(24),
                   FormBuilderTextField(
                       name: "password_2",
+                      textInputAction: TextInputAction.done,
                       validator: FormBuilderValidators.compose([
                         FormBuilderValidators.required(
                           context,
@@ -251,9 +276,7 @@ class _AccountRegisterState extends State<AccountRegister> {
                       },
                       splashColor: CustomTheme.primary.withAlpha(40),
                       child: FxText.l2("I already have an account",
-                          fontSize: 14,
-
-                          color: CustomTheme.accent)),
+                          fontSize: 14, color: CustomTheme.accent)),
                   FxSpacing.height(16),
                 ],
               ),
@@ -262,5 +285,45 @@ class _AccountRegisterState extends State<AccountRegister> {
         ),
       ),
     );
+  }
+
+  Future<void> login_user() async {
+    error_message = "";
+    onLoading = true;
+    setState(() {});
+
+
+    String _resp = await Utils.http_post('api/users-login', {
+      'password': _formKey.currentState?.fields['password_1']?.value,
+      'email': phone_number,
+    });
+
+    onLoading = false;
+    setState(() {});
+
+    if (_resp == null || _resp.isEmpty) {
+      setState(() {
+        error_message =
+            "Failed to connect to internet. Please check your network and try again.";
+      });
+      return;
+    }
+    dynamic resp_obg = jsonDecode(_resp);
+    if (resp_obg['status'].toString() != "1") {
+      error_message = resp_obg['message'];
+      setState(() {});
+      return;
+    }
+
+    if (await Utils.login_user(_resp)) {
+      Utils.showSnackBar("Logged in successfully!", context, Colors.white);
+      Navigator.pushNamedAndRemoveUntil(context, "/HomesScreen", (r) => false);
+    } else {
+      Utils.showSnackBar("Log in now.", context, Colors.white,
+          background_color: Colors.red);
+      error_message = "Account failed to login. Please try again.";
+      Utils.navigate_to(AppConfig.AccountLogin, context);
+      setState(() {});
+    }
   }
 }
