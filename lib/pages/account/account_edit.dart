@@ -174,9 +174,6 @@ class _AccountEditState extends State<AccountEdit> {
         return;
       }
 
-      print(resp_obg);
-      print("Done!");
-      return;
       UserModel u = UserModel.fromMap(resp_obg['data']);
 
       Utils.showSnackBar(
