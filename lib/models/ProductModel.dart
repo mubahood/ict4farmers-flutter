@@ -70,7 +70,9 @@ class ProductModel extends HiveObject {
           if (raw_thumb['thumbnail'] != null) {
             if (raw_thumb['thumbnail'].toString().length > 2) {
               thumbnail_link =
-                  "${AppConfig.BASE_URL}/storage/${raw_thumb['thumbnail'].toString()}";
+                  "${AppConfig.BASE_URL}/${raw_thumb['thumbnail'].toString()}";
+
+              print(thumbnail_link);
             }
           }
         } catch (x) {

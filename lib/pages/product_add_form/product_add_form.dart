@@ -117,63 +117,63 @@ class ProductAddFormState extends State<ProductAddForm> {
                                   children: [
                                     FormBuilderTextField(
                                         name: "name",
-                                        textInputAction: TextInputAction.next,
-                                        keyboardType: TextInputType.name,
-                                        validator: FormBuilderValidators.compose([
-                                          FormBuilderValidators.required(
-                                            context,
-                                            errorText: "Name is required.",
-                                          ),
-                                          FormBuilderValidators.minLength(
-                                            context,
-                                            2,
-                                            errorText: "Title too short.",
-                                          ),
-                                          FormBuilderValidators.maxLength(
-                                            context,
-                                            45,
-                                            errorText: "Title too long.",
-                                          ),
-                                        ]),
-                                        decoration: customTheme.input_decoration_2(
-                                            labelText: "Title",
-                                            hintText:
+                                    textInputAction: TextInputAction.next,
+                                    keyboardType: TextInputType.name,
+                                    validator: FormBuilderValidators.compose([
+                                      FormBuilderValidators.required(
+                                        context,
+                                        errorText: "Name is required.",
+                                      ),
+                                      FormBuilderValidators.minLength(
+                                        context,
+                                        2,
+                                        errorText: "Title too short.",
+                                      ),
+                                      FormBuilderValidators.maxLength(
+                                        context,
+                                        45,
+                                        errorText: "Title too long.",
+                                      ),
+                                    ]),
+                                    decoration: customTheme.input_decoration_2(
+                                        labelText: "Title",
+                                        hintText:
                                             "What is the name of this item?")),
                                     FxDashedDivider(
                                       color: Colors.grey.shade300,
                                     ),
                                     FormBuilderTextField(
                                         name: "price",
-                                        textInputAction: TextInputAction.next,
-                                        keyboardType: TextInputType.number,
-                                        validator: FormBuilderValidators.compose([
-                                          FormBuilderValidators.required(
-                                            context,
-                                            errorText: "Price is required",
-                                          ),
-                                        ]),
-                                        decoration: customTheme.input_decoration_2(
-                                            labelText: "Price",
-                                            hintText: "How much is this item?")),
-                                    FxDashedDivider(
-                                      color: Colors.grey.shade300,
-                                    ),
-                                    FormBuilderTextField(
-                                        name: "description",
-                                        minLines: 2,
-                                        maxLines: 4,
-                                        textInputAction: TextInputAction.newline,
-                                        keyboardType: TextInputType.multiline,
-                                        validator: FormBuilderValidators.compose([
-                                          FormBuilderValidators.required(
-                                            context,
-                                            errorText: "Description is required.",
-                                          ),
-                                          FormBuilderValidators.minLength(
-                                            context,
-                                            5,
-                                            errorText: "Description too short.",
-                                          ),
+                                    textInputAction: TextInputAction.next,
+                                    keyboardType: TextInputType.number,
+                                    validator: FormBuilderValidators.compose([
+                                      FormBuilderValidators.required(
+                                        context,
+                                        errorText: "Price is required",
+                                      ),
+                                    ]),
+                                    decoration: customTheme.input_decoration_2(
+                                        labelText: "Price",
+                                        hintText: "How much is this item?")),
+                                FxDashedDivider(
+                                  color: Colors.grey.shade300,
+                                ),
+                                FormBuilderTextField(
+                                    name: "description",
+                                    minLines: 2,
+                                    maxLines: 4,
+                                    textInputAction: TextInputAction.newline,
+                                    keyboardType: TextInputType.multiline,
+                                    validator: FormBuilderValidators.compose([
+                                      FormBuilderValidators.required(
+                                        context,
+                                        errorText: "Description is required.",
+                                      ),
+                                      FormBuilderValidators.minLength(
+                                        context,
+                                        5,
+                                        errorText: "Description too short.",
+                                      ),
                                         ]),
                                         decoration: customTheme.input_decoration_2(
                                             labelText: "Describe your item",
@@ -375,31 +375,74 @@ class ProductAddFormState extends State<ProductAddForm> {
                     ),
                   ),
                 ],
-              ),
-            ),
-          );
-        });
+          ),
+        ),
+      );
+    });
   }
 
   final _formKey = GlobalKey<FormBuilderState>();
   String error_message = "";
   List<String> photos_picked = [AppConfig.form_field_image_picker];
 
+  void _show_bottom_sheet_photo(context) {
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext buildContext) {
+          return Container(
+            color: Colors.transparent,
+            child: Container(
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(16),
+                      topRight: Radius.circular(16))),
+              child: Padding(
+                padding: FxSpacing.all(16),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    ListTile(
+                      onTap: () {
+                        do_pick_image('camera');
+                      },
+                      dense: false,
+                      leading:
+                          Icon(Icons.camera_alt, color: CustomTheme.primary),
+                      title: FxText.b1("Camera", fontWeight: 600),
+                    ),
+                    ListTile(
+                        dense: false,
+                        onTap: () => {do_pick_image("gallery")},
+                        leading: Icon(Icons.photo_library_sharp,
+                            color: CustomTheme.primary),
+                        title: FxText.b1("Gallery", fontWeight: 600)),
+                  ],
+                ),
+              ),
+            ),
+          );
+        });
+  }
+
   Widget single_image_picker(int index, String _item, BuildContext context) {
     return (_item == AppConfig.form_field_image_picker)
         ? InkWell(
-        onTap: () => {do_pick_image()},
-        child: Container(
-            margin: EdgeInsets.all(5),
-            decoration: BoxDecoration(
-              border: Border.all(
-                  color: CustomTheme.primary,
-                  width: 1,
-                  style: BorderStyle.solid),
-              color: CustomTheme.primary.withAlpha(25),
-            ),
-            padding: EdgeInsets.all(0),
-            child: Column(
+            onTap: () {
+              _show_bottom_sheet_photo(context);
+              //do_pick_image()
+            },
+            child: Container(
+                margin: EdgeInsets.all(5),
+                decoration: BoxDecoration(
+                  border: Border.all(
+                      color: CustomTheme.primary,
+                      width: 1,
+                      style: BorderStyle.solid),
+                  color: CustomTheme.primary.withAlpha(25),
+                ),
+                padding: EdgeInsets.all(0),
+                child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Icon(Icons.add, size: 35, color: CustomTheme.primary),
@@ -510,11 +553,18 @@ class ProductAddFormState extends State<ProductAddForm> {
     }
   }
 
+  UserModel userModel = new UserModel();
+
   void do_upload_process() async {
+    if (photos_picked.length > 16) {
+      Utils.showSnackBar("Too many photos.", context, Colors.white,
+          background_color: Colors.red);
+      return;
+    }
+
     error_message = "";
     setState(() {});
     if (!_formKey.currentState!.validate()) {
-      print("First fix shit");
       Utils.showSnackBar("Please Check errors in the form and fix them first.",
           context, Colors.white,
           background_color: Colors.red);
@@ -526,7 +576,7 @@ class ProductAddFormState extends State<ProductAddForm> {
     form_data_to_upload.clear();
     form_data_to_upload = await FormItemModel.get_all();
 
-    UserModel userModel = await Utils.get_logged_in();
+    userModel = await Utils.get_logged_in();
     if (userModel.id < 1) {
       Utils.showSnackBar(
           "Login before  you proceed.", context, CustomTheme.onPrimary);
@@ -589,14 +639,16 @@ class ProductAddFormState extends State<ProductAddForm> {
       is_uploading = true;
     });
 
+    print("========start===========");
     var response =
     await dio.post('${AppConfig.BASE_URL}/api/products', data: formData);
+
+
 
     await ProductModel.get_user_products(userModel.id);
     setState(() {
       is_uploading = false;
     });
-
     if (response == null) {
       Utils.showSnackBar("Failed to upload product. Please try again.", context,
           Colors.red.shade700);
@@ -622,7 +674,32 @@ class ProductAddFormState extends State<ProductAddForm> {
     Navigator.pop(context, {"task": 'success'});
   }
 
-  do_pick_image() async {
+  do_pick_image(String source) async {
+    Navigator.pop(context);
+
+    if (source == "camera") {
+      do_pick_image_from_camera();
+    } else {
+      do_pick_image_from_gallary();
+    }
+
+    setState(() {});
+  }
+
+  do_pick_image_from_camera() async {
+    final ImagePicker _picker = ImagePicker();
+    final XFile? pic =
+        await _picker.pickImage(source: ImageSource.camera, imageQuality: 100);
+    if (pic != null) {
+      if (photos_picked.length < 16) {
+        photos_picked.add(pic.path);
+        print(pic.path);
+      }
+    }
+    setState(() {});
+  }
+
+  do_pick_image_from_gallary() async {
     final ImagePicker _picker = ImagePicker();
     final List<XFile>? images = await _picker.pickMultiImage();
 
@@ -665,6 +742,11 @@ class ProductAddFormState extends State<ProductAddForm> {
   List<CategoryModel> categories = [];
 
   Future<void> my_init() async {
+    setState(() {});
+    userModel = await Utils.get_logged_in();
+
     categories = await CategoryModel.get_all();
+
+    setState(() {});
   }
 }
