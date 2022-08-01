@@ -2,9 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutx/widgets/text/text.dart';
 import 'package:flutx/widgets/widgets.dart';
-import 'package:ict4farmers/theme/app_theme.dart';
-import 'package:ict4farmers/utils/AppConfig.dart';
-import 'package:ict4farmers/utils/Utils.dart';
+import '../../theme/app_theme.dart';
+import '../../utils/AppConfig.dart';
+import '../../utils/Utils.dart';
 import 'package:provider/provider.dart';
 
 import '../../models/ProductModel.dart';

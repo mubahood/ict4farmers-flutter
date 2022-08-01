@@ -18,9 +18,10 @@ class RespondModel {
 
     if (raw != null && !raw.isEmpty) {
       dynamic resp = json.decode(raw);
+      print(raw);
       if (resp != null) {
         if (resp['status'] != null) {
-          this.code = (resp['status'].toString() == 'Error') ? 0 : 1;
+          this.code = (resp['status'].toString() == '1') ? 1 : 0;
           this.message = resp['message'].toString();
 
           this.data = resp['data'];

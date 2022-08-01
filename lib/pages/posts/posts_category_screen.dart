@@ -11,7 +11,7 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutx/icons/box_icon/box_icon_data.dart';
 import 'package:flutx/utils/spacing.dart';
 import 'package:flutx/widgets/text/text.dart';
-import 'package:ict4farmers/theme/app_theme.dart';
+import '../../theme/app_theme.dart';
 import 'package:provider/provider.dart';
 
 import '../../models/BannerModel.dart';

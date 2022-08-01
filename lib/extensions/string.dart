@@ -1,6 +1,6 @@
 import 'dart:ui';
 
-import 'package:ict4farmers/localizations/translator.dart';
+import '../../localizations/translator.dart';
 
 extension StringUtil on String {
   Color get toColor {

@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter/services.dart';
-import 'package:ict4farmers/extensions/extensions.dart';
-import 'package:ict4farmers/models/ProductModel.dart';
+import '../../extensions/extensions.dart';
+import '../../models/ProductModel.dart';
 
 class House {
   final String name, image, location, description;

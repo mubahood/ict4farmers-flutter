@@ -1,12 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutx/flutx.dart';
-import 'package:ict4farmers/pages/account/account_splash.dart';
-import 'package:ict4farmers/pages/homes/homes_screen_segment.dart';
-import 'package:ict4farmers/theme/app_notifier.dart';
-import 'package:ict4farmers/theme/app_theme.dart';
-import 'package:ict4farmers/theme/custom_theme.dart';
-import 'package:ict4farmers/theme/theme_type.dart';
+import '../../pages/account/account_splash.dart';
+import '../../pages/homes/homes_screen_segment.dart';
+import '../../theme/app_notifier.dart';
+import '../../theme/app_theme.dart';
+import '../../theme/custom_theme.dart';
+import '../../theme/theme_type.dart';
 import 'package:provider/provider.dart';
 
 import '../account/my_products_screen.dart';

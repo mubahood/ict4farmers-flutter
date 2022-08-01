@@ -5,13 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutx/flutx.dart';
-import 'package:ict4farmers/models/ProductModel.dart';
-import 'package:ict4farmers/utils/Utils.dart';
-
 import '../../../models/PostModel.dart';
 import '../../../theme/app_theme.dart';
 import '../../../theme/custom_theme.dart';
 import '../../../utils/AppConfig.dart';
+import '../../../utils/Utils.dart';
 import '../../../widget/loading_effect.dart';
 import '../../../widget/shimmer_list_loading_widget.dart';
 import '../../../widget/shimmer_loading_widget.dart';

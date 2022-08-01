@@ -4,7 +4,7 @@
 * */
 
 import 'package:flutter/material.dart';
-import 'package:ict4farmers/models/ProductModel.dart';
+import '../../models/ProductModel.dart';
 
 import '../../theme/app_theme.dart';
 import '../../theme/custom_theme.dart';

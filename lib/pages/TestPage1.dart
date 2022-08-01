@@ -3,17 +3,19 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutx/widgets/button/button.dart';
 import 'package:flutx/widgets/text/text.dart';
-import 'package:ict4farmers/models/UserModel.dart';
-import 'package:ict4farmers/pages/products/product_details.dart';
-import 'package:ict4farmers/utils/AppConfig.dart';
-import 'package:ict4farmers/widget/my_widgets.dart';
+import '../../models/UserModel.dart';
+import '../../pages/products/product_details.dart';
+import '../../utils/AppConfig.dart';
+import '../../widget/my_widgets.dart';
 
 import '../models/BannerModel.dart';
 import '../models/ProductModel.dart';
+import '../models/VendorModel.dart';
 import '../theme/custom_theme.dart';
 import '../utils/Utils.dart';
 import '../widget/product_item_ui.dart';
 import '../widget/shimmer_loading_widget.dart';
+import 'account/my_products_screen.dart';
 
 class TestPage1 extends StatefulWidget {
   int page_num;
@@ -41,6 +43,7 @@ class _TestPage1State extends State<TestPage1> {
   bool is_logged_in = true;
   bool complete_profile = true;
   UserModel logged_in_user = new UserModel();
+  List<VendorModel> vendors = [];
 
   Future<void> _init_databse() async {
     is_logged_in = await Utils.is_login();
@@ -57,73 +60,90 @@ class _TestPage1State extends State<TestPage1> {
       complete_profile = true;
     }
 
-    _trending_products.clear();
-    List<ProductModel> _trending_get = await ProductModel.get_trending();
-    _trending_get.forEach((element) {
-      _trending_products.add(element);
-    });
 
-    banners = await BannerModel.get();
-    int i = 0;
-    _gridItems.clear();
 
-    _gridBannersItems.clear();
-    _gridBannersItems2.clear();
-    banners.forEach((element) {
-      i++;
+    if(page_num == 2){
 
-      if (page_num == 1 && i == 1) {
-        horizontal_banner_1 = element;
-      } else if (page_num == 2 && (i == 18)) {
-        horizontal_banner_1 = element;
-      } else if (page_num == 3 && (i == 35)) {
-        horizontal_banner_1 = element;
-      }
+      vendors = await VendorModel.get_items();
+      print("====> FOUND ${vendors.length} <========");
+    }else{
+
+
+      _trending_products.clear();
+      List<ProductModel> _trending_get = await ProductModel.get_trending();
+      _trending_get.forEach((element) {
+        _trending_products.add(element);
+      });
+
+      banners = await BannerModel.get();
+      int i = 0;
+      _gridItems.clear();
+
+      _gridBannersItems.clear();
+      _gridBannersItems2.clear();
+
+
+      banners.forEach((element) {
+        i++;
+
+        if (page_num == 1 && i == 1) {
+          horizontal_banner_1 = element;
+        } else if (page_num == 2 && (i == 18)) {
+          horizontal_banner_1 = element;
+        } else if (page_num == 3 && (i == 35)) {
+          horizontal_banner_1 = element;
+        }
 
 /*      if ( (banners.length % (i*page_num)) == 1) {
 
       }*/
 
-      if (((i > 1) && (i < 10)) && page_num == 1) {
-        _gridItems.add(element);
-      } else if (((i > 18) && (i < 27)) && page_num == 2) {
-        _gridItems.add(element);
-      } else if (((i > (18 + 17)) && (i < (27 + 17))) && page_num == 3) {
-        _gridItems.add(element);
-      }
+        if (((i > 1) && (i < 10)) && page_num == 1) {
+          _gridItems.add(element);
+        } else if (((i > 18) && (i < 27)) && page_num == 2) {
+          _gridItems.add(element);
+        } else if (((i > (18 + 17)) && (i < (27 + 17))) && page_num == 3) {
+          _gridItems.add(element);
+        }
 
-      if (i == 10 && page_num == 1) {
-        horizontal_banner_2 = element;
-      } else if ((i) == 27 && page_num == 2) {
-        horizontal_banner_2 = element;
-      } else if ((i) == (27 + 17) && page_num == 3) {
-        horizontal_banner_2 = element;
-      }
+        if (i == 10 && page_num == 1) {
+          horizontal_banner_2 = element;
+        } else if ((i) == 27 && page_num == 2) {
+          horizontal_banner_2 = element;
+        } else if ((i) == (27 + 17) && page_num == 3) {
+          horizontal_banner_2 = element;
+        }
 
-      if (((i > 10) && (i < 13)) && page_num == 1) {
-        _gridBannersItems.add(element);
-      } else if ((((i) > 27) && ((i) < 30)) && page_num == 2) {
-        _gridBannersItems.add(element);
-      } else if ((((i) > (27 + 17)) && ((i) < (30 + 17))) && page_num == 3) {
-        _gridBannersItems.add(element);
-      }
+        if (((i > 10) && (i < 13)) && page_num == 1) {
+          _gridBannersItems.add(element);
+        } else if ((((i) > 27) && ((i) < 30)) && page_num == 2) {
+          _gridBannersItems.add(element);
+        } else if ((((i) > (27 + 17)) && ((i) < (30 + 17))) && page_num == 3) {
+          _gridBannersItems.add(element);
+        }
 
-      if (((i > 12) && (i < 17)) && page_num == 1) {
-        _gridBannersItems2.add(element);
-      } else if (((i > 29) && (i < 34)) && page_num == 2) {
-        _gridBannersItems2.add(element);
-      } else if (((i > (29 + 17)) && (i < (34 + 17))) && page_num == 3) {
-        _gridBannersItems2.add(element);
-      }
+        if (((i > 12) && (i < 17)) && page_num == 1) {
+          _gridBannersItems2.add(element);
+        } else if (((i > 29) && (i < 34)) && page_num == 2) {
+          _gridBannersItems2.add(element);
+        } else if (((i > (29 + 17)) && (i < (34 + 17))) && page_num == 3) {
+          _gridBannersItems2.add(element);
+        }
 
-      if (i == 17 && page_num == 1) {
-        horizontal_banner_3 = element;
-      } else if (i == 34 && page_num == 2) {
-        horizontal_banner_3 = element;
-      } else if (i == (34 + 17) && page_num == 3) {
-        horizontal_banner_3 = element;
-      }
-    });
+        if (i == 17 && page_num == 1) {
+          horizontal_banner_3 = element;
+        } else if (i == 34 && page_num == 2) {
+          horizontal_banner_3 = element;
+        } else if (i == (34 + 17) && page_num == 3) {
+          horizontal_banner_3 = element;
+        }
+      });
+
+    }
+
+
+
+
 
     initilized = true;
     setState(() {});
@@ -164,7 +184,16 @@ class _TestPage1State extends State<TestPage1> {
 
     return RefreshIndicator(
         onRefresh: _onRefresh,
-        child: CustomScrollView(
+        color: CustomTheme.primary,
+        backgroundColor: Colors.white,
+        child: is_loading
+            ? Center(
+          child: CircularProgressIndicator(
+            strokeWidth: 2.0,
+            valueColor: AlwaysStoppedAnimation<Color>(Colors.red),
+          ),
+        )
+            :  CustomScrollView(
           slivers: [
             (is_logged_in && complete_profile)
                 ? SliverList(

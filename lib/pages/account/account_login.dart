@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutx/flutx.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
-import 'package:ict4farmers/theme/app_theme.dart';
-import 'package:ict4farmers/utils/Utils.dart';
-import 'package:ict4farmers/widgets/images.dart';
+import '../../theme/app_theme.dart';
+import '../../utils/Utils.dart';
+import '../../widgets/images.dart';
 
 import '../../models/UserModel.dart';
 import '../../utils/AppConfig.dart';

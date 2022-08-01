@@ -3,6 +3,7 @@ class AppConfig {
   static const String HomePage = "HomePage";
   static const String MyProductsScreen = "MyProductsScreen";
   static const String AppName = "JO-TRACE";
+  static const String CURRENCY = "\$";
   static const String AccountRegister = "AccountRegister";
   static const String AccountSplash = "AccountSplash";
   static const String ProductDetails = "ProductDetails";

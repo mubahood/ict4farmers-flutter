@@ -1,8 +1,9 @@
 import 'dart:convert';
 
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:ict4farmers/utils/AppConfig.dart';
-import 'package:ict4farmers/utils/Utils.dart';
+
+import '../utils/AppConfig.dart';
+import '../utils/Utils.dart';
 
 part 'ProductModel.g.dart';
 
@@ -154,6 +155,16 @@ class ProductModel extends HiveObject {
     return items;
   }
 
+  static delete_item(int id) async {
+    List<ProductModel> items = await get_local_products();
+    int x = 0;
+    for(x = 0; x< items.length ; x++){
+      if(items[x].id == id){
+        await items[x].delete();
+      }
+    }
+  }
+
   static Future<void> save_to_local_db(
       List<ProductModel> data, bool clear_db) async {
     Utils.init_databse();
@@ -235,4 +246,28 @@ class ProductModel extends HiveObject {
 
     return item;
   }
+
+
+  static Future<ProductModel> get_single_item(String id) async {
+    List<ProductModel> items = await ProductModel.get_local_products();
+    ProductModel item = new ProductModel();
+    items.forEach((el) {
+      if (el.id.toString() == id.toString()) {
+        item = el;
+      }
+    });
+
+    if (item.id.toString() == id.toString()) {
+      return item;
+    }
+
+    String resp = await Utils.http_get('api/products/$id', {});
+
+    if (resp != null && !resp.isEmpty) {
+      item = ProductModel.fromJson(jsonDecode(resp));
+    }
+
+    return item;
+  }
+
 }

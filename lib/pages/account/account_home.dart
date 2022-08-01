@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutx/flutx.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:ict4farmers/pages/account/account_splash.dart';
-import 'package:ict4farmers/theme/app_notifier.dart';
-import 'package:ict4farmers/theme/app_theme.dart';
-import 'package:ict4farmers/utils/AppConfig.dart';
-import 'package:ict4farmers/utils/Utils.dart';
+import '../../pages/account/account_splash.dart';
+import '../../theme/app_notifier.dart';
+import '../../theme/app_theme.dart';
+import '../../utils/AppConfig.dart';
+import '../../utils/Utils.dart';
 import 'package:provider/provider.dart';
 
 class AccountHome extends StatefulWidget {

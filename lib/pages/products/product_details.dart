@@ -8,9 +8,11 @@ import 'package:flutx/utils/spacing.dart';
 import 'package:flutx/widgets/container/container.dart';
 import 'package:flutx/widgets/text/text.dart';
 import 'package:flutx/widgets/widgets.dart';
-import 'package:ict4farmers/models/UserModel.dart';
-import 'package:ict4farmers/theme/app_theme.dart';
-import 'package:ict4farmers/utils/AppConfig.dart';
+import '../../models/UserModel.dart';
+import '../../pages/account/my_products_screen.dart';
+import '../../theme/app_theme.dart';
+import '../../utils/AppConfig.dart';
+import '../../widget/loading_widget.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 
@@ -26,12 +28,14 @@ import '../../widget/shimmer_loading_widget.dart';
 import '../chat/chat_screen.dart';
 
 class ProductDetails extends StatefulWidget {
-  ProductModel productModel;
+  ProductModel productModel = new ProductModel();
+  dynamic raw;
+  int id = 0;
 
-  ProductDetails(this.productModel);
+  ProductDetails(this.raw);
 
   @override
-  State<ProductDetails> createState() => ProductDetailsState(this.productModel);
+  State<ProductDetails> createState() => ProductDetailsState();
 }
 
 List<BannerModel> banners = [];
@@ -41,9 +45,7 @@ bool initilized = false;
 bool store_initilized = false;
 
 class ProductDetailsState extends State<ProductDetails> {
-  ProductModel productModel;
-
-  ProductDetailsState(this.productModel);
+  ProductDetailsState();
 
   final PageController pageController =
       PageController(initialPage: 0, viewportFraction: 0.85);
@@ -58,11 +60,28 @@ class ProductDetailsState extends State<ProductDetails> {
 
   List<ProductModel> _products = [];
   int i = 0;
+  int id = 0;
 
   UserModel logged_in_user = new UserModel();
   UserModel productOwner = new UserModel();
+  ProductModel productModel = new ProductModel();
 
   Future<Null> _onRefresh() async {
+    is_loading = true;
+    setState(() {});
+    if (widget.raw != null) {
+      if (widget.raw is Map) {
+        if (widget.raw['id'] != null) {
+          id = Utils.int_parse(widget.raw['id']);
+          if (id > 0) {
+            productModel = await ProductModel.get_single_item("$id");
+          }
+        }
+      } else if (widget.raw is ProductModel) {
+        productModel = widget.raw;
+      }
+    }
+
     logged_in_user = await Utils.get_logged_in();
 
     get_owner(productModel.user_id, false);
@@ -72,13 +91,13 @@ class ProductDetailsState extends State<ProductDetails> {
     List<dynamic> raw_list = jsonDecode(this.productModel.images);
     if (raw_list != null) {
       raw_list.forEach((element) {
-
         if (element != null) {
           if (element['thumbnail'] != null) {
-            thumbnails.add(
-                "${AppConfig.BASE_URL}/storage/${element['thumbnail'].toString()}");
-            images.add("${AppConfig.BASE_URL}/storage/${element['src'].toString()}");
-
+            String thumb =
+                "${AppConfig.BASE_URL}/${element['thumbnail'].toString()}";
+            String img = "${AppConfig.BASE_URL}/${element['src'].toString()}";
+            thumbnails.add(thumb);
+            images.add(img);
           }
         }
       });
@@ -98,6 +117,7 @@ class ProductDetailsState extends State<ProductDetails> {
       _products = _products.sublist(0, 8);
     }
 
+    is_loading = false;
     setState(() {});
     initilized = false;
     return null;
@@ -112,8 +132,8 @@ class ProductDetailsState extends State<ProductDetails> {
         return Scaffold(
             appBar: AppBar(
               systemOverlayStyle: SystemUiOverlayStyle(
-                statusBarColor: Colors.white,
-                statusBarIconBrightness: Brightness.dark,
+                statusBarColor: CustomTheme.primary,
+                statusBarIconBrightness: Brightness.light,
                 // For Android (dark icons)
                 statusBarBrightness: Brightness.light, // For iOS (dark icons)
               ),
@@ -136,7 +156,7 @@ class ProductDetailsState extends State<ProductDetails> {
                           width: MediaQuery.of(context).size.width - 120,
                         ),
                         Text(
-                          '\$'+productModel.price,
+                          '${AppConfig.CURRENCY} ' + productModel.price,
                           style: TextStyle(
                               color: CustomTheme.primary,
                               fontSize: 14,
@@ -151,63 +171,70 @@ class ProductDetailsState extends State<ProductDetails> {
             body: SafeArea(
               child: RefreshIndicator(
                   onRefresh: _onRefresh,
-                  child: Stack(
-                    children: [
-                      CustomScrollView(
-                        slivers: [
-                          SliverList(
-                            delegate: SliverChildBuilderDelegate(
-                              (BuildContext context, int index) {
-                                return Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Container(
-                                      alignment: Alignment.center,
-                                      height: 420,
-                                      child: PageView(
-                                        pageSnapping: true,
-                                        controller: pageController,
-                                        physics: ClampingScrollPhysics(),
-                                        onPageChanged: (index) => {},
-                                        children: _buildHouseList(),
-                                      ),
-                                    ),
-                                    Container(
-                                      padding:
-                                          EdgeInsets.only(left: 10, right: 10),
-                                      child: Row(
+                  child: is_loading
+                      ? LoadingWidget()
+                      : Stack(
+                          children: [
+                            CustomScrollView(
+                              slivers: [
+                                SliverList(
+                                  delegate: SliverChildBuilderDelegate(
+                                    (BuildContext context, int index) {
+                                      return Column(
                                         mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
+                                            MainAxisAlignment.start,
                                         crossAxisAlignment:
-                                            CrossAxisAlignment.center,
+                                            CrossAxisAlignment.start,
                                         children: [
                                           Container(
-                                            child: Column(
+                                            alignment: Alignment.center,
+                                            height: 420,
+                                            child: PageView(
+                                              pageSnapping: true,
+                                              controller: pageController,
+                                              physics: ClampingScrollPhysics(),
+                                              onPageChanged: (index) => {},
+                                              children: _buildHouseList(),
+                                            ),
+                                          ),
+                                          Container(
+                                            padding: EdgeInsets.only(
+                                                left: 10, right: 10),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
                                               crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
+                                                  CrossAxisAlignment.center,
                                               children: [
-                                                Text(
-                                                  '\$'+"${productModel.price}",
-                                                  style: TextStyle(
-                                                      color:
-                                                          CustomTheme.primary,
-                                                      fontSize: 26,
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                ),
-                                                /*Text(
+                                                Container(
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Text(
+                                                        "UGX ${productModel.price}",
+                                                        style: TextStyle(
+                                                            color: CustomTheme
+                                                                .primary,
+                                                            fontSize: 26,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                      ),
+                                                      /*Text(
                                                   "Negotiable",
                                                   style: TextStyle(
                                                       color:
                                                           Colors.grey.shade600,
                                                       fontSize: 12),
                                                 ),*/
+                                                    ],
+                                                  ),
+                                                ),
                                               ],
                                             ),
-                                          ),
-                                        ],
-                                      ),
                                     ),
                                     Container(
                                       padding: EdgeInsets.all(10),
@@ -241,31 +268,32 @@ class ProductDetailsState extends State<ProductDetails> {
                                             bottom: 10),
                                         child: Row(
                                           mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: [
-                                            Container(
-                                              child: Text(
-                                                "Description",
-                                                style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 18,
-                                                ),
-                                              ),
-                                            ),
-                                            Container(
-                                              child: Row(
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
                                                 children: [
-                                                  Text(
-                                                    "See all details",
-                                                    style: TextStyle(
-                                                      color:
-                                                          Colors.grey.shade600,
-                                                      fontSize: 13,
+                                                  Container(
+                                                    child: Text(
+                                                      "Description",
+                                                      style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontSize: 18,
+                                                      ),
                                                     ),
                                                   ),
                                                   Container(
+                                                    child: Row(
+                                                      children: [
+                                                        Text(
+                                                          "See all details",
+                                                          style: TextStyle(
+                                                            color: Colors
+                                                                .grey.shade600,
+                                                            fontSize: 13,
+                                                          ),
+                                                        ),
+                                                        Container(
                                                       padding: FxSpacing.x(0),
                                                       child: Icon(
                                                         Icons.chevron_right,
@@ -297,31 +325,32 @@ class ProductDetailsState extends State<ProductDetails> {
                                             bottom: 10),
                                         child: Row(
                                           mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: [
-                                            Container(
-                                              child: Text(
-                                                productOwner.name,
-                                                style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 18,
-                                                ),
-                                              ),
-                                            ),
-                                            Container(
-                                              child: Row(
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
                                                 children: [
-                                                  Text(
-                                                    "Visit shop",
-                                                    style: TextStyle(
-                                                      color:
-                                                          Colors.grey.shade600,
-                                                      fontSize: 13,
+                                                  Container(
+                                                    child: Text(
+                                                      productOwner.name,
+                                                      style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontSize: 18,
+                                                      ),
                                                     ),
                                                   ),
                                                   Container(
+                                                    child: Row(
+                                                      children: [
+                                                        Text(
+                                                          "Visit shop",
+                                                          style: TextStyle(
+                                                            color: Colors
+                                                                .grey.shade600,
+                                                            fontSize: 13,
+                                                          ),
+                                                        ),
+                                                        Container(
                                                       padding: FxSpacing.x(0),
                                                       child: Icon(
                                                         Icons.chevron_right,
@@ -346,22 +375,24 @@ class ProductDetailsState extends State<ProductDetails> {
                                           bottom: 10),
                                       child: Row(
                                         mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          Container(
-                                            child: Text(
-                                              "You may also like",
-                                              style: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 20,
-                                              ),
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              children: [
+                                                Container(
+                                                  child: Text(
+                                                    "You may also like",
+                                                    style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontSize: 20,
+                                                    ),
+                                                  ),
+                                                  padding:
+                                                      EdgeInsets.only(top: 6),
+                                                ),
+                                              ],
                                             ),
-                                            padding: EdgeInsets.only(top: 6),
-                                          ),
-                                        ],
-                                      ),
                                     ),
                                   ],
                                 );
@@ -371,14 +402,14 @@ class ProductDetailsState extends State<ProductDetails> {
                           ),
                           SliverGrid(
                             gridDelegate:
-                                const SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 2,
-                                    mainAxisSpacing: 10,
-                                    crossAxisSpacing: 10,
-                                    childAspectRatio: 1,
-                                    mainAxisExtent: 300),
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                mainAxisSpacing: 10,
+                                crossAxisSpacing: 10,
+                                childAspectRatio: 1,
+                                mainAxisExtent: 300),
                             delegate: SliverChildBuilderDelegate(
-                              (context, index) {
+                                  (context, index) {
                                 return ProductItemUi(
                                     index, _products[index], context);
                               },
@@ -387,13 +418,13 @@ class ProductDetailsState extends State<ProductDetails> {
                           ),
                           SliverList(
                               delegate: SliverChildBuilderDelegate(
-                            (BuildContext context, int index) {
-                              return SizedBox(
-                                height: 80,
-                              );
-                            },
-                            childCount: 1,
-                          ))
+                                    (BuildContext context, int index) {
+                                  return SizedBox(
+                                    height: 80,
+                                  );
+                                },
+                                childCount: 1,
+                              ))
                         ],
                       ),
                       Positioned(
@@ -416,58 +447,64 @@ class ProductDetailsState extends State<ProductDetails> {
                                   Expanded(
                                     child: FxContainer(
                                       color: CustomTheme.accent,
-                                      borderRadiusAll: 4,
-                                      onTap: () {},
-                                      margin: FxSpacing.x(4),
-                                      padding: FxSpacing.all(12),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: <Widget>[
-                                          Icon(
-                                            MdiIcons.phone,
-                                            color: Colors.grey.shade100,
-                                            size: 20,
+                                            borderRadiusAll: 4,
+                                            onTap: () {
+
+                                              Utils.launchPhone(
+                                                  productOwner.phone_number);
+                                            },
+                                            margin: FxSpacing.x(4),
+                                            padding: FxSpacing.all(12),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: <Widget>[
+                                                Icon(
+                                                  MdiIcons.phone,
+                                                  color: Colors.grey.shade100,
+                                                  size: 20,
+                                                ),
+                                                FxSpacing.width(8),
+                                                FxText.sh2("Call",
+                                                    color: Colors.grey.shade100,
+                                                    fontWeight: 600,
+                                                    letterSpacing: 0)
+                                              ],
+                                            ),
                                           ),
-                                          FxSpacing.width(8),
-                                          FxText.sh2("Call",
-                                              color: Colors.grey.shade100,
-                                              fontWeight: 600,
-                                              letterSpacing: 0)
-                                        ],
-                                      ),
-                                    ),
                                   ),
                                   FxSpacing.width(12),
                                   Expanded(
                                     child: FxContainer(
                                       color: CustomTheme.primary,
-                                      borderRadiusAll: 4,
-                                      onTap: () {
-                                        if (logged_in_user.id < 1) {
-                                          show_not_account_bottom_sheet(
-                                              context);
-                                        } else {
-                                          start_chat();
-                                        }
-                                      },
-                                      padding: FxSpacing.all(12),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: <Widget>[
-                                          Icon(
-                                            MdiIcons.chat,
-                                            color: Colors.grey.shade100,
-                                            size: 22,
-                                          ),
-                                          FxSpacing.width(8),
-                                          FxText.sh2("Chat",
-                                              color: Colors.white,
-                                              fontWeight: 600,
-                                              letterSpacing: 0)
-                                        ],
-                                      ),
+                                            borderRadiusAll: 4,
+                                            onTap: () {
+                                              if (logged_in_user.id < 1) {
+                                                show_not_account_bottom_sheet(
+                                                    context);
+                                              } else {
+                                                /*Utils.navigate_to(
+                                              AppConfig.PaymentPage, context);*/
+                                                start_chat();
+                                              }
+                                            },
+                                            padding: FxSpacing.all(12),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: <Widget>[
+                                                Icon(
+                                                  MdiIcons.forum,
+                                                  color: Colors.grey.shade100,
+                                                  size: 22,
+                                                ),
+                                                FxSpacing.width(8),
+                                                FxText.sh2("Chat",
+                                                    color: Colors.white,
+                                                    fontWeight: 600,
+                                                    letterSpacing: 0)
+                                              ],
+                                            ),
                                     ),
                                   ),
                                 ],
@@ -505,7 +542,7 @@ class ProductDetailsState extends State<ProductDetails> {
     chatThread.receiver_name = '';
     chatThread.sender_name = logged_in_user.name;
     chatThread.product_name = productModel.name;
-    chatThread.product_pic = productModel.get_thumbnail();
+    chatThread.product_pic = '';
     chatThread.sender_pic = logged_in_user.avatar;
     chatThread.unread_count = 0;
 
@@ -548,7 +585,6 @@ List<Widget> _buildHouseList() {
   List<Widget> list = [];
 
   thumbnails.forEach((element) {
-    print("==========> ${element.toString()} <============");
     list.add(_SinglePosition(element.toString()));
   });
 
@@ -582,7 +618,13 @@ class _SinglePosition extends StatelessWidget {
           placeholder: (context, url) => ShimmerLoadingWidget(
             height: double.infinity,
           ),
-          errorWidget: (context, url, error) => Icon(Icons.error),
+          errorWidget: (context, url, error) => Image(
+              image: AssetImage(
+                './assets/project/no_image.jpg',
+              ),
+              fit: BoxFit.cover,
+              height: 40,
+              width: 40),
         ),
       ),
     );

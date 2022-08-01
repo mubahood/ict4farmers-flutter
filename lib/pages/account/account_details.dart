@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -6,8 +8,8 @@ import 'package:flutx/utils/spacing.dart';
 import 'package:flutx/widgets/container/container.dart';
 import 'package:flutx/widgets/text/text.dart';
 import 'package:flutx/widgets/widgets.dart';
-import 'package:ict4farmers/models/UserModel.dart';
-import 'package:ict4farmers/theme/app_theme.dart';
+import '../../models/UserModel.dart';
+import '../../theme/app_theme.dart';
 import 'package:provider/provider.dart';
 
 import '../../models/BannerModel.dart';
@@ -15,7 +17,6 @@ import '../../models/ProductModel.dart';
 import '../../theme/app_notifier.dart';
 import '../../theme/material_theme.dart';
 import '../../utils/Utils.dart';
-import '../../widget/my_widgets.dart';
 import '../../widget/product_item_ui.dart';
 import '../../widget/shimmer_loading_widget.dart';
 
@@ -41,7 +42,7 @@ class AccountDetailsState extends State<AccountDetails> {
   AccountDetailsState(this.userModel);
 
   final PageController pageController =
-      PageController(initialPage: 0, viewportFraction: 0.85);
+  PageController(initialPage: 0, viewportFraction: 0.85);
 
   @override
   void initState() {
@@ -57,22 +58,26 @@ class AccountDetailsState extends State<AccountDetails> {
   UserModel logged_in_user = new UserModel();
 
   Future<Null> _onRefresh() async {
-    logged_in_user = await Utils.get_logged_in();
-
     _products.clear();
-    _products = await ProductModel.get_local_products();
-    _products.shuffle();
-
-    if (_products.length > 10) {
-      _products = _products.sublist(0, 8);
-    }
-
+    is_loading = true;
     setState(() {});
-    initilized = false;
+
+    String data =
+        await Utils.http_get('api/products', {'user_id': userModel.id});
+    List<dynamic> _items = json.decode(data);
+    _items.forEach((element) {
+      ProductModel p = new ProductModel();
+      p = ProductModel.fromJson(element);
+      _products.add(p);
+    });
+
+    is_loading = false;
+    setState(() {});
     return null;
   }
 
   bool isDark = false;
+  bool is_loading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -97,7 +102,7 @@ class AccountDetailsState extends State<AccountDetails> {
                       children: [
                         Container(
                           child: FxText.h1(
-                            'Seller\'s profile',
+                            'Member\'s profile',
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(color: Colors.black, fontSize: 24),
@@ -109,7 +114,7 @@ class AccountDetailsState extends State<AccountDetails> {
                   ),
                   InkWell(
                     onTap: () {
-                      show_not_account_bottom_sheet(context);
+                      _onRefresh();
                     },
                     child: Container(
                         padding: FxSpacing.x(0),
@@ -121,6 +126,8 @@ class AccountDetailsState extends State<AccountDetails> {
             body: SafeArea(
               child: RefreshIndicator(
                   onRefresh: _onRefresh,
+                  color: CustomTheme.primary,
+                  backgroundColor: Colors.white,
                   child: Stack(
                     children: [
                       CustomScrollView(
@@ -130,30 +137,37 @@ class AccountDetailsState extends State<AccountDetails> {
                               (BuildContext context, int index) {
                                 return Column(
                                   children: [
-                                    ClipRRect(
-                                      borderRadius: BorderRadius.circular(20),
-                                      child: CachedNetworkImage(
-                                        height:
-                                            MediaQuery.of(context).size.height /
-                                                4,
-                                        width:
-                                            MediaQuery.of(context).size.width -
-                                                50,
-                                        fit: BoxFit.cover,
-                                        imageUrl: userModel.avatar,
-                                        placeholder: (context, url) =>
-                                            ShimmerLoadingWidget(
-                                                height: 72,
-                                                width: 72,
-                                                is_circle: false,
-                                                padding: 0),
-                                        errorWidget: (context, url, error) =>
-                                            Image(
-                                          image: AssetImage(
-                                              './assets/project/no_image.jpg'),
-                                          height: 100,
-                                          width: 100,
+                                    InkWell(
+                                      onTap: () {
+                                        _onRefresh();
+                                      },
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(20),
+                                        child: CachedNetworkImage(
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .height /
+                                              4,
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width -
+                                              50,
                                           fit: BoxFit.cover,
+                                          imageUrl: userModel.avatar,
+                                          placeholder: (context, url) =>
+                                              ShimmerLoadingWidget(
+                                                  height: 72,
+                                                  width: 72,
+                                                  is_circle: false,
+                                                  padding: 0),
+                                          errorWidget: (context, url, error) =>
+                                              Image(
+                                            image: AssetImage(
+                                                './assets/project/no_image.jpg'),
+                                            height: 100,
+                                            width: 100,
+                                            fit: BoxFit.cover,
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -161,13 +175,13 @@ class AccountDetailsState extends State<AccountDetails> {
                                       contentPadding: EdgeInsets.only(
                                           top: 16, left: 20, right: 20),
                                       dense: true,
-                                      title: Text(userModel.name,
+                                      title: Text(userModel.company_name,
                                           style: TextStyle(
                                               fontSize: 30,
                                               fontWeight: FontWeight.bold)),
-                                      subtitle: (userModel.about == 'null')?SizedBox() : Text(userModel.about),
+                                      subtitle: Text(userModel.about),
                                     ),
-                                    (userModel.address == 'null')?SizedBox() : ListTile(
+                                    ListTile(
                                       leading: Icon(
                                         Icons.map_outlined,
                                         color: CustomTheme.primary,
@@ -183,7 +197,7 @@ class AccountDetailsState extends State<AccountDetails> {
                                           )),
                                       subtitle: FxText.b1(userModel.address),
                                     ),
-                                    (userModel.phone_number == 'null')?SizedBox() : ListTile(
+                                    ListTile(
                                       leading: Icon(
                                         Icons.call,
                                         color: CustomTheme.primary,
@@ -198,7 +212,7 @@ class AccountDetailsState extends State<AccountDetails> {
                                             fontSize: 18,
                                           )),
                                       subtitle:
-                                          FxText.b1(userModel.phone_number),
+                                      FxText.b1(userModel.phone_number),
                                     ),
                                     ListTile(
                                       leading: Icon(
@@ -240,7 +254,11 @@ class AccountDetailsState extends State<AccountDetails> {
                                       width: MediaQuery.of(context).size.width -
                                           30,
                                       child: Text(
-                                        "Products",
+                                        is_loading
+                                            ? "Loading..."
+                                            : (_products.isEmpty)
+                                                ? "This farmer has not posted any product."
+                                                : "Products",
                                         style: TextStyle(
                                             color: Colors.black,
                                             fontSize: 24,
@@ -248,7 +266,7 @@ class AccountDetailsState extends State<AccountDetails> {
                                         textAlign: TextAlign.start,
                                       ),
                                       padding:
-                                          EdgeInsets.only(top: 20, bottom: 10),
+                                      EdgeInsets.only(top: 20, bottom: 10),
                                     ),
                                   ],
                                 );
@@ -258,14 +276,14 @@ class AccountDetailsState extends State<AccountDetails> {
                           ),
                           SliverGrid(
                             gridDelegate:
-                                const SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 2,
-                                    mainAxisSpacing: 10,
-                                    crossAxisSpacing: 10,
-                                    childAspectRatio: 1,
-                                    mainAxisExtent: 280),
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                mainAxisSpacing: 10,
+                                crossAxisSpacing: 10,
+                                childAspectRatio: 1,
+                                mainAxisExtent: 280),
                             delegate: SliverChildBuilderDelegate(
-                              (context, index) {
+                                  (context, index) {
                                 return ProductItemUi(
                                     index, _products[index], context);
                               },
@@ -282,15 +300,6 @@ class AccountDetailsState extends State<AccountDetails> {
   }
 }
 
-List<Widget> _buildHouseList() {
-  List<Widget> list = [];
-
-  images.forEach((element) {
-    list.add(_SinglePosition(element.toString()));
-  });
-
-  return list;
-}
 
 class _SinglePosition extends StatelessWidget {
   final String image_url;

@@ -2,8 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/rendering.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:ict4farmers/utils/AppConfig.dart';
-import 'package:ict4farmers/utils/Utils.dart';
+import '../../utils/AppConfig.dart';
+import '../../utils/Utils.dart';
 
 part 'LocationModel.g.dart';
 

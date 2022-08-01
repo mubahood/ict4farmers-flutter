@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutx/flutx.dart';
-import 'package:ict4farmers/widget/shimmer_list_loading_widget.dart';
+import '../../widget/shimmer_list_loading_widget.dart';
 import 'package:provider/provider.dart';
 
 import '../../models/ChatModel.dart';

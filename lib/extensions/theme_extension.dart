@@ -1,4 +1,4 @@
-import 'package:ict4farmers/theme/theme_type.dart';
+import '../../theme/theme_type.dart';
 
 extension ThemeExtension on ThemeType {
   String get toText {

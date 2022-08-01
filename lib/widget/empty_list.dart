@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutx/flutx.dart';
-import 'package:ict4farmers/theme/app_theme.dart';
+import '../../theme/app_theme.dart';
 
 Widget EmptyList({
   String body: "No item found.",

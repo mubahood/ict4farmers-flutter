@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ict4farmers/theme/app_theme.dart';
+import '../../theme/app_theme.dart';
 
 extension IntUtil on int {
   String textFromSeconds(

@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutx/flutx.dart';
 
 class CustomTheme {
-  static final Color primary = Color(0xff2400a7);
+  static final Color primary = Color(0xffbc0101);
   static final Color onPrimary = Colors.white;
-  static final Color accent = Color(0xffdf7463);
+  static final Color accent = Color(0xff064687);
   static final Color occur = Color(0xffb38220);
   static final Color peach = Color(0xffe09c5f);
   static final Color skyBlue = Color(0xff639fdc);

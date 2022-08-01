@@ -8,9 +8,9 @@ import 'package:flutx/utils/spacing.dart';
 import 'package:flutx/widgets/container/container.dart';
 import 'package:flutx/widgets/text/text.dart';
 import 'package:flutx/widgets/widgets.dart';
-import 'package:ict4farmers/theme/app_theme.dart';
-import 'package:ict4farmers/utils/AppConfig.dart';
-import 'package:ict4farmers/widgets/images.dart';
+import '../../theme/app_theme.dart';
+import '../../utils/AppConfig.dart';
+import '../../widgets/images.dart';
 import 'package:provider/provider.dart';
 
 import '../../models/BannerModel.dart';
@@ -66,9 +66,9 @@ class PostDetailsScreenState extends State<PostDetailsScreen> {
         if (element != null) {
           if (element['thumbnail'] != null) {
             thumbnails.add(
-                "${AppConfig.BASE_URL}/storage/${element['thumbnail'].toString()}");
+                "${AppConfig.BASE_URL}/${element['thumbnail'].toString()}");
             images.add(
-                "${AppConfig.BASE_URL}/storage/${element['src'].toString()}");
+                "${AppConfig.BASE_URL}/${element['src'].toString()}");
           }
         }
       });
@@ -448,7 +448,12 @@ class _SinglePosition extends StatelessWidget {
         placeholder: (context, url) => ShimmerLoadingWidget(
           height: double.infinity,
         ),
-        errorWidget: (context, url, error) => Icon(Icons.error),
+        errorWidget: (context, url, error) => Image(
+          image: AssetImage('./assets/project/no_image.jpg'),
+          height: 90,
+          width: 90,
+          fit: BoxFit.cover,
+        ),
       ),
     );
   }

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutx/flutx.dart';
-import 'package:ict4farmers/theme/app_notifier.dart';
-import 'package:ict4farmers/theme/app_theme.dart';
-import 'package:ict4farmers/theme/theme_type.dart';
+import '../../theme/app_notifier.dart';
+import '../../theme/app_theme.dart';
+import '../../theme/theme_type.dart';
 import 'package:provider/provider.dart';
 
 class SelectThemeDialog extends StatefulWidget {

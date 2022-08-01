@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutx/flutx.dart';
-import 'package:ict4farmers/extensions/string.dart';
-import 'package:ict4farmers/extensions/widgets_extension.dart';
-import 'package:ict4farmers/models/ProductModel.dart';
-import 'package:ict4farmers/pages/TestPage1.dart';
-import 'package:ict4farmers/pages/homes/select_language_dialog.dart';
-import 'package:ict4farmers/theme/app_notifier.dart';
-import 'package:ict4farmers/theme/app_theme.dart';
-import 'package:ict4farmers/theme/custom_theme.dart';
-import 'package:ict4farmers/theme/theme_type.dart';
-import 'package:ict4farmers/utils/Utils.dart';
-import 'package:ict4farmers/widgets/images.dart';
+import '../../extensions/string.dart';
+import '../../extensions/widgets_extension.dart';
+import '../../models/ProductModel.dart';
+import '../../pages/TestPage1.dart';
+import '../../pages/homes/select_language_dialog.dart';
+import '../../theme/app_notifier.dart';
+import '../../theme/app_theme.dart';
+import '../../theme/custom_theme.dart';
+import '../../theme/theme_type.dart';
+import '../../utils/Utils.dart';
+import '../../widgets/images.dart';
 import 'package:provider/provider.dart';
 
 import '../../utils/AppConfig.dart';
+import '../VendorsPage.dart';
 
 class HomesScreenSegment extends StatefulWidget {
   HomesScreenSegment({Key? key}) : super(key: key);
@@ -48,12 +49,11 @@ class _HomesScreenSegmentState extends State<HomesScreenSegment>
   void initState() {
     super.initState();
     //_init_databse();
-    tabController = TabController(length: 3, vsync: this, initialIndex: 0);
+    tabController = TabController(length: 2, vsync: this, initialIndex: 0);
 
     navItems = [
-      NavItem('Textile', Images.homeIcon, TestPage1(1)),
-      NavItem('Electronics', Images.app2Icon, TestPage1(2)),
-      NavItem('More', Images.materialDesignIcon, TestPage1(3)),
+      NavItem('Products', Images.homeIcon, TestPage1(1)),
+      NavItem('Vendors', Images.app2Icon, VendorsPage()),
     ];
 
     tabController.addListener(() {

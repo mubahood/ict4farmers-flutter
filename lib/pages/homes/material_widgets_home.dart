@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutx/flutx.dart';
-import 'package:ict4farmers/theme/app_notifier.dart';
-import 'package:ict4farmers/theme/app_theme.dart';
-import 'package:ict4farmers/widgets/images.dart';
+import '../../theme/app_notifier.dart';
+import '../../theme/app_theme.dart';
+import '../../widgets/images.dart';
 import 'package:provider/provider.dart';
 
 import '../TestPage.dart';

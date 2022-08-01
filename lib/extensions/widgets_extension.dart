@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import "package:flutter_feather_icons/flutter_feather_icons.dart";
-import 'package:ict4farmers/theme/app_theme.dart';
+import '../../theme/app_theme.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 extension IconExtension on Icon {

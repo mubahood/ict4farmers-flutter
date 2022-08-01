@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutx/flutx.dart';
-import 'package:ict4farmers/pages/homes/select_language_dialog.dart';
-import 'package:ict4farmers/theme/app_notifier.dart';
-import 'package:ict4farmers/theme/app_theme.dart';
-import 'package:ict4farmers/theme/theme_type.dart';
-import 'package:ict4farmers/widgets/images.dart';
+import '../../pages/homes/select_language_dialog.dart';
+import '../../theme/app_notifier.dart';
+import '../../theme/app_theme.dart';
+import '../../theme/theme_type.dart';
+import '../../widgets/images.dart';
 import 'package:provider/provider.dart';
 
 import '/extensions/extensions.dart';

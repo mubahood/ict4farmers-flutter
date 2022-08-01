@@ -6,24 +6,27 @@ import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutx/utils/spacing.dart';
 import 'package:flutx/widgets/button/button.dart';
 import 'package:flutx/widgets/text/text.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:ict4farmers/models/BannerModel.dart';
-import 'package:ict4farmers/models/PostCategoryModel.dart';
-import 'package:ict4farmers/models/ProductModel.dart';
-import 'package:ict4farmers/models/UserModel.dart';
-import 'package:ict4farmers/pages/HomPage.dart';
-import 'package:ict4farmers/pages/account/account_register.dart';
-import 'package:ict4farmers/pages/account/account_splash.dart';
-import 'package:ict4farmers/pages/other_pages/about_is.dart';
-import 'package:ict4farmers/theme/app_theme.dart';
+import '../../models/BannerModel.dart';
+import '../../models/PostCategoryModel.dart';
+import '../../models/ProductModel.dart';
+import '../../models/UserModel.dart';
+import '../../models/VendorModel.dart';
+import '../../pages/HomPage.dart';
+import '../../pages/account/account_register.dart';
+import '../../pages/account/account_splash.dart';
+import '../../pages/other_pages/about_is.dart';
+import '../../theme/app_theme.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../models/CategoryModel.dart';
 import '../models/ChatModel.dart';
 import '../models/ChatThreadModel.dart';
+import '../models/DynamicTable.dart';
 import '../models/FormItemModel.dart';
 import '../models/LocationModel.dart';
 import '../models/PostModel.dart';
@@ -46,15 +49,38 @@ import '../pages/search/search_screen.dart';
 import 'AppConfig.dart';
 
 class Utils {
+  static void boot_system() async {
+    await Utils.get_logged_in();
+    await CategoryModel.get_all();
+    await ProductModel.get_online_items({});
+    await VendorModel.get_items();
+  }
 
 
-  static Future<void> showConfirmDialog(BuildContext context,
-      Function onPositiveClick,
-      Function onNegativeClick, {
-        String message: "Please confirm this action",
-        String positive_text: "Confirm",
-        String negative_text: "Cancel",
-      }) async {
+  static void ini_drak_theme() {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+        statusBarColor: Colors.brown.shade900,
+        statusBarIconBrightness: Brightness.light,
+        systemNavigationBarColor: Colors.brown.shade900));
+  }
+
+  static void init_theme() {
+
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+        statusBarColor: CustomTheme.primary,
+        statusBarIconBrightness: Brightness.dark,
+        systemNavigationBarColor: CustomTheme.primary
+    ));
+  }
+
+  static Future<void> showConfirmDialog(
+    BuildContext context,
+    Function onPositiveClick,
+    Function onNegativeClick, {
+    String message: "Please confirm this action",
+    String positive_text: "Confirm",
+    String negative_text: "Cancel",
+  }) async {
     await showDialog<void>(
       context: context,
       builder: (BuildContext context) {
@@ -183,8 +209,7 @@ class Utils {
     return MediaQuery.of(context).size.width;
   }
 
-  static Future<String> http_post(
-      String path, Map<String, dynamic> body) async {
+  static Future<String> http_post(String path, Map<String, dynamic> body) async {
     bool is_online = await Utils.is_connected();
     if (!is_online) {
       return "";
@@ -202,7 +227,6 @@ class Utils {
     u = await Utils.get_logged_user();*/
     var da = FormData.fromMap(body);
     try {
-      print(body);
       response = await dio.post(AppConfig.BASE_URL + "/${path}",
           data: da,
           options: Options(headers: <String, String>{
@@ -210,11 +234,9 @@ class Utils {
             "Content-Type": "application/json",
             "accept": "application/json",
           }));
-      print("SUCCESS");
+
       return jsonEncode(response.data);
-    } catch (e) {
-      print("FAILED");
-      print(e.toString());
+    } on DioError catch (e) {
       return "";
     }
 
@@ -263,7 +285,7 @@ class Utils {
             "Content-Type": "application/json",
             "accept": "application/json",
           }));
-    } catch (E) {
+    } on DioError catch (e) {
       return "";
     }
 
@@ -308,6 +330,9 @@ class Utils {
 
     if (!Hive.isAdapterRegistered(56)) {
       Hive.registerAdapter(ChatThreadModelAdapter());
+    }
+    if (!Hive.isAdapterRegistered(60)) {
+      Hive.registerAdapter(DynamicTableAdapter());
     }
   }
 
@@ -459,7 +484,7 @@ class Utils {
         );
         break;
 
-      /*    case AppConfig.ChatScreen:
+    /*    case AppConfig.ChatScreen:
         Navigator.push(
           context,
           PageRouteBuilder(

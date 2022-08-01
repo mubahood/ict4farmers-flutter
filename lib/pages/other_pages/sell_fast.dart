@@ -4,8 +4,8 @@ import 'package:flutter/services.dart';
 import 'package:flutx/utils/spacing.dart';
 import 'package:flutx/widgets/text/text.dart';
 import 'package:flutx/widgets/widgets.dart';
-import 'package:ict4farmers/theme/app_theme.dart';
-import 'package:ict4farmers/utils/AppConfig.dart';
+import '../../theme/app_theme.dart';
+import '../../utils/AppConfig.dart';
 import 'package:provider/provider.dart';
 
 import '../../theme/app_notifier.dart';

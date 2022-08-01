@@ -1,5 +1,5 @@
  import 'package:flutter/material.dart';
-import 'package:ict4farmers/theme/theme_type.dart';
+import '../../theme/theme_type.dart';
 
 import 'app_theme.dart';
 

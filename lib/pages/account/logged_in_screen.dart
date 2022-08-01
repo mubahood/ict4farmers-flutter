@@ -5,8 +5,8 @@ import 'package:flutx/utils/spacing.dart';
 import 'package:flutx/widgets/button/button.dart';
 import 'package:flutx/widgets/container/container.dart';
 import 'package:flutx/widgets/text/text.dart';
-import 'package:ict4farmers/models/ChatModel.dart';
-import 'package:ict4farmers/models/FormItemModel.dart';
+import '../../models/ChatModel.dart';
+import '../../models/FormItemModel.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 import '../../models/UserModel.dart';

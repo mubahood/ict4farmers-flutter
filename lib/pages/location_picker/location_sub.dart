@@ -14,12 +14,12 @@ import 'package:flutx/widgets/container/container.dart';
 import 'package:flutx/widgets/text/text.dart';
 import 'package:flutx/widgets/widgets.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
-import 'package:ict4farmers/models/CategoryModel.dart';
-import 'package:ict4farmers/models/UserModel.dart';
-import 'package:ict4farmers/theme/app_theme.dart';
-import 'package:ict4farmers/utils/AppConfig.dart';
-import 'package:ict4farmers/widget/loading_widget.dart';
-import 'package:ict4farmers/widgets/images.dart';
+import '../../models/CategoryModel.dart';
+import '../../models/UserModel.dart';
+import '../../theme/app_theme.dart';
+import '../../utils/AppConfig.dart';
+import '../../widget/loading_widget.dart';
+import '../../widgets/images.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutx/themes/app_theme_notifier.dart';
-import 'package:ict4farmers/localizations/app_localization_delegate.dart';
-import 'package:ict4farmers/localizations/language.dart';
-import 'package:ict4farmers/pages/account/onboarding_widget.dart';
-import 'package:ict4farmers/pages/homes/homes_screen.dart';
-import 'package:ict4farmers/theme/app_notifier.dart';
-import 'package:ict4farmers/theme/app_theme.dart';
-import 'package:ict4farmers/utils/Utils.dart';
+import '../../localizations/app_localization_delegate.dart';
+import '../../localizations/language.dart';
+import '../../pages/account/onboarding_widget.dart';
+import '../../pages/homes/homes_screen.dart';
+import '../../theme/app_notifier.dart';
+import '../../theme/app_theme.dart';
+import '../../utils/Utils.dart';
 import 'package:provider/provider.dart';
 
 //I love romina
@@ -20,6 +20,7 @@ void main() {
 
   //
   Utils.init_databse();
+  Utils.boot_system();
 
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((_) {

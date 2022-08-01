@@ -6,8 +6,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutx/flutx.dart';
-import 'package:ict4farmers/theme/app_theme.dart';
-import 'package:ict4farmers/theme/custom_theme.dart';
+import '../../theme/app_theme.dart';
+import '../../theme/custom_theme.dart';
 
 import '../TestPage.dart';
 import 'single_grid_item.dart';

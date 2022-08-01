@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutx/utils/spacing.dart';
 import 'package:flutx/widgets/button/button.dart';
 import 'package:flutx/widgets/text/text.dart';
-import 'package:ict4farmers/utils/AppConfig.dart';
-import 'package:ict4farmers/widget/shimmer_loading_widget.dart';
+import '../../utils/AppConfig.dart';
+import '../../widget/shimmer_loading_widget.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 import '../theme/app_theme.dart';

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutx/flutx.dart';
-import 'package:ict4farmers/localizations/language.dart';
-import 'package:ict4farmers/theme/theme_type.dart';
+import '../../localizations/language.dart';
+import '../../theme/theme_type.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '/extensions/theme_extension.dart';

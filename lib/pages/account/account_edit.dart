@@ -7,10 +7,10 @@ import 'package:flutter/services.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutx/flutx.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
-import 'package:ict4farmers/pages/location_picker/location_main.dart';
-import 'package:ict4farmers/theme/app_theme.dart';
-import 'package:ict4farmers/utils/AppConfig.dart';
-import 'package:ict4farmers/utils/Utils.dart';
+import '../../pages/location_picker/location_main.dart';
+import '../../theme/app_theme.dart';
+import '../../utils/AppConfig.dart';
+import '../../utils/Utils.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../models/UserModel.dart';

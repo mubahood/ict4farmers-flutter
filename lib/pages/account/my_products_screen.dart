@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -8,9 +6,9 @@ import 'package:flutx/utils/spacing.dart';
 import 'package:flutx/widgets/container/container.dart';
 import 'package:flutx/widgets/text/text.dart';
 import 'package:flutx/widgets/widgets.dart';
-import 'package:ict4farmers/models/UserModel.dart';
-import 'package:ict4farmers/theme/app_theme.dart';
-import 'package:ict4farmers/utils/AppConfig.dart';
+import '../../models/UserModel.dart';
+import '../../theme/app_theme.dart';
+import '../../utils/AppConfig.dart';
 import 'package:provider/provider.dart';
 
 import '../../models/ProductModel.dart';
@@ -18,7 +16,6 @@ import '../../models/RespondModel.dart';
 import '../../theme/app_notifier.dart';
 import '../../utils/Utils.dart';
 import '../../widget/empty_list.dart';
-import '../../widget/shimmer_list_loading_widget.dart';
 import '../../widget/shimmer_loading_widget.dart';
 import '../product_add_form/product_add_form.dart';
 
@@ -29,7 +26,7 @@ class MyProductsScreen extends StatefulWidget {
 
 late CustomTheme customTheme;
 String title = "My Products";
-bool is_loading = false;
+bool is_loading = true;
 
 class MyProductsScreenState extends State<MyProductsScreen> {
   final PageController pageController = PageController(initialPage: 0);
@@ -123,7 +120,15 @@ class MyProductsScreenState extends State<MyProductsScreen> {
           ),
           body: SafeArea(
               child: is_loading
-                  ? ShimmerListLoadingWidget()
+                  ? Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(15),
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2.0,
+                          valueColor: AlwaysStoppedAnimation<Color>(Colors.red),
+                        ),
+                      ),
+                    )
                   : RefreshIndicator(
                       onRefresh: _do_refresh,
                       color: CustomTheme.primary,
@@ -184,7 +189,10 @@ class MyProductsScreenState extends State<MyProductsScreen> {
 
     double height = 100;
     return InkWell(
-      onTap: () => {_show_bottom_sheet_product_actions(context)},
+      onTap: () => {
+        Utils.navigate_to(AppConfig.ProductDetails, context,
+            data: {'id': item.id.toString()})
+      },
       child: Container(
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -197,7 +205,12 @@ class MyProductsScreenState extends State<MyProductsScreen> {
               imageUrl: thumbnail,
               placeholder: (context, url) => ShimmerLoadingWidget(
                   height: 100, width: 100, is_circle: false, padding: 0),
-              errorWidget: (context, url, error) => Icon(Icons.error),
+              errorWidget: (context, url, error) => Image(
+                image: AssetImage('./assets/project/no_image.jpg'),
+                height: 90,
+                width: 90,
+                fit: BoxFit.cover,
+              ),
             ),
             SizedBox(
               width: 10,
@@ -270,7 +283,7 @@ class MyProductsScreenState extends State<MyProductsScreen> {
                           }
                         },
                         itemBuilder: (context) => [
-                          PopupMenuItem(value: 1, child: Text('View on web')),
+                          //PopupMenuItem(value: 1, child: Text('View on web')),
                           PopupMenuItem(
                               value: 0,
                               onTap: () {},
@@ -357,19 +370,19 @@ class MyProductsScreenState extends State<MyProductsScreen> {
   Future<void> do_delete(int id) async {
     is_loading = true;
     setState(() {});
-    String raw = await Utils.http_post('seed-labels/delete', {'id': id});
+    String raw = await Utils.http_post('api/delete-product', {'id': id});
     RespondModel resp = RespondModel(raw);
 
     is_loading = false;
     setState(() {});
-
     if (resp.code == 1) {
-      Utils.showSnackBar(resp.message, context,
-          color: Colors.white, background_color: Colors.green.shade600);
+      await ProductModel.delete_item(id);
+      Utils.showSnackBar(resp.message, context, Colors.white,
+          background_color: Colors.green.shade600);
       _do_refresh();
     } else {
-      Utils.showSnackBar(resp.message, context,
-          color: Colors.white, background_color: Colors.red.shade600);
+      Utils.showSnackBar(resp.message, context, Colors.white,
+          background_color: Colors.red.shade600);
     }
   }
 }

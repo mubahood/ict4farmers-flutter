@@ -1,5 +1,5 @@
-import 'package:ict4farmers/models/ProductModel.dart';
-import 'package:ict4farmers/models/UserModel.dart';
+import '../../models/ProductModel.dart';
+import '../../models/UserModel.dart';
 
 class MapItem {
   String id = "";

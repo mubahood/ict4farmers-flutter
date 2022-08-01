@@ -695,6 +695,13 @@
             </list>
           </value>
         </entry>
+        <entry key="pinch_zoom">
+          <value>
+            <list>
+              <option value="$USER_HOME$/src/flutter/.pub-cache/hosted/pub.dartlang.org/pinch_zoom-1.0.0/lib" />
+            </list>
+          </value>
+        </entry>
         <entry key="platform">
           <value>
             <list>
@@ -895,20 +902,6 @@
           <value>
             <list>
               <option value="$USER_HOME$/src/flutter/.pub-cache/hosted/pub.dartlang.org/string_scanner-1.1.0/lib" />
-            </list>
-          </value>
-        </entry>
-        <entry key="syncfusion_flutter_charts">
-          <value>
-            <list>
-              <option value="$USER_HOME$/src/flutter/.pub-cache/hosted/pub.dartlang.org/syncfusion_flutter_charts-19.4.56/lib" />
-            </list>
-          </value>
-        </entry>
-        <entry key="syncfusion_flutter_core">
-          <value>
-            <list>
-              <option value="$USER_HOME$/src/flutter/.pub-cache/hosted/pub.dartlang.org/syncfusion_flutter_core-19.4.56/lib" />
             </list>
           </value>
         </entry>
@@ -1164,6 +1157,7 @@
       <root url="file://$USER_HOME$/src/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_windows-2.0.5/lib" />
       <root url="file://$USER_HOME$/src/flutter/.pub-cache/hosted/pub.dartlang.org/pedantic-1.11.1/lib" />
       <root url="file://$USER_HOME$/src/flutter/.pub-cache/hosted/pub.dartlang.org/petitparser-4.4.0/lib" />
+      <root url="file://$USER_HOME$/src/flutter/.pub-cache/hosted/pub.dartlang.org/pinch_zoom-1.0.0/lib" />
       <root url="file://$USER_HOME$/src/flutter/.pub-cache/hosted/pub.dartlang.org/platform-3.1.0/lib" />
       <root url="file://$USER_HOME$/src/flutter/.pub-cache/hosted/pub.dartlang.org/plugin_platform_interface-2.1.2/lib" />
       <root url="file://$USER_HOME$/src/flutter/.pub-cache/hosted/pub.dartlang.org/pool-1.5.0/lib" />
@@ -1192,8 +1186,6 @@
       <root url="file://$USER_HOME$/src/flutter/.pub-cache/hosted/pub.dartlang.org/stream_channel-2.1.0/lib" />
       <root url="file://$USER_HOME$/src/flutter/.pub-cache/hosted/pub.dartlang.org/stream_transform-2.0.0/lib" />
       <root url="file://$USER_HOME$/src/flutter/.pub-cache/hosted/pub.dartlang.org/string_scanner-1.1.0/lib" />
-      <root url="file://$USER_HOME$/src/flutter/.pub-cache/hosted/pub.dartlang.org/syncfusion_flutter_charts-19.4.56/lib" />
-      <root url="file://$USER_HOME$/src/flutter/.pub-cache/hosted/pub.dartlang.org/syncfusion_flutter_core-19.4.56/lib" />
       <root url="file://$USER_HOME$/src/flutter/.pub-cache/hosted/pub.dartlang.org/synchronized-3.0.0/lib" />
       <root url="file://$USER_HOME$/src/flutter/.pub-cache/hosted/pub.dartlang.org/term_glyph-1.2.0/lib" />
       <root url="file://$USER_HOME$/src/flutter/.pub-cache/hosted/pub.dartlang.org/test_api-0.4.8/lib" />

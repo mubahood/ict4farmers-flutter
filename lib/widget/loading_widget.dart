@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:ict4farmers/theme/app_theme.dart';
+import '../../theme/app_theme.dart';
 
 Widget LoadingWidget() {
   return Center(
