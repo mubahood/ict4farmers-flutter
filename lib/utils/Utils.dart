@@ -6,6 +6,8 @@ import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutx/utils/spacing.dart';
+import 'package:flutx/widgets/button/button.dart';
 import 'package:flutx/widgets/text/text.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:ict4farmers/models/BannerModel.dart';
@@ -45,6 +47,67 @@ import 'AppConfig.dart';
 
 class Utils {
 
+
+  static Future<void> showConfirmDialog(BuildContext context,
+      Function onPositiveClick,
+      Function onNegativeClick, {
+        String message: "Please confirm this action",
+        String positive_text: "Confirm",
+        String negative_text: "Cancel",
+      }) async {
+    await showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        int selectedRadio = 0;
+        return AlertDialog(
+          content: StatefulBuilder(
+            builder: (BuildContext context, StateSetter setState) {
+              return Container(
+                padding: FxSpacing.all(0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    FxText.sh1(
+                      "${message}\n",
+                      fontWeight: 500,
+                    ),
+                    Container(
+                        alignment: AlignmentDirectional.center,
+                        child: Column(
+                          children: [
+
+                            FxButton.block(
+                                onPressed: () {
+                                  onPositiveClick();
+                                  Navigator.pop(context);
+                                },
+                                borderRadiusAll: 4,
+                                elevation: 0,
+                                child: FxText.b2(positive_text,
+                                    letterSpacing: 0.3, color: Colors.white)),
+
+                            SizedBox(height: 10,),
+                            FxButton.outlined(
+                                onPressed: () {
+                                  onNegativeClick();
+                                  Navigator.pop(context);
+                                },
+                                borderRadiusAll: 4,
+                                elevation: 0,
+                                child: FxText.b2(negative_text,
+                                    letterSpacing: 0.3, color: Colors.red)),
+                          ],
+                        )),
+                  ],
+                ),
+              );
+            },
+          ),
+        );
+      },
+    );
+  }
 
   static void launchURL(String _url) async {
     if (!await launch(_url)) throw 'Could not launch $_url';

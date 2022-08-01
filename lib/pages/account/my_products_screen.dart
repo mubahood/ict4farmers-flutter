@@ -14,6 +14,7 @@ import 'package:ict4farmers/utils/AppConfig.dart';
 import 'package:provider/provider.dart';
 
 import '../../models/ProductModel.dart';
+import '../../models/RespondModel.dart';
 import '../../theme/app_notifier.dart';
 import '../../utils/Utils.dart';
 import '../../widget/empty_list.dart';
@@ -186,6 +187,8 @@ class MyProductsScreenState extends State<MyProductsScreen> {
       onTap: () => {_show_bottom_sheet_product_actions(context)},
       child: Container(
         child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             CachedNetworkImage(
               height: height,
@@ -206,42 +209,78 @@ class MyProductsScreenState extends State<MyProductsScreen> {
                 color: Colors.white,
                 width: double.infinity,
                 borderRadiusAll: 0,
-                child: Column(
+                child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    FxText(
-                      item.name,
-                      maxLines: 1,
-                      fontSize: 18,
-                      textAlign: TextAlign.start,
-                      color: Colors.black,
-                      overflow: TextOverflow.ellipsis,
+                    Container(
+                      width: (MediaQuery.of(context).size.width-230),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          FxText(
+                            item.name,
+                            maxLines: 1,
+                            fontSize: 18,
+                            textAlign: TextAlign.start,
+                            color: Colors.black,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          FxText(
+                            "Seen by 42",
+                            maxLines: 1,
+                            fontSize: 14,
+                            color: Colors.grey.shade600,
+                            textAlign: TextAlign.start,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          FxText(
+                            "Liked by 42",
+                            maxLines: 1,
+                            fontSize: 14,
+                            color: Colors.grey.shade600,
+                            textAlign: TextAlign.start,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          FxText(
+                            "Posted by ${item.created_at}",
+                            maxLines: 1,
+                            fontSize: 14,
+                            color: Colors.grey.shade600,
+                            textAlign: TextAlign.start,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ],
+                      ),
                     ),
-                    FxText(
-                      "Seen by 42",
-                      maxLines: 1,
-                      fontSize: 14,
-                      color: Colors.grey.shade600,
-                      textAlign: TextAlign.start,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    FxText(
-                      "Liked by 42",
-                      maxLines: 1,
-                      fontSize: 14,
-                      color: Colors.grey.shade600,
-                      textAlign: TextAlign.start,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    FxText(
-                      "Posted by ${item.created_at}",
-                      maxLines: 1,
-                      fontSize: 14,
-                      color: Colors.grey.shade600,
-                      textAlign: TextAlign.start,
-                      overflow: TextOverflow.ellipsis,
-                    ),
+                    Container(
+                      child: PopupMenuButton<int>(
+                        onSelected: (x) {
+                          if (x == 0) {
+                            Utils.showConfirmDialog(context, () {
+                              do_delete(item.id);
+                            }, () {
+                              //on cancel
+                            },
+                                message: "Are you sure you want to delete this product?",
+                                positive_text: "Delete");
+                          } else {
+                            //Utils.launchURL(AppConfig.DASHBOARD_URL + "/seed-labels/${item.id}");
+                          }
+                        },
+                        itemBuilder: (context) => [
+                          PopupMenuItem(value: 1, child: Text('View on web')),
+                          PopupMenuItem(
+                              value: 0,
+                              onTap: () {},
+                              child: FxText(
+                                'Delete',
+                                color: Colors.red,
+                              )),
+                        ],
+                      ),
+                    )
                   ],
                 ),
               ),
@@ -313,5 +352,24 @@ class MyProductsScreenState extends State<MyProductsScreen> {
             ),
           );
         });
+  }
+
+  Future<void> do_delete(int id) async {
+    is_loading = true;
+    setState(() {});
+    String raw = await Utils.http_post('seed-labels/delete', {'id': id});
+    RespondModel resp = RespondModel(raw);
+
+    is_loading = false;
+    setState(() {});
+
+    if (resp.code == 1) {
+      Utils.showSnackBar(resp.message, context,
+          color: Colors.white, background_color: Colors.green.shade600);
+      _do_refresh();
+    } else {
+      Utils.showSnackBar(resp.message, context,
+          color: Colors.white, background_color: Colors.red.shade600);
+    }
   }
 }
