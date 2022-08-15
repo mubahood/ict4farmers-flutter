@@ -214,7 +214,7 @@ class ProductDetailsState extends State<ProductDetails> {
                                                             .start,
                                                     children: [
                                                       Text(
-                                                        "UGX ${productModel.price}",
+                                                        "${AppConfig.CURRENCY} ${productModel.price}",
                                                         style: TextStyle(
                                                             color: CustomTheme
                                                                 .primary,

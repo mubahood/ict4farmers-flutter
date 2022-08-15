@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:Jotrace/models/RespondModel.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart';
@@ -11,6 +12,9 @@ import 'package:flutx/utils/spacing.dart';
 import 'package:flutx/widgets/button/button.dart';
 import 'package:flutx/widgets/text/text.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:url_launcher/url_launcher.dart';
+
 import '../../models/BannerModel.dart';
 import '../../models/PostCategoryModel.dart';
 import '../../models/ProductModel.dart';
@@ -21,8 +25,6 @@ import '../../pages/account/account_register.dart';
 import '../../pages/account/account_splash.dart';
 import '../../pages/other_pages/about_is.dart';
 import '../../theme/app_theme.dart';
-import 'package:url_launcher/url_launcher.dart';
-
 import '../models/CategoryModel.dart';
 import '../models/ChatModel.dart';
 import '../models/ChatThreadModel.dart';
@@ -56,6 +58,33 @@ class Utils {
     await VendorModel.get_items();
   }
 
+  static Future<void> upload_image(
+      XFile MyFile, final void Function(String) callBackFunction) async {
+    if (MyFile == null) {
+      return;
+    }
+    Map<String, dynamic> form_data_map = {};
+    UserModel u = await Utils.get_logged_in();
+    bool first_found = false;
+    form_data_map['user_id'] = u.id;
+    form_data_map['file'] =
+        await MultipartFile.fromFile(MyFile.path, filename: MyFile.name);
+
+    var formData = FormData.fromMap(form_data_map);
+    var dio = Dio();
+
+    var response = await dio.post(
+        '${AppConfig.BASE_URL}/api/upload-temp-image?user_id=1',
+        data: formData);
+    RespondModel r = new RespondModel(jsonEncode(response.data));
+
+    if (r.code == 1) {
+      callBackFunction(MyFile.path);
+    } else {
+      callBackFunction('');
+    }
+    return;
+  }
 
   static void ini_drak_theme() {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
@@ -65,7 +94,6 @@ class Utils {
   }
 
   static void init_theme() {
-
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
         statusBarColor: CustomTheme.primary,
         statusBarIconBrightness: Brightness.dark,

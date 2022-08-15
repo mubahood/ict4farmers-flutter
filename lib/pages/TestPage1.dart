@@ -3,11 +3,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutx/widgets/button/button.dart';
 import 'package:flutx/widgets/text/text.dart';
+
 import '../../models/UserModel.dart';
 import '../../pages/products/product_details.dart';
 import '../../utils/AppConfig.dart';
 import '../../widget/my_widgets.dart';
-
 import '../models/BannerModel.dart';
 import '../models/ProductModel.dart';
 import '../models/VendorModel.dart';
@@ -46,7 +46,10 @@ class _TestPage1State extends State<TestPage1> {
   List<VendorModel> vendors = [];
 
   Future<void> _init_databse() async {
+    is_loading = true;
+    setState(() {});
     is_logged_in = await Utils.is_login();
+
     if (is_logged_in) {
       logged_in_user = await Utils.get_logged_in();
       if (logged_in_user.phone_number == "null" ||
@@ -61,14 +64,10 @@ class _TestPage1State extends State<TestPage1> {
     }
 
 
-
     if(page_num == 2){
-
       vendors = await VendorModel.get_items();
       print("====> FOUND ${vendors.length} <========");
     }else{
-
-
       _trending_products.clear();
       List<ProductModel> _trending_get = await ProductModel.get_trending();
       _trending_get.forEach((element) {
@@ -138,14 +137,10 @@ class _TestPage1State extends State<TestPage1> {
           horizontal_banner_3 = element;
         }
       });
-
     }
 
-
-
-
-
     initilized = true;
+    is_loading = false;
     setState(() {});
     return null;
   }

@@ -8,13 +8,13 @@ import 'package:flutx/utils/spacing.dart';
 import 'package:flutx/widgets/container/container.dart';
 import 'package:flutx/widgets/text/text.dart';
 import 'package:flutx/widgets/widgets.dart';
-import '../../models/UserModel.dart';
-import '../../theme/app_theme.dart';
 import 'package:provider/provider.dart';
 
 import '../../models/BannerModel.dart';
 import '../../models/ProductModel.dart';
+import '../../models/UserModel.dart';
 import '../../theme/app_notifier.dart';
+import '../../theme/app_theme.dart';
 import '../../theme/material_theme.dart';
 import '../../utils/Utils.dart';
 import '../../widget/product_item_ui.dart';
@@ -257,7 +257,7 @@ class AccountDetailsState extends State<AccountDetails> {
                                         is_loading
                                             ? "Loading..."
                                             : (_products.isEmpty)
-                                                ? "This farmer has not posted any product."
+                                                ? "This vendor has not posted any product."
                                                 : "Products",
                                         style: TextStyle(
                                             color: Colors.black,
