@@ -56,6 +56,7 @@ class Utils {
     await CategoryModel.get_all();
     await ProductModel.get_online_items({});
     await VendorModel.get_items();
+    await LocationModel.get_all();
   }
 
   static Future<void> upload_image(

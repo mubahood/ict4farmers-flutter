@@ -125,7 +125,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
   void stop_live_check() {
     live_check_is_active = false;
-    print("==========stoping live check=======");
+
   }
 
   bool live_check_is_active = true;
@@ -648,7 +648,7 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   void startTimer(int index, String message) {
-    print(index);
+
     const twoSec = Duration(seconds: 2);
     const threeSec = Duration(seconds: 3);
 

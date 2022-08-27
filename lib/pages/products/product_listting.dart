@@ -155,7 +155,7 @@ class _ProductListtingState extends State<ProductListting> {
         id = result['category_id'].toString();
         title = result['category_text'];
 
-        print('===========> ${title} <-================');
+
         setState(() {
 
         });

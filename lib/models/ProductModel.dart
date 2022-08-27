@@ -73,7 +73,7 @@ class ProductModel extends HiveObject {
               thumbnail_link =
                   "${AppConfig.BASE_URL}/${raw_thumb['thumbnail'].toString()}";
 
-              print(thumbnail_link);
+
             }
           }
         } catch (x) {

@@ -689,12 +689,21 @@ class ProductAddFormState extends State<ProductAddForm> {
       setState(() {});
     }
 
+    var response = null;
+    try {
+      response =
+          await dio.post('${AppConfig.BASE_URL}/api/products', data: formData);
+    } on DioError catch (e) {
+      Utils.showSnackBar("Failed to upload product. because ${e.response}.",
+          context, Colors.red.shade700);
+      setState(() {
+        is_doing_final_upload = true;
+        is_uploading = true;
+      });
+      return;
+    }
 
-    var response =
-    await dio.post('${AppConfig.BASE_URL}/api/products', data: formData);
-
-
-  await ProductModel.get_local_products();
+    await ProductModel.get_local_products();
     setState(() {
       is_uploading = false;
     });
@@ -767,7 +776,10 @@ class ProductAddFormState extends State<ProductAddForm> {
   }
 
   void romove_image_at(int image_position) {
-    files_to_upload_objects.removeAt((image_position));
+    try {
+      files_to_upload_objects.removeAt((image_position));
+    } catch (e) {}
+
     setState(() {});
   }
 

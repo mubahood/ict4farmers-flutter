@@ -66,7 +66,6 @@ class _TestPage1State extends State<TestPage1> {
 
     if(page_num == 2){
       vendors = await VendorModel.get_items();
-      print("====> FOUND ${vendors.length} <========");
     }else{
       _trending_products.clear();
       List<ProductModel> _trending_get = await ProductModel.get_trending();

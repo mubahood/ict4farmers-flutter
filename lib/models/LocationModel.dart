@@ -54,9 +54,9 @@ class LocationModel extends HiveObject {
       Map<String, dynamic> data) async {
     List<LocationModel> items = [];
 
+
     String resp = await Utils.http_get('api/locations', data);
 
-    print(resp);
 
     if (resp != null && !resp.isEmpty) {
       json.decode(resp).map((element) {

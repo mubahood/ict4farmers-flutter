@@ -41,7 +41,6 @@ class _VendorsPageState extends State<VendorsPage> {
     u.avatar = v.avatar;
     u.cover_photo = v.cover_photo;
     u.created_at = v.created_at;
-    print(u.avatar);
 
     Utils.navigate_to(AppConfig.AccountDetails, context, data: u);
   }

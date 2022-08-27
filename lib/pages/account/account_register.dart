@@ -52,7 +52,7 @@ class _AccountRegisterState extends State<AccountRegister> {
 
       onLoading = true;
       setState(() {});
-      print("===starting===");
+
       String _resp = await Utils.http_post('api/users', {
         'password': _formKey.currentState?.fields['password_1']?.value,
         'name': _formKey.currentState?.fields['name']?.value,

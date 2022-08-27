@@ -192,7 +192,7 @@ class _HomesScreenSegmentState extends State<HomesScreenSegment>
              /* FxButton.text(
                   padding: FxSpacing.zero,
                   onPressed: () {
-                    //print("one love");
+
                     //Utils.http_get('api/proudcts', {});
                   },
                   splashColor: CustomTheme.primary.withAlpha(40),
@@ -210,7 +210,7 @@ class _HomesScreenSegmentState extends State<HomesScreenSegment>
                         child: Text("Init Data")),
                   ),
                   InkWell(
-                    onTap: () => {print("adding")},
+
                     child: Container(
                         color: Colors.blue.shade200,
                         width: 100,
