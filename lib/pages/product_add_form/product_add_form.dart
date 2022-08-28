@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutx/flutx.dart';
-import 'package:flutx/utils/spacing.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
@@ -18,7 +17,6 @@ import '../../models/UserModel.dart';
 import '../../models/option_picker_model.dart';
 import '../../theme/app_notifier.dart';
 import '../../theme/app_theme.dart';
-import '../../theme/custom_theme.dart';
 import '../../utils/AppConfig.dart';
 import '../../utils/Utils.dart';
 import '../location_picker/location_main.dart';
@@ -26,6 +24,8 @@ import '../option_pickers/multiple_option_picker.dart';
 import 'item_picker_screen.dart';
 
 class ProductAddForm extends StatefulWidget {
+  const ProductAddForm({Key? key}) : super(key: key);
+
   @override
   State<ProductAddForm> createState() => ProductAddFormState();
 }
@@ -51,36 +51,36 @@ class ProductAddFormState extends State<ProductAddForm> {
   Widget build(BuildContext context) {
     return Consumer<AppNotifier>(
         builder: (BuildContext context, AppNotifier value, Widget? child) {
-          return Scaffold(
-            appBar: AppBar(
-              backgroundColor: CustomTheme.primary,
-              automaticallyImplyLeading: false,
-              // remove back button in appbar.
-              systemOverlayStyle: SystemUiOverlayStyle(
-                statusBarColor: CustomTheme.primary,
-                statusBarIconBrightness: Brightness.light,
-                // For Android (dark icons)
-                statusBarBrightness: Brightness.light, // For iOS (dark icons)
-              ),
-              elevation: 1,
-              title: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  InkWell(
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                    child: Container(
-                        padding: FxSpacing.x(0),
-                    child: Icon(
+      return Scaffold(
+        appBar: AppBar(
+          backgroundColor: CustomTheme.primary,
+          automaticallyImplyLeading: false,
+          // remove back button in appbar.
+          systemOverlayStyle: SystemUiOverlayStyle(
+            statusBarColor: CustomTheme.primary,
+            statusBarIconBrightness: Brightness.light,
+            // For Android (dark icons)
+            statusBarBrightness: Brightness.light, // For iOS (dark icons)
+          ),
+          elevation: 1,
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              InkWell(
+                onTap: () {
+                  Navigator.pop(context);
+                },
+                child: Container(
+                    padding: FxSpacing.x(0),
+                    child: const Icon(
                       CupertinoIcons.clear,
                       color: Colors.white,
                       size: 30,
                     )),
               ),
               Container(
-                margin: EdgeInsets.only(left: 15),
+                margin: const EdgeInsets.only(left: 15),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -100,7 +100,7 @@ class ProductAddFormState extends State<ProductAddForm> {
                 },
                 child: Container(
                     padding: FxSpacing.x(0),
-                    child: Icon(
+                    child: const Icon(
                       Icons.check,
                       color: Colors.white,
                       size: 35,
@@ -108,11 +108,11 @@ class ProductAddFormState extends State<ProductAddForm> {
               ),
             ],
           ),
-            ),
-            body: FormBuilder(
-              key: _formKey,
-              child: CustomScrollView(
-                slivers: [
+        ),
+        body: FormBuilder(
+          key: _formKey,
+          child: CustomScrollView(
+            slivers: [
               SliverList(
                   delegate: SliverChildBuilderDelegate(
                 (BuildContext context, int index) {
@@ -189,11 +189,11 @@ class ProductAddFormState extends State<ProductAddForm> {
                                         labelText: "Title",
                                         hintText:
                                             "What is the name of this item?")),
-                                    FxDashedDivider(
-                                      color: Colors.grey.shade300,
-                                    ),
-                                    FormBuilderTextField(
-                                        name: "price",
+                                FxDashedDivider(
+                                  color: Colors.grey.shade300,
+                                ),
+                                FormBuilderTextField(
+                                    name: "price",
                                     textInputAction: TextInputAction.next,
                                     keyboardType: TextInputType.number,
                                     validator: FormBuilderValidators.compose([
@@ -689,7 +689,7 @@ class ProductAddFormState extends State<ProductAddForm> {
       setState(() {});
     }
 
-    var response = null;
+    Response response;
     try {
       response =
           await dio.post('${AppConfig.BASE_URL}/api/products', data: formData);
@@ -727,7 +727,8 @@ class ProductAddFormState extends State<ProductAddForm> {
     await ProductModel.get_user_products(userModel.id);
     //await FormItemModel.delete_all();
     Utils.showSnackBar(
-        response.data['message'].toString(), context, CustomTheme.onPrimary,background_color: Colors.green.shade900);
+        response.data['message'].toString(), context, CustomTheme.onPrimary,
+        background_color: Colors.green.shade900);
 
     Navigator.pop(context, {"task": 'success'});
   }
@@ -746,8 +747,7 @@ class ProductAddFormState extends State<ProductAddForm> {
 
   do_pick_image_from_camera() async {
     final ImagePicker _picker = ImagePicker();
-    final XFile? pic =
-        await _picker.pickImage(source: ImageSource.camera);
+    final XFile? pic = await _picker.pickImage(source: ImageSource.camera);
     if (pic != null) {
       files_to_upload_objects.add(pic);
     }
@@ -788,10 +788,10 @@ class ProductAddFormState extends State<ProductAddForm> {
       context,
       MaterialPageRoute(
           builder: (context) => ItemPickerScreen(
-            ['For sale', 'For hire', 'Service'],
-            nature_of_off,
-            'Nature of the offer',
-          )),
+                ['For sale', 'For hire', 'Service'],
+                nature_of_off,
+                'Nature of the offer',
+              )),
     );
 
     if (result != null) {
