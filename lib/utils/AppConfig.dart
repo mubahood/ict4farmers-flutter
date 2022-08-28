@@ -1,5 +1,5 @@
 class AppConfig {
-  static String BASE_URL = "https://jotrace.com";
+  static String BASE_URL = "https://zahrawears.com";
   static const String HomePage = "HomePage";
   static const String MyProductsScreen = "MyProductsScreen";
   static const String AppName = "JO-TRACE";
