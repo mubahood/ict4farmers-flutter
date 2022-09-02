@@ -7,13 +7,13 @@ import 'package:flutter/services.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutx/flutx.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
+import 'package:image_picker/image_picker.dart';
+
+import '../../models/UserModel.dart';
 import '../../pages/location_picker/location_main.dart';
 import '../../theme/app_theme.dart';
 import '../../utils/AppConfig.dart';
 import '../../utils/Utils.dart';
-import 'package:image_picker/image_picker.dart';
-
-import '../../models/UserModel.dart';
 import '../../widget/shimmer_loading_widget.dart';
 import '../location_picker/product_category_picker.dart';
 
@@ -103,7 +103,7 @@ class _AccountEditState extends State<AccountEdit> {
 
   @override
   Widget build(BuildContext context) {
-    // setState(() { onLoading = false;});
+
 
     Future<void> submit_form() async {
       error_message = "";
@@ -146,20 +146,26 @@ class _AccountEditState extends State<AccountEdit> {
         } catch (e) {}
       }
 
-       onLoading = true;
+      onLoading = true;
       setState(() {});
 
       var formData = FormData.fromMap(form_data_map);
       var dio = Dio();
-      var response =
-      await dio.post('${AppConfig.BASE_URL}/api/users-update', data: formData);
+      var response = null;
+
+       try {
+        response = await dio.post('${AppConfig.BASE_URL}/api/users-update',
+            data: formData);
+      } on DioError catch (e) {
+
+      }
 
       onLoading = false;
       setState(() {});
 
       if (response == null) {
-        Utils.showSnackBar("Failed to upload product. Please try again.", context,
-            Colors.red.shade700);
+        Utils.showSnackBar("Failed to upload product. Please try again.",
+            context, Colors.white);
         return;
       }
 
@@ -280,7 +286,8 @@ password
                         FxSpacing.height(8),
                         FxButton.text(
                             onPressed: () {
-                              _show_bottom_sheet_photo(context);
+                              do_pick_image("gallery");
+                              //_show_bottom_sheet_photo(context);
                             },
                             splashColor: CustomTheme.primary.withAlpha(40),
                             child: FxText.l2("Change Photo",
@@ -525,13 +532,13 @@ password
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
-                    ListTile(
+                    /*ListTile(
                       onTap: () => {do_pick_image("camera")},
                       dense: false,
                       leading: Icon(Icons.camera_alt,
                           color: theme.colorScheme.onBackground),
                       title: FxText.b1("Camera", fontWeight: 600),
-                    ),
+                    ),*/
                     ListTile(
                         dense: false,
                         onTap: () => {do_pick_image("gallery")},
@@ -551,7 +558,7 @@ password
   String new_dp = "";
 
   do_pick_image(String source) async {
-    Navigator.pop(context);
+    //SNavigator.pop(context);
 
     new_dp = "";
 

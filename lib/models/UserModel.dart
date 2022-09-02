@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:Jotrace/utils/AppConfig.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 import '../utils/Utils.dart';
@@ -242,5 +243,8 @@ class UserModel extends HiveObject {
     u.sub_county = data['sub_county'].toString();
     u.logged_in_user = data['logged_in_user'].toString();
     return u;
+  }
+  String get_avatar(){
+    return AppConfig.BASE_URL+"/"+this.avatar;
   }
 }

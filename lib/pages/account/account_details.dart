@@ -58,6 +58,12 @@ class AccountDetailsState extends State<AccountDetails> {
   UserModel logged_in_user = new UserModel();
 
   Future<Null> _onRefresh() async {
+    print("======ROMINA=======");
+    print(userModel.name);
+    print(userModel.avatar);
+    print(userModel.id);
+    print("============ROMINA=============");
+    return;
     _products.clear();
     is_loading = true;
     setState(() {});
@@ -102,7 +108,7 @@ class AccountDetailsState extends State<AccountDetails> {
                       children: [
                         Container(
                           child: FxText.h1(
-                            'Member\'s profile',
+                            'Vendor\'s profile',
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(color: Colors.black, fontSize: 24),
@@ -153,7 +159,7 @@ class AccountDetailsState extends State<AccountDetails> {
                                                   .width -
                                               50,
                                           fit: BoxFit.cover,
-                                          imageUrl: userModel.avatar,
+                                          imageUrl: userModel.get_avatar(),
                                           placeholder: (context, url) =>
                                               ShimmerLoadingWidget(
                                                   height: 72,

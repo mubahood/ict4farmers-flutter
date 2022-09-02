@@ -305,7 +305,8 @@ class _VendorsPageState extends State<VendorsPage> {
               marginAll: 0,
               height: 70,
               child: CachedNetworkImage(
-                height: 70,
+                height: 100,
+                fit: BoxFit.cover,
                 imageUrl: "${AppConfig.BASE_URL}/${data.avatar}",
                 placeholder: (context, url) => ShimmerLoadingWidget(
                     height: 100, width: 100, is_circle: true, padding: 0),
