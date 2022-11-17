@@ -29,3 +29,4 @@ doc/api/
 *.xml
 .idea/libraries/Flutter_Plugins.xml
 .idea/libraries/Dart_Packages.xml
+.DS_Store
